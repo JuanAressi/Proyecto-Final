@@ -1,11 +1,12 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-function Input({ id, type, name, placeholder, value, onChange, icon }) {
+function Input({ id, type, name, placeholder, value, onChange, icon, margin }) {
     // Styles.
     const containerStyle = {
         borderRadius: '0.5rem',
         overflow: 'hidden',
+		marginBottom: margin,
     }
 
     const iconStyle = {
@@ -17,7 +18,7 @@ function Input({ id, type, name, placeholder, value, onChange, icon }) {
     }
 
     return (
-        <div className='icon-component form-floating position-relative box-shadow-dark mb-3' style={containerStyle}>
+        <div className='icon-component form-floating position-relative box-shadow-dark' style={containerStyle}>
             <input
                 id={id}
                 className='form-control'

@@ -4,6 +4,8 @@
 /* Body */
 body { min-height: 100vh; }
 
+a { text-decoration: none; }
+
 
 /* Font Family */
 h1, h2, h3, h4, h5, h6 { font-family: 'Open Sans', sans-serif; }
@@ -20,6 +22,7 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 .bg-primary { background-color: #ade8f4!important; }
 .bg-secondary { background-color: #0077B6!important; }
 .bg-darker { background-color: #023E8A!important; }
+.bg-light-gray { background-color: #dddddd!important; }
 
 
 /* Border Color */
