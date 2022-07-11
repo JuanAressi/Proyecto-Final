@@ -1,9 +1,6 @@
 /* Import fonts */
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Nunito:wght@300;400&family=Open+Sans:wght@300;400&display=swap');
 
-/* Body */
-body { min-height: 100vh; }
-
 a { text-decoration: none; }
 
 
@@ -56,4 +53,58 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 #loginPage #loginForm,
 #registerPage #registerForm {
     background: rgba(255, 255, 255, 0.7);
+}
+
+#navbar {
+	border-bottom: 2px solid #0077B6;
+}
+
+#banner .row {
+	height: calc((100vh - 102px) / 2);
+	overflow: hidden;
+	padding: 0;
+	margin: 0;
+}
+
+#banner .gray-overlay {
+	background: rgba(0, 0, 0, 0.5);
+	padding: 0;
+	margin: 0;
+	z-index: 10;
+}
+
+#banner .row1 .img1 {
+	background: url( './components/assets/img/Banner/img2.avif' ) no-repeat center center/cover;
+	width: 100%;
+	height: 100%;
+	border-bottom: 4px solid #eee;
+	border-right: 4px solid #eee;
+	z-index: 9;
+}
+
+#banner .row1 .img2 {
+	background: url( './components/assets/img/Banner/img3.avif' ) no-repeat center center/cover;
+	width: 100%;
+	height: 100%;
+	border-bottom: 4px solid #eee;
+}
+
+#banner .row2 .img3 {
+	background: url( './components/assets/img/Banner/img4.avif' ) no-repeat center center/cover;
+	width: 100%;
+	height: 100%;
+	border-right: 4px solid #eee;
+}
+
+#banner .row2 .img4 {
+	background: url( './components/assets/img/Banner/img6.avif' ) no-repeat center center/cover;
+	width: 100%;
+	height: 100%;
+	border-right: 4px solid #eee;
+}
+
+#banner .row2 .img5 {
+	background: url( './components/assets/img/Banner/img7.avif' ) no-repeat center center/cover;
+	width: 100%;
+	height: 100%;
 }

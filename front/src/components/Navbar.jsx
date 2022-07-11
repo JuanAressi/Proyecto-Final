@@ -4,7 +4,15 @@ import { Link } from 'react-router-dom';
 
 function Navbar() {
 	return (
-		<div id="navbar" className='sticky-top bg-light-gray box-shadow-dark'>
+		<div
+			id="navbar"
+			className='bg-light-gray box-shadow-dark'
+			style={{
+				position: 'absolute',
+				top: '0',
+				width: '100%',
+			}}
+		>
 			<div className="container">
 				<div className="d-flex justify-content-between">
 					<Logo style='secondary' />
