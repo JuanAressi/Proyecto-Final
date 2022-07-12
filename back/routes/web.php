@@ -19,3 +19,7 @@ Route::get('/', function () {
     echo phpinfo();
     die();
 });
+
+// Controller-name@method-name
+Route::get('/', 'UsuariosController@index');
+Route::get('/getUsers/{id}','UsuariosController@getUsers');

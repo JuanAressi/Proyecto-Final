@@ -6,15 +6,14 @@ function Navbar() {
 	return (
 		<div
 			id="navbar"
-			className='bg-light-gray box-shadow-dark'
+			className='navbar fixed-top bg-light-gray box-shadow-dark'
 			style={{
-				position: 'absolute',
-				top: '0',
-				width: '100%',
+				borderBottom: '2px solid #056799',
+				fontSize: '1.2rem',
 			}}
 		>
 			<div className="container">
-				<div className="d-flex justify-content-between">
+				<div className="d-flex justify-content-between w-100">
 					<Logo style='secondary' />
 
 					<div className="d-flex justify-content-end align-items-center text-uppercase">

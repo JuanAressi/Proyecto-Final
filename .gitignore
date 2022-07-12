@@ -53,3 +53,4 @@ db/data/
 front/node_modules/
 back/vendor/
 back/storage/framework/
+.vscode/

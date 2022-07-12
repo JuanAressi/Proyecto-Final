@@ -11,20 +11,20 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 
 /* Text Color */
 .text-primary { color: #ade8f4!important; }
-.text-secondary { color: #0077b6!important; }
+.text-secondary { color: #056799!important; }
 .text-darker { color: #023E8A!important; }
 
 
 /* Background Color */
 .bg-primary { background-color: #ade8f4!important; }
-.bg-secondary { background-color: #0077B6!important; }
+.bg-secondary { background-color: #056799!important; }
 .bg-darker { background-color: #023E8A!important; }
 .bg-light-gray { background-color: #dddddd!important; }
 
 
 /* Border Color */
 .border-primary { border: 1px solid #ade8f4 !important; }
-.border-secondary { border: 1px solid #0077b6 !important; }
+.border-secondary { border: 1px solid #056799 !important; }
 
 
 /* Box Shadow */
@@ -42,12 +42,12 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 #loginPage,
 #registerPage {
     background: url( './components/assets/img/Login_background.avif' ) no-repeat center center/cover;
-    height: 100vh;
+    height: calc(100vh - 102px);
 }
 
 .blue-overlay {
     background: rgba(0 , 119, 182, 0.6);
-    height: 100vh;
+    height: 100%;
 }
 
 #loginPage #loginForm,
@@ -55,10 +55,9 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
     background: rgba(255, 255, 255, 0.7);
 }
 
-#navbar {
-	border-bottom: 2px solid #0077B6;
-}
 
+
+/* Banner */
 #banner .row {
 	height: calc((100vh - 102px) / 2);
 	overflow: hidden;
@@ -66,45 +65,37 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 	margin: 0;
 }
 
-#banner .gray-overlay {
-	background: rgba(0, 0, 0, 0.5);
-	padding: 0;
-	margin: 0;
-	z-index: 10;
+#banner .img .gray-overlay {
+	background: rgba(0, 0, 0, 0.65);
+	height: 100%;
 }
 
 #banner .row1 .img1 {
 	background: url( './components/assets/img/Banner/img2.avif' ) no-repeat center center/cover;
-	width: 100%;
-	height: 100%;
+	padding: 0;
 	border-bottom: 4px solid #eee;
 	border-right: 4px solid #eee;
-	z-index: 9;
 }
 
 #banner .row1 .img2 {
 	background: url( './components/assets/img/Banner/img3.avif' ) no-repeat center center/cover;
-	width: 100%;
-	height: 100%;
+	padding: 0;
 	border-bottom: 4px solid #eee;
 }
 
 #banner .row2 .img3 {
 	background: url( './components/assets/img/Banner/img4.avif' ) no-repeat center center/cover;
-	width: 100%;
-	height: 100%;
+	padding: 0;
 	border-right: 4px solid #eee;
 }
 
 #banner .row2 .img4 {
 	background: url( './components/assets/img/Banner/img6.avif' ) no-repeat center center/cover;
-	width: 100%;
-	height: 100%;
+	padding: 0;
 	border-right: 4px solid #eee;
 }
 
 #banner .row2 .img5 {
 	background: url( './components/assets/img/Banner/img7.avif' ) no-repeat center center/cover;
-	width: 100%;
-	height: 100%;
+	padding: 0;
 }

@@ -52,7 +52,7 @@ function Login() {
 
 
     return (
-        <div id='loginPage'>
+        <div id='loginPage' style={{ marginTop: '102px' }}>
 			<Navbar />
 			
             <div className='blue-overlay'>
