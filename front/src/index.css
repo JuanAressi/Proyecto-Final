@@ -1,8 +1,11 @@
+/* Import other css */
+@import url( 'components/assets/css/waves.css' );
+
 /* Import fonts */
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Nunito:wght@300;400&family=Open+Sans:wght@300;400&display=swap');
 
-a { text-decoration: none; }
 
+a { text-decoration: none; }
 
 /* Font Family */
 h1, h2, h3, h4, h5, h6 { font-family: 'Open Sans', sans-serif; }
