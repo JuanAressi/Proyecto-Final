@@ -13,16 +13,6 @@ function Login() {
     // Use effect.
     useEffect(() => {
         setBtnDisabled(false);
-
-		// fetch('/database.php', {
-        //     method: 'get',
-        // })
-		// .then(response => response.json)
-		// .then((data) => {
-		// 	debugger
-		// 	console.log('data', data);
-		// })
-		// .catch()
     }, []);
 
 

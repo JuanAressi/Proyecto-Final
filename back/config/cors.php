@@ -18,12 +18,15 @@ return [
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
     'allowed_methods' => ['*'],
-
+	'allowedMethods' => ['*'],
+	
     'allowed_origins' => ['*'],
+	'allowedOrigins' => ['*'],
 
     'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'],
+	'allowedHeaders' => ['*'],
 
     'exposed_headers' => [],
 

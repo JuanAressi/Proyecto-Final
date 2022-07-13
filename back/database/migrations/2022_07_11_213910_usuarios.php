@@ -14,8 +14,9 @@ class Usuarios extends Migration {
 		Schema::create('usuarios', function (Blueprint $table) {
 			$table->bigIncrements('id');
 			$table->string('email');
-			$table->string('nombre');
-			$table->string('apellido');
+			$table->string('password');
+			$table->string('first_name');
+			$table->string('last_name');
 			$table->string('dni');
 			$table->string('telefono');
 			$table->string('rol');

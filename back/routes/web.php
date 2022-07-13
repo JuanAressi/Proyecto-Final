@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UsuariosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,3 @@ Route::get('/', function () {
     echo phpinfo();
     die();
 });
-
-// Controller-name@method-name
-Route::get('/', 'UsuariosController@index');
-Route::get('/getUsers/{id}','UsuariosController@getUsers');

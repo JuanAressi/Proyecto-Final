@@ -1,19 +1,34 @@
-import React from 'react';
+import { React, useEffect, useState } from 'react';
 import $ from 'jquery';
 import Navbar from '../components/Navbar';
 import Waves from '../components/Waves';
+import agent from '../agent/agent';
+import axios from 'axios';
 
 function Index() {
-	$.ajax({
-		// url: 'getUsers/'+id,
-		type: 'get',
-		dataType: 'json',
-		success: function(response) {
-			console.log(response);
-		},
-		error: function() {
+	const [users, setUsers] = useState([]);
 
-		}
+	useEffect(() => {
+		// $.get('http://local.misturnos/api/')
+		// .then((response) => {
+		// 	setUsers(response.data);
+		// })
+
+		$.ajax({
+			type: 'GET',
+			url: 'http://local.misturnos/api/',
+			headers:{
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Origin": 'http://localhost:3000',
+				"Access-Control-Request-Headers": 'Content-Type, Authorization'
+			},
+			success: function (response) {
+				console.log('response: ', response);
+			},
+			error: function (error) {
+				console.log(error);
+			}
+		});
 	});
 
 	return (
