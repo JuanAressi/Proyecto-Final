@@ -54,3 +54,5 @@ front/node_modules/
 back/vendor/
 back/storage/framework/
 .vscode/
+
+php.ini

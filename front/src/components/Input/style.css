@@ -1,0 +1,8 @@
+input {
+	border: none!important;
+}
+
+input:focus {
+	border: 1px solid #056799!important;
+	border-radius: 0.5rem;
+}

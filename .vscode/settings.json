@@ -1,4 +1,6 @@
 {
-	"phpcs.enable": false,
-	"phpcs.standard": "WordPress",
+    "editor.insertSpaces": true,
+
+	"phpcs.enable": true,
+	"phpcs.standard": "PSR2",
 }

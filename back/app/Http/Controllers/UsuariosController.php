@@ -5,21 +5,32 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Usuarios;
 
-class UsuariosController extends Controller {
-	public function get_all(Request $request) {
-		$users = array(
-			'id' => '1',
-			'nombre' => 'juan',
-			'apellido' => 'aressi'
-		);
+class UsuariosController extends Controller
+{
+    /**
+    * Function getAll - Returns all users from database.
+    *
+    * @return array $users - An array of all users.
+    */
+    public function getAll()
+    {
+        $users = Usuarios::orderby('id', 'asc')->select('*')->get();
 
-        // $return = Usuarios::query();
-		$users = Usuarios::orderby('id', 'asc')->select('*')->get(); 
-      
-		// // Fetch all records
-		// $response['data'] = $users;
-	
-		// return response()->json($response);
-		return json_encode( $users );
+        return json_encode($users);
+    }
+
+
+    /**
+    * Function add_new - Add new user to database.
+    *
+    * @return array - Returns the state of addition.
+    */
+    public function addNew(Request $request)
+    {
+        $first_name = $request->input('first_name');
+        $last_name = $request->input('last_name');
+        $email = $request->input('email');
+        $phone = $request->input('phone');
+        $password = $request->input('password');
     }
 }

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { faUser, faKey } from '@fortawesome/free-solid-svg-icons';
-import Navbar from '../components/Navbar';
-import Input from '../components/Input';
+import Navbar from '../../components/Navbar/Navbar';
+import Input from '../../components/Input/Input';
 
 
 function Login() {
