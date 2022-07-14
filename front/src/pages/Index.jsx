@@ -16,12 +16,10 @@ function Index() {
 
 		$.ajax({
 			type: 'GET',
-			url: 'http://local.misturnos/api/',
-			headers:{
-				"Content-Type": "application/json",
-				"Access-Control-Allow-Origin": 'http://localhost:3000',
-				"Access-Control-Request-Headers": 'Content-Type, Authorization'
-			},
+			url: 'http://local.misturnos/api/users',
+			// headers:{
+			// 	'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
+			// },
 			success: function (response) {
 				console.log('response: ', response);
 			},
