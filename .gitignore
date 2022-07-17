@@ -55,4 +55,5 @@ back/vendor/
 back/storage/framework/
 .vscode/
 
+web/php/php.ini
 php.ini

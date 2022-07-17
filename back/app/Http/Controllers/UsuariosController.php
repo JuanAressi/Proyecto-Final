@@ -21,6 +21,17 @@ class UsuariosController extends Controller
 
 
     /**
+     * Function getById - Returns a user by id.
+     */
+    public function getById($id)
+    {
+        $user = Usuarios::where('id', $id)->select('*')->get();
+
+        return json_encode($user);
+    }
+
+
+    /**
     * Function add_new - Add new user to database.
     *
     * @return array - Returns the state of addition.
