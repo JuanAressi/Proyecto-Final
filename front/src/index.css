@@ -1,6 +1,3 @@
-/* Import other css */
-@import url( 'components/assets/css/waves.css' );
-
 /* Import fonts */
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Nunito:wght@300;400&family=Open+Sans:wght@300;400&display=swap');
 
@@ -56,49 +53,4 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 #loginPage #loginForm,
 #registerPage #registerForm {
     background: rgba(255, 255, 255, 0.7);
-}
-
-
-
-/* Banner */
-#banner .row {
-	height: calc((100vh - 102px) / 2);
-	overflow: hidden;
-	padding: 0;
-	margin: 0;
-}
-
-#banner .img .gray-overlay {
-	background: rgba(0, 0, 0, 0.65);
-	height: 100%;
-}
-
-#banner .row1 .img1 {
-	background: url( './components/assets/img/Banner/img2.avif' ) no-repeat center center/cover;
-	padding: 0;
-	border-bottom: 4px solid #eee;
-	border-right: 4px solid #eee;
-}
-
-#banner .row1 .img2 {
-	background: url( './components/assets/img/Banner/img3.avif' ) no-repeat center center/cover;
-	padding: 0;
-	border-bottom: 4px solid #eee;
-}
-
-#banner .row2 .img3 {
-	background: url( './components/assets/img/Banner/img4.avif' ) no-repeat center center/cover;
-	padding: 0;
-	border-right: 4px solid #eee;
-}
-
-#banner .row2 .img4 {
-	background: url( './components/assets/img/Banner/img6.avif' ) no-repeat center center/cover;
-	padding: 0;
-	border-right: 4px solid #eee;
-}
-
-#banner .row2 .img5 {
-	background: url( './components/assets/img/Banner/img7.avif' ) no-repeat center center/cover;
-	padding: 0;
 }
