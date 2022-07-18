@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faKey, faAt, faPhone, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import $ from 'jquery';
-import md5 from 'md5';
 import './style.css';
 import Navbar from '../../components/Navbar/Navbar';
 import Input from '../../components/Input/Input';
@@ -91,7 +90,7 @@ function Register() {
 				'last_name': lastName,
 				'email': email,
 				'phone': phone,
-				'password': md5(password),
+				'password': password,
 			},
 			success: function (response) {
 				console.log('response: ', response);
