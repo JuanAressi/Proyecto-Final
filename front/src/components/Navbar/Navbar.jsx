@@ -25,6 +25,11 @@ function Navbar() {
             // links.style.height = '0px';
         } else {
             links.classList.remove('showLinks');
+
+            for (let i = 280; i > 0; i++) {
+                console.log('i: ', i);
+                links.style.height = i + 'px';
+            }
             // links.style.height = 'auto';
         }
     }
@@ -46,7 +51,7 @@ function Navbar() {
                         
                         <div id='links' className="d-flex justify-content-end align-items-center text-uppercase text-center w-100 overflow-hidden" data-collapse={isCollapsed}>
                             <Link
-                                to='/'
+                                to='/#banner'
                                 className='nav-link position-relative p-3 me-3 mb-0 text-dark'
                             >
                                 Inicio

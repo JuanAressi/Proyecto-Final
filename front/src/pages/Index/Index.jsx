@@ -2,6 +2,7 @@ import { React, useEffect, useState } from 'react';
 import $ from 'jquery';
 import Navbar from '../../components/Navbar/Navbar';
 import Banner from '../../components/Banner/Banner';
+import AboutUs from '../../components/AboutUs/AboutUs';
 import Waves from '../../components/Waves/Waves';
 
 function Index() {
@@ -27,13 +28,7 @@ function Index() {
 			
             <Banner />
 
-			{/* <Waves /> */}
-
-			<div id='solicitaTurno' className='bg-secondary text-white text-center p-5' style={{ zIndex: '2' }}>
-				<h2 className='mb-4'>Solicitá un turno online al instante</h2>
-
-				<button className='btn border border-light text-light text-uppercase px-3 mt-2'>Reservar Turno</button>
-			</div>
+            <AboutUs />
 		</div>
 	)
 }

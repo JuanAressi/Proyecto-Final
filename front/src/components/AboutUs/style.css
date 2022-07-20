@@ -1,0 +1,15 @@
+#aboutUs .card {
+    width: 100%;
+}
+
+@media (min-width: 1200px) {
+    #aboutUs .card {
+        width: 33.33%;
+        z-index: 2;
+    }
+
+    #aboutUs .waves-container {
+        margin-top: -10rem;
+        z-index: 1;
+    }
+}

@@ -1,46 +1,3 @@
-/* Banner */
-/* #banner .row {
-	height: calc((100vh - 102px) / 2);
-	overflow: hidden;
-	padding: 0;
-	margin: 0;
-}
-
-#banner .img .gray-overlay {
-	background: rgba(0, 0, 0, 0.65);
-	height: 100%;
-}
-
-#banner .row1 .img1 {
-	background: url( './img/img2.avif' ) no-repeat center center/cover;
-	padding: 0;
-	border-bottom: 4px solid #eee;
-	border-right: 4px solid #eee;
-}
-
-#banner .row1 .img2 {
-	background: url( './img/img3.avif' ) no-repeat center center/cover;
-	padding: 0;
-	border-bottom: 4px solid #eee;
-}
-
-#banner .row2 .img3 {
-	background: url( './img/img4.avif' ) no-repeat center center/cover;
-	padding: 0;
-	border-right: 4px solid #eee;
-}
-
-#banner .row2 .img4 {
-	background: url( './img/img6.avif' ) no-repeat center center/cover;
-	padding: 0;
-	border-right: 4px solid #eee;
-}
-
-#banner .row2 .img5 {
-	background: url( './img/img7.avif' ) no-repeat center center/cover;
-	padding: 0;
-} */
-
 #banner {
     background: url( './img/img1.avif' ) no-repeat center center/cover;
     min-height: calc(100vh - 118px);
@@ -53,6 +10,12 @@
 
 h1 {
     padding-top: 15rem;
+}
+
+#banner .btn.border.border-light:hover {
+    background-color: #fff;
+    color: #056799!important;
+    transition: all 0.3s ease-in-out;
 }
 
 @media (max-width: 768px) {

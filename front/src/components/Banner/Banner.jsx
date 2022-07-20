@@ -3,32 +3,6 @@ import './style.css';
 
 function Banner() {
     return (
-
-        // <div id='banner'>
-        //     <div className='row row1'>
-        //         <div className='col-7 img img1'>
-        //             <div className="gray-overlay"></div>
-        //         </div>
-
-        //         <div className='col-5 img img2'>
-        //             <div className="gray-overlay"></div>
-        //         </div>
-        //     </div>
-
-        //     <div className='row row2'>
-        //         <div className='col-4 img img3'>
-        //             <div className="gray-overlay"></div>
-        //         </div>
-
-        //         <div className='col-4 img img4'>
-        //             <div className="gray-overlay"></div>
-        //         </div>
-
-        //         <div className='col-4 img img5'>
-        //             <div className="gray-overlay"></div>
-        //         </div>
-        //     </div>
-        // </div>
         <div id='banner'>
             <div className="banner-overlay">
                 <div className="container">
