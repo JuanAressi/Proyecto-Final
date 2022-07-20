@@ -1,10 +1,5 @@
-/* @media (max-width: 1200px) {
-	.d-flex.justify-content-between {
-		flex-direction: column;
-	}
-	
-	.d-flex.justify-content-between div {
-		width: 100%!important;
-		max-width: 100%!important;
-	}
-} */
+@media (min-width: 1200px) {
+    #registerPage form {
+        max-width: 600px;
+    }
+}

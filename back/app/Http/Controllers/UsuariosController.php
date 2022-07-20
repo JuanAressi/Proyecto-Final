@@ -33,9 +33,9 @@ class UsuariosController extends Controller
 
     /**
      * Function addNew - Adds a new user to database.
-     * 
+     *
      * @param Request $request - The request object.
-     * 
+     *
      * @return array $user - The new user.
      */
     public function addNew(Request $request)
@@ -60,9 +60,9 @@ class UsuariosController extends Controller
 
     /**
      * Function update - Updates a user by id.
-     * 
+     *
      * @param Request $request - The request object.
-     * 
+     *
      * @return array $user - The updated user.
      */
     public function update(Request $request)

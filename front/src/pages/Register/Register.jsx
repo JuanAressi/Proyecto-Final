@@ -78,7 +78,7 @@ function Register() {
 
 
 	// Submit Register Form.
-	const handleSubmitForm = (event) => {
+	const handleRegisterStep1 = (event) => {
         event.preventDefault();
 
 		$.ajax({
@@ -86,8 +86,6 @@ function Register() {
 			url: 'http://local.misturnos/api/users',
 			dataType: 'json',
 			data: {
-				'first_name': firstName,
-				'last_name': lastName,
 				'email': email,
 				'phone': phone,
 				'password': password,
@@ -103,111 +101,95 @@ function Register() {
 
 
 	return (
-		<div id='registerPage' style={{ marginTop: '102px' }}>
+		<div id='registerPage'>
 			<Navbar />
 
-			<div className='blue-overlay'>
-				<div className='container p-0'>					
-					<div className="row">
-						<div className="col-lg-8 col-md-10 col-sm-12 mx-auto p-5">
-							<form id='registerForm' className='rounded box-shadow-dark mt-5 pt-4'>
-								<h2 className='text-center mb-3 text-darker text-shadow-dark'>¡Crear la cuenta es sencillo!</h2>
-								<h6 className='text-center mb-4 text-darker text-shadow-dark'>Completa el formulario</h6>
+			<div className='blue-overlay pt-5'>
+				<div className='container d-flex justify-content-center p-0 py-5'>					
+                    <form id='registerForm' className='rounded box-shadow-dark p-5'>
+                        <h2 className='text-center mb-3 text-darker text-shadow-dark'>¡Crear la cuenta es sencillo!</h2>
+                        <h6 className='text-center mb-4 text-darker text-shadow-dark'>Completa el formulario</h6>
 
-								<div className='p-4'>
-									<div className='d-flex justify-content-between'>
-										{/* First Name */}
-										<Input
-											id='firstName'
-											type='text'
-											name='firstName'
-											placeholder='Nombre'
-											value={firstName}
-											onChange={handleFirstNameChange}
-											icon={faUser}
-											margin='1.5rem'
-										/>
+                        <div className='p-2'>
+                            {/* First Name */}
+                            {/* <Input
+                                id='firstName'
+                                type='text'
+                                name='firstName'
+                                placeholder='Nombre'
+                                value={firstName}
+                                onChange={handleFirstNameChange}
+                                icon={faUser}
+                            /> */}
 
-										{/* First Name */}
-										<Input
-											id='lastName'
-											type='text'
-											name='lastName'
-											placeholder='Apellido'
-											value={lastName}
-											onChange={handleLastNameChange}
-											icon={faUser}
-											margin='1.5rem'
-										/>
-									</div>
+                            {/* First Name */}
+                            {/* <Input
+                                id='lastName'
+                                type='text'
+                                name='lastName'
+                                placeholder='Apellido'
+                                value={lastName}
+                                onChange={handleLastNameChange}
+                                icon={faUser}
+                            /> */}
 
-									<div className='d-flex justify-content-between'>
-										{/* Email */}
-										<Input
-											id='email'
-											type='email'
-											name='email'
-											placeholder='Correo electronico'
-											value={email}
-											onChange={handleEmailChange}
-											icon={faAt}
-											margin='1.5rem'
-										/>
+                            {/* Email */}
+                            <Input
+                                id='email'
+                                type='email'
+                                name='email'
+                                placeholder='Correo electronico'
+                                value={email}
+                                onChange={handleEmailChange}
+                                icon={faAt}
+                            />
 
-										{/* Phone */}
-										<Input
-											id='phone'
-											type='phone'
-											name='phone'
-											placeholder='Numero de telefono'
-											value={phone}
-											onChange={handlePhoneChange}
-											icon={faPhone}
-											margin='1.5rem'
-										/>
-									</div>
+                            {/* Phone */}
+                            {/* <Input
+                                id='phone'
+                                type='phone'
+                                name='phone'
+                                placeholder='Numero de telefono'
+                                value={phone}
+                                onChange={handlePhoneChange}
+                                icon={faPhone}
+                            /> */}
 
-									<div className='d-flex justify-content-between'>
-										{/* Password */}
-										<Input
-											id='password'
-											type='password'
-											name='password'
-											placeholder='Contraseña'
-											value={password}
-											onChange={handlePasswordChange}
-											icon={faKey}
-											margin='1.5rem'
-										/>
+                            {/* Password */}
+                            <Input
+                                id='password'
+                                type='password'
+                                name='password'
+                                placeholder='Contraseña'
+                                value={password}
+                                onChange={handlePasswordChange}
+                                icon={faKey}
+                            />
 
-										{/* Repetir Password */}
-										<Input
-											id='passwordRep'
-											type='password'
-											name='passwordRep'
-											placeholder='Repetir la contraseña'
-											value={passwordRep}
-											onChange={handlePasswordRepChange}
-											icon={faKey}
-											margin='1.5rem'
-										/>
-									</div>
+                            {/* Repetir Password */}
+                            <Input
+                                id='passwordRep'
+                                type='password'
+                                name='passwordRep'
+                                placeholder='Repetir la contraseña'
+                                value={passwordRep}
+                                onChange={handlePasswordRepChange}
+                                icon={faKey}
+                            />
+                        </div>
 
-									<div id="buttonsContainer" className='d-flex flex-column justify-content-center align-items-center mt-4'>
-										<button
-											id='crearCuenta'
-											className='btn bg-secondary text-white box-shadow-dark text-uppercase w-50 mb-3'
-											type='submit'
-											disabled={btnDisabled}
-											onClick={handleSubmitForm}
-										>
-											Crear cuenta
-										</button>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
+                        <div id="buttonsContainer" className='d-flex flex-column justify-content-center align-items-center mt-2'>
+                            <button
+                                id='crearCuenta'
+                                className='btn bg-secondary text-white box-shadow-dark text-uppercase px-5 mb-3'
+                                type='submit'
+                                disabled={btnDisabled}
+                                onClick={handleRegisterStep1}
+                            >
+                                Crear cuenta
+                            </button>
+                        </div>
+                    </form>
 				</div>
 			</div>
 		</div>
