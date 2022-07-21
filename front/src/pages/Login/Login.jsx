@@ -72,7 +72,7 @@ function Login() {
 									name='password'
 									placeholder='Contraseña'
 									value={password}
-								z	onChange={handlePasswordChange}
+									onChange={handlePasswordChange}
 									icon={faKey}
 									margin='1rem'
 								/>
