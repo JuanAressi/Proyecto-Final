@@ -13,10 +13,9 @@
 	border-radius: 0.5rem;
 }
 
-.icon-component .input-icon svg {
+.icon-component svg {
     position: absolute;
     top: calc((100% - 20px) / 2);
     right: 1rem;
     max-height: 20px;
-    text-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
 }

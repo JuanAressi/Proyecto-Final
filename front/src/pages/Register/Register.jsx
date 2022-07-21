@@ -87,8 +87,8 @@ function Register() {
 			dataType: 'json',
 			data: {
 				'email': email,
-				'phone': phone,
 				'password': password,
+                'rol': '1',
 			},
 			success: function (response) {
 				console.log('response: ', response);
@@ -105,91 +105,101 @@ function Register() {
 			<Navbar />
 
 			<div className='blue-overlay pt-5'>
-				<div className='container d-flex justify-content-center p-0 py-5'>					
-                    <form id='registerForm' className='rounded box-shadow-dark p-5'>
-                        <h2 className='text-center mb-3 text-darker text-shadow-dark'>¡Crear la cuenta es sencillo!</h2>
-                        <h6 className='text-center mb-4 text-darker text-shadow-dark'>Completa el formulario</h6>
+				<div className='container p-0 pt-5'>
+                    <div className="d-flex justify-content-center align-items-center">
+                        <form id='registerForm' className='rounded box-shadow-dark p-5'>
+                            <h2 className='text-center mb-3 text-darker text-shadow-dark'>¡Crear la cuenta es sencillo!</h2>
+                            <h6 className='text-center mb-4 text-darker text-shadow-dark'>Completa el formulario</h6>
 
-                        <div className='p-2'>
-                            {/* First Name */}
-                            {/* <Input
-                                id='firstName'
-                                type='text'
-                                name='firstName'
-                                placeholder='Nombre'
-                                value={firstName}
-                                onChange={handleFirstNameChange}
-                                icon={faUser}
-                            /> */}
+                            <div className='p-4'>
+                                {/* Email */}
+                                <Input
+                                    id='email'
+                                    type='email'
+                                    name='email'
+                                    placeholder='Correo electronico'
+                                    value={email}
+                                    onChange={handleEmailChange}
+                                    icon={faAt}
+                                    margin='1.5rem'
+                                />
 
-                            {/* First Name */}
-                            {/* <Input
-                                id='lastName'
-                                type='text'
-                                name='lastName'
-                                placeholder='Apellido'
-                                value={lastName}
-                                onChange={handleLastNameChange}
-                                icon={faUser}
-                            /> */}
+                                {/* Password */}
+                                <Input
+                                    id='password'
+                                    type='password'
+                                    name='password'
+                                    placeholder='Contraseña'
+                                    value={password}
+                                    onChange={handlePasswordChange}
+                                    icon={faKey}
+                                    margin='1.5rem'
+                                />
 
-                            {/* Email */}
-                            <Input
-                                id='email'
-                                type='email'
-                                name='email'
-                                placeholder='Correo electronico'
-                                value={email}
-                                onChange={handleEmailChange}
-                                icon={faAt}
-                            />
+                                {/* Repetir Password */}
+                                <Input
+                                    id='passwordRep'
+                                    type='password'
+                                    name='passwordRep'
+                                    placeholder='Repetir la contraseña'
+                                    value={passwordRep}
+                                    onChange={handlePasswordRepChange}
+                                    icon={faKey}
+                                    margin='1.5rem'
+                                />
 
-                            {/* Phone */}
-                            {/* <Input
-                                id='phone'
-                                type='phone'
-                                name='phone'
-                                placeholder='Numero de telefono'
-                                value={phone}
-                                onChange={handlePhoneChange}
-                                icon={faPhone}
-                            /> */}
+                                <div id="buttonsContainer" className='d-flex flex-column justify-content-center align-items-center mt-4'>
+                                    <button
+                                        id='crearCuenta'
+                                        className='btn bg-secondary text-white box-shadow-dark text-uppercase w-50'
+                                        type='submit'
+                                        disabled={btnDisabled}
+                                        onClick={handleSubmitForm}
+                                    >
+                                        Crear cuenta
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <>
+                        
+                        {/* First Name */}
+                        {/* <Input
+                            id='firstName'
+                            type='text'
+                            name='firstName'
+                            placeholder='Nombre'
+                            value={firstName}
+                            onChange={handleFirstNameChange}
+                            icon={faUser}
+                            margin='1.5rem'
+                        /> */}
 
-                            {/* Password */}
-                            <Input
-                                id='password'
-                                type='password'
-                                name='password'
-                                placeholder='Contraseña'
-                                value={password}
-                                onChange={handlePasswordChange}
-                                icon={faKey}
-                            />
+                        {/* First Name */}
+                        {/* <Input
+                            id='lastName'
+                            type='text'
+                            name='lastName'
+                            placeholder='Apellido'
+                            value={lastName}
+                            onChange={handleLastNameChange}
+                            icon={faUser}
+                            margin='1.5rem'
+                        /> */}
 
-                            {/* Repetir Password */}
-                            <Input
-                                id='passwordRep'
-                                type='password'
-                                name='passwordRep'
-                                placeholder='Repetir la contraseña'
-                                value={passwordRep}
-                                onChange={handlePasswordRepChange}
-                                icon={faKey}
-                            />
-                        </div>
-
-                        <div id="buttonsContainer" className='d-flex flex-column justify-content-center align-items-center mt-2'>
-                            <button
-                                id='crearCuenta'
-                                className='btn bg-secondary text-white box-shadow-dark text-uppercase px-5 mb-3'
-                                type='submit'
-                                disabled={btnDisabled}
-                                onClick={handleRegisterStep1}
-                            >
-                                Crear cuenta
-                            </button>
-                        </div>
-                    </form>
+                        {/* Phone */}
+                        {/* <Input
+                            id='phone'
+                            type='phone'
+                            name='phone'
+                            placeholder='Numero de telefono'
+                            value={phone}
+                            onChange={handlePhoneChange}
+                            icon={faPhone}
+                            margin='1.5rem'
+                        /> */}
+                    </>
 				</div>
 			</div>
 		</div>

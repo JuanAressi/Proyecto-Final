@@ -12,10 +12,10 @@ class Usuarios extends Migration {
      */
     public function up() {
 		Schema::create('usuarios', function (Blueprint $table) {
-			$table->bigIncrements('id');
-			$table->string('first_name');
-			$table->string('last_name');
-			$table->string('email');
+			$table->bigIncrements('id')->unique();
+			$table->string('first_name')->nullable();;
+			$table->string('last_name')->nullable();;
+			$table->string('email')->unique();
 			$table->string('password');
 			$table->string('dni')->nullable();
 			$table->string('phone')->nullable();

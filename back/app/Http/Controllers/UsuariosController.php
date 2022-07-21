@@ -41,12 +41,9 @@ class UsuariosController extends Controller
     public function addNew(Request $request)
     {
         $user = Usuarios::create([
-            'first_name' => $request->input('first_name'),
-            'last_name'  => $request->input('last_name'),
             'email'      => $request->input('email'),
             'password'   => md5($request->input('password')),
-            'phone'      => $request->input('phone'),
-            'rol'        => 1,
+            'rol'        => $request->input('rol'),
         ]);
 
         return json_encode(

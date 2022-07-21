@@ -1,5 +1,22 @@
 #aboutUs .card {
     width: 100%;
+    border: 1px solid #056799;
+}
+
+#aboutUs .triangle {
+    top: -13px;
+    left: -50px;
+    width: 0;
+    height: 0;
+    border-right: 75px solid transparent;
+    border-left: 75px solid transparent;
+    border-bottom: 75px solid #056799;
+    transform: rotate( -45deg );
+}
+
+#aboutUs .icon-container {
+    top: 10px;
+    left: 14px;
 }
 
 @media (min-width: 1200px) {

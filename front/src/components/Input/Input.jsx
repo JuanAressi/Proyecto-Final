@@ -4,7 +4,7 @@ import './style.css';
 
 function Input({ id, type, name, placeholder, value, onChange, icon }) {
     return (
-        <div className='icon-component form-floating position-relative col-lg-6 col-md-12 mx-auto w-100 box-shadow-dark'>
+        <div className='icon-component form-floating w-100 mx-auto position-relative box-shadow-dark'>
             <input
                 id={id}
                 className='form-control'
@@ -17,9 +17,7 @@ function Input({ id, type, name, placeholder, value, onChange, icon }) {
 
             <label htmlFor='username' className='floatingInput'>{placeholder}</label>
 
-            <span className='input-icon'>
-                <FontAwesomeIcon className='text-secondary' icon={icon}/>
-            </span>
+            <FontAwesomeIcon className='text-secondary' icon={icon} />
         </div>
     )
 }
