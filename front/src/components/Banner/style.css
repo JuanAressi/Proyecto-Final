@@ -3,12 +3,12 @@
     min-height: calc(100vh - 118px);
 }
 
-.banner-overlay {
+#banner .banner-overlay {
     background: linear-gradient(90deg, rgba(5, 103, 153, 1) 20%, rgba(5, 103, 153, 0.7) 80%, rgba(5, 103, 153, 0.333) 100%);
     min-height: calc(100vh - 118px);
 }
 
-h1 {
+#banner h1 {
     padding-top: 15rem;
 }
 

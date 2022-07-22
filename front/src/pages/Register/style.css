@@ -3,9 +3,3 @@
         max-width: 600px;
     }
 }
-
-@media (min-width: 1200px) {
-    #registerPage form {
-        max-width: 600px;
-    }
-}

@@ -22,15 +22,8 @@ function Navbar() {
 
         if (isCollapsed) {
             links.classList.add('showLinks');
-            // links.style.height = '0px';
         } else {
             links.classList.remove('showLinks');
-
-            for (let i = 280; i > 0; i++) {
-                console.log('i: ', i);
-                links.style.height = i + 'px';
-            }
-            // links.style.height = 'auto';
         }
     }
 

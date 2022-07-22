@@ -1,0 +1,20 @@
+.custom-card {
+    position: relative;
+    z-index: 5;
+}
+
+.custom-card .triangle {
+    top: -13px;
+    left: -50px;
+    width: 0;
+    height: 0;
+    border-right: 75px solid transparent;
+    border-left: 75px solid transparent;
+    border-bottom: 75px solid #056799;
+    transform: rotate( -45deg );
+}
+
+.custom-card .icon-container {
+    top: 0.75rem;
+    left: 0.75rem;
+}
