@@ -77,7 +77,7 @@ function Register() {
 
 
 	// Submit Register Form.
-	const handleSubmitForm = (event) => {
+	const handleRegisterStep1 = (event) => {
         event.preventDefault();
 
         // Disable button.
