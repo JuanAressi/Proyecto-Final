@@ -18,6 +18,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
+// Login.
+Route::post('login', 'App\Http\Controllers\UsuariosController@LogIn');
+
+// Users.
 Route::get('users', 'App\Http\Controllers\UsuariosController@getAll');
 Route::post('users', 'App\Http\Controllers\UsuariosController@addNew');
 // Route::get('/', 'UsuariosController@get_all');

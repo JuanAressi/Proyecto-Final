@@ -42,38 +42,37 @@ function Register() {
 	}, [firstName, lastName, email, phone, password, passwordRep]);
 
 
-	// First Name onchange.
-	const handleFirstNameChange = (event) => {
-		setFirstName(event.target.value);
-	}
-
-	// Last Name onchange.
-	const handleLastNameChange = (event) => {
-		setLastName(event.target.value);
-	}
-
-
-	// Email onchange.
+	// Email change.
 	const handleEmailChange = (event) => {
 		setEmail(event.target.value);
 	}
 
 
-	// Phone number onchange.
-	const handlePhoneChange = (event) => {
-		setPhone(event.target.value);
-	}
-
-
-	// Password onchange.
+	// Password change.
 	const handlePasswordChange = (event) => {
 		setPassword(event.target.value);
 	}
 
 
-	// Password onchange.
+	// Password change.
 	const handlePasswordRepChange = (event) => {
 		setPasswordRep(event.target.value);
+	}
+
+	// First Name change.
+	const handleFirstNameChange = (event) => {
+		setFirstName(event.target.value);
+	}
+
+	// Last Name change.
+	const handleLastNameChange = (event) => {
+		setLastName(event.target.value);
+	}
+
+
+	// Phone number change.
+	const handlePhoneChange = (event) => {
+		setPhone(event.target.value);
 	}
 
 
@@ -81,14 +80,18 @@ function Register() {
 	const handleRegisterStep1 = (event) => {
         event.preventDefault();
 
+        // Disable button.
+        setBtnDisabled(true);
+
+        // Send request.
 		$.ajax({
-			type: 'POST',
 			url: 'http://local.misturnos/api/users',
+			type: 'POST',
 			dataType: 'json',
 			data: {
 				'email': email,
 				'password': password,
-                'rol': '1',
+                'rol': '2',
 			},
 			success: function (response) {
 				console.log('response: ', response);
@@ -121,7 +124,6 @@ function Register() {
                                     value={email}
                                     onChange={handleEmailChange}
                                     icon={faAt}
-                                    margin='1.5rem'
                                 />
 
                                 {/* Password */}
@@ -133,7 +135,6 @@ function Register() {
                                     value={password}
                                     onChange={handlePasswordChange}
                                     icon={faKey}
-                                    margin='1.5rem'
                                 />
 
                                 {/* Repetir Password */}
@@ -145,7 +146,6 @@ function Register() {
                                     value={passwordRep}
                                     onChange={handlePasswordRepChange}
                                     icon={faKey}
-                                    margin='1.5rem'
                                 />
 
                                 <div id="buttonsContainer" className='d-flex flex-column justify-content-center align-items-center mt-4'>
