@@ -16,7 +16,7 @@ function Admin() {
 
                 <div className='row d-flex justify-content-around mt-5'>
                     <Link
-                        to='/panel-admin/usuaios'
+                        to='/panel-admin/pacientes'
                     >
                         <Card 
                             title='Gestionar Pacientes'

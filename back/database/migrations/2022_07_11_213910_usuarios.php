@@ -20,6 +20,7 @@ class Usuarios extends Migration {
             $table->string('dni')->nullable();
             $table->string('phone')->nullable();
             $table->string('rol');
+            $table->string('estado')->nullable();
             $table->timestamps();
         });
     }

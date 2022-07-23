@@ -9,17 +9,65 @@ class UsuariosController extends Controller {
     /**
     * Function getAll - Returns all users from database.
     *
+    * @param Request $request - The request object.
+    *
     * @return array $users - An array of all users.
     */
-    public function getAll() {
-        $users = Usuarios::orderby('id', 'asc')->select('*')->get();
+    public function getAll(Request $request) {
+        // Get role from $request.
+        $rol = $request->input('role');
 
-        return json_encode($users);
+        // Check if role is set.
+        if (isset($rol)) {
+            // Get all users with role.
+            // $usuarios = Usuarios::where('rol', $rol)->orderby('id', 'asc')->select('*')->get();
+            $usuarios = Usuarios::leftJoin('pacientes', 'usuarios.id', '=', 'pacientes.id_usuario')
+                ->where('usuarios.rol', $rol)
+                ->where('estado', 'activo')
+                ->orderby('usuarios.id', 'asc')
+                ->leftJoin('obras_sociales', 'pacientes.id_obra_social', '=', 'obras_sociales.id')
+                ->select('usuarios.*', 'obras_sociales.nombre as obra_social')
+                ->get();
+        } else {
+            // Get all users.
+            $usuarios = Usuarios::orderby('id', 'asc')
+                ->where('estado', 'activo')
+                ->select('*')
+                ->get();
+        }
+
+        // Check if users are found.
+        if (count($usuarios) > 0) {
+            // Create array of users.
+            $usuarios_filtrados = array();
+
+            // Return nombre, apellido, email.
+            foreach($usuarios as $usuario) {
+                $usuarios_filtrados[] = array(
+                    'id' => $usuario->id,
+                    'nombre' => $usuario->nombre,
+                    'apellido' => $usuario->apellido,
+                    'email' => $usuario->email,
+                    'dni' => $usuario->dni,
+                    'obra_social' => $usuario->obra_social,
+                );
+            }
+
+            // Return usuarios.
+            return json_encode($usuarios_filtrados);
+        } else {
+            // Return error.
+            return json_encode(array('error' => 'No users found.'));
+        }
     }
 
 
     /**
      * Function getById - Returns a user by id.
+     * 
+     * @param int $id - The ID of the user.
+     * 
+     * @return array $user - An array of the user.
      */
     public function getById($id) {
         $user = Usuarios::where('id', $id)->select('*')->get();

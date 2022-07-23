@@ -85,7 +85,7 @@ function Register() {
 
         // Send request.
 		$.ajax({
-			url: 'http://local.misturnos/api/users',
+			url: 'http://local.misturnos/api/usuarios',
 			type: 'POST',
 			dataType: 'json',
 			data: {
@@ -154,7 +154,7 @@ function Register() {
                                         className='btn bg-secondary text-white box-shadow-dark text-uppercase w-50'
                                         type='submit'
                                         disabled={btnDisabled}
-                                        onClick={handleSubmitForm}
+                                        onClick={handleRegisterStep1}
                                     >
                                         Crear cuenta
                                     </button>

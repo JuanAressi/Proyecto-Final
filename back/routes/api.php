@@ -21,7 +21,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Login.
 Route::post('login', 'App\Http\Controllers\UsuariosController@LogIn');
 
-// Users.
-Route::get('users', 'App\Http\Controllers\UsuariosController@getAll');
-Route::post('users', 'App\Http\Controllers\UsuariosController@addNew');
-// Route::get('/', 'UsuariosController@get_all');
+// Usuarios.
+Route::get('usuarios', 'App\Http\Controllers\UsuariosController@getAll');
+Route::post('usuarios', 'App\Http\Controllers\UsuariosController@addNew');
+
+// Pacientes.
+Route::get('pacientes', 'App\Http\Controllers\PacientesController@getAll');
