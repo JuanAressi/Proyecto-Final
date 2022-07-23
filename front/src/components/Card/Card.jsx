@@ -4,7 +4,7 @@ import './style.css';
 
 function Card( {title, text, icon }) {
     return (
-        <div className="custom-card col-lg-4 col-md-6 col-sm-12 text-center box-shadow-dark border-secondary rounded overflow-hidden p-5 mx-4 mt-4">
+        <div className="custom-card col-lg-4 col-md-6 col-sm-12 bg-white text-center border-secondary box-shadow-dark rounded overflow-hidden p-5 mx-4 mt-4">
             <div className="triangle position-absolute"></div>
             
             <div className="icon-container position-absolute">
