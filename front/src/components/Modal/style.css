@@ -1,0 +1,19 @@
+.modal.fade .position-absolute {
+    top: -0.75rem;
+    right: -0.75rem;
+    min-width: 30px;
+    max-width: 30px;
+    min-height: 30px;
+    max-height: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.modal.fade .d-flex.flex-column.align-items-center {
+    padding: 2rem;
+}
+
+.modal.fade .icon-container {
+    width: 125px;
+    height: 125px;
+}
