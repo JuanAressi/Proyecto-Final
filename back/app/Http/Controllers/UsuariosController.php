@@ -5,22 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Usuarios;
 
-class UsuariosController extends Controller {
+class UsuariosController extends Controller
+{
     /**
-    * Function getAll - Returns all users from database.
-    *
-    * @param Request $request - The request object.
-    *
-    * @return array $users - An array of all users.
-    */
-    public function getAll(Request $request) {
+     * Function getAll - Returns all users from database.
+     *
+     * @param Request $request - The request object.
+     *
+     * @return array $users - An array of all users.
+     */
+    public function getAll(Request $request)
+    {
         // Get role from $request.
         $rol = $request->input('role');
 
         // Check if role is set.
         if (isset($rol)) {
             // Get all users with role.
-            // $usuarios = Usuarios::where('rol', $rol)->orderby('id', 'asc')->select('*')->get();
             $usuarios = Usuarios::leftJoin('pacientes', 'usuarios.id', '=', 'pacientes.id_usuario')
                 ->where('usuarios.rol', $rol)
                 ->where('estado', 'activo')
@@ -42,7 +43,7 @@ class UsuariosController extends Controller {
             $usuarios_filtrados = array();
 
             // Return nombre, apellido, email.
-            foreach($usuarios as $usuario) {
+            foreach ($usuarios as $usuario) {
                 $usuarios_filtrados[] = array(
                     'id' => $usuario->id,
                     'nombre' => $usuario->nombre,
@@ -64,12 +65,13 @@ class UsuariosController extends Controller {
 
     /**
      * Function getById - Returns a user by id.
-     * 
+     *
      * @param int $id - The ID of the user.
-     * 
+     *
      * @return array $user - An array of the user.
      */
-    public function getById($id) {
+    public function getById($id)
+    {
         $user = Usuarios::where('id', $id)->select('*')->get();
 
         return json_encode($user);
@@ -83,7 +85,8 @@ class UsuariosController extends Controller {
      *
      * @return array $user - The new user.
      */
-    public function addNew(Request $request) {
+    public function addNew(Request $request)
+    {
         $user = Usuarios::create([
             'email'      => $request->input('email'),
             'password'   => md5($request->input('password')),
@@ -106,34 +109,61 @@ class UsuariosController extends Controller {
      *
      * @return array $user - The updated user.
      */
-    public function update(Request $request) {
-        $id = $request->input('id');
+    public function update(Request $request)
+    {
+        $id         = $request->input('id');
         $first_name = $request->input('first_name');
-        $last_name = $request->input('last_name');
-        $email = $request->input('email');
-        $phone = $request->input('phone');
-        $password = $request->input('password');
+        $last_name  = $request->input('last_name');
+        $email      = $request->input('email');
+        $phone      = $request->input('phone');
+        $password   = $request->input('password');
     }
 
-    
+
     /**
-     * Function delete - Deletes a user by id.
+     * Function delete - Deletes a user by ID.
+     *
+     * @param int $id - The ID of the user.
+     *
+     * @return array - The status of the response.
      */
-    public function delete($id) {
-        $user = Usuarios::where('id', $id)->delete();
+    public function delete($id)
+    {
+        // Update user status.
+        $user = Usuarios::where('id', $id)
+            ->update(['estado' => 'eliminado']);
+        
+        // Check if user was updated.
+        if ($user) {
+            // Return success.
+            return json_encode(
+                array(
+                    'success' => true
+                )
+            );
+        } else {
+            // Return error.
+            return json_encode(
+                array(
+                    'success' => false,
+                    'message' => 'El usuario no se pudo actualizar.'
+                )
+            );
+        }
 
         return json_encode($user);
     }
 
 
     /**
-     * Function LogIn - Logs in a user.
-     * 
+     * Function logIn - Logs in a user.
+     *
      * @param Request $request - The request object.
-     * 
-     *  @return array $user - The logged in user.
+     *
+     * @return array $user - The logged in user.
      */
-    public function LogIn(Request $request) {
+    public function logIn(Request $request)
+    {
         $email = $request->input('email');
         $password = md5($request->input('password'));
 

@@ -19,11 +19,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 // Login.
-Route::post('login', 'App\Http\Controllers\UsuariosController@LogIn');
+Route::post('login', 'App\Http\Controllers\UsuariosController@logIn');
 
 // Usuarios.
 Route::get('usuarios', 'App\Http\Controllers\UsuariosController@getAll');
 Route::post('usuarios', 'App\Http\Controllers\UsuariosController@addNew');
+Route::put('usuarios/{id}', 'App\Http\Controllers\UsuariosController@update');
+Route::delete('usuarios/{id}', 'App\Http\Controllers\UsuariosController@delete');
 
 // Pacientes.
 Route::get('pacientes', 'App\Http\Controllers\PacientesController@getAll');

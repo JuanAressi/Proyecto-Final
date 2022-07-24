@@ -1,12 +1,17 @@
 import { React, useEffect, useState } from 'react';
 import $ from 'jquery';
+// import { $ } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import Navbar from '../../../components/Navbar/Navbar';
+import Modal from '../../../components/Modal/Modal';
+import './style.css';
 
 function Pacientes() {
 	const [users, setUsers] = useState([]);
+    const [userToDelete, setUserToDelete] = useState(null);
 
+    // Get all the active users.
 	useEffect(() => {
 		$.ajax({
 			url: 'http://local.misturnos/api/usuarios',
@@ -17,7 +22,6 @@ function Pacientes() {
             },
 			success: function (response) {
                 setUsers(response);
-                console.log(response);
 			},
 			error: function (error) {
 				console.log(error);
@@ -26,79 +30,94 @@ function Pacientes() {
     }, []);
 
 
+    // Delete a user.
+    function deleteUser() {
+        console.log( 'userToDelete: ', userToDelete );
+
+        $.ajax({
+            url: 'http://local.misturnos/api/usuarios/' + userToDelete,
+            type: 'DELETE',
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    // Close modal.
+                    $('#closeModal').click();
+
+                    // Append success message.
+                    $('#filters').append(
+                        "<div className='alert alert-success alert-dismissible fade show' role='alert'>" +
+                        "<strong>El Paciente se eliminó correnctamente</strong>" +
+                        "</div>"
+                    );
+
+                    // Delete message after 3 seconds.
+                    setTimeout(function () {
+                        $('.alert').remove();
+                    }, 3000);
+                }
+            }
+        });
+    }
+
+
     return (
         <div id='pageAdminPacientes'>
             <Navbar />
 
             <div className='container mt-5'>
-                <div>TODO: filtros</div>
+                <div id='filters'>TODO: filtros</div>
 
-                <table className='table table-striped border box-shadow-dark mt-5'>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Nombre</th>
-                            <th>Email</th>
-                            <th>DNI</th>
-                            <th>Obra Social</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((user, index) => {
-                            return (
-                                <tr key={index}>
-                                    <td>{index + 1}</td>
-                                    <td>{user.nombre} {user.apellido}</td>
-                                    <td>{user.email}</td>
-                                    <td>{user.dni}</td>
-                                    <td>{user.obra_social}</td>
-                                    <td>
-                                        <FontAwesomeIcon className='text-warning me-3' icon={faPencil} />
-                                        <FontAwesomeIcon className='text-danger' icon={faTrashAlt} />
-                                    </td>
-                                </tr>
-                            )
-                        })}
-
-                            {/* <tr key='1' >
-                                <td>1</td>
-                                <td>Juan Aressi</td>
-                                <td>Juan.Aressi@hotmail.com</td>
-                                <td>39.858.575</td>
-                                <td>OSDE</td>
-                                <th>
-                                    <FontAwesomeIcon className='text-warning me-3' icon={faPencil} />
-                                    <FontAwesomeIcon className='text-danger' icon={faTrashAlt} />
-                                </th>
+                {users && users.length > 0 ? (
+                    <table className='table table-striped border box-shadow-dark mt-5'>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>DNI</th>
+                                <th>Obra Social</th>
+                                <th>Acciones</th>
                             </tr>
+                        </thead>
+                        <tbody>
+                            {users.map((user, index) => {
+                                return (
+                                    <tr key={user.id}>
+                                        <td>{index + 1}</td>
+                                        <td>{user.nombre} {user.apellido}</td>
+                                        <td>{user.email}</td>
+                                        <td>{user.dni}</td>
+                                        <td>{user.obra_social}</td>
+                                        <td>
+                                            <FontAwesomeIcon
+                                                className='text-warning me-3'
+                                                icon={faPencil}
+                                            />
 
-                            <tr key='2'>
-                                <td>2</td>
-                                <td>Juan Aressi</td>
-                                <td>Juan.Aressi@hotmail.com</td>
-                                <td>39.858.575</td>
-                                <td>OSDE</td>
-                                <th>
-                                    <FontAwesomeIcon className='text-warning me-3' icon={faPencil} />
-                                    <FontAwesomeIcon className='text-danger' icon={faTrashAlt} />
-                                </th>
-                            </tr>
-
-                            <tr key='3'>
-                                <td>3</td>
-                                <td>Juan Aressi</td>
-                                <td>Juan.Aressi@hotmail.com</td>
-                                <td>39.858.575</td>
-                                <td>OSDE</td>
-                                <th>
-                                    <FontAwesomeIcon className='text-warning me-3' icon={faPencil} />
-                                    <FontAwesomeIcon className='text-danger' icon={faTrashAlt} />
-                                </th>
-                            </tr> */}
-                    </tbody>
-                </table>
+                                            <FontAwesomeIcon
+                                                className='text-danger'
+                                                icon={faTrashAlt}
+                                                data-bs-toggle='modal'
+                                                data-bs-target={'#modalDelete'}
+                                                onClick={() => setUserToDelete(user.id)}
+                                            />
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                ) : (
+                    // TODO: mostrar mensaje de que no hay usuarios.
+                    <div className='text-center'>No hay pacientes registrados</div>
+                    )}
             </div>
+
+            <Modal
+                id='modalDelete'
+                text='¿Está seguro que desea eliminar este paciente?'
+                handleDelete={deleteUser}
+            />
         </div>
     )
 }
