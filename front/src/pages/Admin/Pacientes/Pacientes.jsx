@@ -10,6 +10,9 @@ import './style.css';
 function Pacientes() {
 	const [users, setUsers] = useState([]);
     const [userToDelete, setUserToDelete] = useState(null);
+    const [page, setPage] = useState(1);
+    const [showPerPage, setShowPerPage] = useState(10);
+    const [pagination, setPagination] = useState();
 
     // Get all the active users.
 	useEffect(() => {
@@ -18,9 +21,12 @@ function Pacientes() {
 			type: 'GET',
 			dataType: 'json',
             data: {
-                'role': 'paciente'
+                'rol': 'paciente',
+                'page': page,
+                'pagination': showPerPage,
             },
 			success: function (response) {
+				console.log(response);
                 setUsers(response);
 			},
 			error: function (error) {
@@ -68,45 +74,67 @@ function Pacientes() {
                 <div id='filters'>TODO: filtros</div>
 
                 {users && users.length > 0 ? (
-                    <table className='table table-striped border box-shadow-dark mt-5'>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Nombre</th>
-                                <th>Email</th>
-                                <th>DNI</th>
-                                <th>Obra Social</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {users.map((user, index) => {
-                                return (
-                                    <tr key={user.id}>
-                                        <td>{index + 1}</td>
-                                        <td>{user.nombre} {user.apellido}</td>
-                                        <td>{user.email}</td>
-                                        <td>{user.dni}</td>
-                                        <td>{user.obra_social}</td>
-                                        <td>
-                                            <FontAwesomeIcon
-                                                className='text-warning me-3'
-                                                icon={faPencil}
-                                            />
+                    <>
+                        <table className='table table-striped border box-shadow-dark mt-5'>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Email</th>
+                                    <th>DNI</th>
+                                    <th>Obra Social</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {users.map((user, index) => {
+                                    if (index < showPerPage) {
+                                        return (
+                                            <tr key={user.id}>
+                                                <td>{index + 1}</td>
+                                                <td>{user.nombre} {user.apellido}</td>
+                                                <td>{user.email}</td>
+                                                <td>{user.dni}</td>
+                                                <td>{user.obra_social}</td>
+                                                <td>
+                                                    <FontAwesomeIcon
+                                                        className='text-warning me-3'
+                                                        icon={faPencil}
+                                                    />
 
-                                            <FontAwesomeIcon
-                                                className='text-danger'
-                                                icon={faTrashAlt}
-                                                data-bs-toggle='modal'
-                                                data-bs-target={'#modalDelete'}
-                                                onClick={() => setUserToDelete(user.id)}
-                                            />
-                                        </td>
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </table>
+                                                    <FontAwesomeIcon
+                                                        className='text-danger'
+                                                        icon={faTrashAlt}
+                                                        data-bs-toggle='modal'
+                                                        data-bs-target={'#modalDelete'}
+                                                        onClick={() => setUserToDelete(user.id)}
+                                                    />
+                                                </td>
+                                            </tr>
+                                        )
+                                    }
+                                })}
+                            </tbody>
+                        </table>
+                        
+                        {users.length > showPerPage ? () => {
+                            let pagination = users.length / showPerPage;
+                            console.log( 'pagination: ', pagination );
+
+                            return (
+                                <div id='pagination' className='d-flex justify-content-end'>
+                                    <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'>&lt;</span>
+                                    <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'>&lt;&lt;</span>
+                                    <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0 active'>1</span>
+                                    <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'>2</span>
+                                    <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'>3</span>
+                                    <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'>...</span>
+                                    <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'>&gt;</span>
+                                    <span className='pagination-item d-flex justify-content-center align-items-center bg-white border'>&gt;&gt;</span>
+                                </div>
+                            )
+                        } : null}
+                    </>
                 ) : (
                     // TODO: mostrar mensaje de que no hay usuarios.
                     <div className='text-center'>No hay pacientes registrados</div>

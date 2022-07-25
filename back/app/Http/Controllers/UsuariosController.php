@@ -16,8 +16,10 @@ class UsuariosController extends Controller
      */
     public function getAll(Request $request)
     {
-        // Get role from $request.
-        $rol = $request->input('role');
+        // Get params from request.
+        $rol        = $request->input('rol');
+        $page       = $request->input('page');
+        $pagination = $request->input('pagination');
 
         // Check if role is set.
         if (isset($rol)) {
@@ -31,10 +33,11 @@ class UsuariosController extends Controller
                 ->get();
         } else {
             // Get all users.
-            $usuarios = Usuarios::orderby('id', 'asc')
-                ->where('estado', 'activo')
-                ->select('*')
-                ->get();
+            // $usuarios = Usuarios::orderby('id', 'asc')
+            //     ->where('estado', 'activo')
+            //     ->select('*')
+            //     ->get();
+            $usuarios = Usuarios::offset(10)->limit(10)->get();
         }
 
         // Check if users are found.
@@ -58,7 +61,11 @@ class UsuariosController extends Controller
             return json_encode($usuarios_filtrados);
         } else {
             // Return error.
-            return json_encode(array('error' => 'No users found.'));
+            return json_encode(
+                array(
+                    'error' => 'No users found.'
+                )
+            );
         }
     }
 
