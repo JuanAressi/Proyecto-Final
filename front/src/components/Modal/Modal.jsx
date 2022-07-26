@@ -6,10 +6,6 @@ import './style.css';
 function Modal({ id, text, handleDelete }) {
     return (
         <div>
-            <button className='btn btn-primary' data-bs-toggle='modal' data-bs-target={'#' + id}>
-                Launch demo modal
-            </button>
-
             <div id={id} className='modal fade' tabIndex='-1' aria-hidden='true'>
                 <div className='modal-dialog modal-dialog-centered'>
                     <div className='modal-content position-relative'>
