@@ -1,0 +1,17 @@
+#pagination .pagination-item {
+    height: 35px;
+    width: 35px;
+    background: #aaa;
+}
+
+#pagination .pagination-item.pagination-prev,
+#pagination .pagination-item.pagination-next {
+    height: auto;
+    width: auto;
+    padding: 0 1rem;
+}
+
+#pagination .pagination-item.active{
+    color: white;
+    background: #056799!important;
+}

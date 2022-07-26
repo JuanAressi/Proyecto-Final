@@ -5,10 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import Navbar from '../../../components/Navbar/Navbar';
 import Modal from '../../../components/Modal/Modal';
+import Pagination from '../../../components/Pagination/Pagination';
 import './style.css';
 
 function Pacientes() {
 	const [users, setUsers] = useState([]);
+	const [totalUsers, setTotalUsers] = useState(0);
     const [userToDelete, setUserToDelete] = useState(null);
     const [page, setPage] = useState(1);
     const [showPerPage, setShowPerPage] = useState(10);
@@ -27,7 +29,8 @@ function Pacientes() {
             },
 			success: function (response) {
 				console.log(response);
-                setUsers(response);
+                setTotalUsers(response.user_count);
+                setUsers(response.usuarios);
 			},
 			error: function (error) {
 				console.log(error);
@@ -70,10 +73,10 @@ function Pacientes() {
         <div id='pageAdminPacientes'>
             <Navbar />
 
-            <div className='container mt-5'>
+            <div className='container py-5'>
                 <div id='filters'>TODO: filtros</div>
 
-                {users && users.length > 0 ? (
+                {totalUsers && totalUsers > 0 ? (
                     <>
                         <table className='table table-striped border box-shadow-dark mt-5'>
                             <thead>
@@ -117,28 +120,21 @@ function Pacientes() {
                             </tbody>
                         </table>
                         
-                        {users.length > showPerPage ? () => {
-                            let pagination = users.length / showPerPage;
-                            console.log( 'pagination: ', pagination );
-
-                            return (
-                                <div id='pagination' className='d-flex justify-content-end'>
-                                    <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'>&lt;</span>
-                                    <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'>&lt;&lt;</span>
-                                    <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0 active'>1</span>
-                                    <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'>2</span>
-                                    <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'>3</span>
-                                    <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'>...</span>
-                                    <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'>&gt;</span>
-                                    <span className='pagination-item d-flex justify-content-center align-items-center bg-white border'>&gt;&gt;</span>
-                                </div>
-                            )
-                        } : null}
+                        {totalUsers > showPerPage ? 
+                            (    
+                                <Pagination
+                                    totalUsers={totalUsers}
+                                    showPerPage={showPerPage}
+                                    page={4}
+                                    setPage={setPage}
+                                />
+                            ) : null
+                        }
                     </>
                 ) : (
                     // TODO: mostrar mensaje de que no hay usuarios.
                     <div className='text-center'>No hay pacientes registrados</div>
-                    )}
+                )}
             </div>
 
             <Modal

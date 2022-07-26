@@ -1,14 +1,3 @@
 #pageAdminPacientes svg {
     cursor: pointer;
 }
-
-#pagination .pagination-item {
-    height: 35px;
-    width: 35px;
-    background: #aaa;
-}
-
-#pagination .pagination-item.active{
-    color: white;
-    background: #056799!important;
-}

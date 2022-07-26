@@ -21,23 +21,61 @@ class UsuariosController extends Controller
         $page       = $request->input('page');
         $pagination = $request->input('pagination');
 
+        // Calculate offset.
+        $offset = ($page - 1) * $pagination;
+
+        // Calculate limit.
+        $limit = $offset + $pagination;
+
         // Check if role is set.
         if (isset($rol)) {
             // Get all users with role.
-            $usuarios = Usuarios::leftJoin('pacientes', 'usuarios.id', '=', 'pacientes.id_usuario')
+            $usuarios_sql = Usuarios::leftJoin('pacientes', 'usuarios.id', '=', 'pacientes.id_usuario')
                 ->where('usuarios.rol', $rol)
                 ->where('estado', 'activo')
                 ->orderby('usuarios.id', 'asc')
                 ->leftJoin('obras_sociales', 'pacientes.id_obra_social', '=', 'obras_sociales.id')
                 ->select('usuarios.*', 'obras_sociales.nombre as obra_social')
                 ->get();
+
+            // Get total of users.
+            $user_count = sizeof($usuarios_sql);
+
+            // Get users by pagination.
+            $usuarios = [];
+
+            // Check if offset is valid.
+            if ($offset < $user_count) {
+                // Fill usuarios according to pagination.
+                for ($i = $offset; $i < $limit; $i++) {
+                    $usuarios[] = $usuarios_sql[$i];
+                }
+            } else {
+                // Fill usuarios with $usuarios_sql.
+                $usuarios = $usuarios_sql;
+            }
         } else {
-            // Get all users.
-            // $usuarios = Usuarios::orderby('id', 'asc')
-            //     ->where('estado', 'activo')
-            //     ->select('*')
-            //     ->get();
-            $usuarios = Usuarios::offset(10)->limit(10)->get();
+            $usuarios_sql = Usuarios::orderby('id', 'asc')
+                ->where('estado', 'activo')
+                ->select('*')
+                ->get();
+
+            // Get total of users.
+            $user_count = sizeof($usuarios_sql);
+
+            // Get users by pagination.
+            $usuarios = [];
+
+            // Check if offset is valid.
+            if ($offset < $user_count) {
+                // Fill usuarios according to pagination.
+                for ($i = $offset; $i < $limit; $i++) {
+                    $usuarios[] = $usuarios_sql[$i];
+                }
+            } else {
+                // Fill usuarios with $usuarios_sql.
+                $usuarios = $usuarios_sql;
+            }
         }
 
         // Check if users are found.
@@ -48,17 +86,22 @@ class UsuariosController extends Controller
             // Return nombre, apellido, email.
             foreach ($usuarios as $usuario) {
                 $usuarios_filtrados[] = array(
-                    'id' => $usuario->id,
-                    'nombre' => $usuario->nombre,
-                    'apellido' => $usuario->apellido,
-                    'email' => $usuario->email,
-                    'dni' => $usuario->dni,
+                    'id'          => $usuario->id,
+                    'nombre'      => $usuario->nombre,
+                    'apellido'    => $usuario->apellido,
+                    'email'       => $usuario->email,
+                    'dni'         => $usuario->dni,
                     'obra_social' => $usuario->obra_social,
                 );
             }
 
             // Return usuarios.
-            return json_encode($usuarios_filtrados);
+            return json_encode(
+                array(
+                    'user_count' => $user_count,
+                    'usuarios'   => $usuarios,
+                )
+            );
         } else {
             // Return error.
             return json_encode(
