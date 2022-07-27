@@ -2,16 +2,15 @@
     height: 35px;
     width: 35px;
     background: #aaa;
+    cursor: pointer;
 }
 
-#pagination .pagination-item.pagination-prev,
-#pagination .pagination-item.pagination-next {
-    height: auto;
-    width: auto;
-    padding: 0 1rem;
+#pagination .pagination-item:last-child {
+    border-right: 1px solid #dee2e6!important;
 }
 
 #pagination .pagination-item.active{
     color: white;
     background: #056799!important;
+    border: 1px solid #056799!important;
 }

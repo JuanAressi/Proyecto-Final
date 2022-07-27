@@ -14,10 +14,10 @@ function Pacientes() {
     const [userToDelete, setUserToDelete] = useState(null);
     const [page, setPage] = useState(1);
     const [showPerPage, setShowPerPage] = useState(10);
-    const [pagination, setPagination] = useState();
 
     // Get all the active users.
 	useEffect(() => {
+        console.log( 'page: ' + page );
 		$.ajax({
 			url: 'http://local.misturnos/api/usuarios',
 			type: 'GET',
@@ -36,7 +36,7 @@ function Pacientes() {
 				console.log(error);
 			}
 		});
-    }, []);
+    }, [page]);
 
 
     // Delete a user.
@@ -94,7 +94,7 @@ function Pacientes() {
                                     if (index < showPerPage) {
                                         return (
                                             <tr key={user.id}>
-                                                <td>{index + 1}</td>
+                                                <td>{(index + 1) + ((page - 1) * showPerPage)}</td>
                                                 <td>{user.nombre} {user.apellido}</td>
                                                 <td>{user.email}</td>
                                                 <td>{user.dni}</td>
@@ -125,7 +125,7 @@ function Pacientes() {
                                 <Pagination
                                     totalUsers={totalUsers}
                                     showPerPage={showPerPage}
-                                    page={4}
+                                    page={page}
                                     setPage={setPage}
                                 />
                             ) : null
