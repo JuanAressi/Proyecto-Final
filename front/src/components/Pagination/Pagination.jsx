@@ -1,41 +1,101 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronsLeft ,faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import $ from 'jquery';
 import './style.css';
 
 function Pagination({ totalUsers, showPerPage, page, setPage }) {
     // Get total pages.
     const pages = Math.ceil(totalUsers / showPerPage);
 
-    console.log('pages: ', pages);
-    console.log('page: ', page);
-    console.log('totalUsers: ', totalUsers);
-
-    
-
-
+    // Show border 0.
+    let borderEnd0 = '';
+    if (page < pages - 1) {
+        borderEnd0 = ' border-end-0';
+    }
 
     return (
         <div id='pagination' className='d-flex justify-content-end mt-4'>
             {page > 1 && (
-                <>
-                    <span className='pagination-item pagination-prev d-flex justify-content-center align-items-center bg-white border border-end-0'>&lt; Anterior</span>
-
-                    <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0 active'>1</span>
-                </>
+                <span
+                    className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'
+                    onClick={() => setPage(page - 1)}
+                >
+                    <FontAwesomeIcon
+                        icon={faChevronLeft}
+                    />
+                </span>
             )}
 
             {page > 2 && (
-                <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'>...</span>
+                <span
+                className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'
+                onClick={() => setPage(1)}
+            >
+                1
+            </span>
             )}
 
+            {page > 3 && (
+                <span
+                className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'
+            >
+                ...
+            </span>
+            )}
+
+            {page > 1 && (
+                <span
+                    className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'
+                    onClick={() => setPage(page - 1)}
+                >
+                    {page - 1}
+                </span>
+            )}
             
-            <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'>2</span>
 
-            <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'>3</span>
+            <span
+                className='pagination-item active d-flex justify-content-center align-items-center bg-white border border-end-0'
+                onClick={() => setPage(page)}
+            >
+                {page}
+            </span>
 
-            <span className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'>...</span>
+            {page < pages -1&& (
+                <span
+                    className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'
+                    onClick={() => setPage(page + 1)}
+                >
+                    {page + 1}
+                </span>
+            )}
+
+            {page < pages - 2 && (
+                <span
+                    className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'
+                >
+                    ...
+                </span>
+            )}
 
             {page < pages && (
-                <span className='pagination-item pagination-next d-flex justify-content-center align-items-center bg-white border'>Siguiente &gt;</span>
+                <span
+                    className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'
+                    onClick={() => setPage(pages)}
+                >
+                    {pages}
+                </span>
+            )}
+
+            {page < pages && (
+                <span
+                    className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'
+                    onClick={() => setPage(page + 1)}
+                >
+                    <FontAwesomeIcon
+                        icon={faChevronRight}
+                    />
+                </span>
             )}
         </div>
     )
