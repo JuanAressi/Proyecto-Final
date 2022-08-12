@@ -1,9 +1,8 @@
 import { React, useEffect, useState } from 'react';
 import $ from 'jquery';
-// import { $ } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import Navbar from '../../../components/Navbar/Navbar';
+import SideNav from '../../../components/SideNav/SideNav';
 import Modal from '../../../components/Modal/Modal';
 import Pagination from '../../../components/Pagination/Pagination';
 import './style.css';
@@ -70,8 +69,8 @@ function Pacientes() {
 
 
     return (
-        <div id='pageAdminPacientes'>
-            <Navbar />
+        <div id='pageAdminPacientes' className='d-flex'>
+            <SideNav />
 
             <div className='container py-5'>
                 <div id='filters'>TODO: filtros</div>
