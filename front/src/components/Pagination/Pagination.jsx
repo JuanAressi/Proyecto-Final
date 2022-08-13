@@ -1,7 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronsLeft ,faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import $ from 'jquery';
 import './style.css';
 
 function Pagination({ totalUsers, showPerPage, page, setPage }) {
@@ -22,7 +21,8 @@ function Pagination({ totalUsers, showPerPage, page, setPage }) {
 
     // Handle pagination click.
     const handlePaginationClick = (page, isDisabled) => {
-        if (isDisabled !== '') {
+        debugger
+        if (isDisabled === '') {
             setPage(page);
         }
     }
@@ -33,8 +33,11 @@ function Pagination({ totalUsers, showPerPage, page, setPage }) {
         <div id='pagination' className='d-flex justify-content-end align-items-center mt-4'>
             <button
                 className={'pagination-item d-flex justify-content-center align-items-center bg-white border border-secondary rounded me-2' + disabledLeft}
-                // onClick={() => setPage(1)}
-                onClick={() => handlePaginationClick(1, disabledLeft)}
+                onClick={() => {
+                    if (page > 1) {
+                        handlePaginationClick(1, disabledLeft)
+                    }
+                }}
             >
                 <FontAwesomeIcon
                     className='text-secondary'
@@ -49,8 +52,11 @@ function Pagination({ totalUsers, showPerPage, page, setPage }) {
 
             <button
                 className={'pagination-item d-flex justify-content-center align-items-center bg-white border border-secondary rounded me-2' + disabledLeft}
-                // onClick={() => setPage(page - 1)}
-                onClick={() => handlePaginationClick(page - 1, disabledLeft)}
+                onClick={() => {
+                    if (page > 1) {
+                        handlePaginationClick(page - 1, disabledLeft)
+                    }
+                }}
             >
                 <FontAwesomeIcon
                     className='text-secondary'
@@ -65,8 +71,13 @@ function Pagination({ totalUsers, showPerPage, page, setPage }) {
 
             <button
                 className={'pagination-item d-flex justify-content-center align-items-center bg-white border border-secondary rounded me-2' + disabledRight}
-                // onClick={() => setPage(page + 1)}
-                onClick={() => handlePaginationClick(page + 1, disabledRight)}
+                onClick={() => {
+                    console.log('page', page);
+                    console.log('pages', pages);
+                    if (page < pages) {
+                        handlePaginationClick(page + 1, disabledRight)
+                    }
+                }}
             >
                 <FontAwesomeIcon
                     className='text-secondary'
@@ -76,8 +87,13 @@ function Pagination({ totalUsers, showPerPage, page, setPage }) {
 
             <button
                 className={'pagination-item d-flex justify-content-center align-items-center bg-white border border-secondary rounded' + disabledRight }
-                // onClick={() => setPage(pages)}
-                onClick={() => handlePaginationClick(pages, disabledRight)}
+                onClick={() => {
+                    console.log('page', page);
+                    console.log('pages', pages);
+                    if (page < pages) {
+                        handlePaginationClick(pages, disabledRight)
+                    }
+                }}
             >
                 <FontAwesomeIcon
                     className='text-secondary'

@@ -3,7 +3,7 @@
 }
 
 #sideNav .nav-container {
-    min-height: calc(100vh - 100px - 2.5rem - 2.5rem);
+    height: calc(100vh - 100px - 2.5rem - 2.5rem);
 }
 
 #sideNav .nav-item {

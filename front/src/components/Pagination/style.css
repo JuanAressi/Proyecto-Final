@@ -13,4 +13,5 @@
 
 #pagination .pagination-item.disabled svg {
     color: #dee2e6!important;
+    cursor: default;
 }
