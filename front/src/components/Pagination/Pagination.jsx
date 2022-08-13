@@ -8,95 +8,87 @@ function Pagination({ totalUsers, showPerPage, page, setPage }) {
     // Get total pages.
     const pages = Math.ceil(totalUsers / showPerPage);
 
-    // Show border 0.
-    let borderEnd0 = '';
-    if (page < pages - 1) {
-        borderEnd0 = ' border-end-0';
+    // Disable left arrow if page is 1.
+    let disabledLeft = '';
+    if (page === 1) {
+        disabledLeft = ' disabled';
     }
 
+    // Disable right arrow if page is last.
+    let disabledRight = '';
+    if (page === pages) {
+        disabledRight = ' disabled';
+    }
+
+    // Handle pagination click.
+    const handlePaginationClick = (page, isDisabled) => {
+        if (isDisabled !== '') {
+            setPage(page);
+        }
+    }
+
+
     return (
-        <div id='pagination' className='d-flex justify-content-end mt-4'>
-            {page > 1 && (
-                <span
-                    className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'
-                    onClick={() => setPage(page - 1)}
-                >
-                    <FontAwesomeIcon
-                        icon={faChevronLeft}
-                    />
-                </span>
-            )}
 
-            {page > 2 && (
-                <span
-                className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'
-                onClick={() => setPage(1)}
+        <div id='pagination' className='d-flex justify-content-end align-items-center mt-4'>
+            <button
+                className={'pagination-item d-flex justify-content-center align-items-center bg-white border border-secondary rounded me-2' + disabledLeft}
+                // onClick={() => setPage(1)}
+                onClick={() => handlePaginationClick(1, disabledLeft)}
             >
-                1
-            </span>
-            )}
+                <FontAwesomeIcon
+                    className='text-secondary'
+                    icon={faChevronLeft}
+                />
 
-            {page > 3 && (
-                <span
-                className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'
+                <FontAwesomeIcon
+                    className='text-secondary'
+                    icon={faChevronLeft}
+                />
+            </button>
+
+            <button
+                className={'pagination-item d-flex justify-content-center align-items-center bg-white border border-secondary rounded me-2' + disabledLeft}
+                // onClick={() => setPage(page - 1)}
+                onClick={() => handlePaginationClick(page - 1, disabledLeft)}
             >
-                ...
-            </span>
-            )}
-
-            {page > 1 && (
-                <span
-                    className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'
-                    onClick={() => setPage(page - 1)}
-                >
-                    {page - 1}
-                </span>
-            )}
-            
+                <FontAwesomeIcon
+                    className='text-secondary'
+                    icon={faChevronLeft}
+                />
+            </button>
 
             <span
-                className='pagination-item active d-flex justify-content-center align-items-center bg-white border border-end-0'
-                onClick={() => setPage(page)}
-            >
-                {page}
+                className='me-2'>
+                {page} de {pages}
             </span>
 
-            {page < pages -1&& (
-                <span
-                    className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'
-                    onClick={() => setPage(page + 1)}
-                >
-                    {page + 1}
-                </span>
-            )}
+            <button
+                className={'pagination-item d-flex justify-content-center align-items-center bg-white border border-secondary rounded me-2' + disabledRight}
+                // onClick={() => setPage(page + 1)}
+                onClick={() => handlePaginationClick(page + 1, disabledRight)}
+            >
+                <FontAwesomeIcon
+                    className='text-secondary'
+                    icon={faChevronRight}
+                />
+            </button>
 
-            {page < pages - 2 && (
-                <span
-                    className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'
-                >
-                    ...
-                </span>
-            )}
+            <button
+                className={'pagination-item d-flex justify-content-center align-items-center bg-white border border-secondary rounded' + disabledRight }
+                // onClick={() => setPage(pages)}
+                onClick={() => handlePaginationClick(pages, disabledRight)}
+            >
+                <FontAwesomeIcon
+                    className='text-secondary'
+                    icon={faChevronRight}
+                />
 
-            {page < pages && (
-                <span
-                    className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'
-                    onClick={() => setPage(pages)}
-                >
-                    {pages}
-                </span>
-            )}
-
-            {page < pages && (
-                <span
-                    className='pagination-item d-flex justify-content-center align-items-center bg-white border border-end-0'
-                    onClick={() => setPage(page + 1)}
-                >
-                    <FontAwesomeIcon
-                        icon={faChevronRight}
-                    />
-                </span>
-            )}
+                <FontAwesomeIcon
+                    className='text-secondary'
+                    icon={faChevronRight}
+                />
+            </button>
         </div>
     )
 }
