@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faUserDoctor, faFileMedical, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faUserDoctor, faFileMedical, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../Logo/Logo';
 import './style.css';
 
@@ -12,29 +12,43 @@ function SideNav() {
                 <Logo style='primary' />
             </Link>
 
-            <div className='d-flex flex-column justify-content-center align-items-center mt-5'>
-                <Link to='/' className='d-flex justify-content-start align-items-center text-white w-100 p-2 mt-4 ms-5'>
-                    <FontAwesomeIcon
-                        className='text-white me-3'
-                        icon={faUser}
-                    />
-                    <h4 className='mb-0'>Pacientes</h4>
-                </Link>
+            <div className='nav-container d-flex flex-column justify-content-between mt-5'>
+                <div className='d-flex flex-column justify-content-start align-items-center h-100'>
+                    <Link to='/' className='nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 active'>
+                        <FontAwesomeIcon
+                            className='text-white me-3'
+                            icon={faUser}
+                        />
+
+                        <h5 className='text-uppercase mb-0'>Pacientes</h5>
+                    </Link>
+                    
+                    <Link to='/' className='nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4'>
+                        <FontAwesomeIcon
+                            className='text-white me-3'
+                            icon={faUserDoctor}
+                        />
+
+                        <h5 className='text-uppercase mb-0'>Medicos</h5>
+                    </Link>
+                    
+                    <Link to='/' className='nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4'>
+                        <FontAwesomeIcon
+                            className='text-white me-3'
+                            icon={faFileMedical}
+                        />
+
+                        <h5 className='text-uppercase mb-0'>Turnos</h5>
+                    </Link>
+                </div>
                 
-                <Link to='/' className='d-flex justify-content-start align-items-center text-white w-100 p-2 mt-4 ms-5'>
+                <Link to='/' className='nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4'>
                     <FontAwesomeIcon
                         className='text-white me-3'
-                        icon={faUserDoctor}
+                        icon={faArrowLeft}
                     />
-                    <h4 className='mb-0'>Medicos</h4>
-                </Link>
-                
-                <Link to='/' className='d-flex justify-content-start align-items-center text-white w-100 p-2 mt-4 ms-5'>
-                    <FontAwesomeIcon
-                        className='text-white me-3'
-                        icon={faFileMedical}
-                    />
-                    <h4 className='mb-0'>Turnos</h4>
+
+                    <h5 className='text-uppercase mb-0'>Volver al sitio</h5>
                 </Link>
             </div>
         </div>

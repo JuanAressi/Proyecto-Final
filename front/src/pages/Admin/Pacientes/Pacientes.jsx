@@ -73,6 +73,8 @@ function Pacientes() {
             <SideNav />
 
             <div className='container py-5'>
+                <h1 className='display-3 text-secondary'>Pacientes</h1>
+
                 <div id='filters'>TODO: filtros</div>
 
                 {totalUsers && totalUsers > 0 ? (

@@ -1,4 +1,31 @@
 #sideNav {
     min-height: 100vh;
-    min-width: 200px;
+}
+
+#sideNav .nav-container {
+    min-height: calc(100vh - 100px - 2.5rem - 2.5rem);
+}
+
+#sideNav .nav-item {
+    transition: all 0.3s ease;
+}
+
+#sideNav .nav-item.active {
+    background: #fff;
+    color: #000!important;
+}
+
+#sideNav .active svg {
+    color: #000!important;
+}
+
+#sideNav .nav-item:hover {
+    background: #ddd;
+    color: #000!important;
+    transition: all 0.3s ease;
+}
+
+#sideNav .nav-item:hover svg {
+    color: #000!important;
+    transition: all 0.3s ease;
 }
