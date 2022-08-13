@@ -1,16 +1,16 @@
 #pagination .pagination-item {
-    height: 35px;
-    width: 35px;
+    height: 30px;
+    width: 30px;
     background: #aaa;
     cursor: pointer;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
 }
 
-#pagination .pagination-item:last-child {
-    border-right: 1px solid #dee2e6!important;
+#pagination .pagination-item.disabled {
+    border: 1px solid #dee2e6!important;
+    cursor: default;
 }
 
-#pagination .pagination-item.active{
-    color: white;
-    background: #056799!important;
-    border: 1px solid #056799!important;
+#pagination .pagination-item.disabled svg {
+    color: #dee2e6!important;
 }
