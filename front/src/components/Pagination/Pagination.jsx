@@ -21,7 +21,6 @@ function Pagination({ totalUsers, showPerPage, page, setPage }) {
 
     // Handle pagination click.
     const handlePaginationClick = (page, isDisabled) => {
-        debugger
         if (isDisabled === '') {
             setPage(page);
         }
