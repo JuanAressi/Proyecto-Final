@@ -28,10 +28,9 @@ function Pagination({ totalUsers, showPerPage, page, setPage }) {
 
 
     return (
-
         <div id='pagination' className='d-flex justify-content-end align-items-center mt-4'>
             <button
-                className={'pagination-item d-flex justify-content-center align-items-center bg-white border border-secondary rounded me-2' + disabledLeft}
+                className={'pagination-item d-flex justify-content-center align-items-center bg-white border border-secondary rounded me-1' + disabledLeft}
                 onClick={() => {
                     if (page > 1) {
                         handlePaginationClick(1, disabledLeft)
@@ -50,7 +49,7 @@ function Pagination({ totalUsers, showPerPage, page, setPage }) {
             </button>
 
             <button
-                className={'pagination-item d-flex justify-content-center align-items-center bg-white border border-secondary rounded me-2' + disabledLeft}
+                className={'pagination-item d-flex justify-content-center align-items-center bg-white border border-secondary rounded me-1' + disabledLeft}
                 onClick={() => {
                     if (page > 1) {
                         handlePaginationClick(page - 1, disabledLeft)
@@ -69,7 +68,7 @@ function Pagination({ totalUsers, showPerPage, page, setPage }) {
             </span>
 
             <button
-                className={'pagination-item d-flex justify-content-center align-items-center bg-white border border-secondary rounded me-2' + disabledRight}
+                className={'pagination-item d-flex justify-content-center align-items-center bg-white border border-secondary rounded me-1' + disabledRight}
                 onClick={() => {
                     console.log('page', page);
                     console.log('pages', pages);

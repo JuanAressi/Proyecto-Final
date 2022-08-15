@@ -4,7 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import SideNav from '../../../components/SideNav/SideNav';
 import Modal from '../../../components/Modal/Modal';
-import Pagination from '../../../components/Pagination/Pagination';
+import Filters from '../../../components/Table/Filters/Filters';
+import Pagination from '../../../components/Table/Pagination/Pagination';
 import './style.css';
 
 function Pacientes() {
@@ -16,7 +17,6 @@ function Pacientes() {
 
     // Get all the active users.
 	useEffect(() => {
-        console.log( 'page: ' + page );
 		$.ajax({
 			url: 'http://local.misturnos/api/usuarios',
 			type: 'GET',
@@ -35,7 +35,12 @@ function Pacientes() {
 				console.log(error);
 			}
 		});
-    }, [page]);
+    }, [page, showPerPage]);
+    
+    // When the user changes the amount of users to show.
+	useEffect(() => {
+        setPage(1);
+    }, [showPerPage]);
 
 
     // Delete a user.
@@ -73,13 +78,16 @@ function Pacientes() {
             <SideNav />
 
             <div className='container py-5'>
-                <h1 className='display-3 text-secondary'>Pacientes</h1>
-
-                <div id='filters'>TODO: filtros</div>
+                <h1 className='display-3 text-secondary mb-4'>Pacientes</h1>
 
                 {totalUsers && totalUsers > 0 ? (
                     <>
-                        <table className='table table-striped border box-shadow-dark mt-5'>
+                        <Filters 
+                            showPerPage={showPerPage}
+                            setShowPerPage={setShowPerPage}
+                        />
+
+                        <table className='table table-striped border box-shadow-dark mt-3'>
                             <thead>
                                 <tr>
                                     <th>#</th>
