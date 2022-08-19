@@ -47,7 +47,7 @@ class UsuariosController extends Controller
             // Check if offset is valid.
             if ($offset < $user_count) {
                 // Fill usuarios according to pagination.
-                for ($i = $offset; $i < $limit; $i++) {
+                for ($i = $offset; $i < $limit && $i < $user_count; $i++) {
                     $usuarios[] = $usuarios_sql[$i];
                 }
             } else {
