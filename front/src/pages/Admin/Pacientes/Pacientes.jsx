@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import SideNav from '../../../components/SideNav/SideNav';
 import Modal from '../../../components/Modal/Modal';
+import Alert from '../../../components/Alert/Alert';
 import Filters from '../../../components/Table/Filters/Filters';
 import Pagination from '../../../components/Table/Pagination/Pagination';
 import './style.css';
@@ -27,7 +28,7 @@ function Pacientes() {
                 'pagination': showPerPage,
             },
 			success: function (response) {
-				console.log(response);
+				console.log('response: ' + response);
                 setTotalUsers(response.user_count);
                 setUsers(response.usuarios);
 			},
@@ -57,15 +58,13 @@ function Pacientes() {
                     $('#closeModal').click();
 
                     // Append success message.
-                    $('#filters').append(
-                        "<div className='alert alert-success alert-dismissible fade show' role='alert'>" +
-                        "<strong>El Paciente se eliminó correnctamente</strong>" +
-                        "</div>"
+                    $('#alert').append(
+                        'asdfasdf'
                     );
 
-                    // Delete message after 3 seconds.
+                    // Empty #alert message after 3 seconds.
                     setTimeout(function () {
-                        $('.alert').remove();
+                        $('#alert').empty();
                     }, 3000);
                 }
             }
@@ -78,7 +77,9 @@ function Pacientes() {
             <SideNav />
 
             <div className='container py-5'>
-                <h1 className='display-3 text-secondary mb-4'>Pacientes</h1>
+                <h1 id='pageTitle' className='display-3 text-secondary mb-4'>Pacientes</h1>
+
+                {/* <div id="alert">{alertContent}</div> */}
 
                 {totalUsers && totalUsers > 0 ? (
                     <>

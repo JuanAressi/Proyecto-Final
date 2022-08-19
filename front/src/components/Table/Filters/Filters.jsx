@@ -32,11 +32,11 @@ function Filters( { showPerPage, setShowPerPage } ) {
                     {/* Edad */}
                 </div>
 
-                <div id='searchContainer' class='input-group w-25'>
-                    <input class='form-control' type='search' placeholder='Escribe para buscar...' />
+                <div id='searchContainer' className='input-group w-25'>
+                    <input className='form-control' type='search' placeholder='Escribe para buscar...' />
 
-                    <div class='input-group-append'>
-                        <span class='input-group-text h-100'>
+                    <div className='input-group-append'>
+                        <span className='input-group-text h-100'>
                             <FontAwesomeIcon
                                 icon={faMagnifyingGlass}
                             />
