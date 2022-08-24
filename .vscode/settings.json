@@ -3,4 +3,6 @@
 
 	"phpcs.enable": true,
 	"phpcs.standard": "PSR2",
+
+    "cSpell.language": "en,es",
 }

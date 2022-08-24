@@ -99,7 +99,7 @@ class UsuariosSeeder extends Seeder
         );
 
         // Create array of random surnames.
-        $surmnames = array(
+        $surnames = array(
             0 => 'Álvarez',
             1 => 'Ávila',
             2 => 'Beltrán',
@@ -169,12 +169,12 @@ class UsuariosSeeder extends Seeder
             // Create Usuario.
             $usuario = new Usuarios();
 
-            $first_name = rand(0, count($names) - 1);
-            $last_name = rand(0, count($surmnames) - 1);
+            $first_name   = rand(0, count($names) - 1);
+            $last_name    = rand(0, count($surnames) - 1);
             $email_prefix = rand(0, count($emails) - 1);
 
             $usuario->nombre     = $names[$first_name];
-            $usuario->apellido   = $surmnames[$last_name];
+            $usuario->apellido   = $surnames[$last_name];
             $usuario->email      = $names[$first_name] . $i . $emails[$email_prefix];
             $usuario->contraseña = md5('123456');
             $usuario->dni        = random_int(10000000, 99999999);

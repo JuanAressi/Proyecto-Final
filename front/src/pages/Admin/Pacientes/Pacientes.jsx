@@ -10,11 +10,12 @@ import Pagination from '../../../components/Table/Pagination/Pagination';
 import './style.css';
 
 function Pacientes() {
-	const [users, setUsers] = useState([]);
-	const [totalUsers, setTotalUsers] = useState(0);
-    const [userToDelete, setUserToDelete] = useState(null);
     const [page, setPage] = useState(1);
+    const [showAlert, setShowAlert] = useState(true);
     const [showPerPage, setShowPerPage] = useState(10);
+	const [totalUsers, setTotalUsers] = useState(0);
+	const [users, setUsers] = useState([]);
+    const [userToDelete, setUserToDelete] = useState(null);
 
     // Get all the active users.
 	useEffect(() => {
@@ -57,11 +58,6 @@ function Pacientes() {
                     // Close modal.
                     $('#closeModal').click();
 
-                    // Append success message.
-                    $('#alert').append(
-                        'asdfasdf'
-                    );
-
                     // Empty #alert message after 3 seconds.
                     setTimeout(function () {
                         $('#alert').empty();
@@ -79,7 +75,14 @@ function Pacientes() {
             <div className='container py-5'>
                 <h1 id='pageTitle' className='display-3 text-secondary mb-4'>Pacientes</h1>
 
-                {/* <div id="alert">{alertContent}</div> */}
+                {showAlert ? 
+                    <Alert
+                        type='success'
+                        message='Se ha eliminado el usuario correctamente.'
+                    />
+                        
+                    : null
+                }
 
                 {totalUsers && totalUsers > 0 ? (
                     <>
@@ -92,13 +95,14 @@ function Pacientes() {
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Nombre</th>
+                                    <th>Nombre y Apellido</th>
                                     <th>Email</th>
                                     <th>DNI</th>
                                     <th>Obra Social</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 {users.map((user, index) => {
                                     if (index < showPerPage) {
