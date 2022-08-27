@@ -1,6 +1,50 @@
-#filters #showPerPageContainer input {
-    height: 28px;
+#filters select {
+    padding: 0.1rem 0.5rem;
+    background: #fff;
+    color: #000;
+    border: 1px solid #777;
+    border-radius: 0.25rem;
 }
+
+#filters .custom-arrow {
+    top: 0;
+    right: 0;
+    background-color: #777;
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    display: block;
+    width: 1.25rem;
+    height: 100%;
+    pointer-events: none;
+}
+
+#filters .custom-arrow::before,
+#filters .custom-arrow::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#filters .custom-arrow::before {
+    border-left: 0.35rem solid transparent;
+    border-right: 0.35rem solid transparent;
+    border-bottom: 0.35rem solid rgba(255, 255, 255, 0.75);
+
+    top: 35%;
+}
+
+#filters .custom-arrow::after {
+    border-left: 0.35rem solid transparent;
+    border-right: 0.35rem solid transparent;
+    border-top: 0.35rem solid rgba(255, 255, 255, 0.75);
+
+    top: 65%
+}
+
 #filters #searchContainer .input-group-text {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;

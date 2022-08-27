@@ -10,58 +10,79 @@ import Pagination from '../../../components/Table/Pagination/Pagination';
 import './style.css';
 
 function Pacientes() {
+    const [lastShowPerPage, setLastShowPerPage] = useState(10);
     const [page, setPage] = useState(1);
-    const [showAlert, setShowAlert] = useState(true);
+    const [showAlert, setShowAlert] = useState(false);
     const [showPerPage, setShowPerPage] = useState(10);
-	const [totalUsers, setTotalUsers] = useState(0);
-	const [users, setUsers] = useState([]);
+    const [totalUsers, setTotalUsers] = useState(0);
+    const [users, setUsers] = useState([]);
     const [userToDelete, setUserToDelete] = useState(null);
 
-    // Get all the active users.
-	useEffect(() => {
-		$.ajax({
-			url: 'http://local.misturnos/api/usuarios',
-			type: 'GET',
-			dataType: 'json',
+    // Search 'Pacientes' when 'page' changes (delay 0s).
+    useEffect(() => {
+        const delayDebounce = setTimeout(() => {
+            doSearch();
+        }, 1000);
+        
+        return () => clearTimeout(delayDebounce)
+    }, [page, showPerPage]);
+    
+    // Search 'Pacientes' when 'showPerPage' changes (delay 1s).
+    useEffect(() => {
+        setPage(1);
+
+        const delayDebounce = setTimeout(() => {
+            doSearch();
+        }, 1000);
+        
+        return () => clearTimeout(delayDebounce)
+    }, [showPerPage]);
+
+
+    // Function search.
+    const doSearch = () => {
+        $.ajax({
+            url: 'http://local.misturnos/api/usuarios',
+            type: 'GET',
+            dataType: 'json',
             data: {
                 'rol': 'paciente',
                 'page': page,
                 'pagination': showPerPage,
             },
-			success: function (response) {
-				console.log('response: ' + response);
+            success: function (response) {
+                setLastShowPerPage(showPerPage);
                 setTotalUsers(response.user_count);
                 setUsers(response.usuarios);
-			},
-			error: function (error) {
-				console.log(error);
-			}
-		});
-    }, [page, showPerPage]);
-    
-    // When the user changes the amount of users to show.
-	useEffect(() => {
-        setPage(1);
-    }, [showPerPage]);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
 
 
     // Delete a user.
-    function deleteUser() {
-        console.log( 'userToDelete: ', userToDelete );
-
+    const deleteUser = () => {
         $.ajax({
             url: 'http://local.misturnos/api/usuarios/' + userToDelete,
             type: 'DELETE',
             dataType: 'json',
             success: function (response) {
                 if (response.success) {
+                    // Empty #alert message after 3 seconds.
+                    setTimeout(function () {
+                        setShowAlert(false);
+                    }, 4000);
+
+                    // Reload the 'Pacientes' table.
+                    doSearch();
+
                     // Close modal.
                     $('#closeModal').click();
 
-                    // Empty #alert message after 3 seconds.
-                    setTimeout(function () {
-                        $('#alert').empty();
-                    }, 3000);
+                    // Show success message.
+                    setShowAlert(true);
                 }
             }
         });
@@ -105,7 +126,7 @@ function Pacientes() {
 
                             <tbody>
                                 {users.map((user, index) => {
-                                    if (index < showPerPage) {
+                                    if (index < lastShowPerPage) {
                                         return (
                                             <tr key={user.id}>
                                                 <td>{(index + 1) + ((page - 1) * showPerPage)}</td>

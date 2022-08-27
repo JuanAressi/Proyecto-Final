@@ -14,13 +14,26 @@ function Filters( { showPerPage, setShowPerPage } ) {
                     >
                         <label htmlFor=''>Mostar</label>
                         
-                        <input
+                        {/* <input
                             className='filter ps-1 mx-2 w-15'
                             type='number'
                             value={showPerPage}
                             min='1'
                             onChange={(e) => setShowPerPage(e.target.value)}
-                        />
+                        /> */}
+
+
+                        <div className='custom-select position-relative mx-2'>
+                            <select>
+                                <option value='10'>10</option>
+                                <option value='25'>25</option>
+                                <option value='50'>50</option>
+                                <option value='100'>100</option>
+                                <option value='250'>250</option>
+                                <option value='500'>500</option>
+                            </select>
+                            <span class='custom-arrow position-absolute'></span>
+                        </div>
 
                         <label htmlFor=''> por pagina</label>
                     </div>
