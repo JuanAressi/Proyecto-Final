@@ -70,8 +70,6 @@ function Pagination({ totalUsers, showPerPage, page, setPage }) {
             <button
                 className={'pagination-item d-flex justify-content-center align-items-center bg-white border border-secondary rounded me-1' + disabledRight}
                 onClick={() => {
-                    console.log('page', page);
-                    console.log('pages', pages);
                     if (page < pages) {
                         handlePaginationClick(page + 1, disabledRight)
                     }
@@ -86,8 +84,6 @@ function Pagination({ totalUsers, showPerPage, page, setPage }) {
             <button
                 className={'pagination-item d-flex justify-content-center align-items-center bg-white border border-secondary rounded' + disabledRight }
                 onClick={() => {
-                    console.log('page', page);
-                    console.log('pages', pages);
                     if (page < pages) {
                         handlePaginationClick(pages, disabledRight)
                     }

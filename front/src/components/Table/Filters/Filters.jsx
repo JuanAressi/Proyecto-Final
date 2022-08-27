@@ -1,9 +1,9 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import './style.css';
 
-function Filters( { showPerPage, setShowPerPage } ) {
+function Filters( { setShowPerPage, setSearchInput } ) {
     return (
         <div id='filters'>
             <div className='d-flex justify-content-between'>
@@ -13,18 +13,12 @@ function Filters( { showPerPage, setShowPerPage } ) {
                         className='d-flex align-items-end'
                     >
                         <label htmlFor=''>Mostar</label>
-                        
-                        {/* <input
-                            className='filter ps-1 mx-2 w-15'
-                            type='number'
-                            value={showPerPage}
-                            min='1'
-                            onChange={(e) => setShowPerPage(e.target.value)}
-                        /> */}
-
 
                         <div className='custom-select position-relative mx-2'>
-                            <select>
+                            <select
+                                className='bg-white text-dark'
+                                onChange={(e) => setShowPerPage(e.target.value)}
+                            >
                                 <option value='10'>10</option>
                                 <option value='25'>25</option>
                                 <option value='50'>50</option>
@@ -32,7 +26,7 @@ function Filters( { showPerPage, setShowPerPage } ) {
                                 <option value='250'>250</option>
                                 <option value='500'>500</option>
                             </select>
-                            <span class='custom-arrow position-absolute'></span>
+                            <span className='custom-arrow position-absolute h-100'></span>
                         </div>
 
                         <label htmlFor=''> por pagina</label>
@@ -45,16 +39,18 @@ function Filters( { showPerPage, setShowPerPage } ) {
                     {/* Edad */}
                 </div>
 
-                <div id='searchContainer' className='input-group w-25'>
-                    <input className='form-control' type='search' placeholder='Escribe para buscar...' />
+                <div id='searchContainer' className='position-relative w-25'>
+                    <input
+                        className='bg-white w-100'
+                        type='text'
+                        placeholder='Escribe para buscar...'
+                        onChange={(e) => setSearchInput(e.target.value)}
+                    />
 
-                    <div className='input-group-append'>
-                        <span className='input-group-text h-100'>
-                            <FontAwesomeIcon
-                                icon={faMagnifyingGlass}
-                            />
-                        </span>
-                    </div>
+                    <FontAwesomeIcon
+                        className='position-absolute'
+                        icon={faMagnifyingGlass}
+                    />
                 </div>
             </div>
         </div>

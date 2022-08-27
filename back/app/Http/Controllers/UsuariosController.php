@@ -20,6 +20,7 @@ class UsuariosController extends Controller
         $rol        = $request->input('rol');
         $page       = $request->input('page');
         $pagination = $request->input('pagination');
+        $search     = $request->input('search');
 
         // Calculate offset.
         $offset = ($page - 1) * $pagination;
@@ -32,7 +33,11 @@ class UsuariosController extends Controller
             // Get all users with role.
             $usuarios_sql = Usuarios::leftJoin('pacientes', 'usuarios.id', '=', 'pacientes.id_usuario')
                 ->where('usuarios.rol', $rol)
-                ->where('estado', 'activo')
+                ->where('usuarios.estado', 'activo')
+                ->where('usuarios.nombre', 'like', '%' . $search . '%')
+                ->orWhere('usuarios.apellido', 'like', '%' . $search . '%')
+                ->orWhere('usuarios.email', 'like', '%' . $search . '%')
+                ->orWhere('usuarios.dni', 'like', '%' . $search . '%')
                 ->orderby('usuarios.id', 'asc')
                 ->leftJoin('obras_sociales', 'pacientes.id_obra_social', '=', 'obras_sociales.id')
                 ->select('usuarios.*', 'obras_sociales.nombre as obra_social')
