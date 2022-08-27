@@ -34,7 +34,7 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 .text-shadow-dark { text-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25); }
 
 .form-control:focus {
-    border-color: 0;
+    border-color: #ced4da!important;
     box-shadow: none;
 }
 

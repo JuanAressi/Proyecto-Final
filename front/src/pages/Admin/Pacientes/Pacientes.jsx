@@ -7,40 +7,48 @@ import Modal from '../../../components/Modal/Modal';
 import Alert from '../../../components/Alert/Alert';
 import Filters from '../../../components/Table/Filters/Filters';
 import Pagination from '../../../components/Table/Pagination/Pagination';
+import loadingGif from '../../../components/assets/img/loadingGif.gif';
 import './style.css';
 
 function Pacientes() {
     const [lastShowPerPage, setLastShowPerPage] = useState(10);
     const [page, setPage] = useState(1);
+    const [searchInput, setSearchInput] = useState('');
     const [showAlert, setShowAlert] = useState(false);
     const [showPerPage, setShowPerPage] = useState(10);
+    const [showSpinner, setShowSpinner] = useState(false);
     const [totalUsers, setTotalUsers] = useState(0);
     const [users, setUsers] = useState([]);
     const [userToDelete, setUserToDelete] = useState(null);
 
     // Search 'Pacientes' when 'page' changes (delay 0s).
     useEffect(() => {
-        const delayDebounce = setTimeout(() => {
-            doSearch();
-        }, 1000);
+        doSearch();
+    }, [page]);
+
+    // Search 'Pacientes' when 'showPerPage' changes (delay 0s).
+    useEffect(() => {
+        setPage(1);
         
-        return () => clearTimeout(delayDebounce)
-    }, [page, showPerPage]);
-    
-    // Search 'Pacientes' when 'showPerPage' changes (delay 1s).
+        doSearch();
+    }, [showPerPage]);
+
+    // Search 'Pacientes' when 'searchInput' changes (delay 1s).
     useEffect(() => {
         setPage(1);
 
         const delayDebounce = setTimeout(() => {
             doSearch();
-        }, 1000);
-        
+        }, 750);
+
         return () => clearTimeout(delayDebounce)
-    }, [showPerPage]);
+    } , [searchInput]);
 
 
     // Function search.
     const doSearch = () => {
+        setShowSpinner(true);
+
         $.ajax({
             url: 'http://local.misturnos/api/usuarios',
             type: 'GET',
@@ -49,14 +57,16 @@ function Pacientes() {
                 'rol': 'paciente',
                 'page': page,
                 'pagination': showPerPage,
+                'search': searchInput,
             },
             success: function (response) {
                 setLastShowPerPage(showPerPage);
+                setShowSpinner(false);
                 setTotalUsers(response.user_count);
                 setUsers(response.usuarios);
             },
             error: function (error) {
-                console.log(error);
+                setShowSpinner(false);
             }
         });
     }
@@ -94,7 +104,10 @@ function Pacientes() {
             <SideNav />
 
             <div className='container py-5'>
-                <h1 id='pageTitle' className='display-3 text-secondary mb-4'>Pacientes</h1>
+                <div className='d-flex align-items-center mb-4'>
+                    <h1 id='pageTitle' className='display-3 text-secondary me-4'>Pacientes</h1>
+                    {showSpinner && <img src={loadingGif} alt="wait until the page loads" height='20px'/>}
+                </div>
 
                 {showAlert ? 
                     <Alert
@@ -108,8 +121,8 @@ function Pacientes() {
                 {totalUsers && totalUsers > 0 ? (
                     <>
                         <Filters 
-                            showPerPage={showPerPage}
                             setShowPerPage={setShowPerPage}
+                            setSearchInput={setSearchInput}
                         />
 
                         <table className='table table-striped border box-shadow-dark mt-3'>
