@@ -1,0 +1,40 @@
+/* #table table thead th {
+    cursor: pointer;
+}
+
+#table table thead th span {
+    position: relative;
+}
+
+#table table thead th span::after,
+#table table thead th span::before {
+    position: absolute;
+    content: '';
+    right: -1.5rem;
+    width: 0;
+    height: 0;
+    transform: translate(-50%, -50%);
+}
+
+#table table thead th span::after {
+    border-left: 0.3rem solid transparent;
+    border-right: 0.3rem solid transparent;
+    border-bottom: 0.3rem solid #777;
+    top: 30%;
+}
+
+#table table thead th span::before {
+    border-left: 0.3rem solid transparent;
+    border-right: 0.3rem solid transparent;
+    border-top: 0.3rem solid #777;
+    top: 70%;
+}
+
+#table table thead th span:first {
+    border-left: 0.3rem solid transparent;
+    border-right: 0.3rem solid transparent;
+} */
+
+#table table tbody tr:hover {
+    background-color: rgb(225, 245, 255);
+}
