@@ -9,6 +9,7 @@ import Filters from '../../../components/Table/Filters/Filters';
 import Pagination from '../../../components/Table/Pagination/Pagination';
 import loadingGif from '../../../components/assets/img/loadingGif.gif';
 import './style.css';
+import Table from '../../../components/Table/Table';
 
 function Pacientes() {
     const [lastShowPerPage, setLastShowPerPage] = useState(10);
@@ -98,7 +99,6 @@ function Pacientes() {
         });
     }
 
-
     return (
         <div id='pageAdminPacientes' className='d-flex'>
             <SideNav />
@@ -118,71 +118,18 @@ function Pacientes() {
                     : null
                 }
 
-                {totalUsers && totalUsers > 0 ? (
-                    <>
-                        <Filters 
-                            setShowPerPage={setShowPerPage}
-                            setSearchInput={setSearchInput}
-                        />
-
-                        <table className='table table-striped border box-shadow-dark mt-3'>
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Nombre y Apellido</th>
-                                    <th>Email</th>
-                                    <th>DNI</th>
-                                    <th>Obra Social</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {users.map((user, index) => {
-                                    if (index < lastShowPerPage) {
-                                        return (
-                                            <tr key={user.id}>
-                                                <td>{(index + 1) + ((page - 1) * showPerPage)}</td>
-                                                <td>{user.nombre} {user.apellido}</td>
-                                                <td>{user.email}</td>
-                                                <td>{user.dni}</td>
-                                                <td>{user.obra_social}</td>
-                                                <td>
-                                                    <FontAwesomeIcon
-                                                        className='text-warning me-3'
-                                                        icon={faPencil}
-                                                    />
-
-                                                    <FontAwesomeIcon
-                                                        className='text-danger'
-                                                        icon={faTrashAlt}
-                                                        data-bs-toggle='modal'
-                                                        data-bs-target={'#modalDelete'}
-                                                        onClick={() => setUserToDelete(user.id)}
-                                                    />
-                                                </td>
-                                            </tr>
-                                        )
-                                    }
-                                })}
-                            </tbody>
-                        </table>
-                        
-                        {totalUsers > showPerPage ? 
-                            (    
-                                <Pagination
-                                    totalUsers={totalUsers}
-                                    showPerPage={showPerPage}
-                                    page={page}
-                                    setPage={setPage}
-                                />
-                            ) : null
-                        }
-                    </>
-                ) : (
-                    // TODO: mostrar mensaje de que no hay usuarios.
-                    <div className='text-center'>No hay pacientes registrados</div>
-                )}
+                <Table
+                    lastShowPerPage={lastShowPerPage}
+                    page={page}
+                    setPage={setPage}
+                    setSearchInput={setSearchInput}
+                    setShowPerPage={setShowPerPage}
+                    setUserToDelete={setUserToDelete}
+                    showPerPage={showPerPage}  
+                    tableHeads={['#', 'Nombre y Apellido', 'Email', 'DNI', 'Acciones']}
+                    totalUsers={totalUsers}
+                    users={users}
+                />
             </div>
 
             <Modal
