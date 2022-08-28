@@ -18,7 +18,9 @@ function Table( { lastShowPerPage, page, setPage, setSearchInput, setShowPerPage
                     <tr>
                         {tableHeads && tableHeads.map( ( tableHead, index ) => {
                             return (
-                                <th key={index}>{tableHead}</th>
+                                <th key={index}>
+                                    <span>{tableHead}</span>
+                                </th>
                             )
                         })}
                     </tr>
@@ -33,7 +35,6 @@ function Table( { lastShowPerPage, page, setPage, setSearchInput, setShowPerPage
                                     <td>{user.nombre} {user.apellido}</td>
                                     <td>{user.email}</td>
                                     <td>{user.dni}</td>
-                                    <td>{user.obra_social}</td>
                                     <td>
                                         <FontAwesomeIcon
                                             className='text-warning me-3'
