@@ -52,11 +52,10 @@ function Pacientes() {
         setShowSpinner(true);
 
         $.ajax({
-            url: 'http://local.misturnos/api/usuarios',
+            url: 'http://local.misturnos/api/pacientes',
             type: 'GET',
             dataType: 'json',
             data: {
-                'rol': 'paciente',
                 'page': page,
                 'pagination': showPerPage,
                 'search': searchInput,
@@ -65,8 +64,8 @@ function Pacientes() {
                 setLastShowPerPage(showPerPage);
                 setLastPage(page);
                 setShowSpinner(false);
-                setTotalUsers(response.user_count);
-                setUsers(response.usuarios);
+                setTotalUsers(response.pacientes_count);
+                setUsers(response.pacientes);
             },
             error: function (error) {
                 setShowSpinner(false);

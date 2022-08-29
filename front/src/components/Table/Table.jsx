@@ -6,6 +6,13 @@ import Pagination from './Pagination/Pagination';
 import './style.css';
 
 function Table( { lastShowPerPage, lastPage, page, setPage, setSearchInput, setShowPerPage, setUserToDelete, showPerPage, tableHeads, totalUsers, users } ) {
+    // Parse the DNI.
+    const parseDni = (dni) => {
+        if (dni > 999999) {
+            return dni.substring(0, dni.length - 6) + '.' + dni.substring(dni.length - 6, dni.length - 3) + '.' + dni.substring(dni.length - 3, dni.length); 
+        }
+    }
+    
     return (
         <div id='table'>
             <Filters 
@@ -34,7 +41,7 @@ function Table( { lastShowPerPage, lastPage, page, setPage, setSearchInput, setS
                                     <td>{(index + 1) + ((lastPage - 1) * showPerPage)}</td>
                                     <td>{user.nombre} {user.apellido}</td>
                                     <td>{user.email}</td>
-                                    <td>{user.dni}</td>
+                                    <td>{parseDni(user.dni)}</td>
                                     <td>
                                         <FontAwesomeIcon
                                             className='text-warning me-3'
