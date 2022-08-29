@@ -19,7 +19,8 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 .bg-primary { background-color: #ade8f4!important; }
 .bg-secondary { background-color: #056799!important; }
 .bg-darker { background-color: #023E8A!important; }
-.bg-light-gray { background-color: #dddddd!important; }
+.bg-lightgray { background-color: #f5f5f5!important; }
+.bg-inherit { background-color: inherit!important; }
 
 
 /* Border Color */

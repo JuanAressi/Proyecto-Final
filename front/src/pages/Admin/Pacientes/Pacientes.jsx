@@ -13,6 +13,7 @@ import Table from '../../../components/Table/Table';
 
 function Pacientes() {
     const [lastShowPerPage, setLastShowPerPage] = useState(10);
+    const [lastPage, setLastPage] = useState(1);
     const [page, setPage] = useState(1);
     const [searchInput, setSearchInput] = useState('');
     const [showAlert, setShowAlert] = useState(false);
@@ -62,6 +63,7 @@ function Pacientes() {
             },
             success: function (response) {
                 setLastShowPerPage(showPerPage);
+                setLastPage(page);
                 setShowSpinner(false);
                 setTotalUsers(response.user_count);
                 setUsers(response.usuarios);
@@ -100,10 +102,10 @@ function Pacientes() {
     }
 
     return (
-        <div id='pageAdminPacientes' className='d-flex'>
+        <div id='pageAdminPacientes' className='d-flex bg-lightgray'>
             <SideNav />
 
-            <div className='container py-5'>
+            <div className='container p-5'>
                 <div className='d-flex align-items-center mb-4'>
                     <h1 id='pageTitle' className='display-3 text-secondary me-4'>Pacientes</h1>
                     {showSpinner && <img src={loadingGif} alt="wait until the page loads" height='20px'/>}
@@ -120,6 +122,7 @@ function Pacientes() {
 
                 <Table
                     lastShowPerPage={lastShowPerPage}
+                    lastPage={lastPage}
                     page={page}
                     setPage={setPage}
                     setSearchInput={setSearchInput}

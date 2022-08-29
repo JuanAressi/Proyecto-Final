@@ -5,7 +5,7 @@ import Filters from './Filters/Filters';
 import Pagination from './Pagination/Pagination';
 import './style.css';
 
-function Table( { lastShowPerPage, page, setPage, setSearchInput, setShowPerPage, setUserToDelete, showPerPage, tableHeads, totalUsers, users } ) {
+function Table( { lastShowPerPage, lastPage, page, setPage, setSearchInput, setShowPerPage, setUserToDelete, showPerPage, tableHeads, totalUsers, users } ) {
     return (
         <div id='table'>
             <Filters 
@@ -13,7 +13,7 @@ function Table( { lastShowPerPage, page, setPage, setSearchInput, setShowPerPage
                 setSearchInput={setSearchInput}
             />
 
-            <table className='table table-striped border box-shadow-dark mt-3 mb-0'>
+            <table className='table table-striped bg-white border box-shadow-dark mt-3 mb-0'>
                 <thead>
                     <tr>
                         {tableHeads && tableHeads.map( ( tableHead, index ) => {
@@ -31,7 +31,7 @@ function Table( { lastShowPerPage, page, setPage, setSearchInput, setShowPerPage
                         if (index < lastShowPerPage) {
                             return (
                                 <tr key={index}>
-                                    <td>{(index + 1) + ((page - 1) * showPerPage)}</td>
+                                    <td>{(index + 1) + ((lastPage - 1) * showPerPage)}</td>
                                     <td>{user.nombre} {user.apellido}</td>
                                     <td>{user.email}</td>
                                     <td>{user.dni}</td>

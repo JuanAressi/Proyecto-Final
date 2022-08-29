@@ -1,16 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { faUsers, faUserDoctor, faFileMedical, faPlus } from '@fortawesome/free-solid-svg-icons';
-import Navbar from '../../components/Navbar/Navbar';
+import SideNav from '../../components/SideNav/SideNav';
 import Card from '../../components/Card/Card';
 import './style.css';
 
 function Admin() {
     return (
-        <div id='adminPage'>
-            <Navbar />
+        <div id='adminPage' className='d-flex bg-lightgray'>
+            <SideNav />
 
-            <div className='container'>
+            <div className='container p-5'>
                 <h1 className='text-center mt-5'>Bienvenido Admin</h1>
 
 
