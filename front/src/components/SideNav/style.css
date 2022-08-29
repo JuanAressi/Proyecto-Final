@@ -2,6 +2,7 @@
     position: sticky;
     top: 0;
     height: 100vh;
+    box-shadow: 1rem 0 1rem rgba(0, 0, 0, 0.15);
 }
 
 #sideNav .nav-container {
@@ -13,7 +14,7 @@
 }
 
 #sideNav .nav-item.active {
-    background: #fff;
+    background: #f5f5f5;
     color: #000!important;
 }
 
