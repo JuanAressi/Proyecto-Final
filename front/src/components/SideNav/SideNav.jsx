@@ -7,7 +7,7 @@ import './style.css';
 
 function SideNav() {
     return (
-        <div id='sideNav' className='d-flex flex-column bg-secondary'>
+        <div id='sideNav' className='d-flex flex-column bg-primary'>
             <Link to='/panel-admin' className='mt-3' >
                 <Logo style='primary' />
             </Link>

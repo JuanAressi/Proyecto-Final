@@ -17,7 +17,7 @@ function Input({ id, type, name, placeholder, value, onChange, icon }) {
 
             <label htmlFor='username' className='floatingInput'>{placeholder}</label>
 
-            <FontAwesomeIcon className='text-secondary' icon={icon} />
+            <FontAwesomeIcon className='text-primary' icon={icon} />
         </div>
     )
 }

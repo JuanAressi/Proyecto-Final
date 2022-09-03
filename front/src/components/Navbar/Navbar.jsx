@@ -38,7 +38,7 @@ function Navbar() {
                             </Link>
 
                             <span id='hamburgerMenuContainer' className='p-4 d-none' onClick={handleHamburgerMenuContainer}>
-                                <FontAwesomeIcon id='hamburgerMenu' className='text-secondary fa-2x' icon={faBars} />
+                                <FontAwesomeIcon id='hamburgerMenu' className='text-primary fa-2x' icon={faBars} />
                             </span>
                         </div>
                         

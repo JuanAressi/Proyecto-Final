@@ -10,22 +10,19 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 
 
 /* Text Color */
-.text-primary { color: #ade8f4!important; }
-.text-secondary { color: #056799!important; }
+.text-primary { color: #056799!important; }
 .text-darker { color: #023E8A!important; }
 
 
 /* Background Color */
-.bg-primary { background-color: #ade8f4!important; }
-.bg-secondary { background-color: #056799!important; }
+.bg-primary { background-color: #056799!important; }
 .bg-darker { background-color: #023E8A!important; }
 .bg-lightgray { background-color: #f5f5f5!important; }
 .bg-inherit { background-color: inherit!important; }
 
 
 /* Border Color */
-.border-primary { border: 1px solid #ade8f4 !important; }
-.border-secondary { border: 1px solid #056799 !important; }
+.border-primary { border: 1px solid #056799 !important; }
 
 
 /* Box Shadow */

@@ -1,10 +1,11 @@
 import { React, useEffect, useState } from 'react';
 import $ from 'jquery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencil, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import SideNav from '../../../components/SideNav/SideNav';
-import Modal from '../../../components/Modal/Modal';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Alert from '../../../components/Alert/Alert';
+import Button from '../../../components/Buttons/Button';
+import Modal from '../../../components/Modal/Modal';
+import SideNav from '../../../components/SideNav/SideNav';
 import Filters from '../../../components/Table/Filters/Filters';
 import Pagination from '../../../components/Table/Pagination/Pagination';
 import loadingGif from '../../../components/assets/img/loadingGif.gif';
@@ -61,6 +62,9 @@ function Pacientes() {
                 'search': searchInput,
             },
             success: function (response) {
+                // Scroll to top.
+                window.scrollTo(0, 0);
+
                 setLastShowPerPage(showPerPage);
                 setLastPage(page);
                 setShowSpinner(false);
@@ -76,25 +80,26 @@ function Pacientes() {
 
     // Delete a user.
     const deleteUser = () => {
+        setShowSpinner(true);
+
         $.ajax({
             url: 'http://local.misturnos/api/usuarios/' + userToDelete,
             type: 'DELETE',
             dataType: 'json',
             success: function (response) {
                 if (response.success) {
-                    // Empty #alert message after 3 seconds.
-                    setTimeout(function () {
-                        setShowAlert(false);
-                    }, 4000);
+                    setShowSpinner(false);
+
+                    // Show success message.
+                    setShowAlert(true);
 
                     // Reload the 'Pacientes' table.
                     doSearch();
 
-                    // Close modal.
-                    $('#closeModal').click();
-
-                    // Show success message.
-                    setShowAlert(true);
+                    // Empty #alert message after 3 seconds.
+                    setTimeout(function () {
+                        setShowAlert(false);
+                    }, 4000);
                 }
             }
         });
@@ -106,8 +111,17 @@ function Pacientes() {
 
             <div className='container p-5'>
                 <div className='d-flex align-items-center mb-4'>
-                    <h1 id='pageTitle' className='display-3 text-secondary me-4'>Pacientes</h1>
-                    {showSpinner && <img src={loadingGif} alt="wait until the page loads" height='20px'/>}
+                    <h1 id='pageTitle' className='display-3 text-primary me-4'>Pacientes</h1>
+
+                    <div style={{width: '40px'}}>
+                        {showSpinner && <img src={loadingGif} alt="wait until the page loads" height='20px'/>}
+                    </div>
+
+                    <Button
+                        type='secondary'
+                        text='Agregar Paciente'
+                        icon={faPlus}
+                    />
                 </div>
 
                 {showAlert ? 
@@ -137,7 +151,13 @@ function Pacientes() {
             <Modal
                 id='modalDelete'
                 text='¿Está seguro que desea eliminar este paciente?'
-                handleDelete={deleteUser}
+                handleDelete={() => {
+                    // Close modal.
+                    $('#closeModal').click();
+
+                    // Delete the user.
+                    deleteUser();
+                }}
             />
         </div>
     )

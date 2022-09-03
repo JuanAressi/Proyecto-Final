@@ -8,7 +8,7 @@ function AboutUs() {
     return (
         <div id='aboutUs' className='bg-white mt-5'>
             <div className="container">
-                <h2 className='text-secondary text-center text-uppercase mb-4'>Comprometidos con tu salud</h2>
+                <h2 className='text-primary text-center text-uppercase mb-4'>Comprometidos con tu salud</h2>
     
                 <div className="row d-flex justify-content-center p-5">
                     <Card 
@@ -35,7 +35,7 @@ function AboutUs() {
                 <Waves />
             </div>
 
-            <div className='bg-secondary' style={{ height: '5rem' }}></div>
+            <div className='bg-primary' style={{ height: '5rem' }}></div>
         </div>
     )
 }
