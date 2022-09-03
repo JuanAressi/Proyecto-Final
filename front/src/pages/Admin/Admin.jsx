@@ -51,8 +51,8 @@ function Admin() {
                         to='/panel-admin/...'
                     >
                         <Card 
-                            title='Gestionar ... ?'
-                            text=''
+                            title='Gestionar Reportes'
+                            text='Cree y administre los distintos reportes'
                             icon={faPlus}
                         />
                     </Link>

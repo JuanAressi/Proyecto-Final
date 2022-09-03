@@ -151,7 +151,7 @@ function Register() {
                                 <div id="buttonsContainer" className='d-flex flex-column justify-content-center align-items-center mt-4'>
                                     <button
                                         id='crearCuenta'
-                                        className='btn bg-secondary text-white box-shadow-dark text-uppercase w-50'
+                                        className='btn bg-primary text-white box-shadow-dark text-uppercase w-50'
                                         type='submit'
                                         disabled={btnDisabled}
                                         onClick={handleRegisterStep1}

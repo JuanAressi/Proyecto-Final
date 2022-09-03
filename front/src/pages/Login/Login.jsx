@@ -123,7 +123,7 @@ function Login() {
                             />
 
                             <Link to='/recuperar-contraseña'
-                                className='text-secondary text-end w-100'
+                                className='text-primary text-end w-100'
                                 type='button'
                             >
                                 Olvide mi contraseña
@@ -132,7 +132,7 @@ function Login() {
                             <div id="buttonsContainer" className='d-flex flex-column justify-content-center align-items-center mt-3'>
                                 <button 
                                     id='ingresar'
-                                    className='btn bg-secondary text-white box-shadow-dark text-uppercase w-50 mb-3'
+                                    className='btn bg-primary text-white box-shadow-dark text-uppercase w-50 mb-3'
                                     type='submit'
                                     disabled={btnDisabled}
                                     onClick={handleSubmitForm}
@@ -142,7 +142,7 @@ function Login() {
 
                                 <Link to='/register'
                                     id='registrarse'
-                                    className='btn bg-white text-secondary border border-secondary box-shadow-dark text-uppercase w-50 mb-2'
+                                    className='btn bg-white text-primary border border-primary box-shadow-dark text-uppercase w-50 mb-2'
                                     type='button'
                                 >
                                     Registrate
