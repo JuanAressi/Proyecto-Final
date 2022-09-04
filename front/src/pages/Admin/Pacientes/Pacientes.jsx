@@ -3,14 +3,12 @@ import $ from 'jquery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Alert from '../../../components/Alert/Alert';
-import Button from '../../../components/Buttons/Button';
 import Modal from '../../../components/Modal/Modal';
 import SideNav from '../../../components/SideNav/SideNav';
-import Filters from '../../../components/Table/Filters/Filters';
-import Pagination from '../../../components/Table/Pagination/Pagination';
 import loadingGif from '../../../components/assets/img/loadingGif.gif';
 import './style.css';
 import Table from '../../../components/Table/Table';
+import NuevoPaciente from './NuevoPaciente';
 
 function Pacientes() {
     const [lastShowPerPage, setLastShowPerPage] = useState(10);
@@ -111,17 +109,24 @@ function Pacientes() {
 
             <div className='container p-5'>
                 <div className='d-flex align-items-center mb-4'>
-                    <h1 id='pageTitle' className='display-3 text-primary me-4'>Pacientes</h1>
+                    <h1 id='pageTitle' className='display-3 text-primary text-shadow-dark me-4'>Pacientes</h1>
 
                     <div style={{width: '40px'}}>
                         {showSpinner && <img src={loadingGif} alt="wait until the page loads" height='20px'/>}
                     </div>
 
-                    <Button
-                        type='secondary'
-                        text='Agregar Paciente'
-                        icon={faPlus}
-                    />
+                    <button
+                        className="btn bg-white text-primary border-primary"
+                        data-bs-toggle='modal'
+                        data-bs-target={'#modalAdd'}
+                    >
+                        <FontAwesomeIcon
+                            className='text-primary me-1'
+                            icon={faPlus}
+                        />
+
+                        Agregar Paciente
+                    </button>
                 </div>
 
                 {showAlert ? 
@@ -147,6 +152,10 @@ function Pacientes() {
                     users={users}
                 />
             </div>
+
+            <NuevoPaciente
+
+            />
 
             <Modal
                 id='modalDelete'

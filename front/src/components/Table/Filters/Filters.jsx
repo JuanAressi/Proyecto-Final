@@ -41,7 +41,7 @@ function Filters( { setShowPerPage, setSearchInput } ) {
 
                 <div id='searchContainer' className='position-relative w-25'>
                     <input
-                        className='bg-white w-100'
+                        className='bg-white box-shadow-dark-1 w-100'
                         type='text'
                         placeholder='Escribe para buscar...'
                         onChange={(e) => setSearchInput(e.target.value)}

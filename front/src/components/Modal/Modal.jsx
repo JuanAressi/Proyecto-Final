@@ -23,7 +23,7 @@ function Modal({ id, text, handleDelete }) {
 
 
                             <button className='btn btn-danger box-shadow-dark w-50 mb-3' onClick={handleDelete}>Eliminar</button>
-                            <button id='closeModal' className='btn btn-primary box-shadow-dark w-50' data-bs-dismiss='modal'>Cerrar</button>
+                            <button id='closeModal' className='btn btn-secondary box-shadow-dark w-50' data-bs-dismiss='modal'>Cerrar</button>
                         </div>
                     </div>
                 </div>

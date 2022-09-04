@@ -1,4 +1,5 @@
-import React from 'react';
+import { React, useEffect } from 'react';
+import ReactTooltip from 'react-tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrashAlt, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import Filters from './Filters/Filters';
@@ -6,6 +7,10 @@ import Pagination from './Pagination/Pagination';
 import './style.css';
 
 function Table( { lastShowPerPage, lastPage, page, setPage, setSearchInput, setShowPerPage, setUserToDelete, showPerPage, tableHeads, totalUsers, users } ) {
+    useEffect(() => {
+        ReactTooltip.rebuild();
+    });
+
     // Parse the DNI.
     const parseDni = (dni) => {
         if (dni > 999999) {
@@ -62,6 +67,7 @@ function Table( { lastShowPerPage, lastPage, page, setPage, setSearchInput, setS
                     })}
                 </tbody>
             </table>
+
             {users === undefined && 
                 <div className='d-flex flex-column bg-white border box-shadow-dark text-center p-2'>
                     <FontAwesomeIcon
