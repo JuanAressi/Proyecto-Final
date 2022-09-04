@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-function Button( { type, text, icon } ) {
+function Button( { id, type, text, icon } ) {
 	let classes = '';
 
 	if (type === 'primary') {
@@ -11,7 +11,10 @@ function Button( { type, text, icon } ) {
 	}
 
     return (
-        <button className={'btn ' + classes}>
+        <button
+            id={id}
+            className={'btn box-shadow-dark-1 ' + classes}
+        >
             {icon && 
                 <FontAwesomeIcon
                     className='text-primary me-1'
