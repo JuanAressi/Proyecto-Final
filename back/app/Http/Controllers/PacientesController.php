@@ -9,7 +9,7 @@ use App\Models\Pacientes;
 class PacientesController extends Controller
 {
     /**
-     * Function getAll - Returns all Pacientes from database that matchs with the request.
+     * Function getAll - Returns all Pacientes from database that matches with the request.
      *
      * @return array - An array of all users.
      */
@@ -89,6 +89,39 @@ class PacientesController extends Controller
             return json_encode(
                 array(
                     'error' => 'No pacientes found.'
+                )
+            );
+        }
+    }
+
+
+    /**
+     * Function getById - Returns a Paciente from database that matches with the request.
+     *
+     * @return array - The Paciente.
+     */
+    public function getById(Request $request, $id)
+    {
+        // Get paciente.
+        $paciente = Usuarios::leftJoin('pacientes', 'usuarios.id', '=', 'pacientes.id_usuario')
+            ->where('usuarios.rol', 'paciente')
+            ->where('usuarios.estado', 'activo')
+            ->where('usuarios.id', $id)
+            ->first();
+
+        // Check if paciente is found.
+        if ($paciente) {
+            // Return paciente.
+            return json_encode(
+                array(
+                    'paciente' => $paciente,
+                )
+            );
+        } else {
+            // Return error.
+            return json_encode(
+                array(
+                    'error' => 'Paciente not found.'
                 )
             );
         }
