@@ -14,9 +14,12 @@ class Usuarios extends Model
         'apellido',
         'email',
         'contraseña',
+        'fecha_nacimiento',
+        'genero',
         'dni',
         'telefono',
-        'estado',
         'rol',
+        'estado',
+        'historial_modificaciones',
     ];
 }

@@ -12,9 +12,8 @@ class Pacientes extends Migration {
      */
     public function up() {
         Schema::create('pacientes', function (Blueprint $table) {
-            $table->bigIncrements('id')->unique();
-            $table->bigInteger('id_usuario');
-            $table->bigInteger('id_obra_social');
+            $table->bigInteger('id_usuario')->unique();
+            $table->bigInteger('numero_obra_social')->nullable();
             $table->string('historia_clinica')->nullable();
             $table->string('turnos')->nullable();
             $table->timestamps();

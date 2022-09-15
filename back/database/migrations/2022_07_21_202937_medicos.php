@@ -12,10 +12,8 @@ class Medicos extends Migration {
      */
     public function up() {
         Schema::create('medicos', function (Blueprint $table) {
-            $table->bigIncrements('id')->unique();
-            $table->bigInteger('id_usuario');
+            $table->bigInteger('id_usuario')->unique();
             $table->string('turnos_disponibles')->nullable();
-            $table->string('obras_sociales')->nullable();
             $table->timestamps();
         });
     }

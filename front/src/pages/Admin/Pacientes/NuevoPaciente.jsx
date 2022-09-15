@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faX } from '@fortawesome/free-solid-svg-icons';
 import './style.css';
 
-function NuevoPaciente() {
+function NuevoPaciente( { pacienteNombre, pacienteApellido, pacienteFechaNacimiento, pacienteEmail, pacienteDni, pacienteTelefono, pacienteGenero, pacienteObraSocial, setPacienteNombre, setPacienteApellido, setPacienteFechaNacimiento, setPacienteEmail, setPacienteDni, setPacienteTelefono, setPacienteGenero, setPacienteObraSocial, addPaciente } ) {
     return (
         <div id='modalAdd' className='modal fade' tabIndex='-1' aria-hidden='true'>
             <div className='modal-dialog modal-dialog-centered'>
@@ -22,7 +22,7 @@ function NuevoPaciente() {
                     </div>
 
                     <div className='d-flex flex-column align-items-center'>
-                        <div className="d-flex justify-content-center align-items-center row mb-3">
+                        <form id='formAdd' className="d-flex justify-content-center align-items-center row mb-3">
                             <div className='col-lg-4 col-md-6 mb-2'>
                                 <label htmlFor='nombre'>Nombre</label>
                                     
@@ -32,6 +32,8 @@ function NuevoPaciente() {
                                     name='nombre'
                                     placeholder='Nombre'
                                     aria-label='Nombre'
+                                    value={pacienteNombre}
+                                    onChange={e => setPacienteNombre(e.target.value)}
                                 />
                             </div>
 
@@ -44,6 +46,8 @@ function NuevoPaciente() {
                                     name='apellido'
                                     placeholder='Apellido'
                                     aria-label='Apellido'
+                                    value={pacienteApellido}
+                                    onChange={e => setPacienteApellido(e.target.value)}
                                 />
                             </div>
 
@@ -52,10 +56,12 @@ function NuevoPaciente() {
                                     
                                 <input
                                     className='form-control'
-                                    type='fecha_nacimiento'
+                                    type='date'
                                     name='fecha_nacimiento'
                                     placeholder='Fecha de Nacimiento'
                                     aria-label='Fecha de Nacimiento'
+                                    value={pacienteFechaNacimiento}
+                                    onChange={e => setPacienteFechaNacimiento(e.target.value)}
                                 />
                             </div>
 
@@ -68,6 +74,8 @@ function NuevoPaciente() {
                                     name='email'
                                     placeholder='Email'
                                     aria-label='Email'
+                                    value={pacienteEmail}
+                                    onChange={e => setPacienteEmail(e.target.value)}
                                 />
                             </div>
 
@@ -80,6 +88,8 @@ function NuevoPaciente() {
                                     name='dni'
                                     placeholder='DNI'
                                     aria-label='DNI'
+                                    value={pacienteDni}
+                                    onChange={e => setPacienteDni(e.target.value)}
                                 />
                             </div>
 
@@ -92,6 +102,8 @@ function NuevoPaciente() {
                                     name='telefono'
                                     placeholder='Telefono'
                                     aria-label='Telefono'
+                                    value={pacienteTelefono}
+                                    onChange={e => setPacienteTelefono(e.target.value)}
                                 />
                             </div>                            
 
@@ -101,7 +113,10 @@ function NuevoPaciente() {
                                 <select
                                     className='form-control'
                                     name='genero'
+                                    value={pacienteGenero}
+                                    onChange={e => setPacienteGenero(e.target.value)}
                                 >
+                                    <option value='' disabled>Seleccione una opción</option>
                                     <option value='Femenino'>Femenino</option>
                                     <option value='Masculino'>Masculino</option>
                                     <option value='No Binario'>No Binario</option>
@@ -120,12 +135,27 @@ function NuevoPaciente() {
                                     name='numero_obra_social'
                                     placeholder='Numero de Obra Social'
                                     aria-label='Numero de Obra Social'
+                                    value={pacienteObraSocial}
+                                    onChange={e => setPacienteObraSocial(e.target.value)}
                                 />
                             </div>
-                        </div>
+                        </form>
 
-                        <button className='btn bg-primary text-white box-shadow-dark w-50 mb-3'>Agregar</button>
-                        <button id='closeModal' className='btn btn-secondary box-shadow-dark w-50' data-bs-dismiss='modal'>Cerrar</button>
+                        <button
+                            className='btn bg-primary text-white box-shadow-dark w-50 mb-3'
+                            onClick={addPaciente}
+                            disabled={pacienteNombre === '' || pacienteApellido === '' || pacienteFechaNacimiento === '' || pacienteEmail === '' || pacienteDni === '' || pacienteTelefono === '' || pacienteGenero === '' || pacienteObraSocial === ''}
+                        >
+                            Agregar
+                        </button>
+
+                        <button
+                            id='closeModal'
+                            className='btn btn-secondary box-shadow-dark w-50'
+                            data-bs-dismiss='modal'
+                        >
+                            Cerrar
+                        </button>
                     </div>
                 </div>
             </div>
