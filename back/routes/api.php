@@ -29,4 +29,5 @@ Route::delete('usuarios/{id}', 'App\Http\Controllers\UsuariosController@delete')
 
 // Pacientes.
 Route::get('pacientes', 'App\Http\Controllers\PacientesController@getAll');
+Route::get('pacientes/{id}', 'App\Http\Controllers\PacientesController@getById');
 Route::post('pacientes', 'App\Http\Controllers\PacientesController@addNew');

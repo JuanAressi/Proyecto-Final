@@ -6,20 +6,24 @@ import Alert from '../../../components/Alert/Alert';
 import Modal from '../../../components/Modal/Modal';
 import SideNav from '../../../components/SideNav/SideNav';
 import loadingGif from '../../../components/assets/img/loadingGif.gif';
-import './style.css';
 import Table from '../../../components/Table/Table';
 import NuevoPaciente from './NuevoPaciente';
+import EditarPaciente from './EditarPaciente';
+import './style.css';
 
 function Pacientes() {
-    // Pagination
+    // Pagination.
     const [lastShowPerPage, setLastShowPerPage] = useState(10);
     const [lastPage, setLastPage] = useState(1);
     const [page, setPage] = useState(1);
     const [searchInput, setSearchInput] = useState('');
     const [showPerPage, setShowPerPage] = useState(10);
-    const [showSpinner, setShowSpinner] = useState(false);
     const [totalUsers, setTotalUsers] = useState(0);
     const [users, setUsers] = useState([]);
+    const [showSpinner, setShowSpinner] = useState(false);
+
+    // Users.
+    const [userToEdit, setUserToEdit] = useState(null);
     const [userToDelete, setUserToDelete] = useState(null);
 
     // Alert. 
@@ -49,7 +53,7 @@ function Pacientes() {
         doSearch();
     }, [showPerPage]);
 
-    // Search 'Pacientes' when 'searchInput' changes (delay 1s).
+    // Search 'Pacientes' when 'searchInput' changes (delay 0.75s).
     useEffect(() => {
         setPage(1);
 
@@ -59,10 +63,41 @@ function Pacientes() {
 
         return () => clearTimeout(delayDebounce)
     } , [searchInput]);
+    
+    // Get 'Paciente' by ID and complete 'userToEdit' state.
+    useEffect(() => {
+        // Show spinner.
+        setShowSpinner(true);
+
+        $.ajax({
+            url: 'http://local.misturnos/api/pacientes/' + userToEdit,
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+
+                debugger
+                // Scroll to top.
+                window.scrollTo(0, 0);
+
+                // Hide spinner.
+                setShowSpinner(false);
+
+                setLastShowPerPage(showPerPage);
+                setLastPage(page);
+                setTotalUsers(response.pacientes_count);
+                setUsers(response.pacientes);
+            },
+            error: function (error) {
+                // Hide spinner.
+                setShowSpinner(false);
+            }
+        });        
+    }, [userToEdit]);
 
 
     // Function search.
     const doSearch = () => {
+        // Show spinner.
         setShowSpinner(true);
 
         $.ajax({
@@ -78,13 +113,16 @@ function Pacientes() {
                 // Scroll to top.
                 window.scrollTo(0, 0);
 
+                // Hide spinner.
+                setShowSpinner(false);
+
                 setLastShowPerPage(showPerPage);
                 setLastPage(page);
-                setShowSpinner(false);
                 setTotalUsers(response.pacientes_count);
                 setUsers(response.pacientes);
             },
             error: function (error) {
+                // Hide spinner.
                 setShowSpinner(false);
             }
         });
@@ -231,6 +269,7 @@ function Pacientes() {
                     setPage={setPage}
                     setSearchInput={setSearchInput}
                     setShowPerPage={setShowPerPage}
+                    setUserToEdit={setUserToEdit}
                     setUserToDelete={setUserToDelete}
                     showPerPage={showPerPage}  
                     tableHeads={['#', 'Nombre y Apellido', 'Email', 'DNI', 'Acciones']}
@@ -257,6 +296,26 @@ function Pacientes() {
                 setPacienteGenero={setPacienteGenero}
                 setPacienteObraSocial={setPacienteObraSocial}
                 addPaciente={addPaciente}
+            />
+
+            <EditarPaciente
+                userToEdit={userToEdit}
+                pacienteNombre={pacienteNombre}
+                pacienteApellido={pacienteApellido}
+                pacienteFechaNacimiento={pacienteFechaNacimiento}
+                pacienteEmail={pacienteEmail}
+                pacienteDni={pacienteDni}
+                pacienteTelefono={pacienteTelefono}
+                pacienteGenero={pacienteGenero}
+                pacienteObraSocial={pacienteObraSocial}
+                setPacienteNombre={setPacienteNombre}
+                setPacienteApellido={setPacienteApellido}
+                setPacienteFechaNacimiento={setPacienteFechaNacimiento}
+                setPacienteEmail={setPacienteEmail}
+                setPacienteDni={setPacienteDni}
+                setPacienteTelefono={setPacienteTelefono}
+                setPacienteGenero={setPacienteGenero}
+                setPacienteObraSocial={setPacienteObraSocial}
             />
 
             <Modal

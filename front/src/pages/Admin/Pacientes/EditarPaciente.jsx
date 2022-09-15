@@ -3,13 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faX } from '@fortawesome/free-solid-svg-icons';
 import './style.css';
 
-function NuevoPaciente( { pacienteNombre, pacienteApellido, pacienteFechaNacimiento, pacienteEmail, pacienteDni, pacienteTelefono, pacienteGenero, pacienteObraSocial, setPacienteNombre, setPacienteApellido, setPacienteFechaNacimiento, setPacienteEmail, setPacienteDni, setPacienteTelefono, setPacienteGenero, setPacienteObraSocial, addPaciente } ) {
+function EditarPaciente( { userToEdit, pacienteNombre, pacienteApellido, pacienteFechaNacimiento, pacienteEmail, pacienteDni, pacienteTelefono, pacienteGenero, pacienteObraSocial, setPacienteNombre, setPacienteApellido, setPacienteFechaNacimiento, setPacienteEmail, setPacienteDni, setPacienteTelefono, setPacienteGenero, setPacienteObraSocial, addPaciente } ) {
+    console.log(userToEdit);
     return (
-        <div id='modalAdd' className='modal fade' tabIndex='-1' aria-hidden='true'>
+        <div id='modalEdit' className='modal fade' tabIndex='-1' aria-hidden='true'>
             <div className='modal-dialog modal-dialog-centered'>
                 <div className='modal-content position-relative'>
                     <div className='bg-primary box-shadow-dark-1 px-4 py-2'>
-                        <h1 className='display-6 text-white text-shadow-dark me-4'>Agregar nuevo Paciente</h1>
+                        <h1 className='display-6 text-white text-shadow-dark me-4'>Editar Paciente</h1>
                     </div>
 
                     <div className='d-flex justify-content-center align-items-center position-absolute bg-white rounded-circle box-shadow-dark'>
@@ -163,4 +164,4 @@ function NuevoPaciente( { pacienteNombre, pacienteApellido, pacienteFechaNacimie
     )
 }
 
-export default NuevoPaciente
+export default EditarPaciente
