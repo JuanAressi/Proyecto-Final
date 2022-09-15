@@ -164,20 +164,31 @@ class UsuariosSeeder extends Seeder
             7 => '@xmail.com',
         );
 
+        // Create an array of genders.
+        $genders = array(
+            0 => 'Masculino',
+            1 => 'Femenino',
+            2 => 'No binario',
+            3 => 'No especificado',
+        );
+
         // Create users.
-        for ($i = 0; $i < 500; $i++) {
+        for ($i = 0; $i < 758; $i++) {
             // Create Usuario.
             $usuario = new Usuarios();
 
             $first_name   = rand(0, count($names) - 1);
             $last_name    = rand(0, count($surnames) - 1);
             $email_prefix = rand(0, count($emails) - 1);
+            $gender       = rand(0, count($genders) - 1);
 
             $usuario->nombre     = $names[$first_name];
             $usuario->apellido   = $surnames[$last_name];
             $usuario->email      = $names[$first_name] . $i . $emails[$email_prefix];
             $usuario->contraseña = md5('123456');
-            $usuario->dni        = random_int(10000000, 99999999);
+            $usuario->dni        = random_int(10000000, 59999999);
+            $usuario->fecha_nacimiento = date('Y-m-d', strtotime('-' . rand(18, 60) . ' years'));
+            $usuario->genero     = $genders[$gender];
             $usuario->telefono   = random_int(152000000, 156999999);
             $usuario->estado     = 'activo';
             $usuario->rol        = 'paciente';
@@ -187,8 +198,8 @@ class UsuariosSeeder extends Seeder
             // Create Paciente.
             $paciente = new Pacientes();
 
-            $paciente->id_usuario = $usuario->id;
-            $paciente->id_obra_social = random_int(1, 5);
+            $paciente->id_usuario         = $usuario->id;
+            $paciente->numero_obra_social = random_int(10000000, 99999999);
 
             $paciente->save();
         }

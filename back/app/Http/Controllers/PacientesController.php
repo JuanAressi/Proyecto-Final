@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuarios;
+use App\Models\Pacientes;
 
 class PacientesController extends Controller
 {
     /**
-     * Function getAll - Returns all users from database.
+     * Function getAll - Returns all Pacientes from database that matchs with the request.
      *
-     * @return array $users - An array of all users.
+     * @return array - An array of all users.
      */
     public function getAll(Request $request)
     {
@@ -95,16 +96,39 @@ class PacientesController extends Controller
 
 
     /**
-     * Function getById - Returns a user by ID.
+     * Function addNew - Add a new Paciente to database.
      *
-     * @param int $id - The ID of the user.
+     * @param Request $request - The request object.
      *
-     * @return array $user - An array of the user.
+     * @return array $user - The new user.
      */
-    public function getById($id)
+    public function addNew(Request $request)
     {
-        $paciente = Pacientes::where('id', $id)->select('*')->get();
+        $obra_social = $request->input('obra_social');
 
-        return json_encode($paciente);
+        $usuario = Usuarios::create([
+            'nombre'           => $request->input('nombre'),
+            'apellido'         => $request->input('apellido'),
+            'email'            => $request->input('email'),
+            'contraseña'       => md5($request->input('dni')),
+            'fecha_nacimiento' => $request->input('fecha_nacimiento'),
+            'dni'              => $request->input('dni'),
+            'telefono'         => $request->input('telefono'),
+            'genero'           => $request->input('genero'),
+            'rol'              => 'paciente',
+            'estado'           => 'activo',
+        ]);
+
+        $paciente = Pacientes::create([
+            'id_usuario'         => $usuario->id,
+            'numero_obra_social' => $obra_social,
+        ]);
+
+        return json_encode(
+            array(
+                'success' => true,
+                'message' => 'El Paciente se ha creado correctamente.',
+            )
+        );
     }
 }

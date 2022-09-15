@@ -11,7 +11,7 @@ class Pacientes extends Model
 
     protected $fillable = [
         'id_usuario',
-        'id_obra_social',
+        'numero_obra_social',
         'historia_clinica',
         'turnos',
     ];

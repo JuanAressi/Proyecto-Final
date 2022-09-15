@@ -11,17 +11,32 @@ import Table from '../../../components/Table/Table';
 import NuevoPaciente from './NuevoPaciente';
 
 function Pacientes() {
+    // Pagination
     const [lastShowPerPage, setLastShowPerPage] = useState(10);
     const [lastPage, setLastPage] = useState(1);
     const [page, setPage] = useState(1);
     const [searchInput, setSearchInput] = useState('');
-    const [showAlert, setShowAlert] = useState(false);
     const [showPerPage, setShowPerPage] = useState(10);
     const [showSpinner, setShowSpinner] = useState(false);
     const [totalUsers, setTotalUsers] = useState(0);
     const [users, setUsers] = useState([]);
     const [userToDelete, setUserToDelete] = useState(null);
 
+    // Alert. 
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertType, setAlertType] = useState('');
+    const [alertMessage, setAlertMessage] = useState('');
+
+    // Paciente information.
+    const [pacienteNombre, setPacienteNombre] = useState('');
+    const [pacienteApellido, setPacienteApellido] = useState('');
+    const [pacienteDni, setPacienteDni] = useState('');
+    const [pacienteEmail, setPacienteEmail] = useState('');
+    const [pacienteTelefono, setPacienteTelefono] = useState('');
+    const [pacienteFechaNacimiento, setPacienteFechaNacimiento] = useState('');
+    const [pacienteGenero, setPacienteGenero] = useState('');
+    const [pacienteObraSocial, setPacienteObraSocial] = useState('');
+    
     // Search 'Pacientes' when 'page' changes (delay 0s).
     useEffect(() => {
         doSearch();
@@ -76,8 +91,76 @@ function Pacientes() {
     }
 
 
+    // Add new 'Paciente'.
+    const addPaciente = () => {
+        const paciente = {
+            nombre: pacienteNombre,
+            apellido: pacienteApellido,
+            fecha_nacimiento: pacienteFechaNacimiento,
+            email: pacienteEmail,
+            dni: pacienteDni,
+            telefono: pacienteTelefono,
+            genero: pacienteGenero,
+            obra_social: pacienteObraSocial,
+        }
+
+        // Show spinner.
+        setShowSpinner(true);
+
+        $.ajax({
+            url: 'http://local.misturnos/api/pacientes',
+            type: 'POST',
+            dataType: 'json',
+            data: paciente,
+            success: function (response) {
+                debugger
+                // Hide spinner.
+                setShowSpinner(false);
+
+                if (response.success) {
+                    // Reload 'Pacientes' list.
+                    doSearch();
+
+                    // Show success message.
+                    setAlertType('success');
+                    setAlertMessage(response.message);
+                    setShowAlert(true);
+
+                    // Set values to empty.
+                    setPacienteNombre('');
+                    setPacienteApellido('');
+                    setPacienteFechaNacimiento('');
+                    setPacienteEmail('');
+                    setPacienteDni('');
+                    setPacienteTelefono('');
+                    setPacienteGenero('');
+                    setPacienteObraSocial('');
+
+                    // Close modal.
+                    $('#closeModal').click();
+                } else {
+                    // Show error message.
+                    setAlertType('danger');
+                    setAlertMessage('Error al crear el Paciente.');
+                    setShowAlert(true);
+                }
+                
+
+                // Close alert message after 4 seconds.
+                setTimeout(function () {
+                    setShowAlert(false);
+                }, 4000);
+            },
+            error: function (error) {
+                setShowSpinner(false);
+            }
+        });
+    }
+
+
     // Delete a user.
     const deleteUser = () => {
+        // Show spinner.
         setShowSpinner(true);
 
         $.ajax({
@@ -86,15 +169,18 @@ function Pacientes() {
             dataType: 'json',
             success: function (response) {
                 if (response.success) {
+                    // Hide spinner.
                     setShowSpinner(false);
 
                     // Show success message.
+                    setAlertType('success');
+                    setAlertMessage('El Paciente ha sido eliminado correctamente.');
                     setShowAlert(true);
 
                     // Reload the 'Pacientes' table.
                     doSearch();
 
-                    // Empty #alert message after 3 seconds.
+                    // Close alert message after 4 seconds.
                     setTimeout(function () {
                         setShowAlert(false);
                     }, 4000);
@@ -131,8 +217,8 @@ function Pacientes() {
 
                 {showAlert ? 
                     <Alert
-                        type='success'
-                        message='Se ha eliminado el usuario correctamente.'
+                        type={alertType}
+                        message={alertMessage}
                     />
                         
                     : null
@@ -154,7 +240,23 @@ function Pacientes() {
             </div>
 
             <NuevoPaciente
-
+                pacienteNombre={pacienteNombre}
+                pacienteApellido={pacienteApellido}
+                pacienteFechaNacimiento={pacienteFechaNacimiento}
+                pacienteEmail={pacienteEmail}
+                pacienteDni={pacienteDni}
+                pacienteTelefono={pacienteTelefono}
+                pacienteGenero={pacienteGenero}
+                pacienteObraSocial={pacienteObraSocial}
+                setPacienteNombre={setPacienteNombre}
+                setPacienteApellido={setPacienteApellido}
+                setPacienteFechaNacimiento={setPacienteFechaNacimiento}
+                setPacienteEmail={setPacienteEmail}
+                setPacienteDni={setPacienteDni}
+                setPacienteTelefono={setPacienteTelefono}
+                setPacienteGenero={setPacienteGenero}
+                setPacienteObraSocial={setPacienteObraSocial}
+                addPaciente={addPaciente}
             />
 
             <Modal
