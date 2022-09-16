@@ -69,29 +69,23 @@ function Pacientes() {
         // Show spinner.
         setShowSpinner(true);
 
-        $.ajax({
-            url: 'http://local.misturnos/api/pacientes/' + userToEdit,
-            type: 'GET',
-            dataType: 'json',
-            success: function (response) {
-
-                debugger
-                // Scroll to top.
-                window.scrollTo(0, 0);
-
+        // Loop trough 'users' state to find the 'userToEdit' ID.
+        users.forEach(user => {
+            if (user.id === userToEdit) {
                 // Hide spinner.
                 setShowSpinner(false);
 
-                setLastShowPerPage(showPerPage);
-                setLastPage(page);
-                setTotalUsers(response.pacientes_count);
-                setUsers(response.pacientes);
-            },
-            error: function (error) {
-                // Hide spinner.
-                setShowSpinner(false);
+                // Complete 'userToEdit' state.
+                setPacienteNombre(user.nombre);
+                setPacienteApellido(user.apellido);
+                setPacienteDni(user.dni);
+                setPacienteEmail(user.email);
+                setPacienteTelefono(user.telefono);
+                setPacienteFechaNacimiento(user.fecha_nacimiento);
+                setPacienteGenero(user.genero);
+                setPacienteObraSocial(user.obra_social);
             }
-        });        
+        });
     }, [userToEdit]);
 
 
@@ -165,14 +159,7 @@ function Pacientes() {
                     setShowAlert(true);
 
                     // Set values to empty.
-                    setPacienteNombre('');
-                    setPacienteApellido('');
-                    setPacienteFechaNacimiento('');
-                    setPacienteEmail('');
-                    setPacienteDni('');
-                    setPacienteTelefono('');
-                    setPacienteGenero('');
-                    setPacienteObraSocial('');
+                    setEmptyValues();
 
                     // Close modal.
                     $('#closeModal').click();
@@ -183,6 +170,65 @@ function Pacientes() {
                     setShowAlert(true);
                 }
                 
+
+                // Close alert message after 4 seconds.
+                setTimeout(function () {
+                    setShowAlert(false);
+                }, 4000);
+            },
+            error: function (error) {
+                setShowSpinner(false);
+            }
+        });
+    }
+
+
+    // Update 'Paciente'.
+    const updatePaciente = () => {
+        const paciente = {
+            id: userToEdit,
+            nombre: pacienteNombre,
+            apellido: pacienteApellido,
+            fecha_nacimiento: pacienteFechaNacimiento,
+            email: pacienteEmail,
+            dni: pacienteDni,
+            telefono: pacienteTelefono,
+            genero: pacienteGenero,
+            obra_social: pacienteObraSocial,
+        }
+
+        // Show spinner.
+        setShowSpinner(true);
+
+        $.ajax({
+            url: 'http://local.misturnos/api/pacientes/' + userToEdit,
+            type: 'PUT',
+            dataType: 'json',
+            data: paciente,
+            success: function (response) {
+                // Hide spinner.
+                setShowSpinner(false);
+
+                if (response.success) {
+                    // Reload 'Pacientes' list.
+                    doSearch();
+
+                    // Show success message.
+                    setAlertType('success');
+                    setAlertMessage(response.message);
+                    setShowAlert(true);
+
+                    // Set values to empty.
+                    setEmptyValues();
+
+                    // Close modal.
+                    $('#closeModalEdit').click();
+                } else {
+                    // Show error message.
+                    setAlertType('danger');
+                    setAlertMessage('Error al actualizar el Paciente.');
+                    setShowAlert(true);
+                }
 
                 // Close alert message after 4 seconds.
                 setTimeout(function () {
@@ -226,6 +272,20 @@ function Pacientes() {
             }
         });
     }
+
+
+    // Set empty values to 'Paciente' fields.
+    const setEmptyValues = () => {
+        setPacienteNombre('');
+        setPacienteApellido('');
+        setPacienteFechaNacimiento('');
+        setPacienteEmail('');
+        setPacienteDni('');
+        setPacienteTelefono('');
+        setPacienteGenero('');
+        setPacienteObraSocial('');
+    }
+
 
     return (
         <div id='pageAdminPacientes' className='d-flex bg-lightgray'>
@@ -299,7 +359,6 @@ function Pacientes() {
             />
 
             <EditarPaciente
-                userToEdit={userToEdit}
                 pacienteNombre={pacienteNombre}
                 pacienteApellido={pacienteApellido}
                 pacienteFechaNacimiento={pacienteFechaNacimiento}
@@ -316,6 +375,7 @@ function Pacientes() {
                 setPacienteTelefono={setPacienteTelefono}
                 setPacienteGenero={setPacienteGenero}
                 setPacienteObraSocial={setPacienteObraSocial}
+                updatePaciente={updatePaciente}
             />
 
             <Modal

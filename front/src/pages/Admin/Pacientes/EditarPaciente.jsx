@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faX } from '@fortawesome/free-solid-svg-icons';
 import './style.css';
 
-function EditarPaciente( { userToEdit, pacienteNombre, pacienteApellido, pacienteFechaNacimiento, pacienteEmail, pacienteDni, pacienteTelefono, pacienteGenero, pacienteObraSocial, setPacienteNombre, setPacienteApellido, setPacienteFechaNacimiento, setPacienteEmail, setPacienteDni, setPacienteTelefono, setPacienteGenero, setPacienteObraSocial, addPaciente } ) {
-    console.log(userToEdit);
+function EditarPaciente( { pacienteNombre, pacienteApellido, pacienteFechaNacimiento, pacienteEmail, pacienteDni, pacienteTelefono, pacienteGenero, pacienteObraSocial, setPacienteNombre, setPacienteApellido, setPacienteFechaNacimiento, setPacienteEmail, setPacienteDni, setPacienteTelefono, setPacienteGenero, setPacienteObraSocial, updatePaciente } ) {
     return (
         <div id='modalEdit' className='modal fade' tabIndex='-1' aria-hidden='true'>
             <div className='modal-dialog modal-dialog-centered'>
@@ -144,14 +143,13 @@ function EditarPaciente( { userToEdit, pacienteNombre, pacienteApellido, pacient
 
                         <button
                             className='btn bg-primary text-white box-shadow-dark w-50 mb-3'
-                            onClick={addPaciente}
-                            disabled={pacienteNombre === '' || pacienteApellido === '' || pacienteFechaNacimiento === '' || pacienteEmail === '' || pacienteDni === '' || pacienteTelefono === '' || pacienteGenero === '' || pacienteObraSocial === ''}
+                            onClick={updatePaciente}
                         >
-                            Agregar
+                            Guardar cambios
                         </button>
 
                         <button
-                            id='closeModal'
+                            id='closeModalEdit'
                             className='btn btn-secondary box-shadow-dark w-50'
                             data-bs-dismiss='modal'
                         >

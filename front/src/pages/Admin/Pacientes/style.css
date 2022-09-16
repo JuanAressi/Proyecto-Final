@@ -2,15 +2,18 @@
     cursor: pointer;
 }
 
-#modalAdd .modal-dialog.modal-dialog-centered{
+#modalAdd .modal-dialog.modal-dialog-centered,
+#modalEdit .modal-dialog.modal-dialog-centered {
     max-width: 1000px!important;
 }
 
-#modalAdd input:focus {
+#modalAdd input:focus,
+#modalEdit input:focus {
     box-shadow: 0 0 0 0.25rem rgba(5, 103, 153, 0.25)!important;
 }
 
-#modalAdd .custom-arrow {
+#modalAdd .custom-arrow,
+#modalEdit .custom-arrow {
     /* top: 47%; */
     top: calc((100% - 0.25rem) / 2);
     right: 1rem;
@@ -21,7 +24,9 @@
 }
 
 #modalAdd .custom-arrow::before,
-#modalAdd .custom-arrow::after {
+#modalAdd .custom-arrow::after,
+#modalEdit .custom-arrow::before,
+#modalEdit .custom-arrow::after {
     position: absolute;
     content: '';
     width: 0;
@@ -31,7 +36,8 @@
 }
 
 
-#modalAdd .custom-arrow::before {
+#modalAdd .custom-arrow::before,
+#modalEdit .custom-arrow::before {
     border-left: 0.35rem solid transparent;
     border-right: 0.35rem solid transparent;
     border-bottom: 0.35rem solid #333;
@@ -39,7 +45,8 @@
     transition: 0.25s all ease;
 }
 
-#modalAdd .custom-arrow::after {
+#modalAdd .custom-arrow::after,
+#modalEdit .custom-arrow::after {
     border-left: 0.35rem solid transparent;
     border-right: 0.35rem solid transparent;
     border-top: 0.35rem solid #333;
