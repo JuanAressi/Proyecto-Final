@@ -114,6 +114,7 @@ class PacientesController extends Controller
             // Return paciente.
             return json_encode(
                 array(
+                    'success'  => true,
                     'paciente' => $paciente,
                 )
             );
@@ -121,7 +122,8 @@ class PacientesController extends Controller
             // Return error.
             return json_encode(
                 array(
-                    'error' => 'Paciente not found.'
+                    'success' => false,
+                    'error'   => 'Paciente not found.'
                 )
             );
         }
@@ -137,8 +139,6 @@ class PacientesController extends Controller
      */
     public function addNew(Request $request)
     {
-        $obra_social = $request->input('obra_social');
-
         $usuario = Usuarios::create([
             'nombre'           => $request->input('nombre'),
             'apellido'         => $request->input('apellido'),
@@ -154,13 +154,47 @@ class PacientesController extends Controller
 
         $paciente = Pacientes::create([
             'id_usuario'         => $usuario->id,
-            'numero_obra_social' => $obra_social,
+            'numero_obra_social' => $request->input('obra_social'),
         ]);
 
         return json_encode(
             array(
                 'success' => true,
                 'message' => 'El Paciente se ha creado correctamente.',
+            )
+        );
+    }
+
+
+    /**
+     * Function update - Update a Paciente from database.
+     *
+     * @param Request $request - The request object.
+     *
+     * @return array - The status and the message of the update.
+     */
+    public function update(Request $request)
+    {
+        $usuario = Usuarios::where('id', $request->input('id'))
+            ->update([
+                'nombre'           => $request->input('nombre'),
+                'apellido'         => $request->input('apellido'),
+                'email'            => $request->input('email'),
+                'fecha_nacimiento' => $request->input('fecha_nacimiento'),
+                'dni'              => $request->input('dni'),
+                'telefono'         => $request->input('telefono'),
+                'genero'           => $request->input('genero'),
+            ]);
+
+        $paciente = Pacientes::where('id_usuario', $request->input('id'))
+            ->update([
+                'numero_obra_social' => $request->input('obra_social'),
+            ]);
+
+        return json_encode(
+            array(
+                'success' => true,
+                'message' => 'El Paciente se ha actualizado correctamente.',
             )
         );
     }
