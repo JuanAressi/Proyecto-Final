@@ -40,11 +40,13 @@ function Pacientes() {
     const [pacienteFechaNacimiento, setPacienteFechaNacimiento] = useState('');
     const [pacienteGenero, setPacienteGenero] = useState('');
     const [pacienteObraSocial, setPacienteObraSocial] = useState('');
-    
+
+
     // Search 'Pacientes' when 'page' changes (delay 0s).
     useEffect(() => {
         doSearch();
     }, [page]);
+
 
     // Search 'Pacientes' when 'showPerPage' changes (delay 0s).
     useEffect(() => {
@@ -52,6 +54,7 @@ function Pacientes() {
         
         doSearch();
     }, [showPerPage]);
+
 
     // Search 'Pacientes' when 'searchInput' changes (delay 0.75s).
     useEffect(() => {
@@ -63,29 +66,33 @@ function Pacientes() {
 
         return () => clearTimeout(delayDebounce)
     } , [searchInput]);
-    
+
+
     // Get 'Paciente' by ID and complete 'userToEdit' state.
     useEffect(() => {
-        // Show spinner.
-        setShowSpinner(true);
+        // If 'userToEdit' is null, do nothing.
+        if (userToEdit !== null) {
+            // Show spinner.
+            setShowSpinner(true);
 
-        // Loop trough 'users' state to find the 'userToEdit' ID.
-        users.forEach(user => {
-            if (user.id === userToEdit) {
-                // Hide spinner.
-                setShowSpinner(false);
+            // Loop trough 'users' state to find the 'userToEdit' ID.
+            users.forEach(user => {
+                if (user.id === userToEdit) {
+                    // Hide spinner.
+                    setShowSpinner(false);
 
-                // Complete 'userToEdit' state.
-                setPacienteNombre(user.nombre);
-                setPacienteApellido(user.apellido);
-                setPacienteDni(user.dni);
-                setPacienteEmail(user.email);
-                setPacienteTelefono(user.telefono);
-                setPacienteFechaNacimiento(user.fecha_nacimiento);
-                setPacienteGenero(user.genero);
-                setPacienteObraSocial(user.obra_social);
-            }
-        });
+                    // Complete 'userToEdit' state.
+                    setPacienteNombre(user.nombre);
+                    setPacienteApellido(user.apellido);
+                    setPacienteDni(user.dni);
+                    setPacienteEmail(user.email);
+                    setPacienteTelefono(user.telefono);
+                    setPacienteFechaNacimiento(user.fecha_nacimiento);
+                    setPacienteGenero(user.genero);
+                    setPacienteObraSocial(user.numero_obra_social);
+                }
+            });
+        }
     }, [userToEdit]);
 
 
@@ -199,6 +206,9 @@ function Pacientes() {
 
         // Show spinner.
         setShowSpinner(true);
+
+        // Set 'userToEdit' to null.
+        setUserToEdit(null);
 
         $.ajax({
             url: 'http://local.misturnos/api/pacientes/' + userToEdit,
