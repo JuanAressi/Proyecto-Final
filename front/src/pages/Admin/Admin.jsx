@@ -8,7 +8,9 @@ import './style.css';
 function Admin() {
     return (
         <div id='adminPage' className='d-flex bg-lightgray'>
-            <SideNav />
+            <SideNav
+                active='dashboard'
+            />
 
             <div className='container p-5'>
                 <h1 className='text-center mt-5'>Bienvenido Admin</h1>
