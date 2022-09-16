@@ -5,7 +5,24 @@ import { faBars, faUser, faUserDoctor, faFileMedical, faArrowLeft } from '@forta
 import Logo from '../Logo/Logo';
 import './style.css';
 
-function SideNav() {
+function SideNav( { active } ) {
+    // Check which screen is the active one.
+    let dashboard = '';
+    let pacientes = '';
+    let medicos   = '';
+    let turnos    = '';
+
+    if (active === 'dashboard') {
+        dashboard = 'active';
+    } else if (active === 'pacientes') {
+        pacientes = 'active';
+    } else if (active === 'medicos') {
+        medicos = 'active';
+    } else if (active === 'turnos') {
+        turnos = 'active';
+    }
+
+
     return (
         <div id='sideNav' className='d-flex flex-column bg-primary'>
             <Link to='/panel-admin' className='mt-3' >
@@ -14,7 +31,7 @@ function SideNav() {
 
             <div className='nav-container d-flex flex-column justify-content-between mt-5'>
                 <div className='d-flex flex-column justify-content-start align-items-center h-100'>
-                    <Link to='/panel-admin' className='nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4'>
+                    <Link to='/panel-admin' className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + dashboard}>
                         <FontAwesomeIcon
                             className='text-white me-3'
                             icon={faBars}
@@ -23,7 +40,7 @@ function SideNav() {
                         <h5 className='text-uppercase mb-0'>Panel</h5>
                     </Link>
 
-                    <Link to='/panel-admin/pacientes' className='nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 active'>
+                    <Link to='/panel-admin/pacientes' className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + pacientes}>
                         <FontAwesomeIcon
                             className='text-white me-3'
                             icon={faUser}
@@ -32,7 +49,7 @@ function SideNav() {
                         <h5 className='text-uppercase mb-0'>Pacientes</h5>
                     </Link>
                     
-                    <Link to='/' className='nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4'>
+                    <Link to='/' className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + medicos}>
                         <FontAwesomeIcon
                             className='text-white me-3'
                             icon={faUserDoctor}
@@ -41,7 +58,7 @@ function SideNav() {
                         <h5 className='text-uppercase mb-0'>Medicos</h5>
                     </Link>
                     
-                    <Link to='/' className='nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4'>
+                    <Link to='/' className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + turnos}>
                         <FontAwesomeIcon
                             className='text-white me-3'
                             icon={faFileMedical}

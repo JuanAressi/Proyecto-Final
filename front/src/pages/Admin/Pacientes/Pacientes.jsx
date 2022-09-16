@@ -299,7 +299,9 @@ function Pacientes() {
 
     return (
         <div id='pageAdminPacientes' className='d-flex bg-lightgray'>
-            <SideNav />
+            <SideNav
+                active='pacientes'
+            />
 
             <div className='container p-5'>
                 <div className='d-flex align-items-center mb-4'>
