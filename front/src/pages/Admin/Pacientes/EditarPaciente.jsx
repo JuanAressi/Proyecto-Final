@@ -12,12 +12,14 @@ function EditarPaciente( { pacienteNombre, pacienteApellido, pacienteFechaNacimi
                         <h1 className='display-6 text-white text-shadow-dark me-4'>Editar Paciente</h1>
                     </div>
 
-                    <div className='d-flex justify-content-center align-items-center position-absolute bg-white rounded-circle box-shadow-dark'>
+                    <div
+                        className='d-flex justify-content-center align-items-center position-absolute bg-white rounded-circle box-shadow-dark'
+                        data-bs-dismiss='modal'
+                        aria-label='Close'
+                    >
                         <FontAwesomeIcon
                             className='text-primary'
                             icon={faX}
-                            data-bs-dismiss='modal'
-                            aria-label='Close'
                         />
                     </div>
 
