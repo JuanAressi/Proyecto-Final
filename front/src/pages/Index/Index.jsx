@@ -3,7 +3,7 @@ import $ from 'jquery';
 import Navbar from '../../components/Navbar/Navbar';
 import Banner from '../../components/Banner/Banner';
 import AboutUs from '../../components/AboutUs/AboutUs';
-import Waves from '../../components/Waves/Waves';
+import Contacto from '../../components/Contacto/Contacto';
 
 function Index() {
 	// const [users, setUsers] = useState([]);
@@ -29,6 +29,8 @@ function Index() {
             <Banner />
 
             <AboutUs />
+
+            <Contacto />
 		</div>
 	)
 }
