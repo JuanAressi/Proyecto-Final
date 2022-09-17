@@ -6,9 +6,9 @@ import './style.css';
 
 function AboutUs() {
     return (
-        <div id='aboutUs' className='bg-white mt-5'>
+        <div id='aboutUs' className='bg-light pt-5'>
             <div className="container">
-                <h2 className='text-primary text-center text-uppercase mb-4'>Comprometidos con tu salud</h2>
+                <h2 className='text-primary text-center text-uppercase font-size-5'>Comprometidos con tu salud</h2>
     
                 <div className="row d-flex justify-content-center p-5">
                     <Card 

@@ -19,3 +19,7 @@
     right: 1rem;
     max-height: 20px;
 }
+
+.form-floating textarea:focus {
+    border: 1px solid #056799!important;
+}

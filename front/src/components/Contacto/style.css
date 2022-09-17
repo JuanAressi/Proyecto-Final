@@ -1,0 +1,5 @@
+#contacto .mb-5 p:hover,
+#contacto .mb-5 a:hover {
+    color: #056799!important;
+    transition: all 0.3s;
+}

@@ -2,7 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './style.css';
 
-function Input({ id, type, name, placeholder, value, onChange, icon }) {
+function Input( { id, type, name, placeholder, value, onChange, icon } ) {
     return (
         <div className='icon-component form-floating w-100 mx-auto position-relative box-shadow-dark'>
             <input
@@ -17,7 +17,7 @@ function Input({ id, type, name, placeholder, value, onChange, icon }) {
 
             <label htmlFor='username' className='floatingInput'>{placeholder}</label>
 
-            <FontAwesomeIcon className='text-primary' icon={icon} />
+            {icon && <FontAwesomeIcon className='text-primary' icon={icon} />}
         </div>
     )
 }

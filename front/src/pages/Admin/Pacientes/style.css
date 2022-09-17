@@ -8,13 +8,14 @@
 }
 
 #modalAdd input:focus,
-#modalEdit input:focus {
+#modalAdd select:focus,
+#modalEdit input:focus,
+#modalEdit select:focus {
     box-shadow: 0 0 0 0.25rem rgba(5, 103, 153, 0.25)!important;
 }
 
 #modalAdd .custom-arrow,
 #modalEdit .custom-arrow {
-    /* top: 47%; */
     top: calc((100% - 0.25rem) / 2);
     right: 1rem;
     z-index: 1;
