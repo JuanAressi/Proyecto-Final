@@ -52,7 +52,7 @@ function Contacto() {
                                     style={{ fontSize: '1.25rem' }}
                                 />
 
-                                <h3 className='mb-0 ms-2'>Email</h3>
+                                <h3 className='mb-0 ms-2'>Correo Electronico</h3>
                             </div>
 
                             <a

@@ -222,7 +222,7 @@ class UsuariosController extends Controller
         $email = $request->input('email');
         $password = md5($request->input('password'));
 
-        $user = Usuarios::where('email', $email)->where('password', $password)->select('*')->get();
+        $user = Usuarios::where('email', $email)->where('contraseña', $password)->select('*')->get();
 
         // If user exists.
         if (count($user) > 0) {
@@ -246,6 +246,7 @@ class UsuariosController extends Controller
                     array(
                         'success' => false,
                         'message' => 'Password incorrecto.',
+                        'field'   => 'password',
                     )
                 );
             } else {
@@ -254,6 +255,7 @@ class UsuariosController extends Controller
                     array(
                         'success' => false,
                         'message' => 'El usuario no existe.',
+                        'field'   => 'email',
                     )
                 );
             }
