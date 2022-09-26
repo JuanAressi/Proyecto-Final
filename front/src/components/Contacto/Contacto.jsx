@@ -83,28 +83,32 @@ function Contacto() {
                         <h3>¿Querés hacernos una consulta?</h3>
 
                         <div className='w-100 pt-2 px-5'>
-                            <Input
-                                id='nameAndLastname'
-                                type='text'
-                                name='nameAndLastname'
-                                placeholder='Nombre y Apellido'
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                            />
+                            <div className='mb-3'>
+                                <Input
+                                    id='nameAndLastname'
+                                    type='text'
+                                    name='nameAndLastname'
+                                    placeholder='Nombre y Apellido'
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+                            </div>
 
-                            <Input
-                                id='email'
-                                type='email'
-                                name='email'
-                                placeholder='Email'
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
+                            <div className='mb-3'>
+                                <Input
+                                    id='email'
+                                    type='email'
+                                    name='email'
+                                    placeholder='Email'
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </div>
 
                             <div className='form-floating'>
                                 <textarea
                                     id='message'
-                                    className='form-control w-100 mx-auto box-shadow-dark'
+                                    className='form-control w-100 mx-auto box-shadow-dark-1'
                                     name='message'
                                     placeholder='Mensaje'
                                     style={{ minHeight: '58px', height: '8rem' }}
