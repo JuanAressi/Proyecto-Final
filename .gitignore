@@ -52,7 +52,7 @@ Thumbs.db
 db/data/
 front/node_modules/
 back/vendor/
-back/storage/framework/
+# back/storage/framework/
 .vscode/
 
 # web/php/php.ini
