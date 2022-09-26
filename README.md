@@ -10,31 +10,39 @@ Estas versiones son las que se han usado para el desarrollo del proyecto. Puede 
 
 
 1) Clonar el repositorio localmente
-    git clone git@github.com:JuanAressi/Proyecto-Final.git
+
+    • git clone git@github.com:JuanAressi/Proyecto-Final.git
 
 2) Instalar las dependencias
-    cd Proyecto-Final
-    npm install
+
+    • cd Proyecto-Final
+
+    • npm install
     
-    cd Proyecto-Final/front
-    npm install
+    • cd Proyecto-Final/front
+
+    • npm install
 
 3) Levantar los contenedores de docker
-    docker-compose up -d
+
+    • docker-compose up -d
 
 4) Abrir una terminar en el contenedor 'proyecto-final_web'
-    composer install
-    php artisan migrate:fresh --seed
+
+    • composer install
+
+    • php artisan migrate:fresh --seed
 
 
 Ya se podría navegar el sitio en el puerto 3000 de localhost (http://localhost:3000/)
 Puede tardar unos minutos en cargar las primeras veces.
 
 Si no carga, entrar en la consola y si tira errores de que no puede cargar los componentes:
-    docker-compose down
-    docker system prune
-    cd Proyecto-Final/front
-    rm -rf node_modules
-    npm install
-    cd ..
-    docker-compose up -d
+
+    • docker-compose down
+    • docker system prune
+    • cd Proyecto-Final/front
+    • rm -rf node_modules
+    • npm install
+    • cd ..
+    • docker-compose up -d
