@@ -14,10 +14,6 @@ Estas versiones son las que se han usado para el desarrollo del proyecto. Puede 
     • git clone git@github.com:JuanAressi/Proyecto-Final.git
 
 2) Instalar las dependencias
-
-    • cd Proyecto-Final
-
-    • npm install
     
     • cd Proyecto-Final/front
 
