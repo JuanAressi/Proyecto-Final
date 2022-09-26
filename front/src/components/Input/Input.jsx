@@ -4,7 +4,7 @@ import './style.css';
 
 function Input( { id, classes, type, name, placeholder, value, onChange, onFocus, icon } ) {
     return (
-        <div className='icon-component form-floating w-100 mx-auto position-relative overflow-hidden box-shadow-dark'>
+        <div className='icon-component form-floating w-100 mx-auto position-relative overflow-hidden box-shadow-dark-1'>
             <input
                 id={id}
                 className={'form-control ' + classes}

@@ -35,7 +35,16 @@ function AboutUs() {
                 <Waves />
             </div>
 
-            <div className='bg-primary' style={{ height: '5rem' }}></div>
+            <div className='bg-primary' style={{ height: '3rem' }}></div>
+
+            <div
+                className='waves-container mt-0'
+                style={{
+                    transform: 'rotate(180deg)',
+                }}
+            >
+                <Waves />
+            </div>
         </div>
     )
 }
