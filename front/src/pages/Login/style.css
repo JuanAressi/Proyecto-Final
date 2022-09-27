@@ -1,6 +1,22 @@
+#loginPage form {
+    width: 80%;
+    max-width: 600px!important;
+}
+
+#buttonsContainer #ingresar,
+#buttonsContainer #registrarse {
+    width: 75%;
+}
+
+@media (min-width: 576px) {
+    #buttonsContainer #ingresar,
+    #buttonsContainer #registrarse {
+        width: 50%;
+    }
+}
+
 @media (min-width: 1200px) {
     #loginPage form {
         min-width: 600px;
-        max-width: 600px;
     }
 }

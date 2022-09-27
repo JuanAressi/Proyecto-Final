@@ -182,16 +182,16 @@ class UsuariosSeeder extends Seeder
             $email_prefix = rand(0, count($emails) - 1);
             $gender       = rand(0, count($genders) - 1);
 
-            $usuario->nombre     = $names[$first_name];
-            $usuario->apellido   = $surnames[$last_name];
-            $usuario->email      = $names[$first_name] . $i . $emails[$email_prefix];
-            $usuario->contraseña = md5('123456');
-            $usuario->dni        = random_int(10000000, 59999999);
+            $usuario->nombre           = $names[$first_name];
+            $usuario->apellido         = $surnames[$last_name];
+            $usuario->email            = $names[$first_name] . $i . $emails[$email_prefix];
+            $usuario->contraseña       = md5('123456');
+            $usuario->dni              = random_int(10000000, 59999999);
             $usuario->fecha_nacimiento = date('Y-m-d', strtotime('-' . rand(18, 60) . ' years'));
-            $usuario->genero     = $genders[$gender];
-            $usuario->telefono   = random_int(152000000, 156999999);
-            $usuario->estado     = 'activo';
-            $usuario->rol        = 'paciente';
+            $usuario->genero           = $genders[$gender];
+            $usuario->telefono         = random_int(152000000, 156999999);
+            $usuario->estado           = 'activo';
+            $usuario->rol              = 'paciente';
 
             $usuario->save();
 

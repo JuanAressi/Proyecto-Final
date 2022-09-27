@@ -12,6 +12,7 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 /* Text Color */
 .text-primary { color: #056799!important; }
 .text-darker { color: #023E8A!important; }
+.text-gray { color: #aaa!important; }
 
 
 /* Background Color */

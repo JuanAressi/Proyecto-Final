@@ -3,7 +3,7 @@ import './style.css';
 
 function Banner() {
     return (
-        <div id='banner'>
+        <section id='banner'>
             <div className="banner-overlay">
                 <div className="container">
                     <div className="row">
@@ -20,7 +20,7 @@ function Banner() {
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     )
 }
 

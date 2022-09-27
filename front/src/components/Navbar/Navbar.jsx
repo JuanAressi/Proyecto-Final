@@ -44,7 +44,7 @@ function Navbar() {
                         
                         <div id='links' className="d-flex justify-content-end align-items-center text-uppercase text-center w-100 overflow-hidden" data-collapse={isCollapsed}>
                             <Link
-                                to='/#banner'
+                                to='/'
                                 className='nav-link position-relative p-3 me-3 mb-0 text-dark'
                             >
                                 Inicio
