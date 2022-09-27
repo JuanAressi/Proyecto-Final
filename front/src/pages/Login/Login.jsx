@@ -158,7 +158,7 @@ function Login() {
                             <div id="buttonsContainer" className='d-flex flex-column justify-content-center align-items-center mt-3'>
                                 <button 
                                     id='ingresar'
-                                    className='btn bg-primary text-white box-shadow-dark text-uppercase w-50 mb-3'
+                                    className='btn bg-primary text-white box-shadow-dark text-uppercase mb-3'
                                     type='submit'
                                     onClick={handleSubmitForm}
                                     disabled={email === '' || password === ''}
@@ -168,7 +168,7 @@ function Login() {
 
                                 <Link to='/register'
                                     id='registrarse'
-                                    className='btn bg-white text-primary border border-primary box-shadow-dark text-uppercase w-50 mb-2'
+                                    className='btn bg-white text-primary border border-primary box-shadow-dark text-uppercase mb-2'
                                     type='button'
                                 >
                                     Registrarse
