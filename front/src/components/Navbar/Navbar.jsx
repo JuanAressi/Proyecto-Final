@@ -1,5 +1,6 @@
 import { React, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { NavHashLink } from 'react-router-hash-link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../Logo/Logo';
@@ -27,6 +28,18 @@ function Navbar() {
         }
     }
 
+    
+    // Scroll with offset.
+    const scrollWithOffset = (element, offset) => {
+        const elementPosition = element.offsetTop - offset;
+
+        window.scroll({
+            top: elementPosition,
+            left: 0,
+            behavior: 'smooth'
+        });
+    }
+
 
     return (
         <div id="navbar" className='navbar bg-light box-shadow-dark'>
@@ -43,19 +56,21 @@ function Navbar() {
                         </div>
                         
                         <div id='links' className="d-flex justify-content-end align-items-center text-uppercase text-center w-100 overflow-hidden" data-collapse={isCollapsed}>
-                            <Link
-                                to='/'
+                            <NavHashLink
+                                to='/#banner'
+                                scroll={element => scrollWithOffset(element, 118)}
                                 className='nav-link position-relative p-3 me-3 mb-0 text-dark'
                             >
                                 Inicio
-                            </Link>
+                            </NavHashLink>
 
-                            <Link
-                                to='/#sobre-nosotros'
+                            <NavHashLink
+                                to='/#aboutUs'
+                                scroll={element => scrollWithOffset(element, 118)}
                                 className='nav-link position-relative p-3 me-3 mb-0 text-dark'
                             >
                                 Sobre nosotros
-                            </Link>
+                            </NavHashLink>
 
                             <Link
                                 to='/#turnos'
@@ -64,12 +79,13 @@ function Navbar() {
                                 Turnos
                             </Link>
 
-                            <Link
+                            <NavHashLink
                                 to='/#contacto'
+                                scroll={element => scrollWithOffset(element, 118)}
                                 className='nav-link position-relative p-3 me-3 mb-0 text-dark'
                             >
                                 Contacto
-                            </Link>
+                            </NavHashLink>
 
                             <Link
                                 to='/login'

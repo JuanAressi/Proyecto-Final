@@ -4,7 +4,8 @@ import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Admin from './pages/Admin/Admin';
 import AdminPacientes from './pages/Admin/Pacientes/Pacientes';
-import AdminPacientesNuevo from './pages/Admin/Pacientes/NuevoPaciente';
+import AdminMedicos from './pages/Admin/Medicos/Medicos';
+
 
 function App() {
 	return (
@@ -14,8 +15,7 @@ function App() {
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
                 <Route path='/panel-admin' element={<Admin />} />
-                <Route path='/panel-admin/pacientes' element={<AdminPacientes />} />
-                <Route path='/panel-admin/pacientes/nuevo' element={<AdminPacientesNuevo />} />
+                <Route path='/panel-admin/medicos' element={<AdminMedicos />} />                
             </Routes>
         </Router>
 	);
