@@ -6,7 +6,7 @@ import $ from 'jquery';
 import './style.css';
 import Navbar from '../../components/Navbar/Navbar';
 import Input from '../../components/Input/Input';
-
+import loadingGif from '../../components/assets/img/loadingGif.gif';
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -14,6 +14,10 @@ function Login() {
     const [password, setPassword] = useState('');
     const [passwordInvalidMessage, setPasswordInvalidMessage] = useState('');
     const [loginIn, setLoginIn] = useState(false);
+
+    // Utilities.
+    const [showSpinner, setShowSpinner] = useState(false);
+    const [btnSubmitDisabled, setBtnSubmitDisabled] = useState(true);
 
     // Email change.
     const handleEmailChange = (event) => {
@@ -32,6 +36,13 @@ function Login() {
         // Prevent default form submit.
         event.preventDefault();
 
+        // Show spinner.
+        setShowSpinner(true);
+
+        // Disable submit button.
+        setBtnSubmitDisabled(true);
+        
+
         // Send request.
         $.ajax({
             url: 'http://local.misturnos/api/login',
@@ -45,6 +56,9 @@ function Login() {
                 if (response.success) {
                     // Set loginIn to true.
                     setLoginIn(true);
+
+                    // Hide spinner.
+                    setShowSpinner(false);
 
                     // Wait 3 seconds to redirect.
                     setTimeout(() => {
@@ -68,6 +82,12 @@ function Login() {
                         }
                     }, 3000);
                 } else {
+                    // Hide spinner.
+                    setShowSpinner(false);
+
+                    // Disable submit button.
+                    setBtnSubmitDisabled(true);
+
                     if (response.field === 'email') {
                         setEmailInvalidMessage(response.message);
                     } else if (response.field === 'password') {
@@ -158,11 +178,18 @@ function Login() {
                             <div id="buttonsContainer" className='d-flex flex-column justify-content-center align-items-center mt-3'>
                                 <button 
                                     id='ingresar'
-                                    className='btn bg-primary text-white box-shadow-dark text-uppercase mb-3'
+                                    className='d-flex justify-content-center align-items-center btn bg-primary text-white box-shadow-dark text-uppercase mb-3'
                                     type='submit'
                                     onClick={handleSubmitForm}
-                                    disabled={email === '' || password === ''}
+                                    disabled={btnSubmitDisabled}
                                 >
+
+                                {showSpinner && 
+                                    <div style={{width: '40px', marginTop: '-5px'}}>
+                                        <img src={loadingGif} alt="wait until the page loads" height='20px'/>
+                                    </div>
+                                }
+
                                     Ingresar
                                 </button>
 

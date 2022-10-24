@@ -2,13 +2,13 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faX } from '@fortawesome/free-solid-svg-icons';
 
-function EditarPaciente( { pacienteNombre, pacienteApellido, pacienteFechaNacimiento, pacienteEmail, pacienteDni, pacienteTelefono, pacienteGenero, pacienteObraSocial, setPacienteNombre, setPacienteApellido, setPacienteFechaNacimiento, setPacienteEmail, setPacienteDni, setPacienteTelefono, setPacienteGenero, setPacienteObraSocial, updatePaciente } ) {
+function EditarMedico( { medicoNombre, medicoApellido, medicoFechaNacimiento, medicoEmail, medicoDni, medicoTelefono, medicoGenero, medicoObraSocial, setMedicoNombre, setMedicoApellido, setMedicoFechaNacimiento, setMedicoEmail, setMedicoDni, setMedicoTelefono, setMedicoGenero, setMedicoObraSocial, updateMedico } ) {
     return (
         <div id='modalEdit' className='modal fade' tabIndex='-1' aria-hidden='true'>
             <div className='modal-dialog modal-dialog-centered'>
                 <div className='modal-content position-relative'>
                     <div className='bg-primary box-shadow-dark-1 px-4 py-2'>
-                        <h1 className='display-6 text-white text-shadow-dark me-4'>Editar Paciente</h1>
+                        <h1 className='display-6 text-white text-shadow-dark me-4'>Editar Medico</h1>
                     </div>
 
                     <div
@@ -33,8 +33,8 @@ function EditarPaciente( { pacienteNombre, pacienteApellido, pacienteFechaNacimi
                                     name='nombre'
                                     placeholder='Nombre'
                                     aria-label='Nombre'
-                                    value={pacienteNombre}
-                                    onChange={e => setPacienteNombre(e.target.value)}
+                                    value={medicoNombre}
+                                    onChange={e => setMedicoNombre(e.target.value)}
                                 />
                             </div>
 
@@ -47,8 +47,8 @@ function EditarPaciente( { pacienteNombre, pacienteApellido, pacienteFechaNacimi
                                     name='apellido'
                                     placeholder='Apellido'
                                     aria-label='Apellido'
-                                    value={pacienteApellido}
-                                    onChange={e => setPacienteApellido(e.target.value)}
+                                    value={medicoApellido}
+                                    onChange={e => setMedicoApellido(e.target.value)}
                                 />
                             </div>
 
@@ -61,8 +61,8 @@ function EditarPaciente( { pacienteNombre, pacienteApellido, pacienteFechaNacimi
                                     name='fecha_nacimiento'
                                     placeholder='Fecha de Nacimiento'
                                     aria-label='Fecha de Nacimiento'
-                                    value={pacienteFechaNacimiento}
-                                    onChange={e => setPacienteFechaNacimiento(e.target.value)}
+                                    value={medicoFechaNacimiento}
+                                    onChange={e => setMedicoFechaNacimiento(e.target.value)}
                                 />
                             </div>
 
@@ -75,8 +75,8 @@ function EditarPaciente( { pacienteNombre, pacienteApellido, pacienteFechaNacimi
                                     name='email'
                                     placeholder='Email'
                                     aria-label='Email'
-                                    value={pacienteEmail}
-                                    onChange={e => setPacienteEmail(e.target.value)}
+                                    value={medicoEmail}
+                                    onChange={e => setMedicoEmail(e.target.value)}
                                 />
                             </div>
 
@@ -89,8 +89,8 @@ function EditarPaciente( { pacienteNombre, pacienteApellido, pacienteFechaNacimi
                                     name='dni'
                                     placeholder='DNI'
                                     aria-label='DNI'
-                                    value={pacienteDni}
-                                    onChange={e => setPacienteDni(e.target.value)}
+                                    value={medicoDni}
+                                    onChange={e => setMedicoDni(e.target.value)}
                                 />
                             </div>
 
@@ -103,8 +103,8 @@ function EditarPaciente( { pacienteNombre, pacienteApellido, pacienteFechaNacimi
                                     name='telefono'
                                     placeholder='Telefono'
                                     aria-label='Telefono'
-                                    value={pacienteTelefono}
-                                    onChange={e => setPacienteTelefono(e.target.value)}
+                                    value={medicoTelefono}
+                                    onChange={e => setMedicoTelefono(e.target.value)}
                                 />
                             </div>                            
 
@@ -114,8 +114,8 @@ function EditarPaciente( { pacienteNombre, pacienteApellido, pacienteFechaNacimi
                                 <select
                                     className='form-control'
                                     name='genero'
-                                    value={pacienteGenero}
-                                    onChange={e => setPacienteGenero(e.target.value)}
+                                    value={medicoGenero}
+                                    onChange={e => setMedicoGenero(e.target.value)}
                                 >
                                     <option value='' disabled>Seleccione una opción</option>
                                     <option value='Femenino'>Femenino</option>
@@ -136,15 +136,15 @@ function EditarPaciente( { pacienteNombre, pacienteApellido, pacienteFechaNacimi
                                     name='numero_obra_social'
                                     placeholder='Numero de Obra Social'
                                     aria-label='Numero de Obra Social'
-                                    value={pacienteObraSocial}
-                                    onChange={e => setPacienteObraSocial(e.target.value)}
+                                    value={medicoObraSocial}
+                                    onChange={e => setMedicoObraSocial(e.target.value)}
                                 />
                             </div>
                         </form>
 
                         <button
                             className='btn bg-primary text-white box-shadow-dark w-50 mb-3'
-                            onClick={updatePaciente}
+                            onClick={updateMedico}
                         >
                             Guardar cambios
                         </button>
@@ -163,4 +163,4 @@ function EditarPaciente( { pacienteNombre, pacienteApellido, pacienteFechaNacimi
     )
 }
 
-export default EditarPaciente
+export default EditarMedico

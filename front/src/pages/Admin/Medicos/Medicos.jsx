@@ -7,10 +7,10 @@ import Modal from '../../../components/Modal/Modal';
 import SideNav from '../../../components/SideNav/SideNav';
 import loadingGif from '../../../components/assets/img/loadingGif.gif';
 import Table from '../../../components/Table/Table';
-import NuevoPaciente from './NuevoPaciente';
-import EditarPaciente from './EditarPaciente';
+import NuevoMedico from './NuevoMedico';
+import EditarMedico from './EditarMedico';
 
-function Pacientes() {
+function Medicos() {
     // Pagination.
     const [lastShowPerPage, setLastShowPerPage] = useState(10);
     const [lastPage, setLastPage] = useState(1);
@@ -30,24 +30,24 @@ function Pacientes() {
     const [alertType, setAlertType] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
 
-    // Paciente information.
-    const [pacienteNombre, setPacienteNombre] = useState('');
-    const [pacienteApellido, setPacienteApellido] = useState('');
-    const [pacienteDni, setPacienteDni] = useState('');
-    const [pacienteEmail, setPacienteEmail] = useState('');
-    const [pacienteTelefono, setPacienteTelefono] = useState('');
-    const [pacienteFechaNacimiento, setPacienteFechaNacimiento] = useState('');
-    const [pacienteGenero, setPacienteGenero] = useState('');
-    const [pacienteObraSocial, setPacienteObraSocial] = useState('');
+    // Medico information.
+    const [medicoNombre, setMedicoNombre] = useState('');
+    const [medicoApellido, setMedicoApellido] = useState('');
+    const [medicoDni, setMedicoDni] = useState('');
+    const [medicoEmail, setMedicoEmail] = useState('');
+    const [medicoTelefono, setMedicoTelefono] = useState('');
+    const [medicoFechaNacimiento, setMedicoFechaNacimiento] = useState('');
+    const [medicoGenero, setMedicoGenero] = useState('');
+    const [medicoObraSocial, setMedicoObraSocial] = useState('');
 
 
-    // Search 'Pacientes' when 'page' changes (delay 0s).
+    // Search 'Medicos' when 'page' changes (delay 0s).
     useEffect(() => {
         doSearch();
     }, [page]);
 
 
-    // Search 'Pacientes' when 'showPerPage' changes (delay 0s).
+    // Search 'Medicos' when 'showPerPage' changes (delay 0s).
     useEffect(() => {
         setPage(1);
         
@@ -55,7 +55,7 @@ function Pacientes() {
     }, [showPerPage]);
 
 
-    // Search 'Pacientes' when 'searchInput' changes (delay 0.75s).
+    // Search 'Medicos' when 'searchInput' changes (delay 0.75s).
     useEffect(() => {
         setPage(1);
 
@@ -67,7 +67,7 @@ function Pacientes() {
     } , [searchInput]);
 
 
-    // Get 'Paciente' by ID and complete 'userToEdit' state.
+    // Get 'Medico' by ID and complete 'userToEdit' state.
     useEffect(() => {
         // If 'userToEdit' is null, do nothing.
         if (userToEdit !== null) {
@@ -81,14 +81,14 @@ function Pacientes() {
                     setShowSpinner(false);
 
                     // Complete 'userToEdit' state.
-                    setPacienteNombre(user.nombre);
-                    setPacienteApellido(user.apellido);
-                    setPacienteDni(user.dni);
-                    setPacienteEmail(user.email);
-                    setPacienteTelefono(user.telefono);
-                    setPacienteFechaNacimiento(user.fecha_nacimiento);
-                    setPacienteGenero(user.genero);
-                    setPacienteObraSocial(user.numero_obra_social);
+                    setMedicoNombre(user.nombre);
+                    setMedicoApellido(user.apellido);
+                    setMedicoDni(user.dni);
+                    setMedicoEmail(user.email);
+                    setMedicoTelefono(user.telefono);
+                    setMedicoFechaNacimiento(user.fecha_nacimiento);
+                    setMedicoGenero(user.genero);
+                    setMedicoObraSocial(user.numero_obra_social);
                 }
             });
         }
@@ -101,7 +101,7 @@ function Pacientes() {
         setShowSpinner(true);
 
         $.ajax({
-            url: 'http://local.misturnos/api/pacientes',
+            url: 'http://local.misturnos/api/medicos',
             type: 'GET',
             dataType: 'json',
             data: {
@@ -118,8 +118,8 @@ function Pacientes() {
 
                 setLastShowPerPage(showPerPage);
                 setLastPage(page);
-                setTotalUsers(response.pacientes_count);
-                setUsers(response.pacientes);
+                setTotalUsers(response.medicos_count);
+                setUsers(response.medicos);
             },
             error: function (error) {
                 // Hide spinner.
@@ -129,34 +129,33 @@ function Pacientes() {
     }
 
 
-    // Add new 'Paciente'.
-    const addPaciente = () => {
-        const paciente = {
-            nombre: pacienteNombre,
-            apellido: pacienteApellido,
-            fecha_nacimiento: pacienteFechaNacimiento,
-            email: pacienteEmail,
-            dni: pacienteDni,
-            telefono: pacienteTelefono,
-            genero: pacienteGenero,
-            obra_social: pacienteObraSocial,
+    // Add new 'Medico'.
+    const addMedico = () => {
+        const medico = {
+            nombre: medicoNombre,
+            apellido: medicoApellido,
+            fecha_nacimiento: medicoFechaNacimiento,
+            email: medicoEmail,
+            dni: medicoDni,
+            telefono: medicoTelefono,
+            genero: medicoGenero,
+            obra_social: medicoObraSocial,
         }
 
         // Show spinner.
         setShowSpinner(true);
 
         $.ajax({
-            url: 'http://local.misturnos/api/pacientes',
+            url: 'http://local.misturnos/api/medicos',
             type: 'POST',
             dataType: 'json',
-            data: paciente,
+            data: medico,
             success: function (response) {
-                debugger
                 // Hide spinner.
                 setShowSpinner(false);
 
                 if (response.success) {
-                    // Reload 'Pacientes' list.
+                    // Reload 'Medicos' list.
                     doSearch();
 
                     // Show success message.
@@ -172,7 +171,7 @@ function Pacientes() {
                 } else {
                     // Show error message.
                     setAlertType('danger');
-                    setAlertMessage('Error al crear el Paciente.');
+                    setAlertMessage('Error al crear el Medico.');
                     setShowAlert(true);
                 }
                 
@@ -189,18 +188,18 @@ function Pacientes() {
     }
 
 
-    // Update 'Paciente'.
-    const updatePaciente = () => {
-        const paciente = {
+    // Update 'Medico'.
+    const updateMedico = () => {
+        const medico = {
             id: userToEdit,
-            nombre: pacienteNombre,
-            apellido: pacienteApellido,
-            fecha_nacimiento: pacienteFechaNacimiento,
-            email: pacienteEmail,
-            dni: pacienteDni,
-            telefono: pacienteTelefono,
-            genero: pacienteGenero,
-            obra_social: pacienteObraSocial,
+            nombre: medicoNombre,
+            apellido: medicoApellido,
+            fecha_nacimiento: medicoFechaNacimiento,
+            email: medicoEmail,
+            dni: medicoDni,
+            telefono: medicoTelefono,
+            genero: medicoGenero,
+            obra_social: medicoObraSocial,
         }
 
         // Show spinner.
@@ -210,16 +209,16 @@ function Pacientes() {
         setUserToEdit(null);
 
         $.ajax({
-            url: 'http://local.misturnos/api/pacientes/' + userToEdit,
+            url: 'http://local.misturnos/api/medicos/' + userToEdit,
             type: 'PUT',
             dataType: 'json',
-            data: paciente,
+            data: medico,
             success: function (response) {
                 // Hide spinner.
                 setShowSpinner(false);
 
                 if (response.success) {
-                    // Reload 'Pacientes' list.
+                    // Reload 'Medicos' list.
                     doSearch();
 
                     // Show success message.
@@ -235,7 +234,7 @@ function Pacientes() {
                 } else {
                     // Show error message.
                     setAlertType('danger');
-                    setAlertMessage('Error al actualizar el Paciente.');
+                    setAlertMessage('Error al actualizar el Medico.');
                     setShowAlert(true);
                 }
 
@@ -267,10 +266,10 @@ function Pacientes() {
 
                     // Show success message.
                     setAlertType('success');
-                    setAlertMessage('El Paciente ha sido eliminado correctamente.');
+                    setAlertMessage('El Medico ha sido eliminado correctamente.');
                     setShowAlert(true);
 
-                    // Reload the 'Pacientes' table.
+                    // Reload the 'Medicos' table.
                     doSearch();
 
                     // Close alert message after 4 seconds.
@@ -283,28 +282,28 @@ function Pacientes() {
     }
 
 
-    // Set empty values to 'Paciente' fields.
+    // Set empty values to 'Medico' fields.
     const setEmptyValues = () => {
-        setPacienteNombre('');
-        setPacienteApellido('');
-        setPacienteFechaNacimiento('');
-        setPacienteEmail('');
-        setPacienteDni('');
-        setPacienteTelefono('');
-        setPacienteGenero('');
-        setPacienteObraSocial('');
+        setMedicoNombre('');
+        setMedicoApellido('');
+        setMedicoFechaNacimiento('');
+        setMedicoEmail('');
+        setMedicoDni('');
+        setMedicoTelefono('');
+        setMedicoGenero('');
+        setMedicoObraSocial('');
     }
 
 
     return (
-        <div id='pageAdminPacientes' className='d-flex bg-lightgray'>
+        <div id='pageAdminMedicos' className='d-flex bg-lightgray'>
             <SideNav
-                active='pacientes'
+                active='medicos'
             />
 
             <div className='container p-5'>
                 <div className='d-flex align-items-center mb-4'>
-                    <h1 id='pageTitle' className='display-3 text-primary text-shadow-dark me-4'>Pacientes</h1>
+                    <h1 id='pageTitle' className='display-3 text-primary text-shadow-dark me-4'>Medicos</h1>
 
                     <div style={{width: '40px'}}>
                         {showSpinner && <img src={loadingGif} alt="wait until the page loads" height='20px'/>}
@@ -320,7 +319,7 @@ function Pacientes() {
                             icon={faPlus}
                         />
 
-                        Agregar Paciente
+                        Agregar Medico
                     </button>
                 </div>
 
@@ -349,49 +348,49 @@ function Pacientes() {
                 />
             </div>
 
-            <NuevoPaciente
-                pacienteNombre={pacienteNombre}
-                pacienteApellido={pacienteApellido}
-                pacienteFechaNacimiento={pacienteFechaNacimiento}
-                pacienteEmail={pacienteEmail}
-                pacienteDni={pacienteDni}
-                pacienteTelefono={pacienteTelefono}
-                pacienteGenero={pacienteGenero}
-                pacienteObraSocial={pacienteObraSocial}
-                setPacienteNombre={setPacienteNombre}
-                setPacienteApellido={setPacienteApellido}
-                setPacienteFechaNacimiento={setPacienteFechaNacimiento}
-                setPacienteEmail={setPacienteEmail}
-                setPacienteDni={setPacienteDni}
-                setPacienteTelefono={setPacienteTelefono}
-                setPacienteGenero={setPacienteGenero}
-                setPacienteObraSocial={setPacienteObraSocial}
-                addPaciente={addPaciente}
+            <NuevoMedico
+                medicoNombre={medicoNombre}
+                medicoApellido={medicoApellido}
+                medicoFechaNacimiento={medicoFechaNacimiento}
+                medicoEmail={medicoEmail}
+                medicoDni={medicoDni}
+                medicoTelefono={medicoTelefono}
+                medicoGenero={medicoGenero}
+                medicoObraSocial={medicoObraSocial}
+                setMedicoNombre={setMedicoNombre}
+                setMedicoApellido={setMedicoApellido}
+                setMedicoFechaNacimiento={setMedicoFechaNacimiento}
+                setMedicoEmail={setMedicoEmail}
+                setMedicoDni={setMedicoDni}
+                setMedicoTelefono={setMedicoTelefono}
+                setMedicoGenero={setMedicoGenero}
+                setMedicoObraSocial={setMedicoObraSocial}
+                addMedico={addMedico}
             />
 
-            <EditarPaciente
-                pacienteNombre={pacienteNombre}
-                pacienteApellido={pacienteApellido}
-                pacienteFechaNacimiento={pacienteFechaNacimiento}
-                pacienteEmail={pacienteEmail}
-                pacienteDni={pacienteDni}
-                pacienteTelefono={pacienteTelefono}
-                pacienteGenero={pacienteGenero}
-                pacienteObraSocial={pacienteObraSocial}
-                setPacienteNombre={setPacienteNombre}
-                setPacienteApellido={setPacienteApellido}
-                setPacienteFechaNacimiento={setPacienteFechaNacimiento}
-                setPacienteEmail={setPacienteEmail}
-                setPacienteDni={setPacienteDni}
-                setPacienteTelefono={setPacienteTelefono}
-                setPacienteGenero={setPacienteGenero}
-                setPacienteObraSocial={setPacienteObraSocial}
-                updatePaciente={updatePaciente}
+            <EditarMedico
+                medicoNombre={medicoNombre}
+                medicoApellido={medicoApellido}
+                medicoFechaNacimiento={medicoFechaNacimiento}
+                medicoEmail={medicoEmail}
+                medicoDni={medicoDni}
+                medicoTelefono={medicoTelefono}
+                medicoGenero={medicoGenero}
+                medicoObraSocial={medicoObraSocial}
+                setMedicoNombre={setMedicoNombre}
+                setMedicoApellido={setMedicoApellido}
+                setMedicoFechaNacimiento={setMedicoFechaNacimiento}
+                setMedicoEmail={setMedicoEmail}
+                setMedicoDni={setMedicoDni}
+                setMedicoTelefono={setMedicoTelefono}
+                setMedicoGenero={setMedicoGenero}
+                setMedicoObraSocial={setMedicoObraSocial}
+                updateMedico={updateMedico}
             />
 
             <Modal
                 id='modalDelete'
-                text='¿Está seguro que desea eliminar este paciente?'
+                text='¿Está seguro que desea eliminar este medico?'
                 handleDelete={() => {
                     // Close modal.
                     $('#closeModal').click();
@@ -404,4 +403,4 @@ function Pacientes() {
     )
 }
 
-export default Pacientes
+export default Medicos

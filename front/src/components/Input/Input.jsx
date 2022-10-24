@@ -16,7 +16,7 @@ function Input( { id, classes, type, name, placeholder, value, onChange, onFocus
                 onFocus={onFocus}
             />
 
-            <label htmlFor='username' className='floatingInput'>{placeholder}</label>
+            <label htmlFor={id} className='floatingInput'>{placeholder}</label>
 
             {icon &&
                 <FontAwesomeIcon
