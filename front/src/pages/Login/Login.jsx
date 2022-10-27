@@ -19,6 +19,16 @@ function Login() {
     const [showSpinner, setShowSpinner] = useState(false);
     const [btnSubmitDisabled, setBtnSubmitDisabled] = useState(true);
 
+    // Enable submit button.
+    useEffect(() => {
+        if (email.length > 0 && password.length > 0) {
+            setBtnSubmitDisabled(false);
+        } else {
+            setBtnSubmitDisabled(true);
+        }
+    }, [email, password]);
+
+
     // Email change.
     const handleEmailChange = (event) => {
         setEmail(event.target.value);

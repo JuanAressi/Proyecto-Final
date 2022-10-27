@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Usuarios;
 use App\Models\Pacientes;
+use App\Models\Medicos;
 
 class UsuariosSeeder extends Seeder
 {
@@ -172,7 +173,36 @@ class UsuariosSeeder extends Seeder
             3 => 'No especificado',
         );
 
-        // Create users.
+        
+        $admin                   = new Usuarios();
+        $admin->nombre           = 'Administrador';
+        $admin->apellido         = '';
+        $admin->email            = 'admin@xmail.com';
+        $admin->contraseña       = md5('admin');
+        $admin->dni              = '';
+        $admin->fecha_nacimiento = date('Y-m-d', strtotime('-' . rand(18, 60) . ' years'));
+        $admin->genero           = '';
+        $admin->telefono         = '';
+        $admin->estado           = 'activo';
+        $admin->rol              = 'admin';
+        $admin->save();
+
+        
+        $usuario                 = new Usuarios();
+        $usuario->nombre           = 'Usuario';
+        $usuario->apellido         = 'Prueba';
+        $usuario->email            = 'usuario.prueba@xmail.com';
+        $usuario->contraseña       = md5('Contraseña1');
+        $usuario->dni              = '';
+        $usuario->fecha_nacimiento = date('Y-m-d', strtotime('-' . rand(18, 60) . ' years'));
+        $usuario->genero           = '';
+        $usuario->telefono         = '';
+        $usuario->estado           = 'activo';
+        $usuario->rol              = 'paciente';
+        $usuario->save();
+
+
+        // Create users - Pacientes.
         for ($i = 0; $i < 758; $i++) {
             // Create Usuario.
             $usuario = new Usuarios();
@@ -202,6 +232,38 @@ class UsuariosSeeder extends Seeder
             $paciente->numero_obra_social = random_int(10000000, 99999999);
 
             $paciente->save();
+        }
+
+        // Create users - Médicos.
+        for ($i = 0; $i < 98; $i++) {
+            // Create Usuario.
+            $usuario = new Usuarios();
+
+            $first_name   = rand(0, count($names) - 1);
+            $last_name    = rand(0, count($surnames) - 1);
+            $email_prefix = rand(0, count($emails) - 1);
+            $gender       = rand(0, count($genders) - 1);            
+
+            $usuario->nombre           = $names[$first_name];
+            $usuario->apellido         = $surnames[$last_name];
+            $usuario->email            = $names[$first_name] . $i . $emails[$email_prefix];
+            $usuario->contraseña       = md5('123456');
+            $usuario->dni              = random_int(10000000, 59999999);
+            $usuario->fecha_nacimiento = date('Y-m-d', strtotime('-' . rand(18, 60) . ' years'));
+            $usuario->genero           = $genders[$gender];
+            $usuario->telefono         = random_int(152000000, 156999999);
+            $usuario->estado           = 'activo';
+            $usuario->rol              = 'medico';
+            
+            $usuario->save();
+
+            // Create Médico.
+            $medico = new Medicos();
+
+            $medico->id_usuario = $usuario->id;
+            $medico->turnos     = '{}';
+
+            $medico->save();
         }
     }
 }
