@@ -277,7 +277,7 @@ class UsuariosSeeder extends Seeder
             $turno->id_paciente = rand(1, 758);
             $turno->id_medico   = rand(1, 98);
             $turno->dia         = date('Y-m-d', strtotime('+' . rand(0, 30) . ' days'));
-            $turno->hora        = rand(8, 18) . ':00:00';
+            $turno->hora        = rand(8, 18) . ':00';
             $turno->estado      = 'pendiente';
 
             $turno->save();

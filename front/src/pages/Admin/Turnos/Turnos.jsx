@@ -340,13 +340,13 @@ function Turnos() {
                     setPage={setPage}
                     setSearchInput={setSearchInput}
                     setShowPerPage={setShowPerPage}
-                    setTurnoToEdit={setTurnoToEdit}
-                    setTurnoToDelete={setTurnoToDelete}
+                    setItemToEdit={setTurnoToEdit}
+                    setItemToDelete={setTurnoToDelete}
                     showPerPage={showPerPage}  
-                    tableHeads={['#', 'Fecha', 'Hora', 'Estado', 'Paciente', 'Medico', 'Acciones']}
-                    tableKeys={['fecha', 'hora', 'estado', 'paciente_apellido+paciente_nombre', 'medico_apellido+medico_nombre']}
-                    totalTurnos={totalTurnos}
-                    turnos={turnos}
+                    tableHeads={['#', 'Fecha y Hora', 'Estado', 'Paciente', 'Medico', 'Acciones']}
+                    tableKeys={['dia+hora', 'estado', 'paciente_apellido+paciente_nombre', 'medico_apellido+medico_nombre']}
+                    totalItems={totalTurnos}
+                    items={turnos}
                 />
             </div>
 
