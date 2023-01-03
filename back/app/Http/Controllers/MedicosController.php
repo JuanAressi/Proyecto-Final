@@ -35,7 +35,7 @@ class MedicosController extends Controller
         $medicos_sql = Usuarios::leftJoin('medicos', 'usuarios.id', '=', 'medicos.id_usuario')
             ->where('usuarios.rol', 'medico')
             ->where('usuarios.estado', 'activo')
-            ->where(function($query) use ($search) {
+            ->where(function ($query) use ($search) {
                 $query->where('usuarios.nombre', 'like', '%' . $search . '%')
                     ->orWhere('usuarios.apellido', 'like', '%' . $search . '%')
                     ->orWhere('usuarios.email', 'like', '%' . $search . '%')
@@ -69,11 +69,11 @@ class MedicosController extends Controller
             // Return nombre, apellido, email.
             foreach ($medicos as $usuario) {
                 $medicos_filtrados[] = array(
-                    'id'          => $usuario->id,
-                    'nombre'      => $usuario->nombre,
-                    'apellido'    => $usuario->apellido,
-                    'email'       => $usuario->email,
-                    'dni'         => $usuario->dni,
+                    'id'       => $usuario->id,
+                    'nombre'   => $usuario->nombre,
+                    'apellido' => $usuario->apellido,
+                    'email'    => $usuario->email,
+                    'dni'      => $usuario->dni,
                 );
             }
 

@@ -35,7 +35,7 @@ class PacientesController extends Controller
         $pacientes_sql = Usuarios::leftJoin('pacientes', 'usuarios.id', '=', 'pacientes.id_usuario')
             ->where('usuarios.rol', 'paciente')
             ->where('usuarios.estado', 'activo')
-            ->where(function($query) use ($search) {
+            ->where(function ($query) use ($search) {
                 $query->where('usuarios.nombre', 'like', '%' . $search . '%')
                     ->orWhere('usuarios.apellido', 'like', '%' . $search . '%')
                     ->orWhere('usuarios.email', 'like', '%' . $search . '%')

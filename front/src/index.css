@@ -26,7 +26,8 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 .border-primary { border: 1px solid #056799 !important; }
 
 /* Border Radius */
-.border-50 { border-radius: 50%!important;}
+.border-50 { border-radius: 50%!important; }
+.border-top-1 { border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem; }
 
 
 /* Box Shadow */
@@ -217,3 +218,13 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
     background-color: #023E8A!important;
     border-color: #023E8A!important;
 }
+
+
+/* Cursor */
+.cursor-pointer { cursor: pointer; }
+
+
+/* Z index */
+.z-index-0 { z-index: 0; }
+.z-index-1 { z-index: 1; }
+.z-index-2 { z-index: 2; }
