@@ -5,7 +5,7 @@ import Filters from './Filters/Filters';
 import Pagination from './Pagination/Pagination';
 import './style.css';
 
-function Table( { lastShowPerPage, lastPage, page, setPage, setSearchInput, setShowPerPage, setUserToEdit, setUserToDelete, showPerPage, tableHeads, totalUsers, users } ) {
+function Table({ lastShowPerPage, lastPage, page, setPage, setSearchInput, setShowPerPage, setItemToEdit, setItemToDelete, showPerPage, tableHeads, tableKeys, totalItems, items }) {
     // Parse the DNI.
     const parseDni = (dni) => {
         if (dni > 999999) {
@@ -23,7 +23,7 @@ function Table( { lastShowPerPage, lastPage, page, setPage, setSearchInput, setS
             <table className='table table-striped bg-white border box-shadow-dark mt-3 mb-0'>
                 <thead>
                     <tr>
-                        {tableHeads && tableHeads.map( ( tableHead, index ) => {
+                        {tableHeads && tableHeads.map((tableHead, index) => {
                             return (
                                 <th key={index}>
                                     <span>{tableHead}</span>
@@ -34,22 +34,29 @@ function Table( { lastShowPerPage, lastPage, page, setPage, setSearchInput, setS
                 </thead>
 
                 <tbody>
-                    {users !== undefined && users.map((user, index) => {
+                    {items && items.map((item, index) => {
                         if (index < lastShowPerPage) {
-                            debugger
                             return (
                                 <tr key={index}>
                                     <td>{(index + 1) + ((lastPage - 1) * showPerPage)}</td>
-                                    <td>{user.nombre} {user.apellido}</td>
-                                    <td>{user.email}</td>
-                                    <td>{parseDni(user.dni)}</td>
+                                    {tableKeys && tableKeys.map((tableKey, index) => {
+                                        return (
+                                            <td key={index}>
+                                                {tableKey.includes('+') ?
+                                                    item[tableKey.split('+')[0]] + ', ' + item[tableKey.split('+')[1]] :
+                                                    tableKey === 'dni' ? parseDni(item[tableKey]) : item[tableKey]
+                                                }
+                                            </td>
+                                        )
+                                    })}
+                                    
                                     <td>
                                         <FontAwesomeIcon
                                             className='text-warning me-3'
                                             icon={faPencil}
                                             data-bs-toggle='modal'
                                             data-bs-target={'#modalEdit'}
-                                            onClick={() => setUserToEdit(user.id)}
+                                            onClick={() => setItemToEdit(item.id)}
                                         />
 
                                         <FontAwesomeIcon
@@ -57,7 +64,7 @@ function Table( { lastShowPerPage, lastPage, page, setPage, setSearchInput, setS
                                             icon={faTrashAlt}
                                             data-bs-toggle='modal'
                                             data-bs-target={'#modalDelete'}
-                                            onClick={() => setUserToDelete(user.id)}
+                                            onClick={() => setItemToDelete(item.id)}
                                         />
                                     </td>
                                 </tr>
@@ -67,7 +74,7 @@ function Table( { lastShowPerPage, lastPage, page, setPage, setSearchInput, setS
                 </tbody>
             </table>
 
-            {users === undefined && 
+            {items === undefined && 
                 <div className='d-flex flex-column bg-white border box-shadow-dark text-center p-2'>
                     <FontAwesomeIcon
                         className='text-warning mb-2 fa-2x'
@@ -78,10 +85,10 @@ function Table( { lastShowPerPage, lastPage, page, setPage, setSearchInput, setS
                 </div>
             }
 
-            {totalUsers > showPerPage ? 
+            {totalItems > showPerPage ? 
                 (    
                     <Pagination
-                        totalUsers={totalUsers}
+                        totalItems={totalItems}
                         showPerPage={showPerPage}
                         page={page}
                         setPage={setPage}
