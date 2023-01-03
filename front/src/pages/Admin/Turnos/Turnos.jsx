@@ -116,8 +116,6 @@ function Turnos() {
                 // Hide spinner.
                 setShowSpinner(false);
 
-                debugger;
-
                 setLastShowPerPage(showPerPage);
                 setLastPage(page);
                 setTotalTurnos(response.turnos_count);
@@ -346,7 +344,7 @@ function Turnos() {
                     setTurnoToDelete={setTurnoToDelete}
                     showPerPage={showPerPage}  
                     tableHeads={['#', 'Fecha', 'Hora', 'Estado', 'Paciente', 'Medico', 'Acciones']}
-                    tableKeys={['id', 'fecha', 'hora', 'estado', 'paciente_nombre', 'paciente_apellido', 'medico_nombre', 'medico_apellido',]}
+                    tableKeys={['fecha', 'hora', 'estado', 'paciente_apellido+paciente_nombre', 'medico_apellido+medico_nombre']}
                     totalTurnos={totalTurnos}
                     turnos={turnos}
                 />

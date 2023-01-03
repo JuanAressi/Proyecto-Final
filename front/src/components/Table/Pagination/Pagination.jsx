@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import './style.css';
 
-function Pagination({ totalUsers, showPerPage, page, setPage }) {
+function Pagination({ totalItems, showPerPage, page, setPage }) {
     // Get total pages.
-    const pages = Math.ceil(totalUsers / showPerPage);
+    const pages = Math.ceil(totalItems / showPerPage);
 
     // Disable left arrow if page is 1.
     let disabledLeft = '';

@@ -339,12 +339,13 @@ function Medicos() {
                     setPage={setPage}
                     setSearchInput={setSearchInput}
                     setShowPerPage={setShowPerPage}
-                    setUserToEdit={setUserToEdit}
-                    setUserToDelete={setUserToDelete}
+                    setItemToEdit={setUserToEdit}
+                    setItemToDelete={setUserToDelete}
                     showPerPage={showPerPage}  
-                    tableHeads={['#', 'Nombre y Apellido', 'Email', 'DNI', 'Acciones']}
-                    totalUsers={totalUsers}
-                    users={users}
+                    tableHeads={['#', 'Apellido y Nombre', 'Email', 'DNI', 'Acciones']}
+                    tableKeys={['apellido+nombre', 'email', 'dni']}
+                    totalItems={totalUsers}
+                    items={users}
                 />
             </div>
 
