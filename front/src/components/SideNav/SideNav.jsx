@@ -49,7 +49,7 @@ function SideNav( { active } ) {
                         <h5 className='text-uppercase mb-0'>Pacientes</h5>
                     </Link>
                     
-                    <Link to='/' className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + medicos}>
+                    <Link to='/panel-admin/medicos' className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + medicos}>
                         <FontAwesomeIcon
                             className='text-white me-3'
                             icon={faUserDoctor}
@@ -58,7 +58,7 @@ function SideNav( { active } ) {
                         <h5 className='text-uppercase mb-0'>Medicos</h5>
                     </Link>
                     
-                    <Link to='/' className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + turnos}>
+                    <Link to='/panel-admin/turnos' className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + turnos}>
                         <FontAwesomeIcon
                             className='text-white me-3'
                             icon={faFileMedical}

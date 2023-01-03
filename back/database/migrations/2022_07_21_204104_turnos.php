@@ -4,19 +4,23 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Turnos extends Migration {
+class Turnos extends Migration
+{
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up() {
+    public function up()
+    {
         Schema::create('turnos', function (Blueprint $table) {
             $table->bigIncrements('id')->unique();
-            $table->bigInteger('id_usuario');
-            $table->bigInteger('id_medico');
+            $table->unsignedBigInteger('id_paciente')->unsigned();
+            $table->foreign('id_paciente')->references('id')->on('usuarios');
+            $table->unsignedBigInteger('id_medico');
+            $table->foreign('id_medico')->references('id')->on('usuarios');
             $table->string('dia');
-            $table->string('horario');
+            $table->string('hora');
             $table->string('estado');
             $table->timestamps();
         });
@@ -27,7 +31,8 @@ class Turnos extends Migration {
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::dropIfExists('turnos');
     }
 }

@@ -35,3 +35,6 @@ Route::put('pacientes/{id}', 'App\Http\Controllers\PacientesController@update');
 
 // Medicos.
 Route::get('medicos', 'App\Http\Controllers\MedicosController@getAll');
+
+// Turnos.
+Route::get('turnos', 'App\Http\Controllers\TurnosController@getAll');

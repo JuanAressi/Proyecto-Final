@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Usuarios;
 use App\Models\Pacientes;
 use App\Models\Medicos;
+use App\Models\Turnos;
 
 class UsuariosSeeder extends Seeder
 {
@@ -234,6 +235,7 @@ class UsuariosSeeder extends Seeder
             $paciente->save();
         }
 
+
         // Create users - Médicos.
         for ($i = 0; $i < 98; $i++) {
             // Create Usuario.
@@ -264,6 +266,21 @@ class UsuariosSeeder extends Seeder
             $medico->turnos     = '{}';
 
             $medico->save();
+        }
+
+
+        // Create Turnos.
+        for ($i = 0; $i < 752; $i++) {
+            // Create Turno.
+            $turno = new Turnos();
+
+            $turno->id_paciente = rand(1, 758);
+            $turno->id_medico   = rand(1, 98);
+            $turno->dia         = date('Y-m-d', strtotime('+' . rand(0, 30) . ' days'));
+            $turno->hora        = rand(8, 18) . ':00:00';
+            $turno->estado      = 'pendiente';
+
+            $turno->save();
         }
     }
 }
