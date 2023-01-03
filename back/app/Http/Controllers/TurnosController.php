@@ -35,7 +35,10 @@ class TurnosController extends Controller
             ->leftJoin('usuarios as medico', 'turnos.id_medico', '=', 'medico.id')
             // ->where('usuarios.estado', 'activo')
             ->where(function ($query) use ($search) {
-                $query->where('paciente.nombre', 'like', '%' . $search . '%')
+                $query->where('turnos.dia', 'like', '%' . $search . '%')
+                    ->orWhere('turnos.hora', 'like', '%' . $search . '%')
+                    ->orWhere('turnos.estado', 'like', '%' . $search . '%')
+                    ->orWhere('paciente.nombre', 'like', '%' . $search . '%')
                     ->orWhere('paciente.apellido', 'like', '%' . $search . '%')
                     ->orWhere('medico.nombre', 'like', '%' . $search . '%')
                     ->orWhere('medico.apellido', 'like', '%' . $search . '%');
