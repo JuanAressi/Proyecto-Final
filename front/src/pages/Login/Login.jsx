@@ -118,7 +118,7 @@ function Login() {
 
             <div className='blue-overlay pt-5'>
                 <div className='container p-0 pt-5'>
-                    <div className="d-flex justify-content-center align-items-center">
+                    <div className='d-flex justify-content-center align-items-center'>
                         <form id='loginForm' className='rounded box-shadow-dark p-5'>
                             <h1 className='text-center mb-3 text-darker text-shadow-dark'>¡Bienvenido!</h1>
 
@@ -185,7 +185,7 @@ function Login() {
                                 Olvide mi contraseña
                             </Link>
 
-                            <div id="buttonsContainer" className='d-flex flex-column justify-content-center align-items-center mt-3'>
+                            <div id='buttonsContainer' className='d-flex flex-column justify-content-center align-items-center mt-3'>
                                 <button 
                                     id='ingresar'
                                     className='d-flex justify-content-center align-items-center btn bg-primary text-white box-shadow-dark text-uppercase mb-3'
@@ -196,7 +196,7 @@ function Login() {
 
                                 {showSpinner && 
                                     <div style={{width: '40px', marginTop: '-5px'}}>
-                                        <img src={loadingGif} alt="wait until the page loads" height='20px'/>
+                                        <img src={loadingGif} alt='wait until the page loads' height='20px'/>
                                     </div>
                                 }
 

@@ -173,7 +173,7 @@ class UsuariosSeeder extends Seeder
             3 => 'No especificado',
         );
 
-        
+
         $admin                   = new Usuarios();
         $admin->nombre           = 'Administrador';
         $admin->apellido         = '';
@@ -187,7 +187,7 @@ class UsuariosSeeder extends Seeder
         $admin->rol              = 'admin';
         $admin->save();
 
-        
+
         $usuario                 = new Usuarios();
         $usuario->nombre           = 'Usuario';
         $usuario->apellido         = 'Prueba';
@@ -242,7 +242,7 @@ class UsuariosSeeder extends Seeder
             $first_name   = rand(0, count($names) - 1);
             $last_name    = rand(0, count($surnames) - 1);
             $email_prefix = rand(0, count($emails) - 1);
-            $gender       = rand(0, count($genders) - 1);            
+            $gender       = rand(0, count($genders) - 1);
 
             $usuario->nombre           = $names[$first_name];
             $usuario->apellido         = $surnames[$last_name];
@@ -254,7 +254,7 @@ class UsuariosSeeder extends Seeder
             $usuario->telefono         = random_int(152000000, 156999999);
             $usuario->estado           = 'activo';
             $usuario->rol              = 'medico';
-            
+
             $usuario->save();
 
             // Create Médico.
