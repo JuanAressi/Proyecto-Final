@@ -4,15 +4,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Medicos extends Migration {
+class Medicos extends Migration
+{
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up() {
+    public function up()
+    {
         Schema::create('medicos', function (Blueprint $table) {
-            $table->bigInteger('id_usuario')->unique();
+            $table->unsignedBigInteger('id_usuario')->unique();
+            $table->foreign('id_usuario')->references('id')->on('usuarios');
             $table->string('turnos')->nullable();
             $table->timestamps();
         });
@@ -23,7 +26,8 @@ class Medicos extends Migration {
      *
      * @return void
      */
-    public function down() {
+    public function down()
+    {
         Schema::dropIfExists('medicos');
     }
 }

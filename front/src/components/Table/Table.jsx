@@ -36,6 +36,7 @@ function Table( { lastShowPerPage, lastPage, page, setPage, setSearchInput, setS
                 <tbody>
                     {users !== undefined && users.map((user, index) => {
                         if (index < lastShowPerPage) {
+                            debugger
                             return (
                                 <tr key={index}>
                                     <td>{(index + 1) + ((lastPage - 1) * showPerPage)}</td>
