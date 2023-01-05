@@ -6,6 +6,7 @@ import Admin from './pages/Admin/Admin';
 import AdminPacientes from './pages/Admin/Pacientes/Pacientes';
 import AdminMedicos from './pages/Admin/Medicos/Medicos';
 import AdminTurnos from './pages/Admin/Turnos/Turnos';
+import Turnos from './pages/Turnos/Turnos';
 
 
 function App() {
@@ -16,9 +17,10 @@ function App() {
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
                 <Route path='/panel-admin' element={<Admin />} />
-                <Route path='/panel-admin/pacientes' element={<AdminPacientes />} />                
-                <Route path='/panel-admin/medicos' element={<AdminMedicos />} />                
-                <Route path='/panel-admin/turnos' element={<AdminTurnos />} />                
+                <Route path='/panel-admin/pacientes' element={<AdminPacientes />} />
+                <Route path='/panel-admin/medicos' element={<AdminMedicos />} />
+                <Route path='/panel-admin/turnos' element={<AdminTurnos />} />
+                <Route path='/turnos' element={<Turnos />} />
             </Routes>
         </Router>
 	);

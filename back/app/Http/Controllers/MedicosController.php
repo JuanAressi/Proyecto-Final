@@ -25,12 +25,6 @@ class MedicosController extends Controller
             $search = '';
         }
 
-        // Calculate offset.
-        $offset = ($page - 1) * $pagination;
-
-        // Calculate limit.
-        $limit = $offset + $pagination;
-
         // Get medicos.
         $medicos_sql = Usuarios::leftJoin('medicos', 'usuarios.id', '=', 'medicos.id_usuario')
             ->where('usuarios.rol', 'medico')
@@ -49,6 +43,15 @@ class MedicosController extends Controller
 
         // Get 'Medicos' by pagination.
         $medicos = [];
+
+        // Calculate offset and limit.
+        if ($page === null && $pagination === null) {
+            $offset = 0;
+            $limit  = $medicos_count;
+        } else {
+            $offset = ($page - 1) * $pagination;
+            $limit  = $offset + $pagination;
+        }
 
         // Check if offset is valid.
         if ($offset < $medicos_count) {

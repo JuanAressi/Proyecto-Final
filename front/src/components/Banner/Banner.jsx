@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './style.css';
 
 function Banner() {
@@ -13,7 +14,12 @@ function Banner() {
                                 <h2 className='text-white display-6 mt-4 ms-3'>¡Y al instante!</h2>
 
                                 <div className='text-center w-100'>
-                                    <button className='btn border border-light text-light text-uppercase px-3 mt-5 w-50'>Reservar Turno</button>
+                                    <Link
+                                        to='/turnos'
+                                        className='btn border border-light text-light text-uppercase px-3 mt-5 w-50'
+                                    >
+                                        Reservar Turno
+                                    </Link>
                                 </div>
                             </div>
                         </div>
