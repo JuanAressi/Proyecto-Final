@@ -73,7 +73,7 @@ function Navbar() {
                             </NavHashLink>
 
                             <Link
-                                to='/#turnos'
+                                to='/turnos'
                                 className='nav-link position-relative p-3 me-3 mb-0 text-dark'
                             >
                                 Turnos

@@ -12,12 +12,6 @@
     padding-top: 15rem;
 }
 
-#banner .btn.border.border-light:hover {
-    background-color: #fff;
-    color: #056799!important;
-    transition: all 0.3s ease-in-out;
-}
-
 @media (max-width: 768px) {
     h1 {
         text-align: center;
