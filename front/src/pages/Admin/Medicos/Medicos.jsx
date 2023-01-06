@@ -303,7 +303,7 @@ function Medicos() {
 
             <div className='container p-5'>
                 <div className='d-flex align-items-center mb-4'>
-                    <h1 id='pageTitle' className='display-3 text-primary text-shadow-dark me-4'>Medicos</h1>
+                    <h1 id='pageTitle' className='display-3 text-primary font-weight-100 text-shadow-dark me-4'>Medicos</h1>
 
                     <div style={{width: '40px'}}>
                         {showSpinner && <img src={loadingGif} alt="wait until the page loads" height='20px'/>}
