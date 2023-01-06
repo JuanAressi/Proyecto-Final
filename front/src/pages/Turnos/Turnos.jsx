@@ -78,17 +78,50 @@ function Turnos() {
      * @return {void}
      */
     const filterEspecialista = (input) => {
-        // Get the 'especialistas' div children.
-        const especialistas = document.getElementById('especialistas').children;
+        // If input is empty, show 'empiezaABuscar' div.
+        let empiezaABuscar = document.querySelector('.empiezaABuscar');
 
-        // Loop through the 'especialistas' div children.
-        for (let i = 0; i < especialistas.length; i++) {
-            // If the 'especialistas' div children contains the given input, show it, otherwise, hide it.
-            if (especialistas[i].innerHTML.toLowerCase().includes(input.toLowerCase())) {
-                especialistas[i].style.display = 'flex';
+        if (input === '') {
+            empiezaABuscar.classList.remove('d-none');
+            empiezaABuscar.classList.add('d-flex');
+        } else {
+            empiezaABuscar.classList.remove('d-flex');
+            empiezaABuscar.classList.add('d-none');
+        }
+
+        // Get the 'especialistas' divs.
+        const especialistas = document.getElementById('especialistas');
+        const especialistasChildren = especialistas.children;
+
+        // Counters.
+        let counter = 0;
+
+        // Loop through the 'especialistasChildren' div.
+        for (let i = 0; i < especialistasChildren.length; i++) {
+            // If the 'especialistasChildren' div contains the given input, show it, otherwise, hide it.
+            if (especialistasChildren[i].innerHTML.toLowerCase().includes(input.toLowerCase())) {
+                // Hide and show the 'especialistasChildren' div.
+                especialistasChildren[i].classList.remove('d-none');
+                especialistasChildren[i].classList.add('d-flex');
+
+                // Increment the counter.
+                counter++;
             } else {
-                especialistas[i].style.display = 'none';
+                // Hide and show the 'especialistasChildren' div.
+                especialistasChildren[i].classList.remove('d-flex');
+                especialistasChildren[i].classList.add('d-none');
             }
+        }
+
+        // Set maximum height of the 'especialistas' div.
+        if (counter === 1) {
+            especialistas.style.maxHeight = '47px';
+        } else if (counter === 2) {
+            especialistas.style.maxHeight = '94px';
+        } else if (counter === 3) {
+            especialistas.style.maxHeight = '141px';
+        } else if (counter >= 4) {
+            especialistas.style.maxHeight = '188px';
         }
     }
 
@@ -199,8 +232,12 @@ function Turnos() {
                                 </div>
 
                                 <div id='especialistas' className='bg-white w-25'>
-                                    {medicos && medicos.map(medico => (
-                                        <div className='d-flex align-items-center border-bottom py-2 px-3'>
+                                    <div className='d-flex align-items-center border-bottom py-2 px-3 empiezaABuscar'>
+                                        <p className='mb-0 text-black'>Empieza a escribir para buscar</p>
+                                    </div>
+
+                                    {medicos && medicos.map((medico, index) => (
+                                        <div className='d-none align-items-center border-bottom py-2 px-3' key={index}>
                                             <p className='mb-0 text-black'>{medico.apellido}, {medico.nombre}</p>
                                         </div>
                                     ))}
