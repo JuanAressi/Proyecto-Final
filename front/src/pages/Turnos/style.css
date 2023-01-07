@@ -1,15 +1,29 @@
+#turnos {
+    /* background: url('../../components/assets/img/Turnos_background.jpg') no-repeat center center/cover; */
+
+    overflow-x: hidden;
+}
+
 #turnos p {
     font-size: 20px;
 }
 
-#turnos .empiezaABuscar p {
+#turnos .medicosMessage p {
     font-size: 16px;
+}
+
+#turnos #steps .step-container {
+    transition: transform 1s;
+}
+
+#turnos #steps .steps {
+    min-width: 100%;
 }
 
 #turnos .circle {
     width: 40px;
     height: 40px;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-in;
 }
 
 #turnos #progressBarContainer .position-absolute {
@@ -40,8 +54,12 @@
     overflow-y: scroll;
 }
 
-#turnos #especialistas div:hover {
-    background-color: rgba(2, 62, 138, 0.25);
+#turnos #especialistas .item p {
+    pointer-events: none;
+}
+
+#turnos #especialistas .item:hover {
+    background-color: rgba(43, 102, 179, 0.5);
 }
 
 #turnos #especialistas .item:hover {
