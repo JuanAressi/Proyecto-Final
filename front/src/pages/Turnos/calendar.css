@@ -1,0 +1,107 @@
+
+
+
+/* Calendar */
+.react-calendar {
+    background: #fff;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    width: 50%;
+}
+
+.react-calendar .react-calendar__navigation {
+    display: flex;
+    justify-content: space-around;
+}
+
+.react-calendar .react-calendar__navigation button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    padding: 0.5rem 1.25rem;
+    text-transform: capitalize;
+}
+
+.react-calendar .react-calendar__navigation button:nth-child(1),
+.react-calendar .react-calendar__navigation button:nth-child(5) {
+    display: none;
+}
+
+.react-calendar .react-calendar__navigation button:nth-child(3) {
+    flex-grow: 0!important;
+}
+
+.react-calendar .react-calendar__viewContainer .react-calendar__month-view__weekdays {
+    color: #000;
+    text-align: center;
+}
+
+.react-calendar .react-calendar__viewContainer .react-calendar__month-view__weekdays abbr {
+    text-decoration: none;
+    text-transform: capitalize;
+}
+
+.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days button {
+    border: none;
+    background: transparent;
+    position: relative;
+    overflow: unset;
+    padding: 0.25rem 0;
+}
+
+.react-calendar .react-calendar__year-view__months {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.react-calendar .react-calendar__year-view__months button {
+    border: none;
+    background: transparent;
+    position: relative;
+    padding: 0.25rem 0;
+    text-transform: capitalize;
+}
+
+.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days button::after,
+.react-calendar .react-calendar__year-view__months button::after,
+.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__tile--active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    height: 2px;
+    width: 0;
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+}
+
+.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days button::after,
+.react-calendar .react-calendar__year-view__months button::after {
+    background: #056799;
+}
+
+.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__tile--active::after {
+    background-color: #28a745;
+    width: 25%;
+    left: calc((100% - 25%) / 2);
+}
+
+.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days button:hover::after,
+.react-calendar .react-calendar__year-view__months button:hover::after {
+    width: 25%;
+}
+
+.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days button:hover::after {
+    width: 25%;
+    left: calc((100% - 25%) / 2);
+}
+
+.react-calendar .react-calendar__year-view__months button:hover::after {
+    width: 40%;
+    left: calc((100% - 40%) / 2);
+}

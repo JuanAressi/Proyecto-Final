@@ -26,7 +26,6 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 /* Border Color */
 .border-primary { border: 1px solid #056799 !important; }
 .border-white-2 { border: 2px solid #fff!important; }
-.border-green-3 { border: 3px solid #28a745!important; }
 
 /* Border Radius */
 .border-50 { border-radius: 50%!important; }
