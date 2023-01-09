@@ -16,7 +16,7 @@ class TurnosFechas extends Migration
         Schema::create('turnos_fecha', function (Blueprint $table) {
             $table->bigIncrements('id')->unique();
             $table->unsignedBigInteger('id_medico');
-            $table->foreign('id_medico')->references('id_usuario')->on('medicos');
+            $table->foreign('id_medico')->references('id')->on('usuarios');
             $table->string('turnos', 10);
             $table->timestamps();
         });
