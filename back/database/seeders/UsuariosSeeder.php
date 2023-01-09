@@ -189,7 +189,7 @@ class UsuariosSeeder extends Seeder
         $admin->save();
 
 
-        $usuario                 = new Usuarios();
+        $usuario                   = new Usuarios();
         $usuario->nombre           = 'Usuario';
         $usuario->apellido         = 'Prueba';
         $usuario->email            = 'usuario.prueba@xmail.com';
@@ -237,7 +237,7 @@ class UsuariosSeeder extends Seeder
 
 
         // Create users - Médicos.
-        for ($i = 0; $i < 98; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             // Create Usuario.
             $usuario = new Usuarios();
 
@@ -258,14 +258,6 @@ class UsuariosSeeder extends Seeder
             $usuario->rol              = 'medico';
 
             $usuario->save();
-
-            // Create Médico.
-            $medico = new Medicos();
-
-            $medico->id_usuario = $usuario->id;
-            $medico->turnos     = '{}';
-
-            $medico->save();
         }
 
 
@@ -274,8 +266,8 @@ class UsuariosSeeder extends Seeder
             // Create Turno.
             $turno = new Turnos();
 
-            $turno->id_paciente = rand(1, 758);
-            $turno->id_medico   = rand(1, 98);
+            $turno->id_paciente = rand(3, 758);
+            $turno->id_medico   = rand(758, 778);
             $turno->dia         = date('Y-m-d', strtotime('+' . rand(0, 30) . ' days'));
             $turno->hora        = rand(8, 18) . ':00';
             $turno->estado      = 'pendiente';

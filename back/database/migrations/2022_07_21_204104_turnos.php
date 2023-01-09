@@ -18,7 +18,7 @@ class Turnos extends Migration
             $table->unsignedBigInteger('id_paciente')->unsigned();
             $table->foreign('id_paciente')->references('id_usuario')->on('pacientes');
             $table->unsignedBigInteger('id_medico');
-            $table->foreign('id_medico')->references('id_usuario')->on('medicos');
+            $table->foreign('id_medico')->references('id')->on('usuarios');
             $table->string('dia');
             $table->string('hora');
             $table->string('estado');

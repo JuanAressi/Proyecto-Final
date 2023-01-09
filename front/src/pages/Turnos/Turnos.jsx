@@ -217,20 +217,16 @@ function Turnos() {
         // Get the 'steps' divs.
         const stepContainer = document.querySelector('.step-container');
 
-
-        console.log(to)
+        // Calculate the transition.
+        const translate = (to - 2) * 100;
 
         if (to - step > 0) {
-            const translate = (to - 2) * 100;
-
             // Do the animation.
             stepContainer.style.transform = `translateX(-${translate}%)`;
 
             // Set current step.
             setStep(to)
         } else {
-            const translate = (to - 2) * 100;
-
             // Do the animation.
             stepContainer.style.transform = `translateX(-${translate}%)`;
 
