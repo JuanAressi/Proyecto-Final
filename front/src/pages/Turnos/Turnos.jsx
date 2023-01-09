@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import $ from 'jquery';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
+import Calendar from 'react-calendar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import './style.css';
+import './calendar.css';
 
 function Turnos() {
     const [medicos, setMedicos] = useState([]);
@@ -14,6 +16,7 @@ function Turnos() {
     const [medicoMessage, setMedicoMessage] = useState('Empieza a escribir para buscar');
     const [medicoMessageShow, setMedicoMessageShow] = useState(false);
     const [medicoDisbleButton, setMedicoDisbleButton] = useState(true);
+    const [fecha, setFecha] = useState('');
     const [step, setStep] = useState(2);
 
     // On page load, do the search of all active 'Medicos'.
@@ -318,10 +321,10 @@ function Turnos() {
                                     </div>
                                 </div>
 
-                                <h4 className='mt-1'>Selecciona uno de nuestros especialistas</h4>
+                                <h4 className='mt-1 mb-5'>Selecciona uno de nuestros especialistas</h4>
                                 
                                 {/* Crear un input en donde se pueda escribir y su desplegable cargado con todos los medicos, el cual se vaya filtrando según lo tipeado*/}
-                                <div className='d-flex flex-column align-items-center mt-5 w-100'>                   
+                                <div className='d-flex flex-column align-items-center w-100'>                   
                                     <div className='d-flex justify-content-center align-items-center w-25 position-relative'>
                                         <input
                                             id='especialista'
@@ -373,7 +376,10 @@ function Turnos() {
                                     </div>
                                 </div>
 
-                                <h4 className='mt-1'>Selecciona el día que te quieres atender</h4>
+                                <h4 className='mt-1 mb-5'>Selecciona el día que te quieres atender</h4>
+
+                                <Calendar
+                                />
 
 
                                 <div className='d-flex justify-content-around w-100'>
