@@ -16,9 +16,9 @@ class Turnos extends Migration
         Schema::create('turnos', function (Blueprint $table) {
             $table->bigIncrements('id')->unique();
             $table->unsignedBigInteger('id_paciente')->unsigned();
-            $table->foreign('id_paciente')->references('id')->on('usuarios');
+            $table->foreign('id_paciente')->references('id_usuario')->on('pacientes');
             $table->unsignedBigInteger('id_medico');
-            $table->foreign('id_medico')->references('id')->on('usuarios');
+            $table->foreign('id_medico')->references('id_usuario')->on('medicos');
             $table->string('dia');
             $table->string('hora');
             $table->string('estado');
