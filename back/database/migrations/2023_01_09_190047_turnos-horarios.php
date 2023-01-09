@@ -17,6 +17,7 @@ class TurnosHorarios extends Migration
             $table->unsignedBigInteger('id_turnos_fechas');
             $table->foreign('id_turnos_fechas')->references('id')->on('turnos_fecha');
             $table->string('horario', 5);
+            $table->string('estado');
             $table->timestamps();
         });
     }
