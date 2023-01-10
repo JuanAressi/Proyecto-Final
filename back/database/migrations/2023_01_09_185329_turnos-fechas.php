@@ -13,11 +13,11 @@ class TurnosFechas extends Migration
      */
     public function up()
     {
-        Schema::create('turnos_fecha', function (Blueprint $table) {
+        Schema::create('turnos_fechas', function (Blueprint $table) {
             $table->bigIncrements('id')->unique();
             $table->unsignedBigInteger('id_medico');
             $table->foreign('id_medico')->references('id')->on('usuarios');
-            $table->string('turnos', 10);
+            $table->string('dia', 10);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class TurnosFechas extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('turnos_fecha');
+        Schema::dropIfExists('turnos_fechas');
     }
 }

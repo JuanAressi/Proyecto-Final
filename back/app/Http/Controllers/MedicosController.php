@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuarios;
-use App\Models\Medicos;
+use App\Models\TurnosFechas;
+use App\Models\TurnosHoras;
 
 class MedicosController extends Controller
 {
@@ -26,8 +27,7 @@ class MedicosController extends Controller
         }
 
         // Get medicos.
-        $medicos_sql = Usuarios::leftJoin('medicos', 'usuarios.id', '=', 'medicos.id_usuario')
-            ->where('usuarios.rol', 'medico')
+        $medicos_sql = Usuarios::where('usuarios.rol', 'medico')
             ->where('usuarios.estado', 'activo')
             ->where(function ($query) use ($search) {
                 $query->where('usuarios.nombre', 'like', '%' . $search . '%')
@@ -70,13 +70,13 @@ class MedicosController extends Controller
             $medicos_filtrados = array();
 
             // Return nombre, apellido, email.
-            foreach ($medicos as $usuario) {
+            foreach ($medicos as $medico) {
                 $medicos_filtrados[] = array(
-                    'id'       => $usuario->id,
-                    'nombre'   => $usuario->nombre,
-                    'apellido' => $usuario->apellido,
-                    'email'    => $usuario->email,
-                    'dni'      => $usuario->dni,
+                    'id'       => $medico->id,
+                    'nombre'   => $medico->nombre,
+                    'apellido' => $medico->apellido,
+                    'email'    => $medico->email,
+                    'dni'      => $medico->dni,
                 );
             }
 
@@ -100,6 +100,8 @@ class MedicosController extends Controller
 
     /**
      * Function getById - Returns a Paciente from database that matches with the request.
+     *
+     * REVISAR ----------------------------.
      *
      * @return array - The Paciente.
      */
@@ -135,6 +137,8 @@ class MedicosController extends Controller
 
     /**
      * Function addNew - Add a new Paciente to database.
+     *
+     * REVISAR ----------------------------.
      *
      * @param Request $request - The request object.
      *
@@ -172,6 +176,8 @@ class MedicosController extends Controller
     /**
      * Function update - Update a Paciente from database.
      *
+     * REVISAR ----------------------------.
+     *
      * @param Request $request - The request object.
      *
      * @return array - The status and the message of the update.
@@ -200,5 +206,73 @@ class MedicosController extends Controller
                 'message' => 'El Paciente se ha actualizado correctamente.',
             )
         );
+    }
+
+
+    /**
+     * Function getFechas - Get all the days that the 'Medico' has available.
+     *
+     * @param int $id - The id of the 'Medico'.
+     *
+     * @return array - The days available.
+     */
+    public function getFechas($id)
+    {
+        // Get today date.
+        $today = date('d-m-Y');
+
+        $fechas = TurnosFechas::where('id_medico', $id)
+            ->where('dia', '>=', $today)
+            ->get(['id', 'dia']);
+
+        // Make a new array where the id is the key and the dia is the value.
+        // $fechas = array_column($fechas->toArray(), 'dia', 'id');
+
+        // Check if fechas are found.
+        if (count($fechas) > 0) {
+            // Return fechas.
+            return json_encode(
+                array(
+                    'fechas' => $fechas,
+                )
+            );
+        } else {
+            // Return error.
+            return json_encode(
+                array()
+            );
+        }
+    }
+
+
+    /**
+     * Function getHorarios - Get all hours that the 'Medico' has available for a given date.
+     *
+     * @param string $id - The id of the date in 'TurnosFechas'.
+     *
+     * @return array - The hours available.
+     */
+    public function getHorarios($id)
+    {
+        // $horas = TurnosFechas::where('dia', $date)
+        //     ->leftJoin('turnos_horas', 'turnos_fechas.id', '=', 'turnos_horas.id_turnos_fechas')
+        //     ->get('turnos_horas.hora');
+        $horas = TurnosHoras::where('id_turnos_fechas', $id)
+            ->get(['hora', 'estado']);
+
+        // Check if horas are found.
+        if (count($horas) > 0) {
+            // Return horas.
+            return json_encode(
+                array(
+                    'horas' => $horas,
+                )
+            );
+        } else {
+            // Return error.
+            return json_encode(
+                array()
+            );
+        }
     }
 }

@@ -10,13 +10,22 @@ import './style.css';
 import './calendar.css';
 
 function Turnos() {
+    // Medicos.
     const [medicos, setMedicos] = useState([]);
-    const [medicosShow, setMedicosShow] = useState(true);
     const [medico, setMedico] = useState('');
     const [medicoMessage, setMedicoMessage] = useState('Empieza a escribir para buscar');
     const [medicoMessageShow, setMedicoMessageShow] = useState(false);
     const [medicoDisbleButton, setMedicoDisbleButton] = useState(true);
+    
+    // Fechas.
+    const [fechas, setFechas] = useState([]);
     const [fecha, setFecha] = useState('');
+    const [fechaDisableButton, setFechaDisableButton] = useState(true);
+
+    // Hora.
+    const [horas, setHoras] = useState('');
+    const [hora, setHora] = useState('');
+    const [horaDisableButton, setHoraDisableButton] = useState(true);
     const [step, setStep] = useState(2);
 
     // On page load, do the search of all active 'Medicos'.
@@ -185,27 +194,114 @@ function Turnos() {
      * @return {void}
      */
     const setClickedEspecialista = (target) => {
-        // Get the 'data-id' attribute of the target.
+        // Get the 'data-id' and 'data-position' attribute of the target.
         const id = target.getAttribute('data-id');
+        const position = target.getAttribute('data-position');
 
         // Get the divs.
         const input = document.getElementById('especialista');
         const list  = document.getElementById('especialistas');
 
-        // Set the 'Medico' as the selected 'Medico'.
-        setMedico(medicos[id]);
+        // Set the id of the 'Medico' as the selected 'Medico'.
+        setMedico(id);
+
+        // Get the dates for the selected 'Medico'.
+        getFechas(id);
 
         // Hide the 'especialistas' div.
         list.classList.remove('d-flex');
         list.classList.add('d-none');
 
         // Set the 'especialista' input value and the class.
-        input.value = medicos[id].apellido + ', ' + medicos[id].nombre;
+        input.value = medicos[position].apellido + ', ' + medicos[position].nombre;
         input.classList.add('is-valid');
 
         // Enable the continue button.
         setMedicoDisbleButton(false);
     }
+
+
+    /**
+     * Function getFechas - Make an ajax request to get all the days available for the selected 'Medico'.
+     *
+     * @param {int} id - The id of the selected 'Medico'.
+     *
+     * @return {void}
+     */
+    const getFechas = (id) => {
+        $.ajax({
+            url: `http://local.misturnos/api/medicos/${id}/fechas`,
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                setFechas(response.fechas);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    };
+
+
+    /**
+     * Function fechaOnChange - Set the clicked date as the selected date.
+     *
+     * @param {date} date - The selected date.
+     *
+     * @return {void}
+     */
+    const fechaOnChange = (date) => {
+        // Get the date selected in the format 'dd-mm-yyyy'.
+        const día   = date.getDate().toString().padStart(2, '0');
+        const mes   = (date.getMonth() + 1).toString().padStart(2, '0');
+        const año   = date.getFullYear();
+        const fecha = día + '-' + mes + '-' + año;
+
+        // Set the date selected.
+        setFecha(fecha);
+
+        // Get the index of the date selected.
+        console.log('fechas: ', fechas);
+        const index = fechas.findIndex((fechaItem, index) => {
+            debugger;
+            if (fechaItem.dia === fecha) {
+                return index;
+            }
+        });
+        console.log('index: ', index);
+
+        // Get the hours for the given date.
+        getHoras(index);
+
+        // Enable the continue button.
+        setFechaDisableButton(false);
+    }
+
+
+    /**
+     * Function getHoras - Make an ajax request to get all the hours available for the selected 'Medico'.
+     *
+     * @param {strin} date - The date selected.
+     *
+     * @return {void}
+     */
+    const getHoras = (date) => {
+        console.log('getHoras()');
+        console.log('date: ', date);
+        
+        $.ajax({
+            url: `http://local.misturnos/api/medicos/${date}/fechas`,
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                console.log('response: ', response);
+                setHoras(response);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    };
 
 
     /**
@@ -340,14 +436,15 @@ function Turnos() {
                                             </div>
                                         }
 
-                                        {medicos && medicos.map((medico, index) => (
+                                        {medicos && medicos.map((medicoItem, index) => (
                                             <div
                                                 className='d-none align-items-center border-bottom py-2 px-3 cursor-pointer item'
-                                                data-id={index}
+                                                data-id={medicoItem.id}
+                                                data-position={index}
                                                 key={index}
                                                 onClick={(e) => setClickedEspecialista(e.target)}
                                             >
-                                                <p className='mb-0 text-black'>{medico.apellido}, {medico.nombre}</p>
+                                                <p className='mb-0 text-black'>{medicoItem.apellido}, {medicoItem.nombre}</p>
                                             </div>
                                         ))}
                                     </div>
@@ -375,13 +472,13 @@ function Turnos() {
                                 <h4 className='mt-1 mb-5'>Selecciona el día que te quieres atender</h4>
 
                                 <Calendar
+                                    onChange={(value) => fechaOnChange(value)}
                                 />
 
 
                                 <div className='d-flex justify-content-around w-100'>
                                     <button
                                         className='btn border border-light text-light text-uppercase px-3 mt-5 w-25 cursor-pointer'
-                                        disabled={medicoDisbleButton}
                                         onClick={() => moveStep(2)}
                                     >
                                         Paso anterior
@@ -389,7 +486,7 @@ function Turnos() {
 
                                     <button
                                         className='btn border border-light text-light text-uppercase px-3 mt-5 w-25 cursor-pointer'
-                                        disabled={medicoDisbleButton}
+                                        disabled={fechaDisableButton}
                                         onClick={() => moveStep(4)}
                                     >
                                         Continuar
@@ -407,12 +504,11 @@ function Turnos() {
                                     </div>
                                 </div>
 
-                                <h4 className='mt-1'>Selecciona el horario del turno</h4>
+                                <h4 className='mt-1 mb-5'>Selecciona el horario del turno</h4>
 
                                 <div className='d-flex justify-content-around w-100'>
                                     <button
                                         className='btn border border-light text-light text-uppercase px-3 mt-5 w-25 cursor-pointer'
-                                        disabled={medicoDisbleButton}
                                         onClick={() => moveStep(3)}
                                     >
                                         Paso anterior
@@ -420,7 +516,7 @@ function Turnos() {
 
                                     <button
                                         className='btn border border-light text-light text-uppercase px-3 mt-5 w-25 cursor-pointer'
-                                        disabled={medicoDisbleButton}
+                                        disabled={horaDisableButton}
                                         onClick={() => moveStep(5)}
                                     >
                                         Continuar

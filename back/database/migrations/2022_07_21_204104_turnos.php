@@ -19,8 +19,8 @@ class Turnos extends Migration
             $table->foreign('id_paciente')->references('id_usuario')->on('pacientes');
             $table->unsignedBigInteger('id_medico');
             $table->foreign('id_medico')->references('id')->on('usuarios');
-            $table->string('dia');
-            $table->string('hora');
+            $table->string('dia', 10);
+            $table->string('hora', 5);
             $table->string('estado');
             $table->timestamps();
         });

@@ -187,7 +187,7 @@ class UsuariosController extends Controller
         // Update user status.
         $user = Usuarios::where('id', $id)
             ->update(['estado' => 'eliminado']);
-        
+
         // Check if user was updated.
         if ($user) {
             // Return success.
@@ -239,7 +239,7 @@ class UsuariosController extends Controller
         } else {
             // Check if the email is registered.
             $email_exists = Usuarios::where('email', $email)->select('*')->get();
-        
+
             if (count($email_exists) > 0) {
                 // Password is incorrect.
                 return json_encode(
