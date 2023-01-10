@@ -7,6 +7,8 @@ use App\Models\Usuarios;
 use App\Models\Pacientes;
 use App\Models\Medicos;
 use App\Models\Turnos;
+use App\Models\TurnosFechas;
+use App\Models\TurnosHoras;
 
 class UsuariosSeeder extends Seeder
 {
@@ -273,6 +275,35 @@ class UsuariosSeeder extends Seeder
             $turno->estado      = 'pendiente';
 
             $turno->save();
+        }
+
+
+        // Create TurnosFechas.
+        for ($i = 0; $i < 1000; $i++) {
+            // Create TurnoFecha.
+            $turno_fecha = new TurnosFechas();
+
+            $turno_fecha->id_medico = rand(758, 778);
+            $turno_fecha->dia       = date('d-m-Y', strtotime('+' . rand(1, 30) . ' days'));
+
+            $turno_fecha->save();
+        }
+
+
+        // Create TurnosHoras.
+        for ($i = 0; $i < 10000; $i++) {
+            // Create TurnoHora.
+            $turno_hora = new TurnosHoras();
+
+            $hora = [':00', ':30'];
+            $estados = ['disponible', 'no disponible', 'cancelado'];
+
+            // Las horas van en saltos de a 30 minutos.
+            $turno_hora->id_turnos_fechas = rand(1, 1000);
+            $turno_hora->hora             = rand(8, 18) . $hora[rand(0, 1)];
+            $turno_hora->estado           = $estados[rand(0, 2)];
+
+            $turno_hora->save();
         }
     }
 }
