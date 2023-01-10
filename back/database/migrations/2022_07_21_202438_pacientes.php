@@ -16,7 +16,7 @@ class Pacientes extends Migration
         Schema::create('pacientes', function (Blueprint $table) {
             $table->unsignedBigInteger('id_usuario')->unique();
             $table->foreign('id_usuario')->references('id')->on('usuarios');
-            $table->bigInteger('obra_social')->nullable();
+            $table->string('obra_social')->nullable();
             $table->bigInteger('numero_obra_social')->nullable();
             $table->timestamps();
         });

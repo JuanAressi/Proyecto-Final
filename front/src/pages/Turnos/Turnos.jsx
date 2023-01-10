@@ -20,6 +20,7 @@ function Turnos() {
     // Fechas.
     const [fechas, setFechas] = useState([]);
     const [fecha, setFecha] = useState('');
+    const [fechaIndex, setFechaIndex] = useState('');
     const [fechaDisableButton, setFechaDisableButton] = useState(true);
 
     // Hora.
@@ -259,18 +260,21 @@ function Turnos() {
 
         // Set the date selected.
         setFecha(fecha);
+        
+        // Loop trough the 'fechas' array to get the id of the selected date.
+        let idFechasDias = '';
 
-        // Get the index of the date selected.
-        console.log('fechas: ', fechas);
-        const index = fechas.findIndex((fechaItem, index) => {
-            if (fechaItem.dia === fecha) {
-                return index;
+        for (let i = 0; i < fechas.length; i++) {
+            // If the date selected is equal to the date in the array, save the index.
+            if (fechas[i].dia === fecha) {
+                idFechasDias = fechas[i].id;
+
+                break;
             }
-        });
-        console.log('index: ', index);
+        }
 
         // Get the hours for the given date.
-        getHoras(index);
+        getHoras(idFechasDias);
 
         // Enable the continue button.
         setFechaDisableButton(false);
@@ -329,7 +333,6 @@ function Turnos() {
             setStep(to)
         }
     }
-
 
 
     return (

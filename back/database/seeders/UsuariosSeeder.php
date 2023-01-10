@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Usuarios;
 use App\Models\Pacientes;
-use App\Models\Medicos;
 use App\Models\Turnos;
 use App\Models\TurnosFechas;
 use App\Models\TurnosHoras;
@@ -176,13 +175,27 @@ class UsuariosSeeder extends Seeder
             3 => 'No especificado',
         );
 
+        $obras_sociales = array(
+            0 => 'OSDE',
+            1 => 'Swiss Medical',
+            2 => 'Medifé',
+            3 => 'Emerger',
+        );
+
+        $turnos_horas_estados = array(
+            0 => 'reservado',
+            1 => 'confirmado',
+            2 => 'cancelado',
+            3 => 'concretado',
+        );
+
 
         $admin                   = new Usuarios();
         $admin->nombre           = 'Administrador';
         $admin->apellido         = '';
         $admin->email            = 'admin@xmail.com';
         $admin->contraseña       = md5('admin');
-        $admin->dni              = '';
+        $admin->dni              = '1';
         $admin->fecha_nacimiento = date('Y-m-d', strtotime('-' . rand(18, 60) . ' years'));
         $admin->genero           = '';
         $admin->telefono         = '';
@@ -198,7 +211,7 @@ class UsuariosSeeder extends Seeder
         $usuario->contraseña       = md5('Contraseña1');
         $usuario->dni              = '';
         $usuario->fecha_nacimiento = date('Y-m-d', strtotime('-' . rand(18, 60) . ' years'));
-        $usuario->genero           = '';
+        $usuario->genero           = '2';
         $usuario->telefono         = '';
         $usuario->estado           = 'activo';
         $usuario->rol              = 'paciente';
@@ -232,6 +245,7 @@ class UsuariosSeeder extends Seeder
             $paciente = new Pacientes();
 
             $paciente->id_usuario         = $usuario->id;
+            $paciente->obra_social        = $obras_sociales[rand(0, count($obras_sociales) - 1)];
             $paciente->numero_obra_social = random_int(10000000, 99999999);
 
             $paciente->save();
@@ -283,27 +297,45 @@ class UsuariosSeeder extends Seeder
             // Create TurnoFecha.
             $turno_fecha = new TurnosFechas();
 
-            $turno_fecha->id_medico = rand(758, 778);
-            $turno_fecha->dia       = date('d-m-Y', strtotime('+' . rand(1, 30) . ' days'));
+            for ($j = 758; $j < 778; $j++) {
+                // Loop trough 40days, not counting the weekends.
+                for ($k = 0; $k < 40; $k++) {
+                    // Get the next day.
+                    $next_day = date('d-m-Y', strtotime('+' . $k . ' days'));
 
-            $turno_fecha->save();
-        }
+                    // Check if the next day is a weekend.
+                    if (date('N', strtotime($next_day)) < 6) {
+                        // Create TurnoFecha.
+                        $turno_fecha->id_medico = $j;
+                        $turno_fecha->dia       = date('Y-m-d', strtotime($next_day));
 
+                        $turno_fecha->save();
 
-        // Create TurnosHoras.
-        for ($i = 0; $i < 10000; $i++) {
-            // Create TurnoHora.
-            $turno_hora = new TurnosHoras();
+                        // Create TurnosHoras.
+                        for ($l = 8; $l < 18; $l++) {
+                            // Create TurnoHora.
+                            $turno_hora = new TurnosHoras();
 
-            $hora = [':00', ':30'];
-            $estados = ['disponible', 'no disponible', 'cancelado'];
+                            $turno_hora->id_turnos_fechas = $turno_fecha->id;
+                            $turno_hora->hora             = $l . ':00';
+                            $turno_hora->estado           = $turnos_horas_estados[rand(0, count($turnos_horas_estados) - 1)];
 
-            // Las horas van en saltos de a 30 minutos.
-            $turno_hora->id_turnos_fechas = rand(1, 1000);
-            $turno_hora->hora             = rand(8, 18) . $hora[rand(0, 1)];
-            $turno_hora->estado           = $estados[rand(0, 2)];
+                            $turno_hora->save();
+                        }
+                        
+                        for ($l = 8; $l < 18; $l++) {
+                            // Create TurnoHora.
+                            $turno_hora = new TurnosHoras();
 
-            $turno_hora->save();
+                            $turno_hora->id_turnos_fechas = $turno_fecha->id;
+                            $turno_hora->hora             = $l . ':30';
+                            $turno_hora->estado           = $turnos_horas_estados[rand(0, count($turnos_horas_estados) - 1)];
+
+                            $turno_hora->save();
+                        }
+                    }
+                }
+            }
         }
     }
 }
