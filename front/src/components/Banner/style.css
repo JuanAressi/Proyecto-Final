@@ -8,8 +8,8 @@
     min-height: calc(100vh - 118px);
 }
 
-#banner h1 {
-    padding-top: 15rem;
+#banner .container {
+    height: calc(100vh - 118px - 4rem - 4rem);
 }
 
 @media (max-width: 768px) {

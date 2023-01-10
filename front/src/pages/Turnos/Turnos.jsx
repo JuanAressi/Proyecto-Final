@@ -15,7 +15,7 @@ function Turnos() {
     const [medico, setMedico] = useState('');
     const [medicoMessage, setMedicoMessage] = useState('Empieza a escribir para buscar');
     const [medicoMessageShow, setMedicoMessageShow] = useState(false);
-    const [medicoDisbleButton, setMedicoDisbleButton] = useState(true);
+    const [medicoDisableButton, setMedicoDisableButton] = useState(true);
     
     // Fechas.
     const [fechas, setFechas] = useState([]);
@@ -48,7 +48,7 @@ function Turnos() {
             }
 
             // Disable the button.
-            setMedicoDisbleButton(true);
+            setMedicoDisableButton(true);
         }
     }, [medico]);
 
@@ -217,7 +217,7 @@ function Turnos() {
         input.classList.add('is-valid');
 
         // Enable the continue button.
-        setMedicoDisbleButton(false);
+        setMedicoDisableButton(false);
     }
 
 
@@ -263,7 +263,6 @@ function Turnos() {
         // Get the index of the date selected.
         console.log('fechas: ', fechas);
         const index = fechas.findIndex((fechaItem, index) => {
-            debugger;
             if (fechaItem.dia === fecha) {
                 return index;
             }
@@ -281,7 +280,7 @@ function Turnos() {
     /**
      * Function getHoras - Make an ajax request to get all the hours available for the selected 'Medico'.
      *
-     * @param {strin} date - The date selected.
+     * @param {string} date - The date selected.
      *
      * @return {void}
      */
@@ -451,8 +450,8 @@ function Turnos() {
                                 </div>
 
                                 <button
-                                    className='btn border border-light text-light text-uppercase px-3 mt-5 w-25 cursor-pointer'
-                                    disabled={medicoDisbleButton}
+                                    className='btn bg-white text-dark text-uppercase px-3 mt-5 w-25 cursor-pointer'
+                                    disabled={medicoDisableButton}
                                     onClick={() => moveStep(3)}
                                 >
                                     Continuar
@@ -485,7 +484,7 @@ function Turnos() {
                                     </button>
 
                                     <button
-                                        className='btn border border-light text-light text-uppercase px-3 mt-5 w-25 cursor-pointer'
+                                        className='btn bg-white text-dark text-uppercase px-3 mt-5 w-25 cursor-pointer'
                                         disabled={fechaDisableButton}
                                         onClick={() => moveStep(4)}
                                     >
@@ -515,7 +514,7 @@ function Turnos() {
                                     </button>
 
                                     <button
-                                        className='btn border border-light text-light text-uppercase px-3 mt-5 w-25 cursor-pointer'
+                                        className='btn bg-white text-dark text-uppercase px-3 mt-5 w-25 cursor-pointer'
                                         disabled={horaDisableButton}
                                         onClick={() => moveStep(5)}
                                     >
@@ -539,15 +538,15 @@ function Turnos() {
                                 <div className='d-flex justify-content-around w-100'>
                                     <button
                                         className='btn border border-light text-light text-uppercase px-3 mt-5 w-25 cursor-pointer'
-                                        disabled={medicoDisbleButton}
+                                        disabled={medicoDisableButton}
                                         onClick={() => moveStep(4)}
                                     >
                                         Paso anterior
                                     </button>
 
                                     <button
-                                        className='btn border border-light text-light text-uppercase px-3 mt-5 w-25 cursor-pointer'
-                                        disabled={medicoDisbleButton}
+                                        className='btn bg-white text-dark text-uppercase px-3 mt-5 w-25 cursor-pointer'
+                                        disabled={medicoDisableButton}
                                         // onClick={() => moveStep(4)}
                                     >
                                         Confirmar
