@@ -2,7 +2,7 @@ FROM php:7.4-apache
 
 RUN apt-get update \
 && apt-get install -y apt-utils vim curl sqlite3 mc \
-&& pecl install xdebug \
+&& pecl install xdebug-2.9.0 \
     && docker-php-ext-enable xdebug
 
 # PHP extensions
@@ -47,27 +47,27 @@ RUN apt-get update \
 #Install Dependencies
 RUN docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg
 
-RUN docker-php-ext-install \
-    opcache \
-    gd \
-    bcmath \
-    intl \
-    # mbstring \
-    soap \
-    xsl \
-    zip
+# RUN docker-php-ext-install \
+#     opcache \
+#     gd \
+#     bcmath \
+#     intl \
+#     # mbstring \
+#     soap \
+#     xsl \
+#     zip
 
-RUN apt-get update && \
-    \
-    apt-get install -y --no-install-recommends \
-        libldap2-dev \
-        libldb-dev \
-        libmcrypt-dev \
-        libsodium-dev \
-        # libonig-dev agregado: 
-        # https://github.com/docker-library/php/issues/880
-        libonig-dev \
-        zlib1g-dev
+# RUN apt-get update && \
+#     \
+#     apt-get install -y --no-install-recommends \
+#         libldap2-dev \
+#         libldb-dev \
+#         libmcrypt-dev \
+#         libsodium-dev \
+#         # libonig-dev agregado: 
+#         # https://github.com/docker-library/php/issues/880
+#         libonig-dev \
+#         zlib1g-dev
 
 RUN chmod 777 -R /var/www \
     && chown -R www-data:www-data /var/www \
@@ -77,20 +77,20 @@ RUN chmod 777 -R /var/www \
 RUN a2enmod rewrite
 RUN a2enmod headers
 
-RUN docker-php-ext-install sockets
+# RUN docker-php-ext-install sockets
 #RUN docker-php-ext-install sodium
 
-RUN a2enmod ssl
+# RUN a2enmod ssl
 
-RUN ln -sf /dev/stdout /var/log/apache2/access.log \
-    && ln -sf /dev/stderr /var/log/apache2/error.log
+# RUN ln -sf /dev/stdout /var/log/apache2/access.log \
+    # && ln -sf /dev/stderr /var/log/apache2/error.log
 
 #WORDPRESS
-RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
+# RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
 
 #MEMCACHED
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y libmemcached-dev \
-    && pecl install memcached
+# RUN DEBIAN_FRONTEND=noninteractive apt-get install -y libmemcached-dev \
+#     && pecl install memcached
 
 # The base image does not have php.ini.
 # Copy our own, with xdebug settings

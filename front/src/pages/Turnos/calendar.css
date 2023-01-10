@@ -32,6 +32,7 @@
     flex-grow: 0!important;
 }
 
+/* Labels del calendario */
 .react-calendar .react-calendar__viewContainer .react-calendar__month-view__weekdays {
     color: #000;
     text-align: center;
@@ -42,12 +43,13 @@
     text-transform: capitalize;
 }
 
+/* Dias */
 .react-calendar .react-calendar__viewContainer .react-calendar__month-view__days {
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
 
-.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days button {
+.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__month-view__days__day {
     border: none;
     background: transparent;
     position: relative;
@@ -55,12 +57,13 @@
     padding: 0.25rem 0;
 }
 
+/* Meses */
 .react-calendar .react-calendar__year-view__months {
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
 
-.react-calendar .react-calendar__year-view__months button {
+.react-calendar .react-calendar__year-view__months .react-calendar__year-view__months__month {
     border: none;
     background: transparent;
     position: relative;
@@ -68,9 +71,9 @@
     text-transform: capitalize;
 }
 
-.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days button::after,
-.react-calendar .react-calendar__year-view__months button::after,
-.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__tile--active::after {
+/* Underline */
+.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__month-view__days__day::after,
+.react-calendar .react-calendar__year-view__months .react-calendar__year-view__months__month::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -80,28 +83,45 @@
     transition: width 0.3s ease 0s, left 0.3s ease 0s;
 }
 
-.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days button::after,
-.react-calendar .react-calendar__year-view__months button::after {
+.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__month-view__days__day::after,
+.react-calendar .react-calendar__year-view__months .react-calendar__year-view__months__month::after {
     background: #056799;
 }
 
-.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__tile--active::after {
-    background-color: #28a745;
+/* Hover */
+.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__month-view__days__day:hover::after,
+.react-calendar .react-calendar__year-view__months .react-calendar__year-view__months__month:hover::after {
+    width: 25%;
+}
+
+.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__month-view__days__day:hover::after {
     width: 25%;
     left: calc((100% - 25%) / 2);
 }
 
-.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days button:hover::after,
-.react-calendar .react-calendar__year-view__months button:hover::after {
-    width: 25%;
-}
-
-.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days button:hover::after {
-    width: 25%;
-    left: calc((100% - 25%) / 2);
-}
-
-.react-calendar .react-calendar__year-view__months button:hover::after {
+.react-calendar .react-calendar__year-view__months .react-calendar__year-view__months__month:hover::after {
     width: 40%;
     left: calc((100% - 40%) / 2);
+}
+
+/* Active */
+.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__tile--active::after,
+.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__tile--active:hover::after {
+    border: 2px solid #28a745;
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    border-radius: 50%;
+    top: calc((100% - 30px + 1px) / 2);
+    left: calc((100% - 30px + 1px) / 2);
+    transition: none!important;
+}
+
+.react-calendar .react-calendar__month-view__days__day--neighboringMonth {
+    color: #aaa;
+}
+
+.react-calendar .react-calendar__month-view__days__day--neighboringMonth::after  {
+    width: 0!important;
+    transition: none!important;
 }
