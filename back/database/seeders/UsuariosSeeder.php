@@ -291,48 +291,41 @@ class UsuariosSeeder extends Seeder
             $turno->save();
         }
 
+        for ($j = 758; $j < 778; $j++) {
+            // Loop trough 40days, not counting the weekends.
+            for ($k = 0; $k < 40; $k++) {
+                // Get the next day.
+                $next_day = date('d-m-Y', strtotime('+' . $k . ' days'));
 
-        // Create TurnosFechas.
-        for ($i = 0; $i < 1000; $i++) {
-            // Create TurnoFecha.
-            $turno_fecha = new TurnosFechas();
+                // Check if the next day is a weekend.
+                if (date('N', strtotime($next_day)) < 6) {
+                    // Create TurnoFecha.
+                    $turno_fecha = new TurnosFechas();
 
-            for ($j = 758; $j < 778; $j++) {
-                // Loop trough 40days, not counting the weekends.
-                for ($k = 0; $k < 40; $k++) {
-                    // Get the next day.
-                    $next_day = date('d-m-Y', strtotime('+' . $k . ' days'));
+                    // Create TurnoFecha.
+                    $turno_fecha->id_medico = $j;
+                    $turno_fecha->dia       = date('d-m-Y', strtotime($next_day));
 
-                    // Check if the next day is a weekend.
-                    if (date('N', strtotime($next_day)) < 6) {
-                        // Create TurnoFecha.
-                        $turno_fecha->id_medico = $j;
-                        $turno_fecha->dia       = date('Y-m-d', strtotime($next_day));
+                    $turno_fecha->save();
 
-                        $turno_fecha->save();
+                    // Create TurnosHoras.
+                    for ($l = 8; $l < 18; $l++) {
+                        // Create TurnoHora.
+                        $turno_hora = new TurnosHoras();
 
-                        // Create TurnosHoras.
-                        for ($l = 8; $l < 18; $l++) {
-                            // Create TurnoHora.
-                            $turno_hora = new TurnosHoras();
+                        $turno_hora->id_turnos_fechas = $turno_fecha->id;
+                        $turno_hora->hora             = $l . ':00';
+                        $turno_hora->estado           = $turnos_horas_estados[rand(0, count($turnos_horas_estados) - 1)];
 
-                            $turno_hora->id_turnos_fechas = $turno_fecha->id;
-                            $turno_hora->hora             = $l . ':00';
-                            $turno_hora->estado           = $turnos_horas_estados[rand(0, count($turnos_horas_estados) - 1)];
+                        $turno_hora->save();
 
-                            $turno_hora->save();
-                        }
-                        
-                        for ($l = 8; $l < 18; $l++) {
-                            // Create TurnoHora.
-                            $turno_hora = new TurnosHoras();
+                        $turno_hora = new TurnosHoras();
 
-                            $turno_hora->id_turnos_fechas = $turno_fecha->id;
-                            $turno_hora->hora             = $l . ':30';
-                            $turno_hora->estado           = $turnos_horas_estados[rand(0, count($turnos_horas_estados) - 1)];
+                        $turno_hora->id_turnos_fechas = $turno_fecha->id;
+                        $turno_hora->hora             = $l . ':30';
+                        $turno_hora->estado           = $turnos_horas_estados[rand(0, count($turnos_horas_estados) - 1)];
 
-                            $turno_hora->save();
-                        }
+                        $turno_hora->save();
                     }
                 }
             }

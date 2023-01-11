@@ -8,27 +8,18 @@
 .nav-link::before {
     content: '';
     position: absolute;
-    width: 100%;
-    width: 70%;
+    bottom: 0;
+    left: 50%;
     height: 2px;
+    width: 0;
     border-radius: 4px;
     background-color: #056799;
-    bottom: 0;
-    left: 0;
-    left: calc(15%);
-    transform-origin: right;
-    transform: scaleX(0);
-    transition: transform .3s ease-in-out;
-}
-
-.nav-link:nth-child(2)::before {
-    width: 80%;
-    left: calc(10%);
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
 }
 
 .nav-link:hover::before {
-    transform-origin: left;
-    transform: scaleX(1);
+    width: 50%;
+    left: calc((100% - 50%) / 2);
 }
 
 @media (max-width: 768px) {

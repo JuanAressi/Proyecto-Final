@@ -251,3 +251,7 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 /* Position */
 /* Rigth */
 .right-2 { right: 1rem!important; }
+
+
+/* Border */
+.border-none { border: none!important; }
