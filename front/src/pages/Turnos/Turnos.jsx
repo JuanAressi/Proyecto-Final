@@ -20,6 +20,7 @@ function Turnos() {
     // Fechas.
     const [fechas, setFechas] = useState([]);
     const [fecha, setFecha] = useState('');
+    const [fechaMax, setFechaMax] = useState('');
     const [fechaIndex, setFechaIndex] = useState('');
     const [fechaDisableButton, setFechaDisableButton] = useState(true);
 
@@ -235,7 +236,14 @@ function Turnos() {
             type: 'GET',
             dataType: 'json',
             success: function (response) {
+                // Set the 'fechas' state.
                 setFechas(response.fechas);
+
+                // Transform the last date to a date object and set it as the 'fechaMax' state.
+                const lastDate       = response.fechas[response.fechas.length - 1].dia.split('-');
+                const lastDateObject = new Date(`${lastDate[1]}-${lastDate[0]}-${lastDate[2]}`);
+
+                setFechaMax(lastDateObject);
             },
             error: function (error) {
                 console.log(error);
@@ -288,16 +296,12 @@ function Turnos() {
      *
      * @return {void}
      */
-    const getHoras = (date) => {
-        console.log('getHoras()');
-        console.log('date: ', date);
-        
+    const getHoras = (date) => {        
         $.ajax({
             url: `http://local.misturnos/api/medicos/${date}/horas`,
             type: 'GET',
             dataType: 'json',
             success: function (response) {
-                debugger;
                 console.log('response.horas: ', response.horas);
                 setHoras(response.horas);
             },
@@ -446,8 +450,7 @@ function Turnos() {
                                 </div>
 
                                 <h4 className='mt-1 mb-5'>Selecciona uno de nuestros especialistas</h4>
-                                
-                                {/* Crear un input en donde se pueda escribir y su desplegable cargado con todos los medicos, el cual se vaya filtrando según lo tipeado*/}
+
                                 <div className='d-flex flex-column align-items-center w-100'>                   
                                     <div className='d-flex justify-content-center align-items-center w-25 position-relative'>
                                         <input
@@ -505,8 +508,10 @@ function Turnos() {
 
                                 <Calendar
                                     className='box-shadow-dark'
-                                    // Set minDate as date today.
+                                    calendarType={'US'}
+                                    minDetail={'year'}
                                     minDate={new Date()}
+                                    maxDate={new Date(fechaMax)}
                                     onChange={(value) => fechaOnChange(value)}
                                 />
 
@@ -550,7 +555,7 @@ function Turnos() {
                                             {horaArray.map((horaItem, indexItem) => {
                                                 let isDisabled = false;
                                                 
-                                                if (horaItem.estado === 'reservado' || horaItem.estado === 'confirmado' || horaItem.estado === 'concretado') {
+                                                if (horaItem.estado === 'ocupado') {
                                                     isDisabled = true;
                                                 }
 
@@ -602,7 +607,6 @@ function Turnos() {
                                 <div className='d-flex justify-content-around w-100'>
                                     <button
                                         className='btn border border-light text-light text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
-                                        disabled={medicoDisableButton}
                                         onClick={() => moveStep(4)}
                                     >
                                         Paso anterior
@@ -613,7 +617,7 @@ function Turnos() {
                                         disabled={medicoDisableButton}
                                         // onClick={() => moveStep(4)}
                                     >
-                                        Confirmar
+                                        Confirmar turno
                                     </button>
                                 </div>
                             </div>
