@@ -260,7 +260,7 @@ function Turnos() {
 
         // Set the date selected.
         setFecha(fecha);
-        
+
         // Loop trough the 'fechas' array to get the id of the selected date.
         let idFechasDias = '';
 
@@ -293,18 +293,48 @@ function Turnos() {
         console.log('date: ', date);
         
         $.ajax({
-            url: `http://local.misturnos/api/medicos/${date}/fechas`,
+            url: `http://local.misturnos/api/medicos/${date}/horas`,
             type: 'GET',
             dataType: 'json',
             success: function (response) {
-                console.log('response: ', response);
-                setHoras(response);
+                debugger;
+                console.log('response.horas: ', response.horas);
+                setHoras(response.horas);
             },
             error: function (error) {
                 console.log(error);
             }
         });
     };
+
+
+    /**
+     * Function setClickedHora - Sets the clicked 'Hora' as the selected 'Hora'.
+     *
+     * @param {html} target - The clicked 'Hora' div.
+     *
+     * @return {void}
+     */
+    const setClickedHora = (target) => {
+        // Get the text content of the target.
+        const hora = target.textContent;
+
+        // Set the 'Hora' selected.
+        setHora(hora);
+
+        // Remove the class 'selected' from all the 'Hora' divs.
+        const horas = document.querySelectorAll('#horas button');
+
+        for (let i = 0; i < horas.length; i++) {
+            horas[i].classList.remove('selected');
+        }
+
+        // Add the class 'selected' to the target.
+        target.classList.add('selected');
+
+        // Enable the continue button.
+        setHoraDisableButton(false);
+    }
 
 
     /**
@@ -336,13 +366,13 @@ function Turnos() {
 
 
     return (
-        <div id='turnos' className='bg-primary'>
+        <div id='turnos' className=''>
             <Navbar />
 
             <div className='container p-6'>
                 <div className='d-flex flex-column align-items-center min-height'>
                     {/* Progress bar */}
-                    <div id='progressBarContainer' className='d-flex position-relative w-100 mb-8'>
+                    <div id='progressBarContainer' className='d-flex position-relative w-100 mb-4'>
                         <div className='position-absolute'>
                             <div className='triangle'></div>
                         </div>
@@ -372,7 +402,7 @@ function Turnos() {
                     </div>
 
                     {/* Steps */}
-                    <div id='steps' className='d-flex w-100 overflow-hidden'>
+                    <div id='steps' className='d-flex w-100 p-4 overflow-hidden'>
                         <div className='d-flex w-100 step-container'>
                             {/* Paso 1 */}
                             <div className='steps d-flex flex-column align-items-center text-white w-100 d-none'>
@@ -406,7 +436,7 @@ function Turnos() {
                             </div>
 
                             {/* Paso 2 */}
-                            <div className='steps d-flex flex-column align-items-center text-white w-100'>
+                            <div className='steps d-flex flex-column align-items-center text-white w-100 overflow-hidden'>
                                 <div className='d-flex align-items-center'>
                                     <h2 className='me-2 mb-0'>Paso</h2>
 
@@ -453,7 +483,7 @@ function Turnos() {
                                 </div>
 
                                 <button
-                                    className='btn bg-white text-dark text-uppercase px-3 mt-5 w-25 cursor-pointer'
+                                    className='btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
                                     disabled={medicoDisableButton}
                                     onClick={() => moveStep(3)}
                                 >
@@ -462,7 +492,7 @@ function Turnos() {
                             </div>
                             
                             {/* Paso 3 */}
-                            <div className='steps d-flex flex-column align-items-center text-white w-100'>
+                            <div className='steps d-flex flex-column align-items-center text-white w-100 overflow-hidden'>
                                 <div className='d-flex align-items-center'>
                                     <h2 className='me-2 mb-0'>Paso</h2>
 
@@ -474,20 +504,21 @@ function Turnos() {
                                 <h4 className='mt-1 mb-5'>Selecciona el día que te quieres atender</h4>
 
                                 <Calendar
+                                    className='box-shadow-dark'
                                     onChange={(value) => fechaOnChange(value)}
                                 />
 
 
                                 <div className='d-flex justify-content-around w-100'>
                                     <button
-                                        className='btn border border-light text-light text-uppercase px-3 mt-5 w-25 cursor-pointer'
+                                        className='btn border border-light text-light text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
                                         onClick={() => moveStep(2)}
                                     >
                                         Paso anterior
                                     </button>
 
                                     <button
-                                        className='btn bg-white text-dark text-uppercase px-3 mt-5 w-25 cursor-pointer'
+                                        className='btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
                                         disabled={fechaDisableButton}
                                         onClick={() => moveStep(4)}
                                     >
@@ -497,7 +528,7 @@ function Turnos() {
                             </div>
                             
                             {/* Paso 4 */}
-                            <div className='steps d-flex flex-column align-items-center text-white w-100'>
+                            <div className='steps d-flex flex-column align-items-center text-white w-100 overflow-hidden'>
                                 <div className='d-flex align-items-center'>
                                     <h2 className='me-2 mb-0'>Paso</h2>
 
@@ -506,18 +537,46 @@ function Turnos() {
                                     </div>
                                 </div>
 
-                                <h4 className='mt-1 mb-5'>Selecciona el horario del turno</h4>
+                                <h4 className='mt-1 mb-5'>Selecciona el horario del turno</h4>                                
+
+                                <div id='horas' className='d-flex justify-content-center align-items-center'>
+                                    {horas && horas.map((horaArray, indexArray) => (
+                                        <div
+                                            className='d-flex flex-column align-items-center'
+                                            key={indexArray}
+                                        >
+                                            {horaArray.map((horaItem, indexItem) => {
+                                                let isDisabled = false;
+                                                
+                                                if (horaItem.estado === 'reservado' || horaItem.estado === 'confirmado' || horaItem.estado === 'concretado') {
+                                                    isDisabled = true;
+                                                }
+
+                                                return (
+                                                    <button
+                                                        className='btn text-uppercase box-shadow-dark px-3 mb-2 mx-2 cursor-pointer'
+                                                        key={indexItem}
+                                                        disabled={isDisabled}
+                                                        onClick={(e) => setClickedHora(e.target)}
+                                                    >
+                                                        {horaItem.hora}
+                                                    </button>
+                                                )
+                                            })}
+                                        </div>
+                                    ))}
+                                </div>
 
                                 <div className='d-flex justify-content-around w-100'>
                                     <button
-                                        className='btn border border-light text-light text-uppercase px-3 mt-5 w-25 cursor-pointer'
+                                        className='btn border border-light text-light text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
                                         onClick={() => moveStep(3)}
                                     >
                                         Paso anterior
                                     </button>
 
                                     <button
-                                        className='btn bg-white text-dark text-uppercase px-3 mt-5 w-25 cursor-pointer'
+                                        className='btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
                                         disabled={horaDisableButton}
                                         onClick={() => moveStep(5)}
                                     >
@@ -527,7 +586,7 @@ function Turnos() {
                             </div>
                             
                             {/* Paso 5 */}
-                            <div className='steps d-flex flex-column align-items-center text-white w-100'>
+                            <div className='steps d-flex flex-column align-items-center text-white w-100 overflow-hidden'>
                                 <div className='d-flex align-items-center'>
                                     <h2 className='me-2 mb-0'>Paso</h2>
 
@@ -540,7 +599,7 @@ function Turnos() {
 
                                 <div className='d-flex justify-content-around w-100'>
                                     <button
-                                        className='btn border border-light text-light text-uppercase px-3 mt-5 w-25 cursor-pointer'
+                                        className='btn border border-light text-light text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
                                         disabled={medicoDisableButton}
                                         onClick={() => moveStep(4)}
                                     >
@@ -548,7 +607,7 @@ function Turnos() {
                                     </button>
 
                                     <button
-                                        className='btn bg-white text-dark text-uppercase px-3 mt-5 w-25 cursor-pointer'
+                                        className='btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
                                         disabled={medicoDisableButton}
                                         // onClick={() => moveStep(4)}
                                     >

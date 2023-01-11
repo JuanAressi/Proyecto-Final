@@ -246,22 +246,22 @@ class MedicosController extends Controller
 
 
     /**
-     * Function getHorarios - Get all hours that the 'Medico' has available for a given date.
+     * Function getHoras - Get all hours that the 'Medico' has available for a given date.
      *
      * @param string $id - The id of the date in 'TurnosFechas'.
      *
      * @return array - The hours available.
      */
-    public function getHorarios($id)
+    public function getHoras($id)
     {
-        // $horas = TurnosFechas::where('dia', $date)
-        //     ->leftJoin('turnos_horas', 'turnos_fechas.id', '=', 'turnos_horas.id_turnos_fechas')
-        //     ->get('turnos_horas.hora');
         $horas = TurnosHoras::where('id_turnos_fechas', $id)
             ->get(['hora', 'estado']);
 
         // Check if horas are found.
         if (count($horas) > 0) {
+            // Divide the hours in 4 arrays.
+            $horas = array_chunk($horas->toArray(), 5);
+
             // Return horas.
             return json_encode(
                 array(

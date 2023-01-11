@@ -80,6 +80,7 @@
     left: 50%;
     height: 2px;
     width: 0;
+    border-radius: 4px;
     transition: width 0.3s ease 0s, left 0.3s ease 0s;
 }
 
