@@ -505,6 +505,8 @@ function Turnos() {
 
                                 <Calendar
                                     className='box-shadow-dark'
+                                    // Set minDate as date today.
+                                    minDate={new Date()}
                                     onChange={(value) => fechaOnChange(value)}
                                 />
 

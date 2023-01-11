@@ -118,10 +118,7 @@
     transition: none!important;
 }
 
-.react-calendar .react-calendar__month-view__days__day--neighboringMonth {
-    color: #aaa;
-}
-
+/* .react-calendar .react-calendar__month-view__days__day--neighboringMonth:disabled::after, */
 .react-calendar .react-calendar__month-view__days__day--neighboringMonth::after  {
     width: 0!important;
     transition: none!important;

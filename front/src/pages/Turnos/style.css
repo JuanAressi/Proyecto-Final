@@ -70,7 +70,7 @@
 }
 
 #turnos #especialistas .item:hover {
-    background-color: #e1f5ff;
+    background-color: #7dc97d;
 }
 
 #turnos #horas button {
@@ -81,7 +81,6 @@
 
 #turnos #horas button:hover {
     background-color: #7dc97d;
-    /* color: #fff; */
 }
 
 #turnos #horas button.selected {
