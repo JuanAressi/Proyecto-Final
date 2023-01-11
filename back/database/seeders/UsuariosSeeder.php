@@ -183,10 +183,8 @@ class UsuariosSeeder extends Seeder
         );
 
         $turnos_horas_estados = array(
-            0 => 'reservado',
-            1 => 'confirmado',
-            2 => 'cancelado',
-            3 => 'concretado',
+            0 => 'libre',
+            1 => 'ocupado',
         );
 
 
