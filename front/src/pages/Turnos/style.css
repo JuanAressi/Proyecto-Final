@@ -87,3 +87,7 @@
     background-color: #139c13;
     color: #fff;
 }
+
+#turnos #resumen h3 {
+    border-bottom: 1px solid #056799;
+}
