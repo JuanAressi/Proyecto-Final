@@ -113,6 +113,23 @@ class TurnosController extends Controller
 
 
     /**
+     * Function getById - Returns a 'Turno' by id.
+     *
+     * @param int $id - The ID of the 'Turno'.
+     *
+     * @return array $turno - The 'Turno' found.
+     */
+    public function getById($id)
+    {
+        $turno = Turnos::where('id', $id)
+            ->select('*')
+            ->get();
+
+        return json_encode($turno);
+    }
+
+
+    /**
      * Function addNew - Adds a new 'Turno' to the database.
      *
      * @param Request $request - The request object.
@@ -132,7 +149,7 @@ class TurnosController extends Controller
         // Check if the 'Turno' was created.
         if ($turno !== null) {
             // Change the 'TurnoHora' state to 'ocupado'.
-            $turno_hora = TurnosHoras::where('id_turnos_fechas', $request->input('id_fecha_dia'))
+            TurnosHoras::where('id_turnos_fechas', $request->input('id_fecha_dia'))
                 ->where('hora', $request->input('hora'))
                 ->update(['estado' => 'ocupado']);
         }

@@ -81,7 +81,7 @@ function Table({ lastShowPerPage, lastPage, page, setPage, setSearchInput, setSh
                         icon={faCircleExclamation}
                     />
 
-                    <h6 className='mb-0'>No hay usuarios que coincidan con la busqueda</h6>
+                    <h6 className='mb-0'>No hay usuarios que coincidan con la búsqueda</h6>
                 </div>
             }
 
