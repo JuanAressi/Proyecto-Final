@@ -3,13 +3,16 @@
 
 	"phpcs.enable": true,
 	"phpcs.standard": "PSR12",
-    "phpcs.executablePath": "C:/Users/JuanA/AppData/Roaming/Composer/vendor/bin/phpcs",
-    // "phpcs.executablePath": "C:/Users/jaressi/AppData/Roaming/Composer/vendor/bin/phpcs",
+    // "phpcs.executablePath": "C:/Users/JuanA/AppData/Roaming/Composer/vendor/bin/phpcs",
+    "phpcs.executablePath": "C:/Users/jaressi/AppData/Roaming/Composer/vendor/bin/phpcs",
 
     "phpcbf.enable": true,
     "phpcbf.standard": "PSR12",
-    "phpcbf.executablePath": "C:/Users/JuanA/AppData/Roaming/Composer/vendor/bin/phpcbf.bat",
-    // "phpcbf.executablePath": "C:/Users/jaressi/AppData/Roaming/Composer/vendor/bin/phpcbf.bat",
+    // "phpcbf.executablePath": "C:/Users/JuanA/AppData/Roaming/Composer/vendor/bin/phpcbf.bat",
+    "phpcbf.executablePath": "C:/Users/jaressi/AppData/Roaming/Composer/vendor/bin/phpcbf.bat",
 
     "cSpell.language": "en,es",
+    "cSpell.words": [
+        "divs"
+    ],
 }

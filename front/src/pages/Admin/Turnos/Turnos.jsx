@@ -7,7 +7,7 @@ import Modal from '../../../components/Modal/Modal';
 import SideNav from '../../../components/SideNav/SideNav';
 import loadingGif from '../../../components/assets/img/loadingGif.gif';
 import Table from '../../../components/Table/Table';
-// import NuevoTurno from './NuevoTurno';
+import NuevoTurno from './NuevoTurno';
 // import EditarTurno from './EditarTurno';
 
 function Turnos() {
@@ -31,19 +31,21 @@ function Turnos() {
     const [alertMessage, setAlertMessage] = useState('');
 
     // Turno information.
-    const [turnoNombre, setTurnoNombre] = useState('');
-    const [turnoApellido, setTurnoApellido] = useState('');
-    const [turnoDni, setTurnoDni] = useState('');
-    const [turnoEmail, setTurnoEmail] = useState('');
-    const [turnoTelefono, setTurnoTelefono] = useState('');
-    const [turnoFechaNacimiento, setTurnoFechaNacimiento] = useState('');
-    const [turnoGenero, setTurnoGenero] = useState('');
-    const [turnoObraSocial, setTurnoObraSocial] = useState('');
+    const [turnoMedico, setTurnoMedico] = useState('');
+    const [turnoPaciente, setTurnoPaciente] = useState(''); 
+    const [turnoFecha, setTurnoFecha] = useState('');
+    const [turnoHora, setTurnoHora] = useState('');
+    const [turnoFechaDia, setTurnoFechaDia] = useState('');
 
+    // Medicos.
+    const [medicos, setMedicos] = useState([]);
+
+    // Pacientes.
+    const [pacientes, setPacientes] = useState([]);
 
     // Search 'Turnos' when 'page' changes (delay 0s).
     useEffect(() => {
-        doSearch();
+        searchTurnos();
     }, [page]);
 
 
@@ -51,7 +53,7 @@ function Turnos() {
     useEffect(() => {
         setPage(1);
         
-        doSearch();
+        searchTurnos();
     }, [showPerPage]);
 
 
@@ -60,7 +62,7 @@ function Turnos() {
         setPage(1);
 
         const delayDebounce = setTimeout(() => {
-            doSearch();
+            searchTurnos();
         }, 750);
 
         return () => clearTimeout(delayDebounce)
@@ -81,22 +83,23 @@ function Turnos() {
                     setShowSpinner(false);
 
                     // Complete 'turnoToEdit' state.
-                    setTurnoNombre(turno.nombre);
-                    setTurnoApellido(turno.apellido);
-                    setTurnoDni(turno.dni);
-                    setTurnoEmail(turno.email);
-                    setTurnoTelefono(turno.telefono);
-                    setTurnoFechaNacimiento(turno.fecha_nacimiento);
-                    setTurnoGenero(turno.genero);
-                    setTurnoObraSocial(turno.numero_obra_social);
+                    setTurnoMedico(turno.medico);
+                    setTurnoPaciente(turno.paciente);
+                    setTurnoFecha(turno.fecha);
+                    setTurnoHora(turno.hora);
+                    setTurnoFechaDia(turno.fecha_dia);
                 }
             });
         }
     }, [turnoToEdit]);
 
 
-    // Function search.
-    const doSearch = () => {
+    /**
+     * Function searchTurnos - Makes the search of all active 'Turnos'.
+     *
+     * @return {void}
+     */
+    const searchTurnos = () => {
         // Show spinner.
         setShowSpinner(true);
 
@@ -127,19 +130,70 @@ function Turnos() {
             }
         });
     }
+    
+
+    /**
+     * Function searchMedicos - Makes the search of all active 'Medicos'.
+     *
+     * @return {void}
+     */
+    const searchMedicos = () => {
+        $.ajax({
+            url: 'http://local.misturnos/api/medicos',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                'page': '',
+                'pagination': '',
+                'search': '',
+            },
+            success: function (response) {
+                setMedicos(response.medicos);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+    
+
+    /**
+     * Function searchPacientes - Makes the search of all active 'Pacientes'.
+     *
+     * @return {void}
+     */
+    const searchPacientes = () => {
+        $.ajax({
+            url: 'http://local.misturnos/api/pacientes',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                'page': '',
+                'pagination': '',
+                'search': '',
+            },
+            success: function (response) {
+                setPacientes(response.pacientes);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
 
 
-    // Add new 'Turno'.
+    /**
+     * Function addTurno - Add a new 'Turno' to the database.
+     *
+     * @return {void}
+     */
     const addTurno = () => {
         const turno = {
-            nombre: turnoNombre,
-            apellido: turnoApellido,
-            fecha_nacimiento: turnoFechaNacimiento,
-            email: turnoEmail,
-            dni: turnoDni,
-            telefono: turnoTelefono,
-            genero: turnoGenero,
-            obra_social: turnoObraSocial,
+            medico: turnoMedico,
+            paciente: turnoPaciente,
+            fecha: turnoFecha,
+            hora: turnoHora,
+            fecha_dia: turnoFechaDia,
         }
 
         // Show spinner.
@@ -157,7 +211,7 @@ function Turnos() {
 
                 if (response.success) {
                     // Reload 'Turnos' list.
-                    doSearch();
+                    searchTurnos();
 
                     // Show success message.
                     setAlertType('success');
@@ -189,18 +243,19 @@ function Turnos() {
     }
 
 
-    // Update 'Turno'.
+    /**
+     * Function updateTurno - Update the 'Turno' information in the database.
+     *
+     * @return {void}
+     */
     const updateTurno = () => {
         const turno = {
             id: turnoToEdit,
-            nombre: turnoNombre,
-            apellido: turnoApellido,
-            fecha_nacimiento: turnoFechaNacimiento,
-            email: turnoEmail,
-            dni: turnoDni,
-            telefono: turnoTelefono,
-            genero: turnoGenero,
-            obra_social: turnoObraSocial,
+            medico: turnoMedico,
+            paciente: turnoPaciente,
+            fecha: turnoFecha,
+            hora: turnoHora,
+            fecha_dia: turnoFechaDia,
         }
 
         // Show spinner.
@@ -220,7 +275,7 @@ function Turnos() {
 
                 if (response.success) {
                     // Reload 'Turnos' list.
-                    doSearch();
+                    searchTurnos();
 
                     // Show success message.
                     setAlertType('success');
@@ -252,6 +307,9 @@ function Turnos() {
 
 
     // Delete a turno.
+    /**
+     * Function deleteTurno - Delete the 'Turno' from the database.
+     */
     const deleteTurno = () => {
         // Show spinner.
         setShowSpinner(true);
@@ -271,7 +329,7 @@ function Turnos() {
                     setShowAlert(true);
 
                     // Reload the 'Turnos' table.
-                    doSearch();
+                    searchTurnos();
 
                     // Close alert message after 4 seconds.
                     setTimeout(function () {
@@ -283,16 +341,17 @@ function Turnos() {
     }
 
 
-    // Set empty values to 'Turno' fields.
+    /**
+     * Function setEmptyValues - Set all the values to empty.
+     *
+     * @return {void}
+     */
     const setEmptyValues = () => {
-        setTurnoNombre('');
-        setTurnoApellido('');
-        setTurnoFechaNacimiento('');
-        setTurnoEmail('');
-        setTurnoDni('');
-        setTurnoTelefono('');
-        setTurnoGenero('');
-        setTurnoObraSocial('');
+        setTurnoMedico('');
+        setTurnoPaciente('');
+        setTurnoFecha('');
+        setTurnoHora('');
+        setTurnoFechaDia('');
     }
 
 
@@ -314,6 +373,16 @@ function Turnos() {
                         className="btn bg-white text-primary border-primary"
                         data-bs-toggle='modal'
                         data-bs-target={'#modalAdd'}
+                        onClick={() => {
+                            // Clear all the values.
+                            setEmptyValues();
+
+                            // Search for the 'Medicos' list.
+                            searchMedicos();
+
+                            // Search for the 'Pacientes' list.
+                            searchPacientes();
+                        }}
                     >
                         <FontAwesomeIcon
                             className='text-primary me-1'
@@ -350,27 +419,23 @@ function Turnos() {
                 />
             </div>
 
-            {/* <NuevoTurno
-                turnoNombre={turnoNombre}
-                turnoApellido={turnoApellido}
-                turnoFechaNacimiento={turnoFechaNacimiento}
-                turnoEmail={turnoEmail}
-                turnoDni={turnoDni}
-                turnoTelefono={turnoTelefono}
-                turnoGenero={turnoGenero}
-                turnoObraSocial={turnoObraSocial}
-                setTurnoNombre={setTurnoNombre}
-                setTurnoApellido={setTurnoApellido}
-                setTurnoFechaNacimiento={setTurnoFechaNacimiento}
-                setTurnoEmail={setTurnoEmail}
-                setTurnoDni={setTurnoDni}
-                setTurnoTelefono={setTurnoTelefono}
-                setTurnoGenero={setTurnoGenero}
-                setTurnoObraSocial={setTurnoObraSocial}
+            <NuevoTurno
+                medicos={medicos}
+                pacientes={pacientes}
+                turnoMedico={turnoMedico}
+                turnoPaciente={turnoPaciente}
+                turnoFecha={turnoFecha}
+                turnoHora={turnoHora}
+                turnoFechaDia={turnoFechaDia}
+                setTurnoMedico={setTurnoMedico}
+                setTurnoPaciente={setTurnoPaciente}
+                setTurnoFecha={setTurnoFecha}
+                setTurnoHora={setTurnoHora}
+                setTurnoFechaDia={setTurnoFechaDia}
                 addTurno={addTurno}
             />
 
-            <EditarTurno
+            {/* <EditarTurno
                 turnoNombre={turnoNombre}
                 turnoApellido={turnoApellido}
                 turnoFechaNacimiento={turnoFechaNacimiento}
