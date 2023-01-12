@@ -5,7 +5,7 @@ import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import Calendar from 'react-calendar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faUserDoctor, faCalendarCheck, faClock } from '@fortawesome/free-solid-svg-icons';
 import './style.css';
 import './calendar.css';
 
@@ -13,6 +13,8 @@ function Turnos() {
     // Medicos.
     const [medicos, setMedicos] = useState([]);
     const [medico, setMedico] = useState('');
+    const [medicoName, setMedicoName] = useState('');
+    const [medicoShowList, setMedicoShowList] = useState('d-none');
     const [medicoMessage, setMedicoMessage] = useState('Empieza a escribir para buscar');
     const [medicoMessageShow, setMedicoMessageShow] = useState(false);
     const [medicoDisableButton, setMedicoDisableButton] = useState(true);
@@ -21,7 +23,7 @@ function Turnos() {
     const [fechas, setFechas] = useState([]);
     const [fecha, setFecha] = useState('');
     const [fechaMax, setFechaMax] = useState('');
-    const [fechaIndex, setFechaIndex] = useState('');
+    const [idFechasDias, setIdFechasDias] = useState('');
     const [fechaDisableButton, setFechaDisableButton] = useState(true);
 
     // Hora.
@@ -29,6 +31,9 @@ function Turnos() {
     const [hora, setHora] = useState('');
     const [horaDisableButton, setHoraDisableButton] = useState(true);
     const [step, setStep] = useState(2);
+
+    // Turno.
+    const [turnoDisableButton, setTurnoDisableButton] = useState(true);
 
     // On page load, do the search of all active 'Medicos'.
     useEffect(() => {
@@ -106,11 +111,19 @@ function Turnos() {
      * @return {void}
      */
     const medicoOnFocus = () => {
-        const especialistas = document.getElementById('especialistas');
+        setMedicoShowList('d-flex')
+    }
 
-        if (especialistas.classList.contains('d-none')) {
-            setMedicoMessageShow(true)
-        }
+
+    /**
+     * Function medicoOnBlur - Handle the blur event of the 'Medico' input. If the 'especialistas' div is hidden, hide the message.
+     *
+     * @return {void}
+     */
+    const medicoOnBlur = () => {        
+        setTimeout(() => {
+            setMedicoShowList('d-none')
+        }, 134);
     }
 
     
@@ -135,15 +148,15 @@ function Turnos() {
 
         // Get the 'especialistas' divs.
         const especialistas = document.getElementById('especialistas');
-        const especialistasChildren = especialistas.children;
+        const especialistasChildren = especialistas.querySelectorAll('.item');
 
         // Counters.
         let counter = 0;
 
         // Loop through the 'especialistasChildren' div.
-        for (let i = 1; i < especialistasChildren.length; i++) {
+        for (let i = 0; i < especialistasChildren.length; i++) {
             // If the 'especialistasChildren' div contains the given input, show it, otherwise, hide it.
-            if (especialistasChildren[i].innerHTML.toLowerCase().includes(input.toLowerCase())) {
+            if (especialistasChildren[i].innerText.toLowerCase().includes(input.toLowerCase())) {
                 // Hide and show the 'especialistasChildren' div.
                 especialistasChildren[i].classList.remove('d-none');
                 especialistasChildren[i].classList.add('d-flex');
@@ -206,6 +219,7 @@ function Turnos() {
 
         // Set the id of the 'Medico' as the selected 'Medico'.
         setMedico(id);
+        setMedicoName(medicos[position].apellido + ', ' + medicos[position].nombre);
 
         // Get the dates for the selected 'Medico'.
         getFechas(id);
@@ -281,6 +295,9 @@ function Turnos() {
             }
         }
 
+        // Set the idFechasDuas state.
+        setIdFechasDias(idFechasDias);
+
         // Get the hours for the given date.
         getHoras(idFechasDias);
 
@@ -296,13 +313,12 @@ function Turnos() {
      *
      * @return {void}
      */
-    const getHoras = (date) => {        
+    const getHoras = (date) => {
         $.ajax({
             url: `http://local.misturnos/api/medicos/${date}/horas`,
             type: 'GET',
             dataType: 'json',
             success: function (response) {
-                console.log('response.horas: ', response.horas);
                 setHoras(response.horas);
             },
             error: function (error) {
@@ -338,6 +354,38 @@ function Turnos() {
 
         // Enable the continue button.
         setHoraDisableButton(false);
+
+        // Enable the 'Confirmar' button.
+        setTurnoDisableButton(false);
+    }
+
+
+    /**
+     * Function confirmarTurno - Save the 'Turno' in the database.
+     *
+     * @return {void}
+     */
+    const confirmarTurno = () => {
+        // Disable the 'Confirmar' button.
+        setTurnoDisableButton(true);
+
+        $.ajax({
+            url: 'http://local.misturnos/api/turnos',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                'id_paciente': 5,
+                'id_medico': medico,
+                'dia': fecha,
+                'hora': hora,
+                'id_fecha_dia': idFechasDias,
+            },
+            success: function (response) {
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
     }
 
 
@@ -458,13 +506,13 @@ function Turnos() {
                                             type='text'
                                             className='form-control w-100'
                                             placeholder='Buscar especialista...'
-                                            onChange={(e) => filterEspecialista(e.target.value)}
+                                            onChange={(event) => filterEspecialista(event.target.value)}
                                             onFocus={() => medicoOnFocus()}
-                                            onBlur={(e) => setMedicoMessageShow(false)}
+                                            onBlur={(event) => medicoOnBlur(event)}
                                         />
                                     </div>
 
-                                    <div id='especialistas' className='flex-column bg-white w-25'>
+                                    <div id='especialistas' className={medicoShowList + ' flex-column bg-white w-25'}>
                                         {medicoMessageShow &&
                                             <div className='d-flex align-items-center border-bottom py-2 px-3 medicosMessage'>
                                                 <p className='mb-0 text-black'>{medicoMessage}</p>
@@ -555,7 +603,7 @@ function Turnos() {
                                             {horaArray.map((horaItem, indexItem) => {
                                                 let isDisabled = false;
                                                 
-                                                if (horaItem.estado === 'ocupado') {
+                                                if (horaItem.estado !== 'libre') {
                                                     isDisabled = true;
                                                 }
 
@@ -577,7 +625,17 @@ function Turnos() {
                                 <div className='d-flex justify-content-around w-100'>
                                     <button
                                         className='btn border border-light text-light text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
-                                        onClick={() => moveStep(3)}
+                                        onClick={() => {
+                                            // Move back to step 3.
+                                            moveStep(3);
+
+                                            // Delete the selected class.
+                                            const selected = document.querySelector('#horas .selected');
+
+                                            if (selected) {
+                                                selected.classList.remove('selected');
+                                            }
+                                        }}
                                     >
                                         Paso anterior
                                     </button>
@@ -602,7 +660,39 @@ function Turnos() {
                                     </div>
                                 </div>
 
-                                <h4 className='mt-1'>Confirmar el turno</h4>
+                                <h4 className='mt-1 mb-5'>Confirmar el turno</h4>
+
+                                <div id='resumen' className='d-flex flex-column bg-white text-dark border-05 box-shadow-dark w-33 p-4'>
+                                    <h3 className='text-primary pb-05 mb-2'>Turno</h3>
+
+                                    <div className='d-flex align-items-center ms-2'>
+                                        <FontAwesomeIcon 
+                                            icon={faUserDoctor}
+                                            className='text-primary me-1'
+                                        />
+
+                                        <p className='mb-0'>Especialista: {medicoName}</p>
+                                    </div>
+
+                                    <div className='d-flex align-items-center ms-2'>
+                                        <FontAwesomeIcon 
+                                            icon={faCalendarCheck}
+                                            className='text-primary me-1'
+                                        />
+
+                                        <p className='mb-0'>Fecha: {fecha}</p>
+                                    </div>
+
+                                    <div className='d-flex align-items-center ms-2'>
+                                        <FontAwesomeIcon 
+                                            icon={faClock}
+                                            className='text-primary me-1'
+                                        />
+
+                                        <p className='mb-0'>Hora: {hora}</p>
+                                    </div>
+
+                                </div>
 
                                 <div className='d-flex justify-content-around w-100'>
                                     <button
@@ -614,8 +704,8 @@ function Turnos() {
 
                                     <button
                                         className='btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
-                                        disabled={medicoDisableButton}
-                                        // onClick={() => moveStep(4)}
+                                        disabled={turnoDisableButton}
+                                        onClick={() => confirmarTurno()}
                                     >
                                         Confirmar turno
                                     </button>

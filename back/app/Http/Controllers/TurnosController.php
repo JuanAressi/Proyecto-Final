@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Turnos;
+use App\Models\TurnosHoras;
 
 class TurnosController extends Controller
 {
     /**
-     * Function getAll - Returns all Pacientes from database that matches with the request.
+     * Function getAll - Returns all 'Turnos' from database that matches with the request.
      *
      * @return array - An array of all users.
      */
@@ -108,5 +109,39 @@ class TurnosController extends Controller
                 )
             );
         }
+    }
+
+
+    /**
+     * Function addNew - Adds a new 'Turno' to the database.
+     *
+     * @param Request $request - The request object.
+     *
+     * @return array $user - The new user.
+     */
+    public function addNew(Request $request)
+    {
+        $turno = Turnos::create([
+            'id_paciente' => $request->input('id_paciente'),
+            'id_medico'   => $request->input('id_medico'),
+            'dia'         => $request->input('dia'),
+            'hora'        => $request->input('hora'),
+            'estado'      => 'reservado',
+        ]);
+
+        // Check if the 'Turno' was created.
+        if ($turno !== null) {
+            // Change the 'TurnoHora' state to 'ocupado'.
+            $turno_hora = TurnosHoras::where('id_turnos_fechas', $request->input('id_fecha_dia'))
+                ->where('hora', $request->input('hora'))
+                ->update(['estado' => 'ocupado']);
+        }
+
+        return json_encode(
+            array(
+                'success' => true,
+                'user' => $turno,
+            )
+        );
     }
 }

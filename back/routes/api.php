@@ -40,3 +40,4 @@ Route::get('medicos/{fecha}/horas', 'App\Http\Controllers\MedicosController@getH
 
 // Turnos.
 Route::get('turnos', 'App\Http\Controllers\TurnosController@getAll');
+Route::post('turnos', 'App\Http\Controllers\TurnosController@addNew');
