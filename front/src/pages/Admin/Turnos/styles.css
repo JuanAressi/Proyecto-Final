@@ -1,0 +1,35 @@
+#modalAdd #especialistas {
+    overflow-y: scroll;
+    top: 62px!important;
+    left: 12px!important;
+    min-width: calc(100% - 24px)!important;
+    min-height: 41px;
+    z-index: 2;
+}
+
+#modalAdd #especialistas .item p {
+    pointer-events: none;
+}
+
+#modalAdd #especialistas .item:hover {
+    background-color: rgba(43, 102, 179, 0.5);
+}
+
+#modalAdd #especialistas .item:hover {
+    background-color: #7dc97d;
+}
+
+#modalAdd #horas button {
+    min-width: 75px;
+    background: #fff;
+    color: #212529;
+}
+
+#modalAdd #horas button:hover {
+    background-color: #7dc97d;
+}
+
+#modalAdd #horas button.selected {
+    background-color: #139c13;
+    color: #fff;
+}
