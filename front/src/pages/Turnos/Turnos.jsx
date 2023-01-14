@@ -18,7 +18,7 @@ function Turnos() {
     const [medicoMessage, setMedicoMessage] = useState('Empieza a escribir para buscar');
     const [medicoMessageShow, setMedicoMessageShow] = useState(false);
     const [medicoDisableButton, setMedicoDisableButton] = useState(true);
-    
+
     // Fechas.
     const [fechas, setFechas] = useState([]);
     const [fecha, setFecha] = useState('');
@@ -27,9 +27,11 @@ function Turnos() {
     const [fechaDisableButton, setFechaDisableButton] = useState(true);
 
     // Hora.
-    const [horas, setHoras] = useState('');
+    const [horas, setHoras] = useState([]);
     const [hora, setHora] = useState('');
     const [horaDisableButton, setHoraDisableButton] = useState(true);
+
+    // Step.
     const [step, setStep] = useState(2);
 
     // Turno.
@@ -37,7 +39,7 @@ function Turnos() {
 
     // On page load, do the search of all active 'Medicos'.
     useEffect(() => {
-        doSearch();
+        searchMedicos();
 
         // Si el usuario está logueado, ir al paso 2, sino al paso 1.
         setActiveSteps(step);
@@ -61,11 +63,11 @@ function Turnos() {
 
 
     /**
-     * Function doSearch - Makes the search of all active 'Medicos'
+     * Function searchMedicos - Makes the search of all active 'Medicos'
      *
      * @return {void}
      */
-    const doSearch = () => {
+    const searchMedicos = () => {
         $.ajax({
             url: 'http://local.misturnos/api/medicos',
             type: 'GET',
@@ -111,7 +113,8 @@ function Turnos() {
      * @return {void}
      */
     const medicoOnFocus = () => {
-        setMedicoShowList('d-flex')
+        // Show the 'especialistas' div.
+        setMedicoShowList('d-flex');
     }
 
 
@@ -120,21 +123,21 @@ function Turnos() {
      *
      * @return {void}
      */
-    const medicoOnBlur = () => {        
+    const medicoOnBlur = () => {
         setTimeout(() => {
             setMedicoShowList('d-none')
-        }, 134);
+        }, 136);
     }
 
     
     /**
-     * Function filterEspecialista - Filters the 'Medicos' by the selected the given input.
+     * Function filterMedico - Filters the 'Medicos' by the selected the given input.
      *
      * @param {string} input - The input to filter by.
      *
      * @return {void}
      */
-    const filterEspecialista = (input) => {
+    const filterMedico = (input) => {
         // Delete the current 'medico' in case there is one.
         setMedico('');
 
@@ -202,20 +205,19 @@ function Turnos() {
 
 
     /**
-     * Function setClickedEspecialista - Sets the clicked 'Medico' as the selected 'Medico'.
+     * Function setClickedMedico - Sets the clicked 'Medico' as the selected 'Medico'.
      * 
      * @param {html} target - The clicked 'Medico' div.
      *
      * @return {void}
      */
-    const setClickedEspecialista = (target) => {
+    const setClickedMedico = (target) => {
         // Get the 'data-id' and 'data-position' attribute of the target.
         const id = target.getAttribute('data-id');
         const position = target.getAttribute('data-position');
 
         // Get the divs.
         const input = document.getElementById('especialista');
-        const list  = document.getElementById('especialistas');
 
         // Set the id of the 'Medico' as the selected 'Medico'.
         setMedico(id);
@@ -225,8 +227,7 @@ function Turnos() {
         getFechas(id);
 
         // Hide the 'especialistas' div.
-        list.classList.remove('d-flex');
-        list.classList.add('d-none');
+        setMedicoShowList('d-none');
 
         // Set the 'especialista' input value and the class.
         input.value = medicos[position].apellido + ', ' + medicos[position].nombre;
@@ -506,7 +507,7 @@ function Turnos() {
                                             type='text'
                                             className='form-control w-100'
                                             placeholder='Buscar especialista...'
-                                            onChange={(event) => filterEspecialista(event.target.value)}
+                                            onChange={(event) => filterMedico(event.target.value)}
                                             onFocus={() => medicoOnFocus()}
                                             onBlur={(event) => medicoOnBlur(event)}
                                         />
@@ -525,7 +526,7 @@ function Turnos() {
                                                 data-id={medicoItem.id}
                                                 data-position={index}
                                                 key={index}
-                                                onClick={(e) => setClickedEspecialista(e.target)}
+                                                onClick={(e) => setClickedMedico(e.target)}
                                             >
                                                 <p className='mb-0 text-black'>{medicoItem.apellido}, {medicoItem.nombre}</p>
                                             </div>
@@ -592,7 +593,7 @@ function Turnos() {
                                     </div>
                                 </div>
 
-                                <h4 className='mt-1 mb-5'>Selecciona el horario del turno</h4>                                
+                                <h4 className='mt-1 mb-5'>Selecciona el horario del turno</h4>
 
                                 <div id='horas' className='d-flex justify-content-center align-items-center'>
                                     {horas && horas.map((horaArray, indexArray) => (
@@ -622,6 +623,7 @@ function Turnos() {
                                     ))}
                                 </div>
 
+                                {/* Buttons container */}
                                 <div className='d-flex justify-content-around w-100'>
                                     <button
                                         className='btn border border-light text-light text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'

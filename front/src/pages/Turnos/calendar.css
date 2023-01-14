@@ -137,3 +137,14 @@
     pointer-events: none;
     cursor: default;
 }
+
+
+/* Modal Add */
+#modalAdd .react-calendar {
+    width: 100%;
+    margin: 0 auto;
+}
+
+#modalAdd .react-calendar .react-calendar__navigation .react-calendar__navigation__label__labelText--from {
+    font-size: 1.25rem!important;
+}

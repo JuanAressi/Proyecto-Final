@@ -8,6 +8,7 @@ import SideNav from '../../../components/SideNav/SideNav';
 import loadingGif from '../../../components/assets/img/loadingGif.gif';
 import Table from '../../../components/Table/Table';
 import NuevoTurno from './NuevoTurno';
+import './styles.css';
 // import EditarTurno from './EditarTurno';
 
 function Turnos() {
@@ -42,6 +43,14 @@ function Turnos() {
 
     // Pacientes.
     const [pacientes, setPacientes] = useState([]);
+
+
+    // Search 'Medicos' and 'Pacientes' when component loads (delay 0s).
+    useEffect(() => {
+        searchMedicos();
+        searchPacientes();
+    }, []);
+
 
     // Search 'Turnos' when 'page' changes (delay 0s).
     useEffect(() => {
@@ -130,10 +139,10 @@ function Turnos() {
             }
         });
     }
-    
+
 
     /**
-     * Function searchMedicos - Makes the search of all active 'Medicos'.
+     * Function searchMedicos - Makes the search of all active 'Medicos'
      *
      * @return {void}
      */
@@ -306,9 +315,10 @@ function Turnos() {
     }
 
 
-    // Delete a turno.
     /**
      * Function deleteTurno - Delete the 'Turno' from the database.
+     *
+     * @return {void}
      */
     const deleteTurno = () => {
         // Show spinner.
@@ -373,16 +383,7 @@ function Turnos() {
                         className="btn bg-white text-primary border-primary"
                         data-bs-toggle='modal'
                         data-bs-target={'#modalAdd'}
-                        onClick={() => {
-                            // Clear all the values.
-                            setEmptyValues();
-
-                            // Search for the 'Medicos' list.
-                            searchMedicos();
-
-                            // Search for the 'Pacientes' list.
-                            searchPacientes();
-                        }}
+                        onClick={() => setEmptyValues()}
                     >
                         <FontAwesomeIcon
                             className='text-primary me-1'
