@@ -84,20 +84,9 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
 
         // Disable the 'Horas' container.
         setHoraEnabled('disabled');
-
-        // Remove the date selected from the Calendar component.
-        const calendar = document.querySelector('.react-calendar__tile.react-calendar__tile--active');
-
-        if (calendar !== null) {
-            calendar.classList.remove('react-calendar__tile--active', 'react-calendar__tile--range', 'react-calendar__tile--rangeStart', 'react-calendar__tile--rangeEnd', 'react-calendar__tile--rangeBothEnds');
-        }
-
-        // Remove the time selected.
-        const tiempo = document.querySelector('#horas .selected');
-
-        if (tiempo !== null) {
-            tiempo.classList.remove('selected');
-        }
+        
+        // Reset the values of 'Fecha' and 'Hora'.
+        resetFechaYHora();
 
         // Remove 'is-valid' class from the 'medico' input.
         const medicoInput = document.getElementById('medico');
@@ -192,6 +181,9 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
         input.value = medicos[position].apellido + ', ' + medicos[position].nombre;
         input.classList.add('is-valid');
 
+        // Reset the 'fecha' and 'hora' states.
+        resetFechaYHora();
+
         // Enable the 'Calendar' container.
         setFechaEnabled('');
     }
@@ -218,6 +210,8 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
                 const lastDateObject = new Date(`${lastDate[1]}-${lastDate[0]}-${lastDate[2]}`);
 
                 setFechaMax(lastDateObject);
+
+                resetFechas(response.fechas);
             },
             error: function (error) {
                 console.log(error);
@@ -406,6 +400,16 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
             }
         }
 
+        // Obtain all the buttons of the 'horas' div.
+        const horas = document.querySelectorAll('#horas button');
+
+        for (let i = 0; i < horas.length; i++) {
+            // Remove the '.selected' class.
+            if (horas[i].classList.contains('selected')) {
+                horas[i].classList.remove('selected');
+            }
+        }
+
         // Set the idFechasDuas state.
         setTurnoFechaDia(idFechasDias);
 
@@ -466,8 +470,212 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
 
         // Add the class 'selected' to the target.
         target.classList.add('selected');
+    }
 
-        console.log();
+
+    /**
+     * Function resetFechaYHora - Reset the 'Fecha' and 'Hora' components.
+     *
+     * @return {void}
+     */
+    const resetFechaYHora = () => {
+        // Reset the 'Fecha' and 'Hora' states.
+        setTurnoFecha('');
+        setTurnoHora('');
+
+        // Remove the date selected from the Calendar component.
+        const calendar = document.querySelector('.react-calendar__tile.react-calendar__tile--active');
+
+        if (calendar !== null) {
+            calendar.classList.remove('react-calendar__tile--active', 'react-calendar__tile--range', 'react-calendar__tile--rangeStart', 'react-calendar__tile--rangeEnd', 'react-calendar__tile--rangeBothEnds');
+        }
+
+        // Remove the time selected.
+        const tiempo = document.querySelector('#horas .selected');
+
+        if (tiempo !== null) {
+            tiempo.classList.remove('selected');
+        }
+
+        const tiempoDisabled = document.querySelectorAll('#horas button[disabled]');
+
+        for (let i = 0; i < tiempoDisabled.length; i++) {
+            tiempoDisabled[i].removeAttribute('disabled');
+        }
+    }
+
+
+    /**
+     * Function resetFechas - Enable and disable the dates in the calendar when the user switch between differents 'Medico'.
+     *
+     * @return {void}
+     */
+    const resetFechas = (dates) => {
+        let availableDays = [];
+        let daysToDisable = [];
+
+        // Obtain all the abbr of the 'Calendar' component.
+        const abbr = document.querySelectorAll('.react-calendar__tile abbr');
+
+        // Enable the dates that have the attribute 'disabled="disabled"'.
+        for (let i = 0; i < abbr.length; i++) {
+            if (abbr[i].parentElement.getAttribute('disabled') === 'disabled') {
+                abbr[i].parentElement.removeAttribute('disabled');
+            }
+        }
+        
+        // Get only the available days (the ones after the current date and not counting the weekends).
+        for (let i = 0; i < abbr.length; i++) {
+            let date = abbr[i].getAttribute('aria-label');
+            date = date.split(' de ');
+
+            switch (date[1]) {
+                case 'enero':
+                    date[1] = '01';
+                    break;
+                
+                case 'febrero':
+                    date[1] = '02';
+                    break;
+
+                case 'marzo':
+                    date[1] = '03';
+                    break;
+
+                case 'abril':
+                    date[1] = '04';
+                    break;
+
+                case 'mayo':
+                    date[1] = '05';
+                    break;
+
+                case 'junio':
+                    date[1] = '06';
+                    break;
+
+                case 'julio':
+                    date[1] = '07';
+                    break;
+
+                case 'agosto':
+                    date[1] = '08';
+                    break;
+
+                case 'septiembre':
+                    date[1] = '09';
+                    break;
+
+                case 'octubre':
+                    date[1] = '10';
+                    break;
+
+                case 'noviembre':
+                    date[1] = '11';
+                    break;
+
+                case 'diciembre':
+                    date[1] = '12';
+                    break;
+            }
+
+            let newDate = `${date[1]}-${date[0]}-${date[2]}`;
+            let dateObject = new Date(newDate);
+
+            // If the date is not previous to today date or a weekend, add it to the array.
+            if (dateObject >= new Date() && dateObject.getDay() !== 0 && dateObject.getDay() !== 6) {
+                if (date[0].length === 1) {
+                    date[0] = '0' + date[0];
+                }
+
+                availableDays.push(`${date[0]}-${date[1]}-${date[2]}`);
+            }
+        }
+
+        // Loop through the 'availableDays' array and delete from it the ones that comes from the 'fechas' state.
+        for (let i = 0; i < availableDays.length; i++) {
+            let found = false;
+
+            for (let j = 0; j < dates.length; j++) {
+                if (availableDays[i] === dates[j].dia) {
+                    found = true;
+                    break
+                }
+            }
+
+            if (!found) {
+                daysToDisable.push(availableDays[i]);
+            }
+        }
+
+        // Disable the days that are in 'daysToDisable' array.
+        for (let i = 0; i < daysToDisable.length; i++) {
+            let day = daysToDisable[i].split('-');
+
+            switch (day[1]) {
+                case '01':
+                    day[1] = 'enero';
+                    break;
+
+                case '02':
+                    day[1] = 'febrero';
+                    break;
+
+                case '03':
+                    day[1] = 'marzo';
+                    break;
+
+                case '04':
+                    day[1] = 'abril';
+                    break;
+
+                case '05':
+                    day[1] = 'mayo';
+                    break;
+
+                case '06':
+                    day[1] = 'junio';
+                    break;
+
+                case '07':
+                    day[1] = 'julio';
+                    break;
+
+                case '08':
+                    day[1] = 'agosto';
+                    break;
+
+                case '09':
+                    day[1] = 'septiembre';
+                    break;
+
+                case '10':
+                    day[1] = 'octubre';
+                    break;
+
+                case '11':
+                    day[1] = 'noviembre';
+                    break;
+
+                case '12':
+                    day[1] = 'diciembre';
+                    break;
+            }
+
+            if (day[0].length === 1) {
+                day[0] = day[0].replace('0', '');
+            }
+
+            day = `${day[0]} de ${day[1]} de ${day[2]}`;
+
+            if (day[0] === '0') {
+                day = day.replace('0', '');
+            }
+
+            const abbr = document.querySelector('.react-calendar__tile abbr[aria-label="' + day + '"]');
+
+            abbr.parentElement.setAttribute('disabled', 'disabled');
+        }
     }
 
 
