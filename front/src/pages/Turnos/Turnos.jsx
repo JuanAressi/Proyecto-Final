@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import $ from 'jquery';
+import TurnosModal from './TurnosModal';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import Calendar from 'react-calendar';
@@ -131,15 +132,18 @@ function Turnos() {
 
     
     /**
-     * Function filterMedico - Filters the 'Medicos' by the selected the given input.
+     * Function filterMedicos - Filters the 'Medicos' by the selected the given input.
      *
      * @param {string} input - The input to filter by.
      *
      * @return {void}
      */
-    const filterMedico = (input) => {
+    const filterMedicos = (input) => {
         // Delete the current 'medico' in case there is one.
         setMedico('');
+        
+        // Reset the values of 'Fecha' and 'Hora'.
+        resetFechaYHora();
 
         // Show medicosMessage if the input is empty, otherwise, hide it.
         if (input === '') {
@@ -404,6 +408,34 @@ function Turnos() {
 
 
     /**
+     * Function resetFechaYHora - Reset the 'Fecha' and 'Hora' components.
+     *
+     * @return {void}
+     */
+    const resetFechaYHora = () => {
+        // Remove the date selected from the Calendar component.
+        const calendar = document.querySelector('.react-calendar__tile.react-calendar__tile--active');
+
+        if (calendar !== null) {
+            calendar.classList.remove('react-calendar__tile--active', 'react-calendar__tile--range', 'react-calendar__tile--rangeStart', 'react-calendar__tile--rangeEnd', 'react-calendar__tile--rangeBothEnds');
+        }
+
+        // Remove the time selected.
+        const tiempo = document.querySelector('#horas .selected');
+
+        if (tiempo !== null) {
+            tiempo.classList.remove('selected');
+        }
+
+        const tiempoDisabled = document.querySelectorAll('#horas button[disabled]');
+
+        for (let i = 0; i < tiempoDisabled.length; i++) {
+            tiempoDisabled[i].removeAttribute('disabled');
+        }
+    }
+
+
+    /**
      * Function moveStep - Do the animation to move to the given step and set it.
      * 
      * @param {int} to - The step to move to.
@@ -429,8 +461,9 @@ function Turnos() {
             setStep(to)
         }
     }
+    
 
-
+    // Render the Turnos component.
     return (
         <div id='turnos' className=''>
             <Navbar />
@@ -520,7 +553,7 @@ function Turnos() {
                                             type='text'
                                             className='form-control w-100'
                                             placeholder='Buscar especialista...'
-                                            onChange={(event) => filterMedico(event.target.value)}
+                                            onChange={(event) => filterMedicos(event.target.value)}
                                             onFocus={() => medicoOnFocus()}
                                             onBlur={(event) => medicoOnBlur(event)}
                                         />
@@ -659,6 +692,8 @@ function Turnos() {
                                         className='btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
                                         disabled={horaDisableButton}
                                         onClick={() => moveStep(5)}
+                                        data-bs-toggle='modal'
+                                        data-bs-target={'#modalTurnos'}
                                     >
                                         Continuar
                                     </button>
@@ -721,6 +756,8 @@ function Turnos() {
                                         className='btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
                                         disabled={turnoDisableButton}
                                         onClick={() => confirmarTurno()}
+                                        data-bs-toggle='modal'
+                                        data-bs-target={'#modalTurnos'}
                                     >
                                         Confirmar turno
                                     </button>
@@ -730,6 +767,12 @@ function Turnos() {
                     </div>
                 </div>            
             </div>
+
+            <TurnosModal
+                medicoName={medicoName}
+                fecha={fecha}
+                hora={hora}
+            />
 
             <Footer />
         </div>
