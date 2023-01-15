@@ -151,7 +151,6 @@ function Pacientes() {
             dataType: 'json',
             data: paciente,
             success: function (response) {
-                debugger
                 // Hide spinner.
                 setShowSpinner(false);
 

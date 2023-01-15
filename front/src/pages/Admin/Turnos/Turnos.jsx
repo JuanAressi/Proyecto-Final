@@ -44,6 +44,19 @@ function Turnos() {
     // Pacientes.
     const [pacientes, setPacientes] = useState([]);
 
+    // Fechas.
+    const [fechaEnabled, setFechaEnabled] = useState('disabled');
+
+    // Hora.
+    const [horas, setHoras] = useState([
+        [{hora: '8:00', estado: 'libre'}, {hora: '8:30', estado: 'libre'}, {hora: '9:00', estado: 'libre'}, {hora: '9:30', estado: 'libre'}, {hora: '10:00', estado: 'libre'}],
+        [{hora: '10:30', estado: 'libre'}, {hora: '11:00', estado: 'libre'}, {hora: '11:30', estado: 'libre'}, {hora: '12:00', estado: 'libre'}, {hora: '12:30', estado: 'libre'}],
+        [{hora: '13:00', estado: 'libre'}, {hora: '13:30', estado: 'libre'}, {hora: '14:00', estado: 'libre'}, {hora: '14:30', estado: 'libre'}, {hora: '15:00', estado: 'libre'}],
+        [{hora: '15:30', estado: 'libre'}, {hora: '16:00', estado: 'libre'}, {hora: '16:30', estado: 'libre'}, {hora: '17:00', estado: 'libre'}, {hora: '17:30', estado: 'libre'}],
+        [{hora: '18:00', estado: 'libre'}, {hora: '18:30', estado: 'libre'}, {hora: '19:00', estado: 'libre'}, {hora: '19:30', estado: 'libre'}, {hora: '20:00', estado: 'libre'}],
+    ]);
+    const [horaEnabled, setHoraEnabled] = useState('disabled');
+
 
     // Search 'Medicos' and 'Pacientes' when component loads (delay 0s).
     useEffect(() => {
@@ -197,56 +210,48 @@ function Turnos() {
      * @return {void}
      */
     const addTurno = () => {
-        const turno = {
-            medico: turnoMedico,
-            paciente: turnoPaciente,
-            fecha: turnoFecha,
-            hora: turnoHora,
-            fecha_dia: turnoFechaDia,
-        }
-
-        // Show spinner.
-        setShowSpinner(true);
-
         $.ajax({
             url: 'http://local.misturnos/api/turnos',
             type: 'POST',
             dataType: 'json',
-            data: turno,
+            data: {
+                'id_paciente': turnoPaciente,
+                'id_medico': turnoMedico,
+                'dia': turnoFecha,
+                'hora': turnoHora,
+                'id_fecha_dia': turnoFechaDia,
+            },
             success: function (response) {
-                debugger
-                // Hide spinner.
-                setShowSpinner(false);
-
-                if (response.success) {
+                if (response.success) {                
                     // Reload 'Turnos' list.
                     searchTurnos();
-
+    
                     // Show success message.
                     setAlertType('success');
                     setAlertMessage(response.message);
                     setShowAlert(true);
-
+    
                     // Set values to empty.
                     setEmptyValues();
-
+    
                     // Close modal.
                     $('#closeModal').click();
                 } else {
-                    // Show error message.
-                    setAlertType('danger');
-                    setAlertMessage('Error al crear el Turno.');
-                    setShowAlert(true);
-                }
-                
+                    // Show inline error message.
+                    const modalMessage = document.getElementById('modalMessage');
 
-                // Close alert message after 4 seconds.
-                setTimeout(function () {
-                    setShowAlert(false);
-                }, 4000);
+                    modalMessage.classList.remove('d-none');
+                    modalMessage.classList.add('d-flex');
+
+                    // Remove the modalMessage after 10 seconds.
+                    setTimeout(() => {
+                        modalMessage.classList.add('d-none');
+                        modalMessage.classList.remove('d-flex');
+                    }, 10000);
+                }
             },
             error: function (error) {
-                setShowSpinner(false);
+                console.log(error);
             }
         });
     }
@@ -362,6 +367,41 @@ function Turnos() {
         setTurnoFecha('');
         setTurnoHora('');
         setTurnoFechaDia('');
+        setFechaEnabled('disabled');
+        setHoraEnabled('disabled');
+
+        // Empty the inptus.
+        const medico   = document.getElementById('medico');
+        const paciente = document.getElementById('paciente');
+
+        medico.value   = '';
+        paciente.value = '';
+
+        // Remove 'is-valid' class from the inputs.
+        medico.classList.remove('is-valid');
+        paciente.classList.remove('is-valid');
+
+        // Remove the date selected from the Calendar component.
+        const calendar = document.querySelector('.react-calendar__tile.react-calendar__tile--active');
+
+        if (calendar !== null) {
+            calendar.classList.remove('react-calendar__tile--active', 'react-calendar__tile--range', 'react-calendar__tile--rangeStart', 'react-calendar__tile--rangeEnd', 'react-calendar__tile--rangeBothEnds');
+        }
+
+        // Remove the time selected.
+        const tiempo = document.querySelector('#horas .selected');
+
+        if (tiempo !== null) {
+            tiempo.classList.remove('selected');
+        }
+
+        setHoras([
+            [{hora: '8:00', estado: 'libre'}, {hora: '8:30', estado: 'libre'}, {hora: '9:00', estado: 'libre'}, {hora: '9:30', estado: 'libre'}, {hora: '10:00', estado: 'libre'}],
+            [{hora: '10:30', estado: 'libre'}, {hora: '11:00', estado: 'libre'}, {hora: '11:30', estado: 'libre'}, {hora: '12:00', estado: 'libre'}, {hora: '12:30', estado: 'libre'}],
+            [{hora: '13:00', estado: 'libre'}, {hora: '13:30', estado: 'libre'}, {hora: '14:00', estado: 'libre'}, {hora: '14:30', estado: 'libre'}, {hora: '15:00', estado: 'libre'}],
+            [{hora: '15:30', estado: 'libre'}, {hora: '16:00', estado: 'libre'}, {hora: '16:30', estado: 'libre'}, {hora: '17:00', estado: 'libre'}, {hora: '17:30', estado: 'libre'}],
+            [{hora: '18:00', estado: 'libre'}, {hora: '18:30', estado: 'libre'}, {hora: '19:00', estado: 'libre'}, {hora: '19:30', estado: 'libre'}, {hora: '20:00', estado: 'libre'}],
+        ]);
     }
 
 
@@ -427,12 +467,17 @@ function Turnos() {
                 turnoPaciente={turnoPaciente}
                 turnoFecha={turnoFecha}
                 turnoHora={turnoHora}
-                turnoFechaDia={turnoFechaDia}
+                fechaEnabled={fechaEnabled}
+                horas={horas}
+                horaEnabled={horaEnabled}
                 setTurnoMedico={setTurnoMedico}
                 setTurnoPaciente={setTurnoPaciente}
                 setTurnoFecha={setTurnoFecha}
                 setTurnoHora={setTurnoHora}
                 setTurnoFechaDia={setTurnoFechaDia}
+                setFechaEnabled={setFechaEnabled}
+                setHoras={setHoras}
+                setHoraEnabled={setHoraEnabled}
                 addTurno={addTurno}
             />
 

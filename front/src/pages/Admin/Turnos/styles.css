@@ -1,4 +1,5 @@
-#modalAdd #especialistas {
+#modalAdd #especialistas,
+#modalAdd #pacientes {
     overflow-y: scroll;
     top: 62px!important;
     left: 12px!important;
@@ -7,15 +8,13 @@
     z-index: 2;
 }
 
-#modalAdd #especialistas .item p {
+#modalAdd #especialistas .item p,
+#modalAdd #pacientes .item p {
     pointer-events: none;
 }
 
-#modalAdd #especialistas .item:hover {
-    background-color: rgba(43, 102, 179, 0.5);
-}
-
-#modalAdd #especialistas .item:hover {
+#modalAdd #especialistas .item:hover,
+#modalAdd #pacientes .item:hover {
     background-color: #7dc97d;
 }
 
@@ -32,4 +31,16 @@
 #modalAdd #horas button.selected {
     background-color: #139c13;
     color: #fff;
+}
+
+#modalAdd #horas button:disabled {
+    background-color: #e0e0e0;
+    color: #212529;
+}
+
+#modalAdd #calendarContainer.disabled,
+#modalAdd #horaContainer.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed!important;
 }
