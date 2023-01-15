@@ -138,27 +138,45 @@ class TurnosController extends Controller
      */
     public function addNew(Request $request)
     {
-        $turno = Turnos::create([
-            'id_paciente' => $request->input('id_paciente'),
-            'id_medico'   => $request->input('id_medico'),
-            'dia'         => $request->input('dia'),
-            'hora'        => $request->input('hora'),
-            'estado'      => 'reservado',
-        ]);
+        // Validate that there is not a 'Turno' with the same  'id_medico', 'dia' and 'hora'.
+        $turno = Turnos::where('id_medico', $request->input('id_medico'))
+            ->where('dia', $request->input('dia'))
+            ->where('hora', $request->input('hora'))
+            ->first();
 
-        // Check if the 'Turno' was created.
-        if ($turno !== null) {
-            // Change the 'TurnoHora' state to 'ocupado'.
-            TurnosHoras::where('id_turnos_fechas', $request->input('id_fecha_dia'))
-                ->where('hora', $request->input('hora'))
-                ->update(['estado' => 'ocupado']);
+        // Check if the 'Turno' was found.
+        if ($turno === null) {
+            $turno = Turnos::create([
+                'id_paciente' => $request->input('id_paciente'),
+                'id_medico'   => $request->input('id_medico'),
+                'dia'         => $request->input('dia'),
+                'hora'        => $request->input('hora'),
+                'estado'      => 'reservado',
+            ]);
+
+            // Check if the 'Turno' was created.
+            if ($turno !== null) {
+                // Change the 'TurnoHora' state to 'ocupado'.
+                TurnosHoras::where('id_turnos_fechas', $request->input('id_fecha_dia'))
+                    ->where('hora', $request->input('hora'))
+                    ->update(['estado' => 'ocupado']);
+            }
+
+            return json_encode(
+                array(
+                    'success' => true,
+                    'turno'   => $turno,
+                    'message' => 'Turno creado con exito.'
+                )
+            );
+        } else {
+            // Return error.
+            return json_encode(
+                array(
+                    'success' => false,
+                    'message' => 'Ya existe un turno para el medico en la fecha y hora seleccionada',
+                )
+            );
         }
-
-        return json_encode(
-            array(
-                'success' => true,
-                'user' => $turno,
-            )
-        );
     }
 }

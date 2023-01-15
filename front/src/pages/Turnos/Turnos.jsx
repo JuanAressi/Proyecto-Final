@@ -382,6 +382,19 @@ function Turnos() {
                 'id_fecha_dia': idFechasDias,
             },
             success: function (response) {
+                // Reload 'Pacientes' list.
+                // searchTurnos();
+
+                // // Show success message.
+                // setAlertType('success');
+                // setAlertMessage(response.message);
+                // setShowAlert(true);
+
+                // // Set values to empty.
+                // setEmptyValues();
+
+                // // Close modal.
+                // $('#closeModal').click();
             },
             error: function (error) {
                 console.log(error);

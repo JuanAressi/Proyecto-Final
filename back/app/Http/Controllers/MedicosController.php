@@ -38,7 +38,7 @@ class MedicosController extends Controller
             ->orderby('usuarios.id', 'asc')
             ->get();
 
-        // Get total of medicos.
+        // Get 'Medicos' count.
         $medicos_count = sizeof($medicos_sql);
 
         // Get 'Medicos' by pagination.

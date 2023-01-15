@@ -44,11 +44,20 @@ class PacientesController extends Controller
             ->orderby('usuarios.id', 'asc')
             ->get();
 
-        // Get total of pacientes.
+        // Get 'Pacientes' count.
         $pacientes_count = sizeof($pacientes_sql);
 
         // Get pacientes by pagination.
         $pacientes = [];
+
+        // Calculate offset and limit.
+        if ($page === null && $pagination === null) {
+            $offset = 0;
+            $limit  = $pacientes_count;
+        } else {
+            $offset = ($page - 1) * $pagination;
+            $limit  = $offset + $pagination;
+        }
 
         // Check if offset is valid.
         if ($offset < $pacientes_count) {
