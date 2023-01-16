@@ -38,11 +38,14 @@ function Turnos() {
     // Turno.
     const [turnoDisableButton, setTurnoDisableButton] = useState(true);
 
+    // Success.
+    const [success, setSuccess] = useState(false);
+
     // On page load, do the search of all active 'Medicos'.
     useEffect(() => {
         searchMedicos();
 
-        // Si el usuario está logueado, ir al paso 2, sino al paso 1.
+        // If the user is logged in, set the active step to 2.
         setActiveSteps(step);
     }, []);
 
@@ -61,6 +64,20 @@ function Turnos() {
             setMedicoDisableButton(true);
         }
     }, [medico]);
+
+
+    // On 'step' change, set/remove the 'bg-success-light' to the 'progressBar' div children.
+    useEffect(() => {
+        const progressBarItems = document.getElementById('progressBar').children;
+
+        for (let i = 1; i < progressBarItems.length; i++) {
+            if (i <= step) {
+                progressBarItems[i].classList.add('bg-success-light');
+            } else {
+                progressBarItems[i].classList.remove('bg-success-light');
+            }
+        }
+    }, [step]);
 
 
     /**
@@ -386,6 +403,10 @@ function Turnos() {
                 'id_fecha_dia': idFechasDias,
             },
             success: function (response) {
+                setSuccess(response.success);
+
+                if (response.success) {
+                }
                 // Reload 'Pacientes' list.
                 // searchTurnos();
 
@@ -476,8 +497,8 @@ function Turnos() {
                             <div className='triangle'></div>
                         </div>
 
-                        <div id='progressBar' className='d-flex bg-white text-center w-100 box-shadow-dark'>
-                            <div className='item position-relative w-20 py-2 px-2'>
+                        <div id='progressBar' className='d-flex bg-white text-center w-100 box-shadow-dark border-05 overflow-hidden'>
+                            <div className='item bg-success-light position-relative w-20 py-2 px-2'>
                                 <h5 className='mb-0 font-weight-100'>1 - Iniciar sesión</h5>
                             </div>
 
@@ -504,7 +525,7 @@ function Turnos() {
                     <div id='steps' className='d-flex w-100 p-4 overflow-hidden'>
                         <div className='d-flex w-100 step-container'>
                             {/* Paso 1 */}
-                            <div className='steps d-flex flex-column align-items-center text-white w-100 d-none'>
+                            <div className='steps d-flex flex-column align-items-center text-white w-100'>
                                 <div className='d-flex align-items-center'>
                                     <h2 className='me-2 mb-0'>Paso</h2>
 
@@ -521,7 +542,7 @@ function Turnos() {
                                 
                                 <Link
                                     to='/login'
-                                    className='btn border border-light text-light text-uppercase px-3 mt-5 w-25'
+                                    className='btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
                                 >
                                     Iniciar Sesión
                                 </Link>
@@ -610,7 +631,7 @@ function Turnos() {
                                     onChange={(value) => fechaOnChange(value)}
                                 />
 
-
+                                {/* Buttons container */}
                                 <div className='d-flex justify-content-around w-100'>
                                     <button
                                         className='btn border border-light text-light text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
@@ -699,7 +720,7 @@ function Turnos() {
                                     </button>
                                 </div>
                             </div>
-                            
+
                             {/* Paso 5 */}
                             <div className='steps d-flex flex-column align-items-center text-white w-100 overflow-hidden'>
                                 <div className='d-flex align-items-center'>
@@ -744,6 +765,7 @@ function Turnos() {
 
                                 </div>
 
+                                {/* Buttons container */}
                                 <div className='d-flex justify-content-around w-100'>
                                     <button
                                         className='btn border border-light text-light text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
@@ -769,6 +791,7 @@ function Turnos() {
             </div>
 
             <TurnosModal
+                success={success}
                 medicoName={medicoName}
                 fecha={fecha}
                 hora={hora}
