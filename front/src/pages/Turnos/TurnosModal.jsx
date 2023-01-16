@@ -1,9 +1,18 @@
-import { React } from 'react';
+import { React, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faX } from '@fortawesome/free-solid-svg-icons';
 
 
-function TurnosModal( { medicoName, fecha, hora } ) {
+function TurnosModal( { success, medicoName, fecha, hora } ) {
+    useEffect(() => {
+        // If it was a success, redirect after 10 seconds.
+        if (success) {
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 10000);
+        }
+    }, [success]);
+
     return (
         <div id='modalTurnos' className='modal fade' tabIndex='-1' aria-hidden='true'>
             <div className='modal-dialog modal-dialog-centered'>
@@ -18,18 +27,37 @@ function TurnosModal( { medicoName, fecha, hora } ) {
                     </div>
 
                     <div className='d-flex flex-column align-items-center text-center'>
-                        <FontAwesomeIcon
-                            className='text-success rounded-circle p-2 mb-2'
-                            icon={faCheck}
-                            data-bs-dismiss='modal'
-                            aria-label='Close'
-                            style={{ width: '50px', height: '50px', border: '2px solid' }}
-                        />
+                        {success ?
+                            <>
+                                <FontAwesomeIcon
+                                    className='text-success rounded-circle p-2 mb-2'
+                                    icon={faCheck}
+                                    data-bs-dismiss='modal'
+                                    aria-label='Close'
+                                    style={{ width: '50px', height: '50px', border: '2px solid' }}
+                                />
 
-                        <h3 className='text-success mb-2'>¡Turno confirmado!</h3>
-                        <p>Su turno se con el especialista: <span className='text-primary'>{medicoName}</span>, el día <span className='text-primary'>{fecha}</span> a las <span className='text-primary'>{hora}</span>, se registró de manera correcta</p>
+                                <h3 className='text-success mb-2'>¡Turno confirmado!</h3>
 
-                        <p className='small'>En breve será redireccionado a la pagina de inicio</p>
+                                <p>Su turno se con el especialista: <span className='text-primary'>{medicoName}</span>, el día <span className='text-primary'>{fecha}</span> a las <span className='text-primary'>{hora}</span>, se registró de manera correcta</p>
+                                <p className='small'>En breve será redireccionado a la pagina de inicio</p>
+                            </>
+                            :
+                            <>
+                                <FontAwesomeIcon
+                                    className='text-danger rounded-circle p-2 mb-2'
+                                    icon={faX}
+                                    data-bs-dismiss='modal'
+                                    aria-label='Close'
+                                    style={{ width: '50px', height: '50px', border: '2px solid' }}
+                                />
+
+                                <h3 className='text-danger mb-2'>Ocurrió un error al guardar tu turno</h3>
+
+                                <p>Se produjo un error al guardar el turno, puede que alguien haya reservado el turno recientemente</p>
+                                <p>Por favor, recargue la pagina y vuelva a intentarlo.</p>
+                            </>
+                        }
 
                         <button
                             id='closeModal'

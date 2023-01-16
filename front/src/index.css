@@ -21,11 +21,12 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 .bg-darker { background-color: #023E8A!important; }
 .bg-lightgray { background-color: #f5f5f5!important; }
 .bg-inherit { background-color: inherit!important; }
+.bg-success-light { background-color: #7dc97d!important; }
 
 
 /* Border Color */
 .border-primary { border: 1px solid #056799 !important; }
-.border-white-2 { border: 2px solid #fff!important; }
+.border-white-2 { border: 2px solid rgb(255, 255, 255)!important; }
 
 /* Border Radius */
 .border-05 { border-radius: 0.25rem!important; }
@@ -251,7 +252,7 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 
 
 /* Position */
-/* Rigth */
+/* Right */
 .right-2 { right: 1rem!important; }
 
 
