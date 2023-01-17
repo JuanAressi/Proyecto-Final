@@ -5,6 +5,7 @@ import { faAt, faCheck, faKey } from '@fortawesome/free-solid-svg-icons';
 import $ from 'jquery';
 import './style.css';
 import Navbar from '../../components/Navbar/Navbar';
+import Footer from '../../components/Footer/Footer';
 import Input from '../../components/Input/Input';
 import loadingGif from '../../components/assets/img/loadingGif.gif';
 
@@ -116,11 +117,11 @@ function Login() {
         <div id='loginPage'>
 			<Navbar />
 
-            <div className='blue-overlay pt-5'>
-                <div className='container p-0 pt-5'>
+            <div className='blue-overlay min-height'>
+                <div className='container p-8'>
                     <div className='d-flex justify-content-center align-items-center'>
                         <form id='loginForm' className='rounded box-shadow-dark p-5'>
-                            <h1 className='text-center mb-3 text-darker text-shadow-dark'>¡Bienvenido!</h1>
+                            <h1 className='text-center mb-3 text-primary text-shadow-dark'>¡Bienvenido!</h1>
 
                             {loginIn &&
                                 <div className='text-center'>
@@ -133,7 +134,7 @@ function Login() {
                             }
                             
                             {!loginIn &&
-                                <h6 className='text-center mb-4 text-darker text-shadow-dark'>Ingresa a tu cuenta</h6>
+                                <h6 className='text-center mb-4 text-primary text-shadow-dark'>Ingresa a tu cuenta</h6>
                             }
 
                             {/* Email */}
@@ -216,6 +217,8 @@ function Login() {
                     </div>
                 </div>
             </div>
+
+            <Footer />
         </div>
     )
 }
