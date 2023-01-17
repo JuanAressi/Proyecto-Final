@@ -565,7 +565,7 @@ function Turnos() {
                                     to='/register'
                                     className='btn border border-light text-light text-uppercase px-3 mt-5 w-25'
                                 >
-                                    Registrarse
+                                    Registrarme
                                 </Link>
                             </div>
 

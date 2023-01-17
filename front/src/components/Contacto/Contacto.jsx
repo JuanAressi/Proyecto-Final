@@ -13,10 +13,11 @@ function Contacto() {
     return (
         <div id='contacto' className='bg-light py-5'>
             <div className='container'>
-                <h2 className='text-primary text-center text-uppercase font-size-5'>Contacto</h2>
+                <h2 className='text-primary text-center text-uppercase font-size-5 mb-4'>Contacto</h2>
 
-                <div className='d-flex justify-content-around p-5'>
-                    <div className='d-flex flex-column'>
+                <div className='row container px-4 mx-0'>
+                    <div className='col-lg-6 col-md-12 d-flex flex-column justify-content-evenly first-element'>
+                        {/* Teléfono */}
                         <div className='mb-5'>
                             <div className='d-flex align-items-center mb-1'>
                                 <FontAwesomeIcon
@@ -24,7 +25,7 @@ function Contacto() {
                                     style={{ fontSize: '1.25rem' }}
                                 />
 
-                                <h3 className='mb-0 ms-2'>Telefono</h3>
+                                <h3 className='mb-0 ms-2'>Teléfono</h3>
                             </div>
 
                             <div className='d-flex flex-column'>
@@ -44,7 +45,7 @@ function Contacto() {
                             </div>
                         </div>
 
-
+                        {/* Correo Electrónico */}
                         <div className='mb-5'>
                             <div className='d-flex align-items-center mb-1'>
                                 <FontAwesomeIcon
@@ -52,7 +53,7 @@ function Contacto() {
                                     style={{ fontSize: '1.25rem' }}
                                 />
 
-                                <h3 className='mb-0 ms-2'>Correo Electronico</h3>
+                                <h3 className='mb-0 ms-2'>Correo Electrónico</h3>
                             </div>
 
                             <a
@@ -63,8 +64,8 @@ function Contacto() {
                             </a>
                         </div>
 
-
-                        <div className='mb-5'>
+                        {/* Dirección */}
+                        <div className=''>
                             <div className='d-flex align-items-center mb-1'>
                                 <FontAwesomeIcon
                                     icon={faMapMarkerAlt}
@@ -78,9 +79,9 @@ function Contacto() {
                         </div>
                     </div>
 
-
-                    <div className='d-flex flex-column align-items-center'>
-                        <h3>¿Querés hacernos una consulta?</h3>
+                    {/* Consulta */}
+                    <div className='col-lg-6 col-md-12'>
+                        <h3 className='text-center'>¿Querés hacernos una consulta?</h3>
 
                         <div className='w-100 pt-2 px-5'>
                             <div className='mb-3'>

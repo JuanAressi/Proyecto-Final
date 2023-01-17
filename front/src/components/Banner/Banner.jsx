@@ -8,10 +8,10 @@ function Banner() {
             <div className='banner-overlay p-8'>
                 <div className='container'>
                     <div className='row h-100'>
-                        <div className='col-md-6 col-sm-12 my-auto'>
+                        <div className='col-lg-8 col-md-10 col-sm-12 my-auto'>
                             <div className='d-flex flex-column justify-content-center align-items-start'>
-                                <h1 className='text-white display-2 ms-3 mb-0'>Solicitar un turno nunca fue tan fácil</h1>
-                                <h2 className='text-white display-6 mt-4 ms-3'>¡Y al instante!</h2>
+                                <h1 className='text-white display-2 mb-0'>Solicitar un turno nunca fue tan fácil</h1>
+                                <h3 className='text-white display-6 mt-4'>¡Y al instante!</h3>
 
                                 <div className='text-center w-100'>
                                     <Link

@@ -88,6 +88,7 @@ function Login() {
                                 break;
                             
                             case 'paciente':
+                            default:
                                 window.location.href = '/';
                                 break;
                         }
@@ -144,7 +145,7 @@ function Login() {
                                     classes={emailInvalidMessage !== '' ? 'border-danger' : loginIn ? 'border-success' : ''}
                                     type='email'
                                     name='email'
-                                    placeholder='Correo electronico'
+                                    placeholder='Correo electrónico'
                                     value={email}
                                     onChange={handleEmailChange}
                                     onFocus={() => setEmailInvalidMessage('')}
@@ -209,7 +210,7 @@ function Login() {
                                     className='btn bg-white text-primary border border-primary box-shadow-dark text-uppercase mb-2'
                                     type='button'
                                 >
-                                    Registrarse
+                                    Registrarme
                                 </Link>
                             </div>
                         </form>
