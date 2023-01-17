@@ -8,7 +8,7 @@
 }
 
 #turnos p {
-    font-size: 20px;
+    font-size: 18px;
 }
 
 #turnos .medicosMessage p {
@@ -48,7 +48,7 @@
     right: -20px;
     border-top: 20px solid transparent;
     border-bottom: 20px solid transparent;
-    border-left: 20px solid #7dc97d;
+    border-left: 21px solid #7dc97d;
 }
 
 #turnos #progressBarContainer #progressBar .item::before {
@@ -62,8 +62,12 @@
     z-index: 1;
 }
 
-#turnos #progressBarContainer #progressBar .item:first-child::before {
+#turnos #progressBarContainer #progressBar .item:nth-child(1)::before {
     display: none;
+}
+
+#turnos #progressBarContainer #progressBar .item.bg-success-light::before {
+    background-color: #888;
 }
 
 #turnos #progressBarContainer #progressBar .active h5 {
@@ -71,15 +75,15 @@
     z-index: 2;
 }
 
-#turnos #especialistas {
+#turnos #profesionales {
     overflow-y: scroll;
 }
 
-#turnos #especialistas .item p {
+#turnos #profesionales .item p {
     pointer-events: none;
 }
 
-#turnos #especialistas .item:hover {
+#turnos #profesionales .item:hover {
     background-color: #7dc97d;
 }
 
