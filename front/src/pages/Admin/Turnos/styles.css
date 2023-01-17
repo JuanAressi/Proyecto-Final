@@ -1,4 +1,4 @@
-#modalAdd #especialistas,
+#modalAdd #profesionales,
 #modalAdd #pacientes {
     overflow-y: scroll;
     top: 62px!important;
@@ -8,12 +8,12 @@
     z-index: 2;
 }
 
-#modalAdd #especialistas .item p,
+#modalAdd #profesionales .item p,
 #modalAdd #pacientes .item p {
     pointer-events: none;
 }
 
-#modalAdd #especialistas .item:hover,
+#modalAdd #profesionales .item:hover,
 #modalAdd #pacientes .item:hover {
     background-color: #7dc97d;
 }

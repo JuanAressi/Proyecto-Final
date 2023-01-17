@@ -53,7 +53,7 @@ function Turnos() {
     // On 'medico' change, add class to the input.
     useEffect(() => {
         if (medico === '') {
-            const input = document.getElementById('especialista');
+            const input = document.getElementById('profesional');
 
             // Check if has the class 'is-valid'.
             if (input.classList.contains('is-valid')) {
@@ -71,10 +71,31 @@ function Turnos() {
         const progressBarItems = document.getElementById('progressBar').children;
 
         for (let i = 1; i < progressBarItems.length; i++) {
-            if (i <= step) {
-                progressBarItems[i].classList.add('bg-success-light');
+            if (i < step) {
+                if (!progressBarItems[i].classList.contains('bg-success-light')) {
+                    progressBarItems[i].classList.add('bg-success-light');
+                }
             } else {
-                progressBarItems[i].classList.remove('bg-success-light');
+                if (progressBarItems[i].classList.contains('bg-success-light')) {
+                    progressBarItems[i].classList.remove('bg-success-light');
+                }
+            }
+        }
+
+        // Move the 'triangle' element to the current step.
+        const triangle = document.querySelector('.triangle');
+
+        if (step !== 5) {
+            if (triangle.classList.contains('d-none')) {
+                triangle.classList.remove('d-none');
+            }
+
+            const elementWidth = progressBarItems[0].offsetWidth;
+            
+            triangle.style.left = `${(step) * elementWidth - 2}px`;
+        } else {
+            if (!triangle.classList.contains('d-none')) {
+                triangle.classList.add('d-none');
             }
         }
     }, [step]);
@@ -126,18 +147,18 @@ function Turnos() {
 
 
     /**
-     * Function medicoOnFocus - Handle the focus event of the 'Medico' input. If the 'especialistas' div is hidden, show the message.
+     * Function medicoOnFocus - Handle the focus event of the 'Medico' input. If the 'profesionales' div is hidden, show the message.
      *
      * @return {void}
      */
     const medicoOnFocus = () => {
-        // Show the 'especialistas' div.
+        // Show the 'profesionales' div.
         setMedicoShowList('d-flex');
     }
 
 
     /**
-     * Function medicoOnBlur - Handle the blur event of the 'Medico' input. If the 'especialistas' div is hidden, hide the message.
+     * Function medicoOnBlur - Handle the blur event of the 'Medico' input. If the 'profesionales' div is hidden, hide the message.
      *
      * @return {void}
      */
@@ -170,27 +191,27 @@ function Turnos() {
             setMedicoMessageShow(false);
         }
 
-        // Get the 'especialistas' divs.
-        const especialistas = document.getElementById('especialistas');
-        const especialistasChildren = especialistas.querySelectorAll('.item');
+        // Get the 'profesionales' divs.
+        const profesionales = document.getElementById('profesionales');
+        const profesionalesChildren = profesionales.querySelectorAll('.item');
 
         // Counters.
         let counter = 0;
 
-        // Loop through the 'especialistasChildren' div.
-        for (let i = 0; i < especialistasChildren.length; i++) {
-            // If the 'especialistasChildren' div contains the given input, show it, otherwise, hide it.
-            if (especialistasChildren[i].innerText.toLowerCase().includes(input.toLowerCase())) {
-                // Hide and show the 'especialistasChildren' div.
-                especialistasChildren[i].classList.remove('d-none');
-                especialistasChildren[i].classList.add('d-flex');
+        // Loop through the 'profesionalesChildren' div.
+        for (let i = 0; i < profesionalesChildren.length; i++) {
+            // If the 'profesionalesChildren' div contains the given input, show it, otherwise, hide it.
+            if (profesionalesChildren[i].innerText.toLowerCase().includes(input.toLowerCase())) {
+                // Hide and show the 'profesionalesChildren' div.
+                profesionalesChildren[i].classList.remove('d-none');
+                profesionalesChildren[i].classList.add('d-flex');
 
                 // Increment the counter.
                 counter++;
             } else {
-                // Hide and show the 'especialistasChildren' div.
-                especialistasChildren[i].classList.remove('d-flex');
-                especialistasChildren[i].classList.add('d-none');
+                // Hide and show the 'profesionalesChildren' div.
+                profesionalesChildren[i].classList.remove('d-flex');
+                profesionalesChildren[i].classList.add('d-none');
             }
         }
 
@@ -199,28 +220,28 @@ function Turnos() {
             setMedicoMessage('No se encontraron resultados');
             setMedicoMessageShow(true);
 
-            if (especialistas.classList.contains('d-flex')) {
-                especialistas.classList.remove('d-flex');
-                especialistas.classList.add('d-none');
+            if (profesionales.classList.contains('d-flex')) {
+                // Hide the 'profesionales' div.
+                setMedicoShowList('d-none');
             }
         } else {
             setMedicoMessageShow(false);
 
-            if (especialistas.classList.contains('d-none')) {
-                especialistas.classList.remove('d-none');
-                especialistas.classList.add('d-flex');
+            if (profesionales.classList.contains('d-none')) {
+                // Show the 'profesionales' div.
+                setMedicoShowList('d-flex');
             }
         }
 
-        // Set maximum height of the 'especialistas' div.
+        // Set maximum height of the 'profesionales' div.
         if (counter === 1) {
-            especialistas.style.maxHeight = '47px';
+            profesionales.style.maxHeight = '47px';
         } else if (counter === 2) {
-            especialistas.style.maxHeight = '94px';
+            profesionales.style.maxHeight = '94px';
         } else if (counter === 3) {
-            especialistas.style.maxHeight = '141px';
+            profesionales.style.maxHeight = '141px';
         } else if (counter >= 4) {
-            especialistas.style.maxHeight = '188px';
+            profesionales.style.maxHeight = '188px';
         }
     }
 
@@ -238,7 +259,7 @@ function Turnos() {
         const position = target.getAttribute('data-position');
 
         // Get the divs.
-        const input = document.getElementById('especialista');
+        const input = document.getElementById('profesional');
 
         // Set the id of the 'Medico' as the selected 'Medico'.
         setMedico(id);
@@ -247,10 +268,10 @@ function Turnos() {
         // Get the dates for the selected 'Medico'.
         getFechas(id);
 
-        // Hide the 'especialistas' div.
+        // Hide the 'profesionales' div.
         setMedicoShowList('d-none');
 
-        // Set the 'especialista' input value and the class.
+        // Set the 'profesional' input value and the class.
         input.value = medicos[position].apellido + ', ' + medicos[position].nombre;
         input.classList.add('is-valid');
 
@@ -407,19 +428,12 @@ function Turnos() {
 
                 if (response.success) {
                 }
-                // Reload 'Pacientes' list.
-                // searchTurnos();
 
-                // // Show success message.
-                // setAlertType('success');
-                // setAlertMessage(response.message);
-                // setShowAlert(true);
+                // Get 'modalTurnos' element.
+                const modalTurnos = document.getElementById('buttonModalTurnos');
 
-                // // Set values to empty.
-                // setEmptyValues();
-
-                // // Close modal.
-                // $('#closeModal').click();
+                // Simulate a click on the 'modalTurnos' element.
+                modalTurnos.click();
             },
             error: function (error) {
                 console.log(error);
@@ -489,8 +503,8 @@ function Turnos() {
         <div id='turnos' className=''>
             <Navbar />
 
-            <div className='container p-6'>
-                <div className='d-flex flex-column align-items-center min-height'>
+            <div className='container p-6 min-height'>
+                <div className='d-flex flex-column align-items-center'>
                     {/* Progress bar */}
                     <div id='progressBarContainer' className='d-flex position-relative w-100 mb-4'>
                         <div className='position-absolute'>
@@ -503,7 +517,7 @@ function Turnos() {
                             </div>
 
                             <div className='item position-relative w-20 py-2 px-2'>
-                                <h5 className='mb-0 font-weight-100'>2 - Especialista</h5>
+                                <h5 className='mb-0 font-weight-100'>2 - Profesional</h5>
                             </div>
 
                             <div className='item position-relative w-20 py-2 px-2'>
@@ -525,7 +539,7 @@ function Turnos() {
                     <div id='steps' className='d-flex w-100 p-4 overflow-hidden'>
                         <div className='d-flex w-100 step-container'>
                             {/* Paso 1 */}
-                            <div className='steps d-flex flex-column align-items-center text-white w-100'>
+                            <div className='steps d-flex flex-column align-items-center text-white w-100 overflow-hidden d-none'>
                                 <div className='d-flex align-items-center'>
                                     <h2 className='me-2 mb-0'>Paso</h2>
 
@@ -565,22 +579,23 @@ function Turnos() {
                                     </div>
                                 </div>
 
-                                <h4 className='mt-1 mb-5'>Selecciona uno de nuestros especialistas</h4>
+                                <h4 className='mt-1 mb-5'>Selecciona uno de nuestros profesionales</h4>
 
                                 <div className='d-flex flex-column align-items-center w-100'>                   
                                     <div className='d-flex justify-content-center align-items-center w-25 position-relative'>
                                         <input
-                                            id='especialista'
+                                            id='profesional'
                                             type='text'
                                             className='form-control w-100'
-                                            placeholder='Buscar especialista...'
+                                            placeholder='Buscar profesional...'
+                                            autoComplete='off'
                                             onChange={(event) => filterMedicos(event.target.value)}
                                             onFocus={() => medicoOnFocus()}
                                             onBlur={(event) => medicoOnBlur(event)}
                                         />
                                     </div>
 
-                                    <div id='especialistas' className={medicoShowList + ' flex-column bg-white w-25'}>
+                                    <div id='profesionales' className={medicoShowList + ' flex-column bg-white w-25'}>
                                         {medicoMessageShow &&
                                             <div className='d-flex align-items-center border-bottom py-2 px-3 medicosMessage'>
                                                 <p className='mb-0 text-black'>{medicoMessage}</p>
@@ -713,8 +728,6 @@ function Turnos() {
                                         className='btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
                                         disabled={horaDisableButton}
                                         onClick={() => moveStep(5)}
-                                        data-bs-toggle='modal'
-                                        data-bs-target={'#modalTurnos'}
                                     >
                                         Continuar
                                     </button>
@@ -733,6 +746,7 @@ function Turnos() {
 
                                 <h4 className='mt-1 mb-5'>Confirmar el turno</h4>
 
+                                {/* Resumen */}
                                 <div id='resumen' className='d-flex flex-column bg-white text-dark border-05 box-shadow-dark w-33 p-4'>
                                     <h3 className='text-primary pb-05 mb-2'>Turno</h3>
 
@@ -742,7 +756,7 @@ function Turnos() {
                                             className='text-primary me-1'
                                         />
 
-                                        <p className='mb-0'>Especialista: {medicoName}</p>
+                                        <p className='mb-0'>Profesional: {medicoName}</p>
                                     </div>
 
                                     <div className='d-flex align-items-center ms-2'>
@@ -778,11 +792,16 @@ function Turnos() {
                                         className='btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
                                         disabled={turnoDisableButton}
                                         onClick={() => confirmarTurno()}
-                                        data-bs-toggle='modal'
-                                        data-bs-target={'#modalTurnos'}
                                     >
                                         Confirmar turno
                                     </button>
+
+                                    <button
+                                        className='d-none'
+                                        id='buttonModalTurnos'
+                                        data-bs-toggle='modal'
+                                        data-bs-target={'#modalTurnos'}
+                                    />
                                 </div>
                             </div>
                         </div>

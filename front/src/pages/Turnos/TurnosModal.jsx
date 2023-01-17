@@ -39,7 +39,7 @@ function TurnosModal( { success, medicoName, fecha, hora } ) {
 
                                 <h3 className='text-success mb-2'>¡Turno confirmado!</h3>
 
-                                <p>Su turno se con el especialista: <span className='text-primary'>{medicoName}</span>, el día <span className='text-primary'>{fecha}</span> a las <span className='text-primary'>{hora}</span>, se registró de manera correcta</p>
+                                <p>Su turno se con el profesional: <span className='text-primary'>{medicoName}</span>, el día <span className='text-primary'>{fecha}</span> a las <span className='text-primary'>{hora}</span>, se registró de manera correcta</p>
                                 <p className='small'>En breve será redireccionado a la pagina de inicio</p>
                             </>
                             :
