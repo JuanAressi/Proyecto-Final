@@ -3,3 +3,19 @@
     color: #056799!important;
     transition: all 0.3s;
 }
+
+#contacto .row .first-element {
+    align-items: center;
+    text-align: center;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 991px) {
+    #contacto .row .first-element {
+        align-items: baseline;
+        text-align: left;
+        padding: 2rem 0 2rem 6rem;
+        margin-bottom: 0;
+    }
+}
