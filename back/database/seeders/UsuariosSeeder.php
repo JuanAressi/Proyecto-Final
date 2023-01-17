@@ -187,33 +187,181 @@ class UsuariosSeeder extends Seeder
             1 => 'ocupado',
         );
 
-
+        // Admin 1.
         $admin                   = new Usuarios();
-        $admin->nombre           = 'Administrador';
-        $admin->apellido         = '';
-        $admin->email            = 'admin@xmail.com';
-        $admin->contraseña       = md5('admin');
-        $admin->dni              = '1';
-        $admin->fecha_nacimiento = date('Y-m-d', strtotime('-' . rand(18, 60) . ' years'));
-        $admin->genero           = '';
+        $admin->nombre           = 'Juan Manuel';
+        $admin->apellido         = 'Aressi';
+        $admin->email            = 'Juan.Aressi@hotmail.com';
+        $admin->contraseña       = md5('JuanAressi1');
+        $admin->dni              = '39858575';
+        $admin->fecha_nacimiento = '03-03-1997';
+        $admin->genero           = 'Masculino';
+        $admin->telefono         = '3413535267';
+        $admin->estado           = 'activo';
+        $admin->rol              = 'admin';
+        $admin->save();
+
+        // Admin 2.
+        $admin                   = new Usuarios();
+        $admin->nombre           = 'Silvana';
+        $admin->apellido         = 'Ferracuti';
+        $admin->email            = 'silferra85@gmail.com';
+        $admin->contraseña       = md5('SilvanaFerracuti1');
+        $admin->dni              = '';
+        $admin->fecha_nacimiento = '01-01-1987';
+        $admin->genero           = 'Femenino';
         $admin->telefono         = '';
         $admin->estado           = 'activo';
         $admin->rol              = 'admin';
         $admin->save();
 
+        // Admin 3.
+        $admin                   = new Usuarios();
+        $admin->nombre           = 'Jesica';
+        $admin->apellido         = 'Guaglianono';
+        $admin->email            = 'guaglianonojesica@gmail.com';
+        $admin->contraseña       = md5('JesicaGuaglianono1');
+        $admin->dni              = '';
+        $admin->fecha_nacimiento = '01-01-1990';
+        $admin->genero           = 'Femenino';
+        $admin->telefono         = '';
+        $admin->estado           = 'activo';
+        $admin->rol              = 'admin';
+        $admin->save();
 
+        // Usuario 1.
         $usuario                   = new Usuarios();
-        $usuario->nombre           = 'Usuario';
-        $usuario->apellido         = 'Prueba';
-        $usuario->email            = 'usuario.prueba@xmail.com';
-        $usuario->contraseña       = md5('Contraseña1');
-        $usuario->dni              = '';
-        $usuario->fecha_nacimiento = date('Y-m-d', strtotime('-' . rand(18, 60) . ' years'));
-        $usuario->genero           = '2';
-        $usuario->telefono         = '';
+        $usuario->nombre           = 'Gabriela';
+        $usuario->apellido         = 'Garcia';
+        $usuario->email            = 'Gabriela.Garcia@yopmail.com';
+        $usuario->contraseña       = md5('GabrielaGarcia1');
+        $usuario->dni              = '38486985';
+        $usuario->fecha_nacimiento = '16-11-1988';
+        $usuario->genero           = 'Femenino';
+        $usuario->telefono         = '3413678901';
+        $usuario->estado           = 'inactivo';
+        $usuario->rol              = 'paciente';
+        $usuario->save();
+
+        // Usuario 2.
+        $usuario                   = new Usuarios();
+        $usuario->nombre           = 'Daniel';
+        $usuario->apellido         = 'Pérez';
+        $usuario->email            = 'Daniel.Perez@hotmail.com';
+        $usuario->contraseña       = md5('DanielPerez1');
+        $usuario->dni              = '35486985';
+        $usuario->fecha_nacimiento = '01-01-1990';
+        $usuario->genero           = 'Masculino';
+        $usuario->telefono         = '3413456789';
+        $usuario->estado           = 'inactivo';
+        $usuario->rol              = 'paciente';
+        $usuario->save();
+
+        $paciente = new Pacientes();
+
+        $paciente->id_usuario         = $usuario->id;
+        $paciente->obra_social        = 'OSDE';
+        $paciente->numero_obra_social = '100001';
+        $paciente->save();
+
+        // Usuario 3.
+        $usuario                   = new Usuarios();
+        $usuario->nombre           = 'Elena';
+        $usuario->apellido         = 'Ramos';
+        $usuario->email            = 'Elena.Ramos@gmail.com';
+        $usuario->contraseña       = md5('ElenaRamos1');
+        $usuario->dni              = '33486985';
+        $usuario->fecha_nacimiento = '12-02-1985';
+        $usuario->genero           = 'Femenino';
+        $usuario->telefono         = '3413567890';
         $usuario->estado           = 'activo';
         $usuario->rol              = 'paciente';
         $usuario->save();
+
+        $paciente = new Pacientes();
+
+        $paciente->id_usuario         = $usuario->id;
+        $paciente->obra_social        = 'Medifé';
+        $paciente->numero_obra_social = '100002';
+        $paciente->save();
+
+        // Usuario 4.
+        $usuario                   = new Usuarios();
+        $usuario->nombre           = 'Laura';
+        $usuario->apellido         = 'Washington';
+        $usuario->email            = 'Laura.Washington@yahoo.com.ar';
+        $usuario->contraseña       = md5('LauraWashington1');
+        $usuario->dni              = '48486985';
+        $usuario->fecha_nacimiento = '24-07-2000';
+        $usuario->genero           = 'No binario';
+        $usuario->telefono         = '3413678901';
+        $usuario->estado           = 'activo';
+        $usuario->rol              = 'paciente';
+        $usuario->save();
+
+        $paciente = new Pacientes();
+
+        $paciente->id_usuario         = $usuario->id;
+        $paciente->obra_social        = 'Swiss Medical';
+        $paciente->numero_obra_social = '100003';
+        $paciente->save();
+
+        // Medico 1.
+        $medico                   = new Usuarios();
+        $medico->nombre           = 'Kevin';
+        $medico->apellido         = 'Nieves';
+        $medico->email            = 'Kevin.Nieves@outlook.com';
+        $medico->contraseña       = md5('KevinNieves1');
+        $medico->dni              = '33486985';
+        $medico->fecha_nacimiento = '05-06-1980';
+        $medico->genero           = 'Masculino';
+        $medico->telefono         = '3413789012';
+        $medico->estado           = 'activo';
+        $medico->rol              = 'medico';
+        $medico->save();
+
+        // Medico 2.
+        $medico                   = new Usuarios();
+        $medico->nombre           = 'Lorena';
+        $medico->apellido         = 'Esparza';
+        $medico->email            = 'Lorena.Esparza@hotmail.com';
+        $medico->contraseña       = md5('LorenaEsparza1');
+        $medico->dni              = '33186985';
+        $medico->fecha_nacimiento = '17-07-1979';
+        $medico->genero           = 'Masculino';
+        $medico->telefono         = '3413890123';
+        $medico->estado           = 'inactivo';
+        $medico->rol              = 'medico';
+        $medico->save();
+
+        // Medico 3.
+        $medico                   = new Usuarios();
+        $medico->nombre           = 'Pablo';
+        $medico->apellido         = 'Escobar';
+        $medico->email            = 'Pablo.Escobar@hotmail.com';
+        $medico->contraseña       = md5('PabloEscobar1');
+        $medico->dni              = '15186985';
+        $medico->fecha_nacimiento = '01-12-1949';
+        $medico->genero           = 'Masculino';
+        $medico->telefono         = '3413890123';
+        $medico->estado           = 'activo';
+        $medico->rol              = 'medico';
+        $medico->save();
+
+        // Recepcionista 1.
+        $recepcionista                   = new Usuarios();
+        $recepcionista->nombre           = 'Katia';
+        $recepcionista->apellido         = 'Xenia';
+        $recepcionista->email            = 'Katia.Xenia@hotmail.com';
+        $recepcionista->contraseña       = md5('KatiaXenia1');
+        $recepcionista->dni              = '39858575';
+        $recepcionista->fecha_nacimiento = '03-03-1997';
+        $recepcionista->genero           = 'Masculino';
+        $recepcionista->telefono         = '3413890123';
+        $recepcionista->estado           = 'activo';
+        $recepcionista->rol              = 'recepcionista';
+        $recepcionista->save();
+
 
 
         // Create users - Pacientes.
