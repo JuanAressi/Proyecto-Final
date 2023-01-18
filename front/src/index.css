@@ -51,7 +51,7 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 
 /* Login Page */
 #loginPage,
-#registerPage {
+#register {
     background: url( './components/assets/img/Login_background.avif' ) no-repeat center center/cover;
 }
 
@@ -60,7 +60,7 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 }
 
 #loginPage #loginForm,
-#registerPage #registerForm {
+#register #registerForm {
     background: rgba(255, 255, 255, 0.7);
 }
 
