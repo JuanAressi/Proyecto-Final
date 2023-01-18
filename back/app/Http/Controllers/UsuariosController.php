@@ -142,47 +142,75 @@ class UsuariosController extends Controller
      */
     public function addNew(Request $request)
     {
-        $user = Usuarios::create([
-            'nombre'           => $request->input('nombre'),
-            'apellido'         => $request->input('apellido'),
-            'email'            => $request->input('email'),
-            'contraseña'       => bcrypt($request->input('contraseña')),
-            'fecha_nacimiento' => $request->input('fecha_nacimiento'),
-            'genero'           => $request->input('genero'),
-            'dni'              => $request->input('dni'),
-            'telefono'         => $request->input('telefono'),
-            'rol'              => 'paciente',
-            'estado'           => 'activo',
-        ]);
+        $success = true;
+        $message = '';
+        $field   = '';
 
-        if ($user !== null) {
-            $paciente = Pacientes::create([
-                'id_usuario' => $user->id,
-                'obra_social' => $request->input('obra_social'),
-                'numero_obra_social' => $request->input('numero_obra_social'),
+        // Validate that the 'email' is unique.
+        $email = Usuarios::where('email', $request->input('email'))
+            ->select('email')
+            ->get();
+
+        if (count($email) > 0) {
+            $success = false;
+            $message = 'El email ya se encuentra en uso';
+            $field   = 'email';
+        }
+
+        if ($success) {
+            // Validate that the 'dni' is unique.
+            $dni = Usuarios::where('dni', $request->input('dni'))
+                ->select('dni')
+                ->get();
+
+            if (count($dni) > 0) {
+                $success = false;
+                $message = 'El DNI ya se encuentra en uso';
+                $field   = 'dni';
+            }
+        }
+
+        if ($success) {
+            $user = Usuarios::create([
+                'nombre'           => $request->input('nombre'),
+                'apellido'         => $request->input('apellido'),
+                'email'            => $request->input('email'),
+                'contraseña'       => md5($request->input('contraseña')),
+                'fecha_nacimiento' => $request->input('fecha_nacimiento'),
+                'genero'           => $request->input('genero'),
+                'dni'              => $request->input('dni'),
+                'telefono'         => $request->input('telefono'),
+                'rol'              => 'paciente',
+                'estado'           => 'activo',
             ]);
 
-            if ($paciente !== null) {
-                return json_encode(
-                    array(
-                        'success' => true,
-                        'user' => $user,
-                    )
-                );
+            if ($user !== null) {
+                $paciente = Pacientes::create([
+                    'id_usuario' => $user->id,
+                    'obra_social' => $request->input('obra_social'),
+                    'numero_obra_social' => $request->input('numero_obra_social'),
+                ]);
+
+                if ($paciente !== null) {
+                    $success = true;
+                    $message = 'Usuario creado con éxito';
+                } else {
+                    $success = false;
+                    $message = 'Error al crear el usuario, por favor intente nuevamente';
+                }
             } else {
-                return json_encode(
-                    array(
-                        'error' => 'Error al crear el paciente. '
-                    )
-                );
+                $success = false;
+                $message = 'Error al crear el usuario, por favor intente nuevamente';
             }
-        } else {
-            return json_encode(
-                array(
-                    'error' => 'Error al crear el usuario.'
-                )
-            );
         }
+
+        return json_encode(
+            array(
+                'success' => $success,
+                'message' => $message,
+                'field'   => $field,
+            )
+        );
     }
 
 
