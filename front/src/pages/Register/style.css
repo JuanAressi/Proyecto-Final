@@ -1,5 +1,26 @@
-@media (min-width: 1200px) {
-    #registerPage form {
-        max-width: 600px;
+#register input[type="date"]::-webkit-inner-spin-button,
+#register input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+#register select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+#register option:checked:not(:disabled) {
+    background-color: #139c13;
+    color: #fff;
+}
+
+#register #registerForm {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    #register #registerForm {
+        width: 75%;
     }
 }

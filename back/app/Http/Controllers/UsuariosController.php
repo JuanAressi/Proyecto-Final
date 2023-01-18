@@ -143,17 +143,46 @@ class UsuariosController extends Controller
     public function addNew(Request $request)
     {
         $user = Usuarios::create([
-            'email'      => $request->input('email'),
-            'password'   => md5($request->input('password')),
-            'rol'        => $request->input('rol'),
+            'nombre'           => $request->input('nombre'),
+            'apellido'         => $request->input('apellido'),
+            'email'            => $request->input('email'),
+            'contraseña'       => bcrypt($request->input('contraseña')),
+            'fecha_nacimiento' => $request->input('fecha_nacimiento'),
+            'genero'           => $request->input('genero'),
+            'dni'              => $request->input('dni'),
+            'telefono'         => $request->input('telefono'),
+            'rol'              => 'paciente',
+            'estado'           => 'activo',
         ]);
 
-        return json_encode(
-            array(
-                'success' => true,
-                'user' => $user,
-            )
-        );
+        if ($user !== null) {
+            $paciente = Pacientes::create([
+                'id_usuario' => $user->id,
+                'obra_social' => $request->input('obra_social'),
+                'numero_obra_social' => $request->input('numero_obra_social'),
+            ]);
+
+            if ($paciente !== null) {
+                return json_encode(
+                    array(
+                        'success' => true,
+                        'user' => $user,
+                    )
+                );
+            } else {
+                return json_encode(
+                    array(
+                        'error' => 'Error al crear el paciente. '
+                    )
+                );
+            }
+        } else {
+            return json_encode(
+                array(
+                    'error' => 'Error al crear el usuario.'
+                )
+            );
+        }
     }
 
 
