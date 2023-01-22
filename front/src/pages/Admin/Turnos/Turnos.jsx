@@ -53,7 +53,6 @@ function Turnos() {
         [{hora: '10:30', estado: 'libre'}, {hora: '11:00', estado: 'libre'}, {hora: '11:30', estado: 'libre'}, {hora: '12:00', estado: 'libre'}, {hora: '12:30', estado: 'libre'}],
         [{hora: '13:00', estado: 'libre'}, {hora: '13:30', estado: 'libre'}, {hora: '14:00', estado: 'libre'}, {hora: '14:30', estado: 'libre'}, {hora: '15:00', estado: 'libre'}],
         [{hora: '15:30', estado: 'libre'}, {hora: '16:00', estado: 'libre'}, {hora: '16:30', estado: 'libre'}, {hora: '17:00', estado: 'libre'}, {hora: '17:30', estado: 'libre'}],
-        [{hora: '18:00', estado: 'libre'}, {hora: '18:30', estado: 'libre'}, {hora: '19:00', estado: 'libre'}, {hora: '19:30', estado: 'libre'}, {hora: '20:00', estado: 'libre'}],
     ]);
     const [horaEnabled, setHoraEnabled] = useState('disabled');
 
@@ -400,7 +399,6 @@ function Turnos() {
             [{hora: '10:30', estado: 'libre'}, {hora: '11:00', estado: 'libre'}, {hora: '11:30', estado: 'libre'}, {hora: '12:00', estado: 'libre'}, {hora: '12:30', estado: 'libre'}],
             [{hora: '13:00', estado: 'libre'}, {hora: '13:30', estado: 'libre'}, {hora: '14:00', estado: 'libre'}, {hora: '14:30', estado: 'libre'}, {hora: '15:00', estado: 'libre'}],
             [{hora: '15:30', estado: 'libre'}, {hora: '16:00', estado: 'libre'}, {hora: '16:30', estado: 'libre'}, {hora: '17:00', estado: 'libre'}, {hora: '17:30', estado: 'libre'}],
-            [{hora: '18:00', estado: 'libre'}, {hora: '18:30', estado: 'libre'}, {hora: '19:00', estado: 'libre'}, {hora: '19:30', estado: 'libre'}, {hora: '20:00', estado: 'libre'}],
         ]);
     }
 

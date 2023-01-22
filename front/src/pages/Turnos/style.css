@@ -87,17 +87,20 @@
     background-color: #7dc97d;
 }
 
-#turnos #horas button {
+#turnos #horas button,
+#agenda #horas button {
     min-width: 95px;
     background: #fff;
     color: #212529;
 }
 
-#turnos #horas button:hover {
+#turnos #horas button:hover,
+#agenda #horas button:hover {
     background-color: #7dc97d;
 }
 
-#turnos #horas button.selected {
+#turnos #horas button.selected,
+#agenda #horas button.selected {
     background-color: #139c13;
     color: #fff;
 }

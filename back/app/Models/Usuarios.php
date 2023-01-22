@@ -20,6 +20,5 @@ class Usuarios extends Model
         'telefono',
         'rol',
         'estado',
-        'historial_modificaciones',
     ];
 }

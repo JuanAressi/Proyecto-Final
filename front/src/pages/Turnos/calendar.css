@@ -1,6 +1,3 @@
-
-
-
 /* Calendar */
 .react-calendar {
     background: #fff;
@@ -73,7 +70,7 @@
 
 /* Underline */
 .react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__month-view__days__day::after,
-.react-calendar .react-calendar__year-view__months .react-calendar__year-view__months__month::after{
+.react-calendar .react-calendar__year-view__months .react-calendar__year-view__months__month::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -106,8 +103,8 @@
 }
 
 /* Active */
-.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__tile--active::after,
-.react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__tile--active:hover::after {
+#turnos .react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__tile--active::after,
+#turnos .react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__tile--active:hover::after {
     border: 2px solid #28a745;
     width: 30px;
     height: 30px;

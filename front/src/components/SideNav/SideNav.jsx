@@ -6,14 +6,19 @@ import Logo from '../Logo/Logo';
 import './style.css';
 
 function SideNav( { active } ) {
+    const [rolUser, setRolUser] = React.useState('medico');
+
     // Check which screen is the active one.
     let dashboard = '';
+    let agenda    = '';
     let pacientes = '';
     let medicos   = '';
     let turnos    = '';
 
     if (active === 'dashboard') {
         dashboard = 'active';
+    } else if (active === 'agenda') {
+        agenda = 'active';
     } else if (active === 'pacientes') {
         pacientes = 'active';
     } else if (active === 'medicos') {
@@ -39,6 +44,22 @@ function SideNav( { active } ) {
 
                         <h5 className='text-uppercase mb-0'>Panel</h5>
                     </Link>
+
+                    {/* Mi Agenda */}
+                    {
+                        rolUser === 'medico'
+                        && <Link
+                            to='/panel-admin/agenda'
+                            className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + agenda}
+                        >
+                            <FontAwesomeIcon
+                                className='text-white me-3'
+                                icon={faFileMedical}
+                            />
+    
+                            <h5 className='text-uppercase mb-0'>Mi Agenda</h5>
+                        </Link>
+                    }
 
                     <Link to='/panel-admin/pacientes' className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + pacientes}>
                         <FontAwesomeIcon

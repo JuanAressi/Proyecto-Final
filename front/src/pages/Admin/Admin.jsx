@@ -6,6 +6,8 @@ import Card from '../../components/Card/Card';
 import './style.css';
 
 function Admin() {
+    const [rolUser, setRolUser] = React.useState('medico');
+
     return (
         <div id='adminPage' className='d-flex bg-lightgray'>
             <SideNav
@@ -15,49 +17,77 @@ function Admin() {
             <div className='container p-5'>
                 <h1 className='text-center mt-5'>Bienvenido Admin</h1>
 
+                <div className='row mt-5'>
+                    {/* Mi Agenda */}
+                    {
+                        rolUser === 'medico'
+                        && <div className='col-md-6 col-sm-12 d-flex justify-content-center mb-2'>
+                            <Link
+                                to='/panel-admin/agenda'
+                            >
+                                <Card 
+                                    title='Mi Agenda'
+                                    text='Administre sus días y horarios de atención'
+                                    icon={faPlus}
+                                />
+                            </Link>
+                        </div>
+                    }
 
-                <div className='row d-flex justify-content-around mt-5'>
-                    <Link
-                        to='/panel-admin/pacientes'
-                    >
-                        <Card 
-                            title='Gestionar Pacientes'
-                            text='Vea información detallada de cada uno de los pacientes'
-                            icon={faUsers}
-                        />
-                    </Link>
+                    {/* Pacientes */}
+                    <div className='col-md-6 col-sm-12 d-flex justify-content-center mb-2'>
+                        <Link
+                            to='/panel-admin/pacientes'
+                        >
+                            <Card 
+                                title='Gestionar Pacientes'
+                                text='Vea información detallada de cada uno de los pacientes'
+                                icon={faUsers}
+                            />
+                        </Link>
+                    </div>
                     
-                    <Link
-                        to='/panel-admin/medicos'
-                    >
-                        <Card 
-                            title='Gestionar Medicos'
-                            text='Vea información detallada de cada uno de los medicos'
-                            icon={faUserDoctor}
-                        />
-                    </Link>
-                </div>
-                
-                <div className='row d-flex justify-content-around mt-5'>
-                    <Link
-                        to='/panel-admin/turnos'
-                    >
-                        <Card 
-                            title='Gestionar Turnos'
-                            text='Vea el registro de todos los turnos asignados'
-                            icon={faFileMedical}
-                        />
-                    </Link>
-                    
-                    <Link
-                        to='/panel-admin/...'
-                    >
-                        <Card 
-                            title='Gestionar Reportes'
-                            text='Cree y administre los distintos reportes'
-                            icon={faPlus}
-                        />
-                    </Link>
+                    {/* Medicos */}
+                    <div className='col-md-6 col-sm-12 d-flex justify-content-center mb-2'>
+                        <Link
+                            to='/panel-admin/medicos'
+                        >
+                            <Card 
+                                title='Gestionar Medicos'
+                                text='Vea información detallada de cada uno de los medicos'
+                                icon={faUserDoctor}
+                            />
+                        </Link>
+                    </div>
+
+                    {/* Turnos */}
+                    <div className='col-md-6 col-sm-12 d-flex justify-content-center mb-2'>
+                        <Link
+                            to='/panel-admin/turnos'
+                        >
+                            <Card 
+                                title='Gestionar Turnos'
+                                text='Vea el registro de todos los turnos asignados'
+                                icon={faFileMedical}
+                            />
+                        </Link>
+                    </div>
+
+                    {/* Reportes */}
+                    {
+                        rolUser !== 'medico'
+                        && <div className='col-md-6 col-sm-12 d-flex justify-content-center mb-2'>
+                            <Link
+                                to='/panel-admin/reportes'
+                            >
+                                <Card 
+                                    title='Gestionar Reportes'
+                                    text='Cree y administre los distintos reportes'
+                                    icon={faPlus}
+                                />
+                            </Link>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

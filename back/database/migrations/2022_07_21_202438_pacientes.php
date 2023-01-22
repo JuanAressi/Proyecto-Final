@@ -18,6 +18,8 @@ class Pacientes extends Migration
             $table->foreign('id_usuario')->references('id')->on('usuarios');
             $table->string('obra_social')->nullable();
             $table->bigInteger('numero_obra_social')->nullable();
+            $table->string('antecedentes')->nullable();
+            $table->string('alergias')->nullable();
             $table->timestamps();
         });
     }
