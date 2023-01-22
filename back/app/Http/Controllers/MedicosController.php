@@ -20,13 +20,22 @@ class MedicosController extends Controller
         $page       = $request->input('page');
         $pagination = $request->input('pagination');
         $search     = $request->input('search');
+        $orderBy1     = $request->input('order1');
+        $orderBy2     = $request->input('order2');
 
         // Check if $search is null.
         if ($search === null) {
             $search = '';
         }
 
-        // Get medicos.
+        // If $orderBy1 contains a ',' split it and order by the 2 results.
+        if ($orderBy1 !== null && strpos($orderBy1, ',') !== false) {
+            $orderBy1 = explode(',', $orderBy1);
+            $orderBy2 = $orderBy1[1];
+            $orderBy1 = $orderBy1[0];
+        }
+
+        // Get 'Medicos'.
         $medicos_sql = Usuarios::where('usuarios.rol', 'medico')
             ->where('usuarios.estado', 'activo')
             ->where(function ($query) use ($search) {
@@ -34,9 +43,21 @@ class MedicosController extends Controller
                     ->orWhere('usuarios.apellido', 'like', '%' . $search . '%')
                     ->orWhere('usuarios.email', 'like', '%' . $search . '%')
                     ->orWhere('usuarios.dni', 'like', '%' . $search . '%');
-            })
-            ->orderby('usuarios.id', 'asc')
-            ->get();
+            });
+
+        if ($orderBy1 !== null) {
+            if ($orderBy2 !== null) {
+                $medicos_sql = $medicos_sql->orderby($orderBy1, 'asc')
+                    ->orderby($orderBy2, 'asc');
+            } else {
+                $medicos_sql = $medicos_sql->orderby($orderBy1, 'asc');
+            }
+        } else {
+            $medicos_sql = $medicos_sql->orderby('usuarios.id', 'asc');
+        }
+
+        // Get 'Medicos'.
+        $medicos_sql = $medicos_sql->get();
 
         // Get 'Medicos' count.
         $medicos_count = sizeof($medicos_sql);
@@ -274,5 +295,53 @@ class MedicosController extends Controller
                 array()
             );
         }
+    }
+
+
+    /**
+     * Function addAgenda - Add new availabilities to the 'Medico'.
+     *
+     * @param Request $request - The request object.
+     *
+     * @return array - The status and the message of the update.
+     */
+    public function addAgenda(Request $request)
+    {
+        $id_medico = $request->input('id_medico');
+        $fechas    = $request->input('fechas');
+        $horas     = $request->input('horas');
+
+        // Loop through $fechas.
+        foreach ($fechas as $fecha) {
+            // Check if the date already exists.
+            $fecha_exists = TurnosFechas::where('id_medico', $id_medico)
+                ->where('dia', $fecha)
+                ->first();
+
+            // If the date doesn't exist, create it.
+            if (!$fecha_exists) {
+                $fecha = TurnosFechas::create([
+                    'id_medico' => $id_medico,
+                    'dia'       => $fecha,
+                ]);
+
+                // Loop through $horas.
+                foreach ($horas as $hora) {
+                    // Create the hour.
+                    TurnosHoras::create([
+                        'id_turnos_fechas' => $fecha->id,
+                        'hora'             => $hora,
+                        'estado'           => 'libre',
+                    ]);
+                }
+            }
+        }
+
+        return json_encode(
+            array(
+                'success' => true,
+                'message' => 'La agenda se ha actualizado correctamente.',
+            )
+        );
     }
 }

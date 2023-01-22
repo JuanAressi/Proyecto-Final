@@ -18,10 +18,10 @@ class HistoriaClinica extends Migration
             $table->foreign('id_paciente')->references('id_usuario')->on('pacientes');
             $table->unsignedBigInteger('id_medico');
             $table->foreign('id_medico')->references('id')->on('usuarios');
-            $table->string('antecedentes');
-            $table->string('motivo_de_consulta');
-            $table->string('alergias');
+            $table->string('fecha', 10);
+            $table->string('motivo_consulta');
             $table->string('diagnostico');
+            $table->string('estado', 10);
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ class HistoriaClinica extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('turnos_fecha');
+        Schema::dropIfExists('historia_clinica');
     }
 }

@@ -8,6 +8,7 @@ use App\Models\Pacientes;
 use App\Models\Turnos;
 use App\Models\TurnosFechas;
 use App\Models\TurnosHoras;
+use App\Models\HistoriaClinica;
 
 class UsuariosSeeder extends Seeder
 {
@@ -175,11 +176,43 @@ class UsuariosSeeder extends Seeder
             3 => 'No especificado',
         );
 
+        // Obras sociales.
         $obras_sociales = array(
             0 => 'OSDE',
             1 => 'Swiss Medical',
             2 => 'Medifé',
             3 => 'Emerger',
+            4 => 'Particular',
+        );
+
+        // Alergias.
+        $alergias = array(
+            0 => 'Frutos secos',
+            1 => 'Leche',
+            2 => 'Ácaros del polvo',
+            3 => 'Polen',
+            4 => 'Animales',
+            5 => 'Picaduras de insectos',
+            6 => 'Alimentos',
+            7 => 'Medicamentos',
+            8 => 'Látex',
+            9 => 'Penicilina',
+            10 => '',
+        );
+
+        // Antecedentes.
+        $antecedentes = array(
+            0 => 'Hipertensión',
+            1 => 'Diabetes',
+            2 => 'Depresión y ansiedad',
+            3 => 'Enfermedad cardiovascular',
+            4 => 'Enfermedad pulmonar',
+            5 => 'Enfermedad renal crónica',
+            6 => 'Artritis',
+            7 => 'Enfermedad tiroidea',
+            8 => 'Cáncer',
+            9 => 'Enfermedad inflamatoria intestinal',
+            10 => '',
         );
 
         $turnos_horas_estados = array(
@@ -221,7 +254,7 @@ class UsuariosSeeder extends Seeder
         $admin->apellido         = 'Guaglianono';
         $admin->email            = 'guaglianonojesica@gmail.com';
         $admin->contraseña       = md5('JesicaGuaglianono1');
-        $admin->dni              = '';
+        $admin->dni              = '1';
         $admin->fecha_nacimiento = '01-01-1990';
         $admin->genero           = 'Femenino';
         $admin->telefono         = '';
@@ -243,6 +276,14 @@ class UsuariosSeeder extends Seeder
         $usuario->rol              = 'paciente';
         $usuario->save();
 
+        $paciente = new Pacientes();
+
+        $paciente->id_usuario  = $usuario->id;
+        $paciente->obra_social = 'Particular';
+        $usuario->alergias     = 'Polen';
+        $usuario->antecedentes = 'Artritis';
+        $paciente->save();
+
         // Usuario 2.
         $usuario                   = new Usuarios();
         $usuario->nombre           = 'Daniel';
@@ -262,6 +303,8 @@ class UsuariosSeeder extends Seeder
         $paciente->id_usuario         = $usuario->id;
         $paciente->obra_social        = 'OSDE';
         $paciente->numero_obra_social = '100001';
+        $usuario->alergias            = '';
+        $usuario->antecedentes        = '';
         $paciente->save();
 
         // Usuario 3.
@@ -283,6 +326,8 @@ class UsuariosSeeder extends Seeder
         $paciente->id_usuario         = $usuario->id;
         $paciente->obra_social        = 'Medifé';
         $paciente->numero_obra_social = '100002';
+        $usuario->alergias            = 'Picaduras de insectos';
+        $usuario->antecedentes        = 'Enfermedad pulmonar';
         $paciente->save();
 
         // Usuario 4.
@@ -304,6 +349,8 @@ class UsuariosSeeder extends Seeder
         $paciente->id_usuario         = $usuario->id;
         $paciente->obra_social        = 'Swiss Medical';
         $paciente->numero_obra_social = '100003';
+        $usuario->alergias            = '';
+        $usuario->antecedentes        = 'Depresión y ansiedad';
         $paciente->save();
 
         // Medico 1.
@@ -312,7 +359,7 @@ class UsuariosSeeder extends Seeder
         $medico->apellido         = 'Nieves';
         $medico->email            = 'Kevin.Nieves@outlook.com';
         $medico->contraseña       = md5('KevinNieves1');
-        $medico->dni              = '33486985';
+        $medico->dni              = '33486945';
         $medico->fecha_nacimiento = '05-06-1980';
         $medico->genero           = 'Masculino';
         $medico->telefono         = '3413789012';
@@ -354,13 +401,67 @@ class UsuariosSeeder extends Seeder
         $recepcionista->apellido         = 'Xenia';
         $recepcionista->email            = 'Katia.Xenia@hotmail.com';
         $recepcionista->contraseña       = md5('KatiaXenia1');
-        $recepcionista->dni              = '39858575';
+        $recepcionista->dni              = '39858576';
         $recepcionista->fecha_nacimiento = '03-03-1997';
         $recepcionista->genero           = 'Masculino';
         $recepcionista->telefono         = '3413890123';
         $recepcionista->estado           = 'activo';
         $recepcionista->rol              = 'recepcionista';
         $recepcionista->save();
+
+        // Recepcionista 2.
+        $recepcionista                   = new Usuarios();
+        $recepcionista->nombre           = 'Nicolás';
+        $recepcionista->apellido         = 'Herrera';
+        $recepcionista->email            = 'Nicolás.Herrera@gmail.com';
+        $recepcionista->contraseña       = md5('NicolásHerrera1');
+        $recepcionista->dni              = '33486984';
+        $recepcionista->fecha_nacimiento = '12-02-1985';
+        $recepcionista->genero           = 'Masculino';
+        $recepcionista->telefono         = '3413890123';
+        $recepcionista->estado           = 'activo';
+        $recepcionista->rol              = 'recepcionista';
+        $recepcionista->save();
+
+        // Historia Clinica 1.
+        $historia_clinica                  = new HistoriaClinica();
+        $historia_clinica->id_paciente     = 5;
+        $historia_clinica->id_medico       = 8;
+        $historia_clinica->fecha           = '01-05-2022';
+        $historia_clinica->motivo_consulta = 'Tos persistente y dificultad para respirar';
+        $historia_clinica->diagnostico     = 'Asma bronquial';
+        $historia_clinica->estado          = 'visible';
+        $historia_clinica->save();
+
+        // Historia Clinica 2.
+        $historia_clinica                  = new HistoriaClinica();
+        $historia_clinica->id_paciente     = 7;
+        $historia_clinica->id_medico       = 10;
+        $historia_clinica->fecha           = '02-05-2022';
+        $historia_clinica->motivo_consulta = 'Dolor de cabeza intenso';
+        $historia_clinica->diagnostico     = 'Migraña';
+        $historia_clinica->estado          = 'visible';
+        $historia_clinica->save();
+
+        // Historia Clinica 3.
+        $historia_clinica                  = new HistoriaClinica();
+        $historia_clinica->id_paciente     = 5;
+        $historia_clinica->id_medico       = 10;
+        $historia_clinica->fecha           = '03-05-2022';
+        $historia_clinica->motivo_consulta = 'Hinchazón en las piernas y orina de color oscuro';
+        $historia_clinica->diagnostico     = 'Insuficiencia renal aguda';
+        $historia_clinica->estado          = 'oculta';
+        $historia_clinica->save();
+
+        // Historia Clinica 4.
+        $historia_clinica                  = new HistoriaClinica();
+        $historia_clinica->id_paciente     = 7;
+        $historia_clinica->id_medico       = 8;
+        $historia_clinica->fecha           = '04-05-2022';
+        $historia_clinica->motivo_consulta = 'Falta de aire y tos con esputo';
+        $historia_clinica->diagnostico     = 'Neumonía';
+        $historia_clinica->estado          = 'modificada';
+        $historia_clinica->save();
 
 
 
@@ -379,7 +480,7 @@ class UsuariosSeeder extends Seeder
             $usuario->email            = $names[$first_name] . $i . $emails[$email_prefix];
             $usuario->contraseña       = md5('123456');
             $usuario->dni              = random_int(10000000, 59999999);
-            $usuario->fecha_nacimiento = date('Y-m-d', strtotime('-' . rand(18, 60) . ' years'));
+            $usuario->fecha_nacimiento = date('d-m-Y', strtotime('-' . rand(18, 60) . ' years'));
             $usuario->genero           = $genders[$gender];
             $usuario->telefono         = random_int(152000000, 156999999);
             $usuario->estado           = 'activo';
@@ -393,6 +494,14 @@ class UsuariosSeeder extends Seeder
             $paciente->id_usuario         = $usuario->id;
             $paciente->obra_social        = $obras_sociales[rand(0, count($obras_sociales) - 1)];
             $paciente->numero_obra_social = random_int(10000000, 99999999);
+            $paciente->alergias           = $alergias[rand(0, count($alergias) - 1)];
+            $paciente->antecedentes       = $antecedentes[rand(0, count($antecedentes) - 1)];
+
+            if ($paciente->obra_social === 'Particular') {
+                $paciente->numero_obra_social = null;
+            } else {
+                $paciente->numero_obra_social = random_int(10000000, 99999999);
+            }
 
             $paciente->save();
         }
@@ -413,7 +522,7 @@ class UsuariosSeeder extends Seeder
             $usuario->email            = $names[$first_name] . $i . $emails[$email_prefix];
             $usuario->contraseña       = md5('123456');
             $usuario->dni              = random_int(10000000, 59999999);
-            $usuario->fecha_nacimiento = date('Y-m-d', strtotime('-' . rand(18, 60) . ' years'));
+            $usuario->fecha_nacimiento = date('d-m-Y', strtotime('-' . rand(18, 60) . ' years'));
             $usuario->genero           = $genders[$gender];
             $usuario->telefono         = random_int(152000000, 156999999);
             $usuario->estado           = 'activo';
@@ -428,9 +537,9 @@ class UsuariosSeeder extends Seeder
             // Create Turno.
             $turno = new Turnos();
 
-            $turno->id_paciente = rand(3, 758);
-            $turno->id_medico   = rand(758, 778);
-            $turno->dia         = date('Y-m-d', strtotime('+' . rand(0, 30) . ' days'));
+            $turno->id_paciente = rand(15, 770);
+            $turno->id_medico   = rand(770, 790);
+            $turno->dia         = date('d-m-Y', strtotime('+' . rand(0, 30) . ' days'));
             $turno->hora        = rand(8, 18) . ':00';
             $turno->estado      = 'pendiente';
 

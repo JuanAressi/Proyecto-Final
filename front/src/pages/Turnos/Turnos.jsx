@@ -1,10 +1,10 @@
 import { React, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Calendar from 'react-calendar';
 import $ from 'jquery';
 import TurnosModal from './TurnosModal';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
-import Calendar from 'react-calendar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserDoctor, faCalendarCheck, faClock } from '@fortawesome/free-solid-svg-icons';
 import './style.css';
@@ -44,9 +44,6 @@ function Turnos() {
     // On page load, do the search of all active 'Medicos'.
     useEffect(() => {
         searchMedicos();
-
-        // If the user is logged in, set the active step to 2.
-        setActiveSteps(step);
     }, []);
 
 
@@ -115,6 +112,8 @@ function Turnos() {
                 'page': '',
                 'pagination': '',
                 'search': '',
+                'order1': 'apellido',
+                'order2': 'nombre',
             },
             success: function (response) {
                 setMedicos(response.medicos);
@@ -123,26 +122,6 @@ function Turnos() {
                 console.log(error);
             }
         });
-    }
-
-
-    /**
-     * Function setActiveSteps - Sets the active steps in the progress bar.
-     *
-     * @param {number} step - The current step.
-     *
-     * @return {void}
-     */
-    const setActiveSteps = (step) => {
-        // To the actual step, and all the previous steps, add the class 'active'.
-        for (let i = 1; i <= step; i++) {
-            $(`#progressBar:nth-child(${i})`).addClass('active');
-        }
-
-        // To the next steps, remove the class 'active'.
-        for (let i = step + 1; i <= 5; i++) {
-            $(`#progressBar:nth-child(${i})`).removeClass('active');
-        }
     }
 
 

@@ -19,13 +19,12 @@ class Usuarios extends Migration
             $table->string('apellido')->nullable();
             $table->string('email')->unique();
             $table->string('contraseña');
-            $table->date('fecha_nacimiento')->nullable();
+            $table->string('fecha_nacimiento', 10)->nullable();
             $table->string('genero')->nullable();
             $table->string('dni')->nullable()->unique();
             $table->string('telefono')->nullable();
             $table->string('rol');
             $table->string('estado')->nullable();
-            $table->string('historial_modificaciones')->nullable();
             $table->timestamps();
         });
     }

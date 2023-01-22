@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faKey, faAt, faCalendarAlt, faVenusMars, faPhone, faIdCard, faHospital } from '@fortawesome/free-solid-svg-icons'
 import $ from 'jquery';
 import './style.css';
@@ -47,19 +45,19 @@ function Register() {
     const [btnDisabled, setBtnDisabled] = useState(true);
 
     // Handle every change in the form, to enable or disable the button.
-    // useEffect(() => {
-    //     let isValid = true;
+    useEffect(() => {
+        let isValid = true;
 
-    //     if (nombre === '' || apellido === '' || email === '' || contraseña === '' || contraseñaValidación === '' || fechaNacimiento === '' || genero === '' || dni === '' || telefono === '' || obraSocial === '' || numeroObraSocial === '') {
-    //         isValid = false;
-    //     }
+        if (nombre === '' || apellido === '' || email === '' || contraseña === '' || contraseñaValidación === '' || fechaNacimiento === '' || genero === '' || dni === '' || telefono === '' || obraSocial === '') {
+            isValid = false;
+        }
         
-    //     if (isValid === true) {
-    //         setBtnDisabled(false);
-    //     } else {
-    //         setBtnDisabled(true);
-    //     }
-    // }, [nombre, apellido, email, contraseña, contraseñaValidación, fechaNacimiento, genero, dni, telefono, obraSocial, numeroObraSocial]);
+        if (isValid === true) {
+            setBtnDisabled(false);
+        } else {
+            setBtnDisabled(true);
+        }
+    }, [nombre, apellido, email, contraseña, contraseñaValidación, fechaNacimiento, genero, dni, telefono, obraSocial]);
 
 
     /**
@@ -124,6 +122,12 @@ function Register() {
             isValid = false;
         } else {
             setEmailInvalidMessage('');
+        }
+
+        // Email valido (regex).
+        if (email !== '' && !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+            setEmailInvalidMessage('El email no es válido.');
+            isValid = false;
         }
 
         // Contraseña.
@@ -199,6 +203,29 @@ function Register() {
         return isValid;
     }
 
+
+    /**
+     * Function validateContraseña - Validates the contraseña input.
+     *
+     * @param  {string} value - The value of the input.
+     *
+     * @return {void}
+     */
+    const validateContraseña = (value) => {
+        // The value must contain at least 8 characters, 1 uppercase letter and 1 number.
+        let regex = /^(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
+
+        if (regex.test(value)) {
+            setContraseñaInvalidMessage('');
+        } else {
+            setContraseñaInvalidMessage('La contraseña debe contener al menos 8 caracteres, 1 mayúscula y 1 número.');
+        }
+
+        // Set 'contraseña' state.
+        setContraseña(value);
+    }
+
+
     /**
      * Function createPaciente - Create a new 'Usuario' and 'Paciente' in the database.
      *
@@ -241,6 +268,9 @@ function Register() {
                         setAlertType('success');
                         setAlertMessage(response.message);
                         setShowAlert(true);
+
+                        // Set 'userCreated' state.
+                        setUserCreated(true);
                     } else {
                         if (response.field === '') {
                             // Show error message.
@@ -287,8 +317,8 @@ function Register() {
                             <h6 className='text-center mb-4 text-primary text-shadow-dark'>Completa el formulario</h6>
 
                             {
-                                showAlert ? 
-                                <Alert
+                                showAlert
+                                ? <Alert
                                     type={alertType}
                                     message={alertMessage}
                                 />
@@ -371,7 +401,7 @@ function Register() {
                                         name='contraseña'
                                         placeholder='Contraseña'
                                         value={contraseña}
-                                        onChange={(event) => setContraseña(event.target.value)}
+                                        onChange={(event) => validateContraseña(event.target.value)}
                                         onFocus={() => setContraseñaInvalidMessage('')}
                                         icon={faKey}
                                     />
@@ -564,8 +594,8 @@ function Register() {
                                 <button
                                     id='crearCuenta'
                                     className='btn bg-primary text-white box-shadow-dark text-uppercase w-50'
-                                    type='submit'
-                                    // disabled={btnDisabled}
+                                    type='button'
+                                    disabled={btnDisabled}
                                     onClick={createPaciente}
                                 >
                                     Crear cuenta

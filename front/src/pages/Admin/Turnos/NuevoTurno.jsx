@@ -2,7 +2,7 @@ import { React, useState } from 'react';
 import $ from 'jquery';
 import Calendar from 'react-calendar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faX } from '@fortawesome/free-solid-svg-icons';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 
 function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFecha, turnoHora, fechaEnabled, horas, horaEnabled, setTurnoMedico, setTurnoPaciente, setTurnoFecha, setTurnoHora, setTurnoFechaDia, setFechaEnabled, setHoras, setHoraEnabled, addTurno } ) {
     // Medicos.
@@ -21,43 +21,43 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
 
 
     /**
-     * Function medicoOnFocus - Handle the focus event of the 'Medico' input. If the 'especialistas' div is hidden, show the message.
+     * Function medicoOnFocus - Handle the focus event of the 'Medico' input. If the 'profesionales' div is hidden, show the message.
      *
      * @return {void}
      */
     const medicoOnFocus = () => {
-        // Show the 'especialistas' div.
+        // Show the 'profesionales' div.
         setMedicoShowList('d-flex');
 
-        // Get 'eoespecialistas' div.
-        const especialistas = document.getElementById('especialistas');
-        const especialistasChildren = especialistas.querySelectorAll('.item');
+        // Get 'eoprofesionales' div.
+        const profesionales = document.getElementById('profesionales');
+        const profesionalesChildren = profesionales.querySelectorAll('.item');
 
         let counter = 0;
 
-        // Count how many #especialistas.item are visible and set minimum height of the 'especialistas' div.
-        for (let i = 0; i < especialistasChildren.length; i++) {
-            if (especialistasChildren[i].classList.contains('d-flex')) {
+        // Count how many #profesionales.item are visible and set minimum height of the 'profesionales' div.
+        for (let i = 0; i < profesionalesChildren.length; i++) {
+            if (profesionalesChildren[i].classList.contains('d-flex')) {
                 // Increment the counter.
                 counter++;
             }
         }
 
-        // Set maximum height of the 'especialistas' div.
+        // Set maximum height of the 'profesionales' div.
         if (counter === 1) {
-            especialistas.style.maxHeight = '47px';
+            profesionales.style.maxHeight = '47px';
         } else if (counter === 2) {
-            especialistas.style.maxHeight = '94px';
+            profesionales.style.maxHeight = '94px';
         } else if (counter === 3) {
-            especialistas.style.maxHeight = '141px';
+            profesionales.style.maxHeight = '141px';
         } else if (counter >= 4) {
-            especialistas.style.maxHeight = '188px';
+            profesionales.style.maxHeight = '188px';
         }
     }
 
 
     /**
-     * Function medicoOnBlur - Handle the blur event of the 'Medico' input. If the 'especialistas' div is hidden, hide the message.
+     * Function medicoOnBlur - Handle the blur event of the 'Medico' input. If the 'profesionales' div is hidden, hide the message.
      *
      * @return {void}
      */
@@ -100,27 +100,27 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
             setMedicoMessageShow(false);
         }
 
-        // Get the 'especialistas' divs.
-        const especialistas = document.getElementById('especialistas');
-        const especialistasChildren = especialistas.querySelectorAll('.item');
+        // Get the 'profesionales' divs.
+        const profesionales = document.getElementById('profesionales');
+        const profesionalesChildren = profesionales.querySelectorAll('.item');
 
         // Counters.
         let counter = 0;
 
-        // Loop through the 'especialistasChildren' div.
-        for (let i = 0; i < especialistasChildren.length; i++) {
-            // If the 'especialistasChildren' div contains the given input, show it, otherwise, hide it.
-            if (especialistasChildren[i].innerText.toLowerCase().includes(input.toLowerCase())) {
-                // Hide and show the 'especialistasChildren' div.
-                especialistasChildren[i].classList.remove('d-none');
-                especialistasChildren[i].classList.add('d-flex');
+        // Loop through the 'profesionalesChildren' div.
+        for (let i = 0; i < profesionalesChildren.length; i++) {
+            // If the 'profesionalesChildren' div contains the given input, show it, otherwise, hide it.
+            if (profesionalesChildren[i].innerText.toLowerCase().includes(input.toLowerCase())) {
+                // Hide and show the 'profesionalesChildren' div.
+                profesionalesChildren[i].classList.remove('d-none');
+                profesionalesChildren[i].classList.add('d-flex');
 
                 // Increment the counter.
                 counter++;
             } else {
-                // Hide and show the 'especialistasChildren' div.
-                especialistasChildren[i].classList.remove('d-flex');
-                especialistasChildren[i].classList.add('d-none');
+                // Hide and show the 'profesionalesChildren' div.
+                profesionalesChildren[i].classList.remove('d-flex');
+                profesionalesChildren[i].classList.add('d-none');
             }
         }
 
@@ -129,34 +129,34 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
             setMedicoMessage('No se encontraron resultados');
             setMedicoMessageShow(true);
 
-            if (especialistas.classList.contains('d-flex')) {
+            if (profesionales.classList.contains('d-flex')) {
                 setMedicoShowList('d-none');
             }
         } else {
             setMedicoMessageShow(false);
 
-            if (especialistas.classList.contains('d-none')) {
+            if (profesionales.classList.contains('d-none')) {
                 setMedicoShowList('d-flex');
             }
         }
 
-        // Set maximum height of the 'especialistas' div.
+        // Set maximum height of the 'profesionales' div.
         if (counter === 1) {
-            especialistas.style.maxHeight = '47px';
+            profesionales.style.maxHeight = '47px';
         } else if (counter === 2) {
-            especialistas.style.maxHeight = '94px';
+            profesionales.style.maxHeight = '94px';
         } else if (counter === 3) {
-            especialistas.style.maxHeight = '141px';
+            profesionales.style.maxHeight = '141px';
         } else if (counter >= 4) {
-            especialistas.style.maxHeight = '188px';
+            profesionales.style.maxHeight = '188px';
         }
     }
 
 
     /**
      * Function setClickedMedico - Sets the clicked 'Medico' as the selected 'Medico'.
-     * 
-     * @param {html} target - The clicked 'Medico' div.
+     *
+     * @param {object} target - The clicked 'Medico' div.
      *
      * @return {void}
      */
@@ -174,10 +174,10 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
         // Get the dates for the selected 'Medico'.
         getFechas(id);
 
-        // Hide the 'especialistas' div.
+        // Hide the 'profesionales' div.
         setMedicoShowList('d-none');
 
-        // Set the 'especialista' input value and the class.
+        // Set the 'profesional' input value and the class.
         input.value = medicos[position].apellido + ', ' + medicos[position].nombre;
         input.classList.add('is-valid');
 
@@ -226,7 +226,7 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
      * @return {void}
      */
     const pacienteOnFocus = () => {
-        // Show the 'especialistas' div.
+        // Show the 'profesionales' div.
         setPacienteShowList('d-flex');
 
         // Get 'pacientes' div.
@@ -257,7 +257,7 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
 
 
     /**
-     * Function pacienteOnBlur - Handle the blur event of the 'Medico' input. If the 'especialistas' div is hidden, hide the message.
+     * Function pacienteOnBlur - Handle the blur event of the 'Medico' input. If the 'profesionales' div is hidden, hide the message.
      *
      * @return {void}
      */
@@ -362,10 +362,10 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
         // Set the id of the 'Paciente' as the selected 'Paciente'.
         setTurnoPaciente(id);
 
-        // Hide the 'especialistas' div.
+        // Hide the 'profesionales' div.
         setPacienteShowList('d-none');
 
-        // Set the 'especialista' input value and the class.
+        // Set the 'profesional' input value and the class.
         input.value = pacientes[position].apellido + ', ' + pacientes[position].nombre;
         input.classList.add('is-valid');
     }
@@ -577,6 +577,9 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
                 case 'diciembre':
                     date[1] = '12';
                     break;
+
+                default:
+                    break;
             }
 
             let newDate = `${date[1]}-${date[0]}-${date[2]}`;
@@ -660,6 +663,9 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
                 case '12':
                     day[1] = 'diciembre';
                     break;
+
+                default:
+                    break;
             }
 
             if (day[0].length === 1) {
@@ -720,7 +726,7 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
                                     onBlur={(event) => medicoOnBlur(event)}
                                 />
 
-                                <div id='especialistas' className={medicoShowList + ' flex-column bg-white box-shadow-dark position-absolute'}>
+                                <div id='profesionales' className={medicoShowList + ' flex-column bg-white box-shadow-dark position-absolute'}>
                                     {medicoMessageShow &&
                                         <div className='d-flex align-items-center border-bottom py-2 px-3 medicosMessage'>
                                             <p className='mb-0 text-black'>{medicoMessage}</p>
@@ -804,6 +810,7 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
                                             key={indexArray}
                                         >
                                             {horaArray.map((horaItem, indexItem) => {
+                                                console.log(horaItem)
                                                 // Status of the 'hora' button.
                                                 let isDisabled = false;
                                                 
