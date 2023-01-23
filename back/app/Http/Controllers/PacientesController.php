@@ -78,11 +78,18 @@ class PacientesController extends Controller
             // Return nombre, apellido, email.
             foreach ($pacientes as $usuario) {
                 $pacientes_filtrados[] = array(
-                    'id'          => $usuario->id,
-                    'nombre'      => $usuario->nombre,
-                    'apellido'    => $usuario->apellido,
-                    'email'       => $usuario->email,
-                    'dni'         => $usuario->dni,
+                    'id'                 => $usuario->id,
+                    'nombre'             => $usuario->nombre,
+                    'apellido'           => $usuario->apellido,
+                    'email'              => $usuario->email,
+                    'fecha_nacimiento'   => $usuario->fecha_nac,
+                    'genero'             => $usuario->genero,
+                    'dni'                => $usuario->dni,
+                    'telefono'           => $usuario->telefono,
+                    'obra_social'        => $usuario->obra_social,
+                    'numero_obra_social' => $usuario->numero_obra_social,
+                    'antecedentes'       => $usuario->antecedentes,
+                    'alergias'           => $usuario->alergias,
                 );
             }
 
@@ -90,7 +97,7 @@ class PacientesController extends Controller
             return json_encode(
                 array(
                     'pacientes_count' => $pacientes_count,
-                    'pacientes'       => $pacientes,
+                    'pacientes'       => $pacientes_filtrados,
                 )
             );
         } else {

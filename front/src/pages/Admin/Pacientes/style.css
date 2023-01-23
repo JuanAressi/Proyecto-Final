@@ -1,0 +1,8 @@
+#modalEdit .tabs-container {
+    transition: transform 0.75s;
+}
+
+#modalEdit #datosPersonales,
+#modalEdit #historiaClinica {
+    min-width: 100%;
+}

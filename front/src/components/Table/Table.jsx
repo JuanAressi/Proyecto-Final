@@ -1,4 +1,4 @@
-import { React, useEffect } from 'react';
+import { React } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrashAlt, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import Filters from './Filters/Filters';

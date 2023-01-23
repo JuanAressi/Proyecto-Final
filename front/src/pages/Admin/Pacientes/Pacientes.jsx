@@ -9,6 +9,7 @@ import loadingGif from '../../../components/assets/img/loadingGif.gif';
 import Table from '../../../components/Table/Table';
 import NuevoPaciente from './NuevoPaciente';
 import EditarPaciente from './EditarPaciente';
+import './style.css';
 
 function Pacientes() {
     // Pagination.
@@ -33,12 +34,15 @@ function Pacientes() {
     // Paciente information.
     const [pacienteNombre, setPacienteNombre] = useState('');
     const [pacienteApellido, setPacienteApellido] = useState('');
-    const [pacienteDni, setPacienteDni] = useState('');
     const [pacienteEmail, setPacienteEmail] = useState('');
-    const [pacienteTelefono, setPacienteTelefono] = useState('');
     const [pacienteFechaNacimiento, setPacienteFechaNacimiento] = useState('');
     const [pacienteGenero, setPacienteGenero] = useState('');
+    const [pacienteDni, setPacienteDni] = useState('');
+    const [pacienteTelefono, setPacienteTelefono] = useState('');
     const [pacienteObraSocial, setPacienteObraSocial] = useState('');
+    const [pacienteNumeroObraSocial, setPacienteNumeroObraSocial] = useState('');
+    const [pacienteAntecedentes, setPacienteAntecedentes] = useState('');
+    const [pacienteAlergias, setPacienteAlergias] = useState('');
 
 
     // Search 'Pacientes' when 'page' changes (delay 0s).
@@ -83,12 +87,15 @@ function Pacientes() {
                     // Complete 'userToEdit' state.
                     setPacienteNombre(user.nombre);
                     setPacienteApellido(user.apellido);
-                    setPacienteDni(user.dni);
                     setPacienteEmail(user.email);
-                    setPacienteTelefono(user.telefono);
                     setPacienteFechaNacimiento(user.fecha_nacimiento);
                     setPacienteGenero(user.genero);
+                    setPacienteDni(user.dni);
+                    setPacienteTelefono(user.telefono);
                     setPacienteObraSocial(user.numero_obra_social);
+                    setPacienteNumeroObraSocial(user.numero_obra_social);
+                    setPacienteAntecedentes(user.antecedentes);
+                    setPacienteAlergias(user.alergias);
                 }
             });
         }
@@ -372,20 +379,26 @@ function Pacientes() {
             <EditarPaciente
                 pacienteNombre={pacienteNombre}
                 pacienteApellido={pacienteApellido}
-                pacienteFechaNacimiento={pacienteFechaNacimiento}
                 pacienteEmail={pacienteEmail}
+                pacienteFechaNacimiento={pacienteFechaNacimiento}
+                pacienteGenero={pacienteGenero}
                 pacienteDni={pacienteDni}
                 pacienteTelefono={pacienteTelefono}
-                pacienteGenero={pacienteGenero}
                 pacienteObraSocial={pacienteObraSocial}
+                pacienteNumeroObraSocial={pacienteNumeroObraSocial}
+                pacienteAntecedentes={pacienteAntecedentes}
+                pacienteAlergias={pacienteAlergias}
                 setPacienteNombre={setPacienteNombre}
                 setPacienteApellido={setPacienteApellido}
-                setPacienteFechaNacimiento={setPacienteFechaNacimiento}
                 setPacienteEmail={setPacienteEmail}
+                setPacienteFechaNacimiento={setPacienteFechaNacimiento}
+                setPacienteGenero={setPacienteGenero}
                 setPacienteDni={setPacienteDni}
                 setPacienteTelefono={setPacienteTelefono}
-                setPacienteGenero={setPacienteGenero}
                 setPacienteObraSocial={setPacienteObraSocial}
+                setPacienteNumeroObraSocial={setPacienteNumeroObraSocial}
+                setPacienteAntecedentes={setPacienteAntecedentes}
+                setPacienteAlergias={setPacienteAlergias}
                 updatePaciente={updatePaciente}
             />
 
