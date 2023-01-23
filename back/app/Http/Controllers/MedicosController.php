@@ -17,9 +17,9 @@ class MedicosController extends Controller
     public function getAll(Request $request)
     {
         // Get params from request.
-        $page       = $request->input('page');
-        $pagination = $request->input('pagination');
-        $search     = $request->input('search');
+        $page         = $request->input('page');
+        $pagination   = $request->input('pagination');
+        $search       = $request->input('search');
         $orderBy1     = $request->input('order1');
         $orderBy2     = $request->input('order2');
 
