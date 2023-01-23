@@ -57,4 +57,5 @@ back/storage/framework/
 
 web/php/*.ini
 .vscode/settings.json
-.env
+front/.env
+back/.env
