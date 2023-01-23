@@ -9,7 +9,7 @@
     "phpcbf.enable": true,
     "phpcbf.standard": "PSR12",
     // "phpcbf.executablePath": "C:/Users/JuanA/AppData/Roaming/Composer/vendor/bin/phpcbf.bat",
-    "phpcbf.executablePath": "C:/Users/jaressi/AppData/Roaming/Composer/vendor/bin/phpcbf.batf",
+    "phpcbf.executablePath": "C:/Users/jaressi/AppData/Roaming/Composer/vendor/bin/phpcbf.bat",
 
     "cSpell.language": "en,es",
     "cSpell.words": [

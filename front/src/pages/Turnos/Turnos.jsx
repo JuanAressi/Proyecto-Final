@@ -105,7 +105,7 @@ function Turnos() {
      */
     const searchMedicos = () => {
         $.ajax({
-            url: 'http://local.misturnos/api/medicos',
+            url: process.env.REACT_APP_API_ROOT + 'medicos',
             type: 'GET',
             dataType: 'json',
             data: {
@@ -268,7 +268,7 @@ function Turnos() {
      */
     const getFechas = (id) => {
         $.ajax({
-            url: `http://local.misturnos/api/medicos/${id}/fechas`,
+            url: process.env.REACT_APP_API_ROOT + `medicos/${id}/fechas`,
             type: 'GET',
             dataType: 'json',
             success: function (response) {
@@ -337,7 +337,7 @@ function Turnos() {
      */
     const getHoras = (date) => {
         $.ajax({
-            url: `http://local.misturnos/api/medicos/${date}/horas`,
+            url: process.env.REACT_APP_API_ROOT + `medicos/${date}/horas`,
             type: 'GET',
             dataType: 'json',
             success: function (response) {
@@ -392,7 +392,7 @@ function Turnos() {
         setTurnoDisableButton(true);
 
         $.ajax({
-            url: 'http://local.misturnos/api/turnos',
+            url: process.env.REACT_APP_API_ROOT + 'turnos',
             type: 'POST',
             dataType: 'json',
             data: {
