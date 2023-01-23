@@ -57,3 +57,4 @@ back/vendor/
 
 web/php/*.ini
 .vscode/settings.json
+.env
