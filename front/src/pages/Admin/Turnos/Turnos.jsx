@@ -32,7 +32,6 @@ function Turnos() {
     const [alertMessage, setAlertMessage] = useState('');
 
     // Turno information.
-    const [turnoID, setTurnoID] = useState('')
     const [turnoMedico, setTurnoMedico] = useState('');
     const [turnoPaciente, setTurnoPaciente] = useState(''); 
     const [turnoFecha, setTurnoFecha] = useState('');
@@ -264,26 +263,16 @@ function Turnos() {
      * @return {void}
      */
     const updateTurno = () => {
-        const turno = {
-            id: turnoToEdit,
-            medico: turnoMedico,
-            paciente: turnoPaciente,
-            fecha: turnoFecha,
-            hora: turnoHora,
-            fecha_dia: turnoFechaDia,
-        }
-
         // Show spinner.
         setShowSpinner(true);
-
-        // Set 'turnoToEdit' to null.
-        setTurnoToEdit(null);
 
         $.ajax({
             url: process.env.REACT_APP_API_ROOT + 'turnos/' + turnoToEdit,
             type: 'PUT',
             dataType: 'json',
-            data: turno,
+            data: {
+                'estado': turnoEstado,
+            },
             success: function (response) {
                 // Hide spinner.
                 setShowSpinner(false);
@@ -294,20 +283,19 @@ function Turnos() {
 
                     // Show success message.
                     setAlertType('success');
-                    setAlertMessage(response.message);
-                    setShowAlert(true);
 
                     // Set values to empty.
                     setEmptyValues();
-
-                    // Close modal.
-                    $('#closeModalEdit').click();
                 } else {
                     // Show error message.
                     setAlertType('danger');
-                    setAlertMessage('Error al actualizar el Turno.');
-                    setShowAlert(true);
                 }
+
+                // Close modal.
+                $('#closeModalEdit').click();
+                
+                setAlertMessage(response.message);
+                setShowAlert(true);
 
                 // Close alert message after 4 seconds.
                 setTimeout(function () {
@@ -370,8 +358,10 @@ function Turnos() {
         setTurnoFechaDia('');
         setFechaEnabled('disabled');
         setHoraEnabled('disabled');
+        setTurnoToEdit(null);
+        setTurnoToDelete(null);
 
-        // Empty the inptus.
+        // Empty the inputs.
         const medico   = document.getElementById('medico');
         const paciente = document.getElementById('paciente');
 
@@ -488,6 +478,7 @@ function Turnos() {
                 turnoMedico={turnoMedico}
                 turnoPaciente={turnoPaciente}
                 setTurnoEstado={setTurnoEstado}
+                updateTurno={updateTurno}
             />
 
             <Modal

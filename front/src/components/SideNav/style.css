@@ -1,12 +1,12 @@
 #sideNav {
     position: sticky;
     top: 0;
-    /* height: 100vh; */
+    min-height: 100vh;
     box-shadow: 1rem 0 1rem rgba(0, 0, 0, 0.15);
 }
 
 #sideNav .nav-container {
-    /* height: calc(100vh - 100px - 2.5rem - 2.5rem); */
+    min-height: calc(100vh - 100px - 2.5rem - 2.5rem);
 }
 
 #sideNav .nav-item {

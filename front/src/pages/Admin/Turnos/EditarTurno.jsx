@@ -1,14 +1,16 @@
-import { React } from 'react';
+import { React, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 
-function EditarTurno({turnoFecha, turnoHora, turnoEstado, turnoMedico, turnoPaciente, setTurnoEstado}) {
+function EditarTurno({turnoFecha, turnoHora, turnoEstado, turnoMedico, turnoPaciente, setTurnoEstado, updateTurno}) {
     const estados = [
         {value: 'reservado', text: 'Reservado'},
         {value: 'confirmado', text: 'Confirmado'},
         {value: 'cancelado', text: 'Cancelado'},
         {value: 'concretado', text: 'Concretado'},
     ];
+
+    const [changeEstado, setChangeEstado] = useState(false);
 
     // Render the 'EditarTurno' component.
     return (
@@ -35,7 +37,8 @@ function EditarTurno({turnoFecha, turnoHora, turnoEstado, turnoMedico, turnoPaci
                     
                     {/* Modal Body */}
                     <div className='d-flex flex-column align-items-center bg-white p-4 w-100'>
-                        <div className='row d-flex justify-content-center w-100'>
+                        {/* Inputs */}
+                        <div className='row d-flex justify-content-center w-100 mb-3'>
                             {/* Fecha */}
                             <div className='col-md-6 col-sm-12 mb-2'>
                                 <label htmlFor='fecha'>Fecha</label>
@@ -100,7 +103,10 @@ function EditarTurno({turnoFecha, turnoHora, turnoEstado, turnoMedico, turnoPaci
                                     className='form-control'
                                     name='estado'
                                     value={turnoEstado}
-                                    onChange={e => setTurnoEstado(e.target.value)}
+                                    onChange={(e) => {
+                                        setChangeEstado(true);
+                                        setTurnoEstado(e.target.value)
+                                    }}
                                 >
                                     {estados && estados.map((estado, index) => {
                                         if (estado.text === turnoEstado) {
@@ -114,6 +120,26 @@ function EditarTurno({turnoFecha, turnoHora, turnoEstado, turnoMedico, turnoPaci
                                 <span className='custom-arrow position-absolute h-100'></span>
                             </div>
                         </div>
+
+                        {/* Buttons */}
+                        <button
+                            className='btn bg-primary text-white box-shadow-dark w-50 mb-3'
+                            onClick={() => {
+                                setChangeEstado(false);
+                                updateTurno();
+                            }}
+                            disabled={!changeEstado}
+                        >
+                            Actualizar
+                        </button>
+
+                        <button
+                            id='closeModalEdit'
+                            className='btn btn-secondary box-shadow-dark w-50'
+                            data-bs-dismiss='modal'
+                        >
+                            Cerrar
+                        </button>
                     </div>
                 </div>
             </div>

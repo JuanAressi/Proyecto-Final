@@ -47,6 +47,7 @@ class TurnosController extends Controller
             ->orderby('turnos.id', 'asc')
             ->get(
                 array(
+                    'turnos.id',
                     'turnos.dia',
                     'turnos.hora',
                     'turnos.estado',
@@ -82,6 +83,7 @@ class TurnosController extends Controller
             // Return dia, horario, estado, paciente_nombre, paciente_apellido, medico_nombre, medico_apellido.
             foreach ($turnos as $turno) {
                 $turnos_filtrados[] = array(
+                    'id'                => $turno->id,
                     'dia'               => $turno->dia,
                     'hora'              => $turno->horario,
                     'estado'            => $turno->estado,
@@ -132,7 +134,7 @@ class TurnosController extends Controller
      *
      * @param Request $request - The request object.
      *
-     * @return array $user - The new user.
+     * @return array - Contains: 'success', 'message' and 'turno'.
      */
     public function addNew(Request $request)
     {
@@ -164,7 +166,7 @@ class TurnosController extends Controller
                 array(
                     'success' => true,
                     'turno'   => $turno,
-                    'message' => 'Turno creado con exito.'
+                    'message' => 'Turno creado con éxito.'
                 )
             );
         } else {
@@ -173,6 +175,46 @@ class TurnosController extends Controller
                 array(
                     'success' => false,
                     'message' => 'Ya existe un turno para el medico en la fecha y hora seleccionada',
+                )
+            );
+        }
+    }
+
+
+    /**
+     * Function update - Updates a 'Turno' in the database.
+     *
+     * @param Request $request - The request object.
+     * @param int     $id      - The ID of the 'Turno'.
+     *
+     * @return array - Contains: 'success' and 'message'.
+     */
+    public function update(Request $request, $id)
+    {
+        // Get 'Turno' by id.
+        $turno = Turnos::where('id', $id)
+            ->first();
+
+        // Check if the 'Turno' was found.
+        if ($turno !== null) {
+            // Update 'Turno' estado.
+            $turno->estado = $request->input('estado');
+
+            // Save 'Turno'.
+            $turno->save();
+
+            return json_encode(
+                array(
+                    'success' => true,
+                    'message' => 'Turno actualizado con éxito.'
+                )
+            );
+        } else {
+            // Return error.
+            return json_encode(
+                array(
+                    'success' => false,
+                    'message' => 'No se pudo actualizar el turno.'
                 )
             );
         }

@@ -302,7 +302,7 @@ class UsuariosController extends Controller
                 return json_encode(
                     array(
                         'success' => false,
-                        'message' => 'Password incorrecto.',
+                        'message' => 'Contraseña incorrecta.',
                         'field'   => 'password',
                     )
                 );
