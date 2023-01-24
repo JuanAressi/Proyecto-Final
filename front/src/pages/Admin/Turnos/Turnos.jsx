@@ -319,27 +319,34 @@ function Turnos() {
         setShowSpinner(true);
 
         $.ajax({
-            url: process.env.REACT_APP_API_ROOT + 'usuarios/' + turnoToDelete,
+            url: process.env.REACT_APP_API_ROOT + 'turnos/' + turnoToDelete,
             type: 'DELETE',
             dataType: 'json',
             success: function (response) {
-                if (response.success) {
-                    // Hide spinner.
-                    setShowSpinner(false);
+                // Hide spinner.
+                setShowSpinner(false);
 
+                if (response.success) {
                     // Show success message.
                     setAlertType('success');
-                    setAlertMessage('El Turno ha sido eliminado correctamente.');
-                    setShowAlert(true);
 
                     // Reload the 'Turnos' table.
                     searchTurnos();
-
-                    // Close alert message after 4 seconds.
-                    setTimeout(function () {
-                        setShowAlert(false);
-                    }, 4000);
+                } else {
+                    // Show error message.
+                    setAlertType('danger');
                 }
+                
+                // Close modal.
+                
+
+                setAlertMessage(response.message);
+                setShowAlert(true);
+
+                // Close alert message after 4 seconds.
+                setTimeout(function () {
+                    setShowAlert(false);
+                }, 4000);
             }
         });
     }
@@ -486,7 +493,7 @@ function Turnos() {
                 text='¿Está seguro que desea eliminar este turno?'
                 handleDelete={() => {
                     // Close modal.
-                    $('#closeModal').click();
+                    $('#closeModalComponent').click();
 
                     // Delete the turno.
                     deleteTurno();

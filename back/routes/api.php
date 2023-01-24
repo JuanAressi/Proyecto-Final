@@ -44,3 +44,4 @@ Route::post('medicos/agenda', 'App\Http\Controllers\MedicosController@addAgenda'
 Route::get('turnos', 'App\Http\Controllers\TurnosController@getAll');
 Route::post('turnos', 'App\Http\Controllers\TurnosController@addNew');
 Route::put('turnos/{id}', 'App\Http\Controllers\TurnosController@update');
+Route::delete('turnos/{id}', 'App\Http\Controllers\TurnosController@delete');

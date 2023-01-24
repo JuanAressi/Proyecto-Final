@@ -8,8 +8,8 @@ function Modal({ id, text, handleDelete }) {
         <div id={id} className='modal fade' tabIndex='-1' aria-hidden='true'>
             <div className='modal-dialog modal-dialog-centered'>
                 <div className='modal-content position-relative'>
-                    <div className='d-flex justify-content-center align-items-center position-absolute bg-white rounded-circle box-shadow-dark'>
-                        <FontAwesomeIcon icon={faX} data-bs-dismiss='modal' aria-label='Close'/>
+                    <div className='d-flex justify-content-center align-items-center position-absolute bg-white rounded-circle box-shadow-dark' data-bs-dismiss='modal'>
+                        <FontAwesomeIcon icon={faX} aria-label='Close'/>
                     </div>
 
                     <div className='d-flex flex-column align-items-center'>
@@ -20,8 +20,20 @@ function Modal({ id, text, handleDelete }) {
                         <h5 className='text-center '>{text}</h5>
                         <p className='mb-4'>Esta acción no puede deshacerse</p>
 
-                        <button className='btn btn-danger box-shadow-dark w-50 mb-3' onClick={handleDelete}>Eliminar</button>
-                        <button id='closeModal' className='btn btn-secondary box-shadow-dark w-50' data-bs-dismiss='modal'>Cerrar</button>
+                        <button
+                            className='btn btn-danger box-shadow-dark w-50 mb-3'
+                            onClick={() => handleDelete()}
+                        >
+                            Eliminar
+                        </button>
+                        
+                        <button
+                            id='closeModalComponent'
+                            className='btn btn-secondary box-shadow-dark w-50'
+                            data-bs-dismiss='modal'
+                        >
+                            Cerrar
+                        </button>
                     </div>
                 </div>
             </div>

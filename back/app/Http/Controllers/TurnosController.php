@@ -34,7 +34,7 @@ class TurnosController extends Controller
         // Get turnos.
         $turnos_sql = Turnos::leftJoin('usuarios as paciente', 'turnos.id_paciente', '=', 'paciente.id')
             ->leftJoin('usuarios as medico', 'turnos.id_medico', '=', 'medico.id')
-            // ->where('usuarios.estado', 'activo')
+            ->where('turnos.estado', '<>', 'eliminado')
             ->where(function ($query) use ($search) {
                 $query->where('turnos.dia', 'like', '%' . $search . '%')
                     ->orWhere('turnos.hora', 'like', '%' . $search . '%')
@@ -215,6 +215,45 @@ class TurnosController extends Controller
                 array(
                     'success' => false,
                     'message' => 'No se pudo actualizar el turno.'
+                )
+            );
+        }
+    }
+
+
+    /**
+     * Function delete - Deletes a 'Turno' from the database.
+     *
+     * @param int $id - The ID of the 'Turno'.
+     *
+     * @return array - Contains: 'success' and 'message'.
+     */
+    public function delete($id)
+    {
+        // Get 'Turno' by id.
+        $turno = Turnos::where('id', $id)
+            ->first();
+
+        // Check if the 'Turno' was found.
+        if ($turno !== null) {
+            // Change status to: 'eliminado'.
+            $turno->estado = 'eliminado';
+
+            // Save 'Turno'.
+            $turno->save();
+
+            return json_encode(
+                array(
+                    'success' => true,
+                    'message' => 'Turno eliminado con éxito.'
+                )
+            );
+        } else {
+            // Return error.
+            return json_encode(
+                array(
+                    'success' => false,
+                    'message' => 'No se pudo eliminar el turno.'
                 )
             );
         }
