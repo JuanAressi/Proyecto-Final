@@ -95,9 +95,6 @@ function Pacientes() {
                     if (response.success) {
                         // Set 'historiaClinica' state.
                         setHistoriaClinica(response.historia_clinica);
-
-                        
-                        console.log(response.historia_clinica);
                     }
                 },
                 error: function (error) {

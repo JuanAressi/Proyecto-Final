@@ -47,7 +47,6 @@ class TurnosController extends Controller
             ->orderby('turnos.id', 'asc')
             ->get(
                 array(
-                    'turnos.id',
                     'turnos.dia',
                     'turnos.hora',
                     'turnos.estado',
@@ -83,7 +82,6 @@ class TurnosController extends Controller
             // Return dia, horario, estado, paciente_nombre, paciente_apellido, medico_nombre, medico_apellido.
             foreach ($turnos as $turno) {
                 $turnos_filtrados[] = array(
-                    'id'                => $turno->id,
                     'dia'               => $turno->dia,
                     'hora'              => $turno->horario,
                     'estado'            => $turno->estado,

@@ -47,7 +47,7 @@ function Navbar() {
                 <div className="d-flex justify-content-between w-100">
                         <div id='brandAndMenu' className="d-flex flex-row justify-content-between align-items-center">
                             <Link to='/' >
-                                <Logo style='secondary' />
+                                <Logo type='secondary' />
                             </Link>
 
                             <span id='hamburgerMenuContainer' className='p-4 d-none' onClick={handleHamburgerMenuContainer}>

@@ -1,11 +1,11 @@
 import React from 'react';
 
-function Logo({ style }) {
+function Logo({ type }) {
 	let color = '';
 
-	if (style === 'gradient') {
+	if (type === 'gradient') {
 		color = 'url(#gradient)';
-	} else if (style === 'secondary') {
+	} else if (type === 'secondary') {
 		color = '#0077b6';
 	} else {
 		color = '#fff';

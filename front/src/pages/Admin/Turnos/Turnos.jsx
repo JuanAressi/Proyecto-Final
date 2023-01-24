@@ -9,7 +9,7 @@ import loadingGif from '../../../components/assets/img/loadingGif.gif';
 import Table from '../../../components/Table/Table';
 import NuevoTurno from './NuevoTurno';
 import './styles.css';
-// import EditarTurno from './EditarTurno';
+import EditarTurno from './EditarTurno';
 
 function Turnos() {
     // Pagination.
@@ -32,11 +32,13 @@ function Turnos() {
     const [alertMessage, setAlertMessage] = useState('');
 
     // Turno information.
+    const [turnoID, setTurnoID] = useState('')
     const [turnoMedico, setTurnoMedico] = useState('');
     const [turnoPaciente, setTurnoPaciente] = useState(''); 
     const [turnoFecha, setTurnoFecha] = useState('');
     const [turnoHora, setTurnoHora] = useState('');
     const [turnoFechaDia, setTurnoFechaDia] = useState('');
+    const [turnoEstado, setTurnoEstado] = useState('');
 
     // Medicos.
     const [medicos, setMedicos] = useState([]);
@@ -104,11 +106,11 @@ function Turnos() {
                     setShowSpinner(false);
 
                     // Complete 'turnoToEdit' state.
-                    setTurnoMedico(turno.medico);
-                    setTurnoPaciente(turno.paciente);
-                    setTurnoFecha(turno.fecha);
+                    setTurnoFecha(turno.dia);
                     setTurnoHora(turno.hora);
-                    setTurnoFechaDia(turno.fecha_dia);
+                    setTurnoEstado(turno.estado);
+                    setTurnoMedico(turno.medico_apellido + ', ' + turno.medico_nombre);
+                    setTurnoPaciente(turno.paciente_apellido + ', ' + turno.paciente_nombre);
                 }
             });
         }
@@ -125,7 +127,7 @@ function Turnos() {
         setShowSpinner(true);
 
         $.ajax({
-            url: 'http://local.misturnos/api/turnos',
+            url: process.env.REACT_APP_API_ROOT + 'turnos',
             type: 'GET',
             dataType: 'json',
             data: {
@@ -160,7 +162,7 @@ function Turnos() {
      */
     const searchMedicos = () => {
         $.ajax({
-            url: 'http://local.misturnos/api/medicos',
+            url: process.env.REACT_APP_API_ROOT + 'medicos',
             type: 'GET',
             dataType: 'json',
             data: {
@@ -185,7 +187,7 @@ function Turnos() {
      */
     const searchPacientes = () => {
         $.ajax({
-            url: 'http://local.misturnos/api/pacientes',
+            url: process.env.REACT_APP_API_ROOT + 'pacientes',
             type: 'GET',
             dataType: 'json',
             data: {
@@ -210,7 +212,7 @@ function Turnos() {
      */
     const addTurno = () => {
         $.ajax({
-            url: 'http://local.misturnos/api/turnos',
+            url: process.env.REACT_APP_API_ROOT + 'turnos',
             type: 'POST',
             dataType: 'json',
             data: {
@@ -278,7 +280,7 @@ function Turnos() {
         setTurnoToEdit(null);
 
         $.ajax({
-            url: 'http://local.misturnos/api/turnos/' + turnoToEdit,
+            url: process.env.REACT_APP_API_ROOT + 'turnos/' + turnoToEdit,
             type: 'PUT',
             dataType: 'json',
             data: turno,
@@ -329,7 +331,7 @@ function Turnos() {
         setShowSpinner(true);
 
         $.ajax({
-            url: 'http://local.misturnos/api/usuarios/' + turnoToDelete,
+            url: process.env.REACT_APP_API_ROOT + 'usuarios/' + turnoToDelete,
             type: 'DELETE',
             dataType: 'json',
             success: function (response) {
@@ -479,25 +481,14 @@ function Turnos() {
                 addTurno={addTurno}
             />
 
-            {/* <EditarTurno
-                turnoNombre={turnoNombre}
-                turnoApellido={turnoApellido}
-                turnoFechaNacimiento={turnoFechaNacimiento}
-                turnoEmail={turnoEmail}
-                turnoDni={turnoDni}
-                turnoTelefono={turnoTelefono}
-                turnoGenero={turnoGenero}
-                turnoObraSocial={turnoObraSocial}
-                setTurnoNombre={setTurnoNombre}
-                setTurnoApellido={setTurnoApellido}
-                setTurnoFechaNacimiento={setTurnoFechaNacimiento}
-                setTurnoEmail={setTurnoEmail}
-                setTurnoDni={setTurnoDni}
-                setTurnoTelefono={setTurnoTelefono}
-                setTurnoGenero={setTurnoGenero}
-                setTurnoObraSocial={setTurnoObraSocial}
-                updateTurno={updateTurno}
-            /> */}
+            <EditarTurno
+                turnoFecha={turnoFecha}
+                turnoHora={turnoHora}
+                turnoEstado={turnoEstado}
+                turnoMedico={turnoMedico}
+                turnoPaciente={turnoPaciente}
+                setTurnoEstado={setTurnoEstado}
+            />
 
             <Modal
                 id='modalDelete'

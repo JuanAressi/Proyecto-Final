@@ -198,7 +198,7 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
      */
     const getFechas = (id) => {
         $.ajax({
-            url: `http://local.misturnos/api/medicos/${id}/fechas`,
+            url: process.env.REACT_APP_API_ROOT + `medicos/${id}/fechas`,
             type: 'GET',
             dataType: 'json',
             success: function (response) {
@@ -430,7 +430,7 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
         setHoraEnabled('disabled');
 
         $.ajax({
-            url: `http://local.misturnos/api/medicos/${date}/horas`,
+            url: process.env.REACT_APP_API_ROOT + `medicos/${date}/horas`,
             type: 'GET',
             dataType: 'json',
             success: function (response) {
@@ -810,7 +810,6 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
                                             key={indexArray}
                                         >
                                             {horaArray.map((horaItem, indexItem) => {
-                                                console.log(horaItem)
                                                 // Status of the 'hora' button.
                                                 let isDisabled = false;
                                                 

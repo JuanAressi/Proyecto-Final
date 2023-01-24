@@ -52,7 +52,7 @@ function Table({ lastShowPerPage, lastPage, page, setPage, setSearchInput, setSh
                                     
                                     <td>
                                         <FontAwesomeIcon
-                                            className='text-warning me-3'
+                                            className='edit-item me-3'
                                             icon={faPencil}
                                             data-bs-toggle='modal'
                                             data-bs-target={'#modalEdit'}
@@ -60,7 +60,7 @@ function Table({ lastShowPerPage, lastPage, page, setPage, setSearchInput, setSh
                                         />
 
                                         <FontAwesomeIcon
-                                            className='text-danger'
+                                            className='delete-item'
                                             icon={faTrashAlt}
                                             data-bs-toggle='modal'
                                             data-bs-target={'#modalDelete'}

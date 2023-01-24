@@ -1,17 +1,34 @@
-import { React, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX, faPlus, faDownload, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 import NuevaHistoriaClinica from './NuevaHistoriaClinica';
 
 function EditarPaciente({pacienteNombre, pacienteApellido, pacienteEmail, pacienteFechaNacimiento, pacienteGenero, pacienteDni, pacienteTelefono, pacienteObraSocial, pacienteNumeroObraSocial, pacienteAntecedentes, pacienteAlergias, historiaClinica, setPacienteNombre, setPacienteApellido, setPacienteEmail, setPacienteFechaNacimiento, setPacienteGenero, setPacienteDni, setPacienteTelefono, setPacienteObraSocial, setPacienteNumeroObraSocial, setPacienteAntecedentes, setPacienteAlergias, setHistoriaClinica, updatePaciente}) {
-    const [obrasSociales, setObrasSociales] = useState([
+    const obrasSociales = [
         {value: '', text: 'Selecciona una opción'},
         {value: 'OSDE', text: 'OSDE'},
         {value: 'Swiss Medical', text: 'Swiss Medical'},
         {value: 'Medifé', text: 'Medifé'},
         {value: 'Emerger', text: 'Emerger'},
         {value: 'Particular', text: 'Particular'}
-    ]);
+    ];
+
+    const [parsedFechaNacimiento, setParsedFechaNacimiento] = useState('');
+
+
+    // Handle the change of 'pacienteFechaNacimiento' state.
+    useEffect(() => {
+        // Check that is not empty.
+        if (pacienteFechaNacimiento !== '') {
+            // If it is in the format 'dd-mm-yyyy', then parse it.
+            if (pacienteFechaNacimiento.indexOf('-') === 2) {
+                const fechaNacimiento = pacienteFechaNacimiento.split('-');
+                setParsedFechaNacimiento(`${fechaNacimiento[2]}-${fechaNacimiento[1]}-${fechaNacimiento[0]}`);
+            } else if (pacienteFechaNacimiento.indexOf('-') === 4) {
+                setParsedFechaNacimiento(pacienteFechaNacimiento);
+            }
+        }
+    }, [pacienteFechaNacimiento]);
 
 
     /**
@@ -175,10 +192,10 @@ function EditarPaciente({pacienteNombre, pacienteApellido, pacienteEmail, pacien
                                                 name='fecha_nacimiento'
                                                 placeholder='Fecha de Nacimiento'
                                                 aria-label='Fecha de Nacimiento'
-                                                value={pacienteFechaNacimiento}
-                                                onChange={e => setPacienteFechaNacimiento(e.target.value)}
+                                                value={parsedFechaNacimiento}
+                                                onChange={(e) => setPacienteFechaNacimiento(e.target.value)}
                                             />
-                                        </div>                           
+                                        </div>
 
                                         {/* Genero */}
                                         <div className='col-lg-4 col-md-6 mb-2 position-relative'>

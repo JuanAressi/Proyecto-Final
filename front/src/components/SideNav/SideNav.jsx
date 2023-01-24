@@ -31,7 +31,7 @@ function SideNav( { active } ) {
     return (
         <div id='sideNav' className='d-flex flex-column bg-primary'>
             <Link to='/panel-admin' className='mt-3' >
-                <Logo style='primary' />
+                <Logo type='primary' />
             </Link>
 
             <div className='nav-container d-flex flex-column justify-content-between mt-5'>
