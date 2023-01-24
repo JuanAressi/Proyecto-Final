@@ -224,6 +224,7 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 
 /* Height */
 .min-height { min-height: calc(100vh - 118px - 102px); }
+.height-100 { height: 100%!important; }
 
 
 /* Button */

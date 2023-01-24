@@ -8,9 +8,10 @@
 }
 
 #modalAdd .modal-dialog.modal-dialog-centered,
-#modalEdit .modal-dialog.modal-dialog-centered {
+#modalEdit .modal-dialog.modal-dialog-centered,
+#modalHistoriaClinica .modal-dialog.modal-dialog-centered {
     max-width: 992px!important;
-    margin: 1.5rem;
+    margin: 1.5rem auto;
 }
 
 #modalAdd input:focus,

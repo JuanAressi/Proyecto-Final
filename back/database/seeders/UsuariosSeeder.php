@@ -187,7 +187,7 @@ class UsuariosSeeder extends Seeder
 
         // Alergias.
         $alergias = array(
-            0 => 'Frutos secos',
+            0 => null,
             1 => 'Leche',
             2 => 'Ácaros del polvo',
             3 => 'Polen',
@@ -197,12 +197,12 @@ class UsuariosSeeder extends Seeder
             7 => 'Medicamentos',
             8 => 'Látex',
             9 => 'Penicilina',
-            10 => '',
+            10 => 'Frutos secos',
         );
 
         // Antecedentes.
         $antecedentes = array(
-            0 => 'Hipertensión',
+            0 => null,
             1 => 'Diabetes',
             2 => 'Depresión y ansiedad',
             3 => 'Enfermedad cardiovascular',
@@ -212,7 +212,7 @@ class UsuariosSeeder extends Seeder
             7 => 'Enfermedad tiroidea',
             8 => 'Cáncer',
             9 => 'Enfermedad inflamatoria intestinal',
-            10 => '',
+            10 => 'Hipertensión',
         );
 
         $turnos_horas_estados = array(
@@ -278,10 +278,10 @@ class UsuariosSeeder extends Seeder
 
         $paciente = new Pacientes();
 
-        $paciente->id_usuario  = $usuario->id;
-        $paciente->obra_social = 'Particular';
-        $usuario->alergias     = 'Polen';
-        $usuario->antecedentes = 'Artritis';
+        $paciente->id_usuario   = $usuario->id;
+        $paciente->obra_social  = 'Particular';
+        $paciente->antecedentes = 'Artritis';
+        $paciente->alergias     = 'Polen';
         $paciente->save();
 
         // Usuario 2.
@@ -300,11 +300,11 @@ class UsuariosSeeder extends Seeder
 
         $paciente = new Pacientes();
 
-        $paciente->id_usuario         = $usuario->id;
-        $paciente->obra_social        = 'OSDE';
-        $paciente->numero_obra_social = '100001';
-        $usuario->alergias            = '';
-        $usuario->antecedentes        = '';
+        $paciente->id_usuario          = $usuario->id;
+        $paciente->obra_social         = 'OSDE';
+        $paciente->numero_obra_social  = '100001';
+        $paciente->antecedentes        = '';
+        $paciente->alergias            = '';
         $paciente->save();
 
         // Usuario 3.
@@ -323,11 +323,11 @@ class UsuariosSeeder extends Seeder
 
         $paciente = new Pacientes();
 
-        $paciente->id_usuario         = $usuario->id;
-        $paciente->obra_social        = 'Medifé';
-        $paciente->numero_obra_social = '100002';
-        $usuario->alergias            = 'Picaduras de insectos';
-        $usuario->antecedentes        = 'Enfermedad pulmonar';
+        $paciente->id_usuario          = $usuario->id;
+        $paciente->obra_social         = 'Medifé';
+        $paciente->numero_obra_social  = '100002';
+        $paciente->antecedentes        = 'Enfermedad pulmonar';
+        $paciente->alergias            = 'Picaduras de insectos';
         $paciente->save();
 
         // Usuario 4.
@@ -346,11 +346,11 @@ class UsuariosSeeder extends Seeder
 
         $paciente = new Pacientes();
 
-        $paciente->id_usuario         = $usuario->id;
-        $paciente->obra_social        = 'Swiss Medical';
-        $paciente->numero_obra_social = '100003';
-        $usuario->alergias            = '';
-        $usuario->antecedentes        = 'Depresión y ansiedad';
+        $paciente->id_usuario          = $usuario->id;
+        $paciente->obra_social         = 'Swiss Medical';
+        $paciente->numero_obra_social  = '100003';
+        $paciente->antecedentes        = 'Depresión y ansiedad';
+        $paciente->alergias            = '';
         $paciente->save();
 
         // Medico 1.
@@ -533,7 +533,7 @@ class UsuariosSeeder extends Seeder
 
 
         // Create Turnos.
-        for ($i = 0; $i < 752; $i++) {
+        for ($i = 0; $i < 500; $i++) {
             // Create Turno.
             $turno = new Turnos();
 
@@ -547,7 +547,7 @@ class UsuariosSeeder extends Seeder
         }
 
         for ($j = 758; $j < 778; $j++) {
-            // Loop trough 40days, not counting the weekends.
+            // Loop trough 40 days, not counting the weekends.
             for ($k = 0; $k < 40; $k++) {
                 // Get the next day.
                 $next_day = date('d-m-Y', strtotime('+' . $k . ' days'));

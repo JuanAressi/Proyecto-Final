@@ -9,6 +9,7 @@ import loadingGif from '../../../components/assets/img/loadingGif.gif';
 import Table from '../../../components/Table/Table';
 import NuevoPaciente from './NuevoPaciente';
 import EditarPaciente from './EditarPaciente';
+// import NuevaHistoriaClinica from './NuevaHistoriaClinica';
 import './style.css';
 
 function Pacientes() {
@@ -43,11 +44,12 @@ function Pacientes() {
     const [pacienteNumeroObraSocial, setPacienteNumeroObraSocial] = useState('');
     const [pacienteAntecedentes, setPacienteAntecedentes] = useState('');
     const [pacienteAlergias, setPacienteAlergias] = useState('');
+    const [historiaClinica, setHistoriaClinica] = useState([]);
 
 
     // Search 'Pacientes' when 'page' changes (delay 0s).
     useEffect(() => {
-        doSearch();
+        searchPacientes();
     }, [page]);
 
 
@@ -55,7 +57,7 @@ function Pacientes() {
     useEffect(() => {
         setPage(1);
         
-        doSearch();
+        searchPacientes();
     }, [showPerPage]);
 
 
@@ -64,7 +66,7 @@ function Pacientes() {
         setPage(1);
 
         const delayDebounce = setTimeout(() => {
-            doSearch();
+            searchPacientes();
         }, 750);
 
         return () => clearTimeout(delayDebounce)
@@ -78,7 +80,33 @@ function Pacientes() {
             // Show spinner.
             setShowSpinner(true);
 
-            // Loop trough 'users' state to find the 'userToEdit' ID.
+            // Make search for 'Historia Clinica' by ID.
+            $.ajax({
+                url: process.env.REACT_APP_API_ROOT + 'pacientes/' + userToEdit + '/historia_clinica',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    'id': userToEdit,
+                },
+                success: function (response) {
+                    // Hide spinner.
+                    setShowSpinner(false);
+
+                    if (response.success) {
+                        // Set 'historiaClinica' state.
+                        setHistoriaClinica(response.historia_clinica);
+
+                        
+                        console.log(response.historia_clinica);
+                    }
+                },
+                error: function (error) {
+                    // Hide spinner.
+                    setShowSpinner(false);
+                }
+            });
+
+            // Loop trough 'users' state to find the user and obtain his information.
             users.forEach(user => {
                 if (user.id === userToEdit) {
                     // Hide spinner.
@@ -92,7 +120,8 @@ function Pacientes() {
                     setPacienteGenero(user.genero);
                     setPacienteDni(user.dni);
                     setPacienteTelefono(user.telefono);
-                    setPacienteObraSocial(user.numero_obra_social);
+                    setPacienteObraSocial(user.obra_social);
+                    setPacienteNumeroObraSocial(user.numero_obra_social);
                     setPacienteNumeroObraSocial(user.numero_obra_social);
                     setPacienteAntecedentes(user.antecedentes);
                     setPacienteAlergias(user.alergias);
@@ -102,13 +131,17 @@ function Pacientes() {
     }, [userToEdit]);
 
 
-    // Function search.
-    const doSearch = () => {
+    /**
+     * Function searchPacientes - Makes the search of all active 'Pacientes'
+     *
+     * @return {void}
+     */
+    const searchPacientes = () => {
         // Show spinner.
         setShowSpinner(true);
 
         $.ajax({
-            url: 'http://local.misturnos/api/pacientes',
+            url: process.env.REACT_APP_API_ROOT + 'pacientes',
             type: 'GET',
             dataType: 'json',
             data: {
@@ -136,7 +169,11 @@ function Pacientes() {
     }
 
 
-    // Add new 'Paciente'.
+    /**
+     * Function addPaciente - Add a new 'Paciente' to the database.
+     *
+     * @return {void}
+     */
     const addPaciente = () => {
         const paciente = {
             nombre: pacienteNombre,
@@ -153,7 +190,7 @@ function Pacientes() {
         setShowSpinner(true);
 
         $.ajax({
-            url: 'http://local.misturnos/api/pacientes',
+            url: process.env.REACT_APP_API_ROOT + 'pacientes',
             type: 'POST',
             dataType: 'json',
             data: paciente,
@@ -163,7 +200,7 @@ function Pacientes() {
 
                 if (response.success) {
                     // Reload 'Pacientes' list.
-                    doSearch();
+                    searchPacientes();
 
                     // Show success message.
                     setAlertType('success');
@@ -195,7 +232,11 @@ function Pacientes() {
     }
 
 
-    // Update 'Paciente'.
+    /**
+     * Function updatePaciente - Update a 'Paciente' in the database.
+     *
+     * @return {void}
+     */
     const updatePaciente = () => {
         const paciente = {
             id: userToEdit,
@@ -216,7 +257,7 @@ function Pacientes() {
         setUserToEdit(null);
 
         $.ajax({
-            url: 'http://local.misturnos/api/pacientes/' + userToEdit,
+            url: process.env.REACT_APP_API_ROOT + 'pacientes/' + userToEdit,
             type: 'PUT',
             dataType: 'json',
             data: paciente,
@@ -226,7 +267,7 @@ function Pacientes() {
 
                 if (response.success) {
                     // Reload 'Pacientes' list.
-                    doSearch();
+                    searchPacientes();
 
                     // Show success message.
                     setAlertType('success');
@@ -257,13 +298,17 @@ function Pacientes() {
     }
 
 
-    // Delete a user.
+    /**
+     * Function deleteUser - Delete a 'Paciente' from the database.
+     *
+     * @return {void}
+     */
     const deleteUser = () => {
         // Show spinner.
         setShowSpinner(true);
 
         $.ajax({
-            url: 'http://local.misturnos/api/usuarios/' + userToDelete,
+            url: process.env.REACT_APP_API_ROOT + 'usuarios/' + userToDelete,
             type: 'DELETE',
             dataType: 'json',
             success: function (response) {
@@ -277,7 +322,7 @@ function Pacientes() {
                     setShowAlert(true);
 
                     // Reload the 'Pacientes' table.
-                    doSearch();
+                    searchPacientes();
 
                     // Close alert message after 4 seconds.
                     setTimeout(function () {
@@ -289,7 +334,11 @@ function Pacientes() {
     }
 
 
-    // Set empty values to 'Paciente' fields.
+    /**
+     * Function setEmptyValues - Set all the values to empty.
+     *
+     * @return {void}
+     */
     const setEmptyValues = () => {
         setPacienteNombre('');
         setPacienteApellido('');
@@ -299,9 +348,12 @@ function Pacientes() {
         setPacienteTelefono('');
         setPacienteGenero('');
         setPacienteObraSocial('');
+        setPacienteAlergias('');
+        setPacienteAntecedentes('');
     }
 
 
+    // Render the 'Pacientes' component.
     return (
         <div id='pageAdminPacientes' className='d-flex bg-lightgray'>
             <SideNav
@@ -317,9 +369,9 @@ function Pacientes() {
                     </div>
 
                     <button
-                        className="btn bg-white text-primary border-primary"
+                        className='btn bg-white text-primary border-primary'
                         data-bs-toggle='modal'
-                        data-bs-target={'#modalAdd'}
+                        data-bs-target='#modalAdd'
                     >
                         <FontAwesomeIcon
                             className='text-primary me-1'
@@ -388,6 +440,7 @@ function Pacientes() {
                 pacienteNumeroObraSocial={pacienteNumeroObraSocial}
                 pacienteAntecedentes={pacienteAntecedentes}
                 pacienteAlergias={pacienteAlergias}
+                historiaClinica={historiaClinica}
                 setPacienteNombre={setPacienteNombre}
                 setPacienteApellido={setPacienteApellido}
                 setPacienteEmail={setPacienteEmail}
@@ -399,8 +452,11 @@ function Pacientes() {
                 setPacienteNumeroObraSocial={setPacienteNumeroObraSocial}
                 setPacienteAntecedentes={setPacienteAntecedentes}
                 setPacienteAlergias={setPacienteAlergias}
+                setHistoriaClinica={setHistoriaClinica}
                 updatePaciente={updatePaciente}
             />
+
+            {/* <NuevaHistoriaClinica /> */}
 
             <Modal
                 id='modalDelete'

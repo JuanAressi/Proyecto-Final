@@ -32,6 +32,7 @@ Route::get('pacientes', 'App\Http\Controllers\PacientesController@getAll');
 Route::get('pacientes/{id}', 'App\Http\Controllers\PacientesController@getById');
 Route::post('pacientes', 'App\Http\Controllers\PacientesController@addNew');
 Route::put('pacientes/{id}', 'App\Http\Controllers\PacientesController@update');
+Route::get('pacientes/{id}/historia_clinica', 'App\Http\Controllers\PacientesController@getHistoriaClinica');
 
 // Medicos.
 Route::get('medicos', 'App\Http\Controllers\MedicosController@getAll');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Usuarios;
 use App\Models\Pacientes;
+use App\Models\HistoriaClinica;
 
 class PacientesController extends Controller
 {
@@ -82,7 +83,7 @@ class PacientesController extends Controller
                     'nombre'             => $usuario->nombre,
                     'apellido'           => $usuario->apellido,
                     'email'              => $usuario->email,
-                    'fecha_nacimiento'   => $usuario->fecha_nac,
+                    'fecha_nacimiento'   => $usuario->fecha_nacimiento,
                     'genero'             => $usuario->genero,
                     'dni'                => $usuario->dni,
                     'telefono'           => $usuario->telefono,
@@ -213,5 +214,41 @@ class PacientesController extends Controller
                 'message' => 'El Paciente se ha actualizado correctamente.',
             )
         );
+    }
+
+
+    /**
+     * Function getHistoriaClinica - Returns all the records of the 'historia_clinica' table that matches with the user.
+     *
+     * @param Request $request - The request object.
+     *
+     * @return array - The records of the 'historia_clinica' table.
+     */
+    public function getHistoriaClinica(Request $request)
+    {
+        // Get historia_clinica.
+        $historia_clinica = HistoriaClinica::leftJoin('usuarios', 'id_medico', '=', 'usuarios.id')
+            ->where('id_paciente', $request->input('id'))
+            ->orderBy('fecha', 'desc')
+            ->get(['fecha', 'motivo_consulta', 'diagnostico', 'nombre', 'apellido']);
+
+        // Check if historia_clinica is found.
+        if ($historia_clinica) {
+            // Return historia_clinica.
+            return json_encode(
+                array(
+                    'success'          => true,
+                    'historia_clinica' => $historia_clinica,
+                )
+            );
+        } else {
+            // Return error.
+            return json_encode(
+                array(
+                    'success' => false,
+                    'error'   => 'Historia Clinica not found.'
+                )
+            );
+        }
     }
 }

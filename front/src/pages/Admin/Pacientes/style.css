@@ -5,4 +5,17 @@
 #modalEdit #datosPersonales,
 #modalEdit #historiaClinica {
     min-width: 100%;
+    max-height: 425px;
+}
+
+#modalEdit #historiaClinicaContainer {
+    overflow-y: scroll;
+}
+
+#modalEdit #historiaClinicaContainer .item {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+#modalEdit #historiaClinicaContainer .item:first-child {
+    border-top: 1px solid #e5e5e5;
 }
