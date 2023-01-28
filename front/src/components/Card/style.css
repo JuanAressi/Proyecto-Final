@@ -24,3 +24,10 @@
     transform: scale(1.05);
     transition: 0.25s all ease;
 }
+
+@media (min-width: 1200px) {
+    .custom-card {
+        margin-left: 2rem;
+        margin-right: 2rem;
+    }
+}

@@ -1,14 +1,16 @@
-import { React, useEffect, useState } from 'react';
+import { React, useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { NavHashLink } from 'react-router-hash-link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../Logo/Logo';
+import UserContext from '../../context/UserContext';
 import './style.css';
 
 function Navbar() {
-    const [isCollapsed, setIsCollapsed] = useState(true);
+    const {user, role, setUser, setRole} = useContext(UserContext);
 
+    const [isCollapsed, setIsCollapsed] = useState(true);
     
 	useEffect(() => {
         handleHamburgerMenuContainer();
@@ -41,11 +43,27 @@ function Navbar() {
     }
 
 
+    /**
+     * Function cerrarSesión - Closes the session of the current user.
+     *
+     * @return {void}
+     */
+    const cerrarSesión = () => {
+        // Remove the user information from the context.
+        setUser(null);
+        setRole(null);
+
+        // Reload to the home page.
+        window.location.href = '/';
+    }
+
+
+    // Render the 'Navbar' component.
     return (
-        <div id="navbar" className='navbar bg-light box-shadow-dark'>
-            <div className="container">
-                <div className="d-flex justify-content-between w-100">
-                        <div id='brandAndMenu' className="d-flex flex-row justify-content-between align-items-center">
+        <div id='navbar' className='navbar bg-light box-shadow-dark'>
+            <div className='container'>
+                <div className='d-flex justify-content-between w-100'>
+                        <div id='brandAndMenu' className='d-flex flex-row justify-content-between align-items-center'>
                             <Link to='/' >
                                 <Logo type='secondary' />
                             </Link>
@@ -55,7 +73,7 @@ function Navbar() {
                             </span>
                         </div>
                         
-                        <div id='links' className="d-flex justify-content-end align-items-center text-uppercase text-center w-100 overflow-hidden" data-collapse={isCollapsed}>
+                        <div id='links' className='d-flex justify-content-end align-items-center text-uppercase text-center w-100' data-collapse={isCollapsed}>
                             <NavHashLink
                                 to='/#banner'
                                 scroll={element => scrollWithOffset(element, 118)}
@@ -87,12 +105,68 @@ function Navbar() {
                                 Contacto
                             </NavHashLink>
 
-                            <Link
-                                to='/login'
-                                className='nav-link position-relative p-3 mb-0 ms-5 text-dark'
-                            >
-                                Ingresar
-                            </Link>
+                            {/* Si no hay rol */}
+                            {
+                                role === null
+                                && (
+                                    <Link
+                                        to='/login'
+                                        className='nav-link position-relative p-3 mb-0 ms-5 text-dark'
+                                    >
+                                        Ingresar
+                                    </Link>
+                                )
+                            }
+
+                            {/* Si el logueado es un paciente */}
+                            {
+                                role === 'paciente'
+                                ? (
+                                    <div class='nav-item dropdown'>
+                                        <span
+                                            id='miCuenta'
+                                            class='nav-link dropdown-toggle text-dark'
+                                            role='button'
+                                            data-bs-toggle='dropdown'
+                                            aria-expanded='false'
+                                        >
+                                            Mi cuenta
+                                        </span>
+
+                                        <ul class='dropdown-menu' aria-labelledby='miCuenta' style={{left: 'calc((100% - 186px) / 2)'}}>
+                                            <li>
+                                                <Link
+                                                    class='dropdown-item'
+                                                    to='/panel-usuario'
+                                                >
+                                                    Panel de usuario
+                                                </Link>
+                                            </li>
+
+                                            <li>
+                                                <span
+                                                    class='dropdown-item'
+                                                    onClick={() => cerrarSesión()}
+                                                >
+                                                    Cerrar Sesión
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                )
+                                : role === 'medico' 
+                                ? (
+                                    <Link
+                                        to='/panel-paciente'
+                                    >Médico</Link>
+                                )
+                                : role === 'admin'
+                                ? (
+                                    <Link
+                                        to='/panel-paciente'
+                                    >Admin</Link>
+                                ) : null
+                            }
                         </div>
                 </div>
             </div>

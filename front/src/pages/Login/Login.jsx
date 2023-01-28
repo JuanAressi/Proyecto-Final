@@ -1,15 +1,19 @@
-import { useState, useEffect } from 'react';
+import { React, useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAt, faCheck, faKey } from '@fortawesome/free-solid-svg-icons';
 import $ from 'jquery';
-import './style.css';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import Input from '../../components/Input/Input';
 import loadingGif from '../../components/assets/img/loadingGif.gif';
+import UserContext from '../../context/UserContext';
+import './style.css';
 
 function Login() {
+    const {user, setUser, setNombre, setApellido, setRole} = useContext(UserContext);
+
+    // Form data.
     const [email, setEmail] = useState('');
     const [emailInvalidMessage, setEmailInvalidMessage] = useState('');
     const [password, setPassword] = useState('');
@@ -19,6 +23,13 @@ function Login() {
     // Utilities.
     const [showSpinner, setShowSpinner] = useState(false);
     const [btnSubmitDisabled, setBtnSubmitDisabled] = useState(true);
+
+    // Verify if the user is logged in.
+    useEffect(() => {
+        if (user) {
+            window.location.href = '/';
+        }
+    }, []);
 
     // Enable submit button.
     useEffect(() => {
@@ -30,33 +41,21 @@ function Login() {
     }, [email, password]);
 
 
-    // Email change.
-    const handleEmailChange = (event) => {
-        setEmail(event.target.value);
-    }
-
-
-    // Password change.
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-    }
-
-
-    // Submit Login form.
-    const handleSubmitForm = (event) => {
-        // Prevent default form submit.
-        event.preventDefault();
-
+    /**
+     * Function logIn - Sends a request to the server to log in the user.
+     *
+     * @return {void}
+     */
+    const logIn = () => {
         // Show spinner.
         setShowSpinner(true);
 
         // Disable submit button.
         setBtnSubmitDisabled(true);
-        
 
         // Send request.
         $.ajax({
-            url: 'http://local.misturnos/api/login',
+            url: process.env.REACT_APP_API_ROOT + 'login',
             type: 'POST',
 			dataType: 'json',
             data: {
@@ -64,12 +63,14 @@ function Login() {
                 'password': password
             },
 			success: function (response) {
+                // Hide spinner.
+                setShowSpinner(false);
+
                 if (response.success) {
                     // Set loginIn to true.
                     setLoginIn(true);
 
-                    // Hide spinner.
-                    setShowSpinner(false);
+                    // Set user information in LocalStorage.
 
                     // Wait 3 seconds to redirect.
                     setTimeout(() => {
@@ -94,9 +95,6 @@ function Login() {
                         }
                     }, 3000);
                 } else {
-                    // Hide spinner.
-                    setShowSpinner(false);
-
                     // Disable submit button.
                     setBtnSubmitDisabled(true);
 
@@ -114,6 +112,7 @@ function Login() {
     }
 
 
+    // Render the 'Login' page.
     return (
         <div id='loginPage'>
 			<Navbar />
@@ -121,7 +120,7 @@ function Login() {
             <div className='blue-overlay min-height'>
                 <div className='container p-8'>
                     <div className='d-flex justify-content-center align-items-center'>
-                        <form id='loginForm' className='rounded box-shadow-dark p-5'>
+                        <div id='loginForm' className='rounded box-shadow-dark p-5'>
                             <h1 className='text-center mb-3 text-primary text-shadow-dark'>¡Bienvenido!</h1>
 
                             {loginIn &&
@@ -147,7 +146,7 @@ function Login() {
                                     name='email'
                                     placeholder='Correo electrónico'
                                     value={email}
-                                    onChange={handleEmailChange}
+                                    onChange={(event) => setEmail(event.target.value)}
                                     onFocus={() => setEmailInvalidMessage('')}
                                     icon={faAt}
                                 />
@@ -168,7 +167,7 @@ function Login() {
                                     name='password'
                                     placeholder='Contraseña'
                                     value={password}
-                                    onChange={handlePasswordChange}
+                                    onChange={(event) => setPassword(event.target.value)}
                                     onFocus={() => setPasswordInvalidMessage('')}
                                     icon={faKey}
                                 />
@@ -180,19 +179,26 @@ function Login() {
                                 }
                             </div>
 
-                            <Link to='/recuperar-contraseña'
-                                className='text-primary text-end w-100'
-                                type='button'
-                            >
-                                Olvide mi contraseña
-                            </Link>
+                            {/* Recuperar contraseña */}
+                            <div className='d-flex justify-content-end'>
+                                <span>
+                                    <Link
+                                        to='/recuperar-contraseña'
+                                        id='forgotPassword'
+                                        className='text-primary position-relative w-100'
+                                    >
+                                        Olvide mi contraseña
+                                    </Link>
+                                </span>
+                            </div>
 
+                            {/* Button container */}
                             <div id='buttonsContainer' className='d-flex flex-column justify-content-center align-items-center mt-3'>
                                 <button 
                                     id='ingresar'
                                     className='d-flex justify-content-center align-items-center btn bg-primary text-white box-shadow-dark text-uppercase mb-3'
                                     type='submit'
-                                    onClick={handleSubmitForm}
+                                    onClick={logIn}
                                     disabled={btnSubmitDisabled}
                                 >
 
@@ -213,7 +219,7 @@ function Login() {
                                     Registrarme
                                 </Link>
                             </div>
-                        </form>
+                        </div>
 
                     </div>
                 </div>

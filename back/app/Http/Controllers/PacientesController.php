@@ -192,22 +192,79 @@ class PacientesController extends Controller
      */
     public function update(Request $request)
     {
+        $success = false;
+        $message = '';
+
+        // Validate that the email is unique or is the same.
+        $email = Usuarios::where('email', $request->input('email'))
+            ->where('id', '!=', $request->input('id'))
+            ->first();
+
+        // Check if email is unique.
+        if ($email) {
+            // Return error.
+            return json_encode(
+                array(
+                    'success' => false,
+                    'message' => 'El email ya se encuentra registrado.',
+                    'field'   => 'email',
+                )
+            );
+        }
+
+        // Validate that the dni is unique or is the same.
+        $dni = Usuarios::where('dni', $request->input('dni'))
+            ->where('id', '!=', $request->input('id'))
+            ->first();
+
+        // Check if dni is unique.
+        if ($dni) {
+            // Return error.
+            return json_encode(
+                array(
+                    'success' => false,
+                    'message' => 'El DNI ya se encuentra registrado.',
+                    'field'   => 'dni',
+                )
+            );
+        }
+
         $usuario = Usuarios::where('id', $request->input('id'))
             ->update([
-                'nombre'           => $request->input('nombre'),
-                'apellido'         => $request->input('apellido'),
-                'email'            => $request->input('email'),
-                'fecha_nacimiento' => $request->input('fecha_nacimiento'),
-                'dni'              => $request->input('dni'),
-                'telefono'         => $request->input('telefono'),
-                'genero'           => $request->input('genero'),
+                'nombre'             => $request->input('nombre'),
+                'apellido'           => $request->input('apellido'),
+                'email'              => $request->input('email'),
+                'fecha_nacimiento'   => $request->input('fecha_nacimiento'),
+                'genero'             => $request->input('genero'),
+                'dni'                => $request->input('dni'),
+                'telefono'           => $request->input('telefono'),
             ]);
 
-        $paciente = Pacientes::where('id_usuario', $request->input('id'))
-            ->update([
-                'numero_obra_social' => $request->input('obra_social'),
-            ]);
+        // Check for errors.
+        if ($usuario) {
+            $paciente = Pacientes::where('id_usuario', $request->input('id'))
+                ->update([
+                    'obra_social'        => $request->input('obra_social'),
+                    'numero_obra_social' => $request->input('numero_obra_social'),
+                ]);
 
+            // Check for errors.
+            if ($paciente) {
+                // Return success.
+                $success = true;
+                $message = 'El Paciente se ha actualizado correctamente.';
+            } else {
+                // Return error.
+                $success = false;
+                $message = 'El Paciente no se ha podido actualizar.';
+            }
+        } else {
+            // Return error.
+            $success = false;
+            $message = 'El Paciente no se ha podido actualizar.';
+        }
+
+        // Return response.
         return json_encode(
             array(
                 'success' => true,

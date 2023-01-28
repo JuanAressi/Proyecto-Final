@@ -2,7 +2,7 @@ import { React, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 
-function EditarTurno({turnoFecha, turnoHora, turnoEstado, turnoMedico, turnoPaciente, setTurnoEstado, updateTurno}) {
+function EditarTurno({ turnoFecha, turnoHora, turnoEstado, turnoMedico, turnoPaciente, setTurnoEstado, updateTurno }) {
     const estados = [
         {value: 'reservado', text: 'Reservado'},
         {value: 'confirmado', text: 'Confirmado'},
@@ -19,7 +19,7 @@ function EditarTurno({turnoFecha, turnoHora, turnoEstado, turnoMedico, turnoPaci
                 <div className='modal-content position-relative'>
                     {/* Modal Header */}
                     <div className='bg-primary box-shadow-dark-1 px-4 py-2'>
-                        <h1 className='display-6 text-white text-shadow-dark me-4'>Editar Turno</h1>
+                        <h1 className='display-6 text-white text-shadow-dark me-4'>Información del Turno</h1>
                     </div>
 
                     {/* Close Button */}
@@ -77,20 +77,6 @@ function EditarTurno({turnoFecha, turnoHora, turnoEstado, turnoMedico, turnoPaci
                                     name='medico'
                                     aria-label='Médico del turno'
                                     placeholder={turnoMedico}
-                                    disabled={true}
-                                />
-                            </div>
-                            
-                            {/* Paciente */}
-                            <div className='col-md-6 col-sm-12 mb-2'>
-                                <label htmlFor='paciente'>Paciente</label>
-                                    
-                                <input
-                                    className='form-control'
-                                    type='string'
-                                    name='paciente'
-                                    aria-label='Paciente del turno'
-                                    placeholder={turnoPaciente}
                                     disabled={true}
                                 />
                             </div>

@@ -586,7 +586,6 @@ function Register() {
                                         </div>
                                     }
                                 </div>
-
                             </div>
 
                             {/* Button container */}

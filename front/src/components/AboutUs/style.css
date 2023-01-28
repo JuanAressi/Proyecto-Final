@@ -1,23 +1,17 @@
-#aboutUs .custom-card {
-    min-width: calc(100% - 48px);
-    max-width: calc(100% - 48px);
+#aboutUs .first-wave {
+    margin-top: 0;
 }
 
-@media (min-width: 991px) {
-    #aboutUs .custom-card {
-        min-width: calc((100% - 48px - 48px) / 2);
-        max-width: calc((100% - 48px - 48px) / 2);
+
+@media (min-width: 768px) {
+    #aboutUs .first-wave {
+        margin-top: -8rem;
     }
 }
+
 
 @media (min-width: 1200px) {
-    #aboutUs .custom-card {
-        min-width: calc((100% - 48px - 48px - 48px) / 3);
-        max-width: calc((100% - 48px - 48px - 48px) / 3);
-    }
-
-    #aboutUs .waves-container {
+    #aboutUs .first-wave {
         margin-top: -10rem;
-        z-index: 1;
     }
 }

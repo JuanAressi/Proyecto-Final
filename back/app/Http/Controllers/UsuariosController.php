@@ -276,21 +276,29 @@ class UsuariosController extends Controller
      */
     public function logIn(Request $request)
     {
-        $email = $request->input('email');
+        // Get the parameters from the request.
+        $email    = $request->input('email');
         $password = md5($request->input('password'));
 
-        $user = Usuarios::where('email', $email)->where('contraseña', $password)->select('*')->get();
+        // Get the user.
+        $user = Usuarios::where('email', $email)
+            ->where('contraseña', $password)
+            ->select('*')
+            ->get();
 
         // If user exists.
         if (count($user) > 0) {
-            // Get user role.
-            $role = $user[0]->rol;
-
             // Return the rol of the user.
             return json_encode(
                 array(
                     'success' => true,
-                    'role' => $role,
+                    'user'    => array(
+                        'id'        => $user[0]->id,
+                        'nombre'    => $user[0]->nombre,
+                        'apellido'  => $user[0]->apellido,
+                        'rol'       => $user[0]->rol,
+                        'timestamp' => time(),
+                    ),
                 )
             );
         } else {

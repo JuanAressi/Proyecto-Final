@@ -1,6 +1,23 @@
-#loginPage form {
+#loginPage #loginForm {
     width: 80%;
     max-width: 600px!important;
+}
+
+#loginPage #forgotPassword::before {
+    content: '';
+    position: absolute;
+    bottom: -0.1rem;
+    left: 50%;
+    height: 1px;
+    width: 0;
+    border-radius: 4px;
+    background-color: #056799;
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+}
+
+#loginPage #forgotPassword:hover::before {
+    width: 75%;
+    left: calc((100% - 75%) / 2);
 }
 
 #buttonsContainer #ingresar,

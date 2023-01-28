@@ -251,8 +251,17 @@ a, p, label, input, button { font-family: 'Nunito', sans-serif; }
 
 
 /* Position */
+/* Top */
+.top-0 { top: 0!important; }
+
 /* Right */
 .right-2 { right: 1rem!important; }
+
+/* Bottom */
+.bottom-0 { bottom: 0!important; }
+
+/* Left */
+.left-0 { left: 0!important; }
 
 
 /* Border */

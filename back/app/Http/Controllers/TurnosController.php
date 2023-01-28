@@ -19,6 +19,7 @@ class TurnosController extends Controller
         $page       = $request->input('page');
         $pagination = $request->input('pagination');
         $search     = $request->input('search');
+        $id_usuario = $request->input('id_usuario');
 
         // Check if $search is null.
         if ($search === null) {
@@ -64,7 +65,7 @@ class TurnosController extends Controller
         // Get turnos by pagination.
         $turnos = [];
 
-        // Check if offset is valid.S
+        // Check if offset is valid.
         if ($offset < $turnos_count) {
             // Fill turnos according to pagination.
             for ($i = $offset; $i < $limit && $i < $turnos_count; $i++) {
@@ -254,6 +255,111 @@ class TurnosController extends Controller
                 array(
                     'success' => false,
                     'message' => 'No se pudo eliminar el turno.'
+                )
+            );
+        }
+    }
+
+
+    /**
+     * Function getAllById - Returns all 'Turnos' from database that matches with the request.
+     *
+     * @param Request $request - The request object.
+     * @param int     $id      - The ID of the 'Turno'.
+     *
+     * @return array - An array of all users.
+     */
+    public function getAllById(Request $request, $id)
+    {
+        // Get params from request.
+        $page       = $request->input('page');
+        $pagination = $request->input('pagination');
+        $search     = $request->input('search');
+        $id_usuario = $request->input('id_usuario');
+
+        // Check if $search is null.
+        if ($search === null) {
+            $search = '';
+        }
+
+        // Calculate offset.
+        $offset = ($page - 1) * $pagination;
+
+        // Calculate limit.
+        $limit = $offset + $pagination;
+
+        // Get turnos.
+        $turnos_sql = Turnos::leftJoin('usuarios as paciente', 'turnos.id_paciente', '=', 'paciente.id')
+            ->leftJoin('usuarios as medico', 'turnos.id_medico', '=', 'medico.id')
+            ->where('turnos.estado', '<>', 'eliminado')
+            ->where('id_paciente', $id_usuario)
+            ->where(function ($query) use ($search) {
+                $query->where('turnos.dia', 'like', '%' . $search . '%')
+                    ->orWhere('turnos.hora', 'like', '%' . $search . '%')
+                    ->orWhere('turnos.estado', 'like', '%' . $search . '%')
+                    ->orWhere('paciente.nombre', 'like', '%' . $search . '%')
+                    ->orWhere('paciente.apellido', 'like', '%' . $search . '%')
+                    ->orWhere('medico.nombre', 'like', '%' . $search . '%')
+                    ->orWhere('medico.apellido', 'like', '%' . $search . '%');
+            })
+            ->orderby('turnos.id', 'asc')
+            ->get(
+                array(
+                    'turnos.id',
+                    'turnos.dia',
+                    'turnos.hora',
+                    'turnos.estado',
+                    'medico.nombre as medico_nombre',
+                    'medico.apellido as medico_apellido',
+                )
+            );
+
+        // Get total of turnos.
+        $turnos_count = sizeof($turnos_sql);
+
+        // Get turnos by pagination.
+        $turnos = [];
+
+        // Check if offset is valid.
+        if ($offset < $turnos_count) {
+            // Fill turnos according to pagination.
+            for ($i = $offset; $i < $limit && $i < $turnos_count; $i++) {
+                $turnos[] = $turnos_sql[$i];
+            }
+        } else {
+            // Fill turnos with $turnos_sql.
+            $turnos = $turnos_sql;
+        }
+
+        // Check if turnos are found.
+        if (count($turnos) > 0) {
+            // Create array of turnos.
+            $turnos_filtrados = array();
+
+            // Return dia, horario, estado, paciente_nombre, paciente_apellido, medico_nombre, medico_apellido.
+            foreach ($turnos as $turno) {
+                $turnos_filtrados[] = array(
+                    'id'                => $turno->id,
+                    'dia'               => $turno->dia,
+                    'hora'              => $turno->horario,
+                    'estado'            => $turno->estado,
+                    'medico_nombre'     => $turno->medico_nombre,
+                    'medico_apellido'   => $turno->medico_apellido,
+                );
+            }
+
+            // Return turnos.
+            return json_encode(
+                array(
+                    'turnos_count' => $turnos_count,
+                    'turnos'       => $turnos,
+                )
+            );
+        } else {
+            // Return error.
+            return json_encode(
+                array(
+                    'error' => 'No turnos found.'
                 )
             );
         }
