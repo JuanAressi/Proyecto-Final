@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuarios;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UsuariosController extends Controller
 {
@@ -267,16 +266,6 @@ class UsuariosController extends Controller
         return json_encode($user);
     }
 
-    public function getJWTIdentifier()
-    {
-        return $this->remember_token;
-    }
-
-    public function getJWTCustomClaims($value)
-    {
-        $this->remember_token = $value;
-    }
-
 
     /**
      * Function logIn - Logs in a user.
@@ -299,8 +288,7 @@ class UsuariosController extends Controller
 
         // If user exists.
         if (count($user) > 0) {
-            // Create token for the user.
-            $token = JWTAuth::fromUser($user[0]);
+            $token = 'asd';
 
             // Return the rol of the user.
             return json_encode(
