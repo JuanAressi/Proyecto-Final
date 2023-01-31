@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react';
+// Utilities.
+import { React, useState, useEffect } from 'react';
 import { faUser, faKey, faAt, faCalendarAlt, faVenusMars, faPhone, faIdCard, faHospital } from '@fortawesome/free-solid-svg-icons'
 import $ from 'jquery';
-import './style.css';
+
+// Components.
 import Alert from '../../components/Alert/Alert';
 import Footer from '../../components/Footer/Footer';
 import Input from '../../components/Input/Input';
 import Navbar from '../../components/Navbar/Navbar';
-
+import withAuth from '../../highOrderComponents/withAuth';
+import './style.css';
 
 function Register() {
     // Paciente.
@@ -610,4 +613,4 @@ function Register() {
     )
 }
 
-export default Register
+export default withAuth('')(Register)

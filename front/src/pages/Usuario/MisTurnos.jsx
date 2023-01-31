@@ -1,13 +1,16 @@
+// Utilities.
 import { React, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import $ from 'jquery';
+
+// Components.
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import Table from '../../components/Table/Table';
-import EditarTurno from './EditarTurno';
 import loadingGif from '../../components/assets/img/loadingGif.gif';
+import EditarTurno from './EditarTurno';
 
 function MisTurnos() {
     const idUser = 753;

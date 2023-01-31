@@ -395,33 +395,33 @@ class UsuariosSeeder extends Seeder
         $medico->rol              = 'medico';
         $medico->save();
 
-        // Recepcionista 1.
-        $recepcionista                   = new Usuarios();
-        $recepcionista->nombre           = 'Katia';
-        $recepcionista->apellido         = 'Xenia';
-        $recepcionista->email            = 'Katia.Xenia@hotmail.com';
-        $recepcionista->contraseña       = md5('KatiaXenia1');
-        $recepcionista->dni              = '39858576';
-        $recepcionista->fecha_nacimiento = '03-03-1997';
-        $recepcionista->genero           = 'Masculino';
-        $recepcionista->telefono         = '3413890123';
-        $recepcionista->estado           = 'activo';
-        $recepcionista->rol              = 'recepcionista';
-        $recepcionista->save();
+        // Administrativo 1.
+        $administrativo                   = new Usuarios();
+        $administrativo->nombre           = 'Katia';
+        $administrativo->apellido         = 'Xenia';
+        $administrativo->email            = 'Katia.Xenia@hotmail.com';
+        $administrativo->contraseña       = md5('KatiaXenia1');
+        $administrativo->dni              = '39858576';
+        $administrativo->fecha_nacimiento = '03-03-1997';
+        $administrativo->genero           = 'Masculino';
+        $administrativo->telefono         = '3413890123';
+        $administrativo->estado           = 'activo';
+        $administrativo->rol              = 'administrativo';
+        $administrativo->save();
 
-        // Recepcionista 2.
-        $recepcionista                   = new Usuarios();
-        $recepcionista->nombre           = 'Nicolás';
-        $recepcionista->apellido         = 'Herrera';
-        $recepcionista->email            = 'Nicolás.Herrera@gmail.com';
-        $recepcionista->contraseña       = md5('NicolásHerrera1');
-        $recepcionista->dni              = '33486984';
-        $recepcionista->fecha_nacimiento = '12-02-1985';
-        $recepcionista->genero           = 'Masculino';
-        $recepcionista->telefono         = '3413890123';
-        $recepcionista->estado           = 'activo';
-        $recepcionista->rol              = 'recepcionista';
-        $recepcionista->save();
+        // Administrativo 2.
+        $administrativo                   = new Usuarios();
+        $administrativo->nombre           = 'Nicolás';
+        $administrativo->apellido         = 'Herrera';
+        $administrativo->email            = 'Nicolás.Herrera@gmail.com';
+        $administrativo->contraseña       = md5('NicolásHerrera1');
+        $administrativo->dni              = '33486984';
+        $administrativo->fecha_nacimiento = '12-02-1985';
+        $administrativo->genero           = 'Masculino';
+        $administrativo->telefono         = '3413890123';
+        $administrativo->estado           = 'activo';
+        $administrativo->rol              = 'administrativo';
+        $administrativo->save();
 
         // Historia Clinica 1.
         $historia_clinica                  = new HistoriaClinica();

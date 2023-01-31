@@ -1,8 +1,9 @@
+// Utilities.
 import { React, useState } from 'react';
-import $ from 'jquery';
-import Calendar from 'react-calendar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
+import $ from 'jquery';
+import Calendar from 'react-calendar';
 
 function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFecha, turnoHora, fechaEnabled, horas, horaEnabled, setTurnoMedico, setTurnoPaciente, setTurnoFecha, setTurnoHora, setTurnoFechaDia, setFechaEnabled, setHoras, setHoraEnabled, addTurno } ) {
     // Medicos.
@@ -29,7 +30,7 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
         // Show the 'profesionales' div.
         setMedicoShowList('d-flex');
 
-        // Get 'eoprofesionales' div.
+        // Get 'profesionales' div.
         const profesionales = document.getElementById('profesionales');
         const profesionalesChildren = profesionales.querySelectorAll('.item');
 
@@ -410,7 +411,7 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
             }
         }
 
-        // Set the idFechasDuas state.
+        // Set the 'idFechasDías' state.
         setTurnoFechaDia(idFechasDias);
 
         // Get the hours for the given date.
@@ -506,7 +507,7 @@ function NuevoTurno( { medicos, pacientes, turnoMedico, turnoPaciente, turnoFech
 
 
     /**
-     * Function resetFechas - Enable and disable the dates in the calendar when the user switch between differents 'Medico'.
+     * Function resetFechas - Enable and disable the dates in the calendar when the user switch between different 'Medico'.
      *
      * @return {void}
      */

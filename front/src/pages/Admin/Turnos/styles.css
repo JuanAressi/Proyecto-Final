@@ -1,11 +1,17 @@
 #modalAdd #profesionales,
-#modalAdd #pacientes {
+#modalAdd #pacientes,
+#reportes #profesionales,
+#reportes #pacientes {
     overflow-y: scroll;
-    top: 62px!important;
     left: 12px!important;
     min-width: calc(100% - 24px)!important;
     min-height: 41px;
     z-index: 2;
+}
+
+#modalAdd #profesionales,
+#modalAdd #pacientes {
+    top: 62px!important;
 }
 
 #modalAdd #profesionales .item p,

@@ -1,18 +1,19 @@
-import { React, useContext, useEffect, useState } from 'react';
+// Utilities.
+import { React, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAt, faCheck, faKey } from '@fortawesome/free-solid-svg-icons';
 import $ from 'jquery';
+
+// Components.
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import Input from '../../components/Input/Input';
 import loadingGif from '../../components/assets/img/loadingGif.gif';
-import UserContext from '../../context/UserContext';
+import withAuth from '../../highOrderComponents/withAuth';
 import './style.css';
 
 function Login() {
-    const {user, setUser, setNombre, setApellido, setRole} = useContext(UserContext);
-
     // Form data.
     const [email, setEmail] = useState('');
     const [emailInvalidMessage, setEmailInvalidMessage] = useState('');
@@ -23,13 +24,6 @@ function Login() {
     // Utilities.
     const [showSpinner, setShowSpinner] = useState(false);
     const [btnSubmitDisabled, setBtnSubmitDisabled] = useState(true);
-
-    // Verify if the user is logged in.
-    useEffect(() => {
-        if (user) {
-            window.location.href = '/';
-        }
-    }, []);
 
     // Enable submit button.
     useEffect(() => {
@@ -69,8 +63,15 @@ function Login() {
                 if (response.success) {
                     // Set loginIn to true.
                     setLoginIn(true);
+                    
+                    // Delete the previous user information in LocalStorage.
+                    localStorage.removeItem('user');
 
-                    // Set user information in LocalStorage.
+                    // Set timestamp to the user information.
+                    response.user.timestamp = Date.now();
+
+                    // Save the new user information in LocalStorage.
+                    localStorage.setItem('user', JSON.stringify(response.user));
 
                     // Wait 3 seconds to redirect.
                     setTimeout(() => {
@@ -230,4 +231,4 @@ function Login() {
     )
 }
 
-export default Login
+export default withAuth('')(Login)

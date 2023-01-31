@@ -1,9 +1,12 @@
-import { React, useEffect } from 'react';
+// Utilities.
+import { React } from 'react';
 import { Link } from 'react-router-dom';
+import { faFileMedical, faUser } from '@fortawesome/free-solid-svg-icons';
+
+// Components.
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import Card from '../../components/Card/Card';
-import { faFileMedical, faUser } from '@fortawesome/free-solid-svg-icons';
 
 function Usuario() {
     // Render the 'Usuario' page.

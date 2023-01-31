@@ -1,10 +1,11 @@
-#adminPage a {
-    width: auto;
-}
-
 #pageAdminPacientes svg,
 #pageAdminMedicos svg {
     cursor: pointer;
+}
+
+#adminPage .custom-card {
+    width: 100%;
+    max-width: 400px;
 }
 
 #modalAdd .modal-dialog.modal-dialog-centered,
@@ -96,5 +97,6 @@
     #adminPage .custom-card {
         min-width: 400px;
         max-width: 400px;
+        min-height: 178px;
     }
 }

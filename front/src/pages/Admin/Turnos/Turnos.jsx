@@ -1,15 +1,18 @@
+// Utilities.
 import { React, useEffect, useState } from 'react';
-import $ from 'jquery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import $ from 'jquery';
+
+// Components
 import Alert from '../../../components/Alert/Alert';
 import Modal from '../../../components/Modal/Modal';
 import SideNav from '../../../components/SideNav/SideNav';
 import loadingGif from '../../../components/assets/img/loadingGif.gif';
 import Table from '../../../components/Table/Table';
 import NuevoTurno from './NuevoTurno';
-import './styles.css';
 import EditarTurno from './EditarTurno';
+import './styles.css';
 
 function Turnos() {
     // Pagination.
@@ -177,7 +180,7 @@ function Turnos() {
             }
         });
     }
-    
+
 
     /**
      * Function searchPacientes - Makes the search of all active 'Pacientes'.

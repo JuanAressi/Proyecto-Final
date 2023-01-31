@@ -26,7 +26,7 @@ function Agenda() {
     // Checkboxes.
     const [lunes, setLunes] = useState(false);
     const [martes, setMartes] = useState(false);
-    const [miercoles, setMiercoles] = useState(false);
+    const [miércoles, setMiércoles] = useState(false);
     const [jueves, setJueves] = useState(false);
     const [viernes, setViernes] = useState(false);
     const [actual, setActual] = useState(false);
@@ -149,12 +149,12 @@ function Agenda() {
 
     // Handle the btnDisabled state.
     useEffect(() => {
-        if ((lunes || martes || miercoles || jueves || viernes) && (actual || siguiente || proximo) && horaSelected) {
+        if ((lunes || martes || miércoles || jueves || viernes) && (actual || siguiente || proximo) && horaSelected) {
             setBtnDisabled(false);
         } else {
             setBtnDisabled(true);
         }
-    }, [lunes, martes, miercoles, jueves, viernes, actual, siguiente, proximo, horaSelected]);
+    }, [lunes, martes, miércoles, jueves, viernes, actual, siguiente, proximo, horaSelected]);
 
 
 
@@ -191,7 +191,7 @@ function Agenda() {
     //             }
     //         });
     //     });
-    // }, [lunes, martes, miercoles, jueves, viernes]);
+    // }, [lunes, martes, miércoles, jueves, viernes]);
 
 
     /**
@@ -550,15 +550,15 @@ function Agenda() {
 
                                 <div className='d-flex'>
                                     <input
-                                        id='miercoles'
+                                        id='miércoles'
                                         type='checkbox'
                                         className='form-check-input ms-2'
-                                        value={miercoles}
+                                        value={miércoles}
                                         data-id='4'
-                                        onChange={(e) => setMiercoles(e.target.checked)}
+                                        onChange={(e) => setMiércoles(e.target.checked)}
                                     />
 
-                                    <label htmlFor='miercoles' className='form-check-label ms-2'>Miércoles</label>
+                                    <label htmlFor='miércoles' className='form-check-label ms-2'>Miércoles</label>
                                 </div>
 
                                 <div className='d-flex'>
@@ -630,7 +630,7 @@ function Agenda() {
                     </div>
 
                     {/* Calendario */}
-                    <div className='col-sm-12 d-flex justify-content-center'>
+                    {/* <div className='col-sm-12 d-flex justify-content-center'>
                         <Calendar
                             className='box-shadow-dark w-75 pointer-events-none'
                             calendarType={'US'}
@@ -638,7 +638,7 @@ function Agenda() {
                             minDate={new Date()}
                             onChange={(value) => fechaOnChange(value)}
                         />
-                    </div>
+                    </div> */}
 
                     {/* Horas */}
                     <div className='col-sm-12 mt-6'>

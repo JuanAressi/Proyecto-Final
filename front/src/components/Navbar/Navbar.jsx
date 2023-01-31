@@ -4,16 +4,21 @@ import { NavHashLink } from 'react-router-hash-link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../Logo/Logo';
-import UserContext from '../../context/UserContext';
 import './style.css';
 
-function Navbar() {
-    const {user, role, setUser, setRole} = useContext(UserContext);
 
+function Navbar() {
+    const [role, setRole] = useState(null);
     const [isCollapsed, setIsCollapsed] = useState(true);
-    
+
 	useEffect(() => {
-        handleHamburgerMenuContainer();
+        // Get the user from LocalStorage.
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (user) {
+            // Get the user role.
+            setRole(user.rol);
+        }
     }, []);
 
 
@@ -49,9 +54,8 @@ function Navbar() {
      * @return {void}
      */
     const cerrarSesión = () => {
-        // Remove the user information from the context.
-        setUser(null);
-        setRole(null);
+        // Delete the previous user information in LocalStorage.
+        localStorage.removeItem('user');
 
         // Reload to the home page.
         window.location.href = '/';
@@ -69,7 +73,11 @@ function Navbar() {
                             </Link>
 
                             <span id='hamburgerMenuContainer' className='p-4 d-none' onClick={handleHamburgerMenuContainer}>
-                                <FontAwesomeIcon id='hamburgerMenu' className='text-primary fa-2x' icon={faBars} />
+                                <FontAwesomeIcon
+                                    id='hamburgerMenu'
+                                    className='text-primary fa-2x'
+                                    icon={faBars}
+                                />
                             </span>
                         </div>
                         
@@ -105,27 +113,13 @@ function Navbar() {
                                 Contacto
                             </NavHashLink>
 
-                            {/* Si no hay rol */}
-                            {
-                                role === null
-                                && (
-                                    <Link
-                                        to='/login'
-                                        className='nav-link position-relative p-3 mb-0 ms-5 text-dark'
-                                    >
-                                        Ingresar
-                                    </Link>
-                                )
-                            }
-
-                            {/* Si el logueado es un paciente */}
                             {
                                 role === 'paciente'
                                 ? (
-                                    <div class='nav-item dropdown'>
+                                    <div className='nav-item dropdown'>
                                         <span
                                             id='miCuenta'
-                                            class='nav-link dropdown-toggle text-dark'
+                                            className='nav-link dropdown-toggle text-dark'
                                             role='button'
                                             data-bs-toggle='dropdown'
                                             aria-expanded='false'
@@ -133,10 +127,10 @@ function Navbar() {
                                             Mi cuenta
                                         </span>
 
-                                        <ul class='dropdown-menu' aria-labelledby='miCuenta' style={{left: 'calc((100% - 186px) / 2)'}}>
+                                        <ul className='dropdown-menu' aria-labelledby='miCuenta' style={{left: 'calc((100% - 186px) / 2)'}}>
                                             <li>
                                                 <Link
-                                                    class='dropdown-item'
+                                                    className='dropdown-item'
                                                     to='/panel-usuario'
                                                 >
                                                     Panel de usuario
@@ -145,7 +139,7 @@ function Navbar() {
 
                                             <li>
                                                 <span
-                                                    class='dropdown-item'
+                                                    className='dropdown-item'
                                                     onClick={() => cerrarSesión()}
                                                 >
                                                     Cerrar Sesión
@@ -156,16 +150,150 @@ function Navbar() {
                                 )
                                 : role === 'medico' 
                                 ? (
-                                    <Link
-                                        to='/panel-paciente'
-                                    >Médico</Link>
+                                    <div className='nav-item dropdown'>
+                                        <span
+                                            id='miCuenta'
+                                            className='nav-link dropdown-toggle text-dark'
+                                            role='button'
+                                            data-bs-toggle='dropdown'
+                                            aria-expanded='false'
+                                        >
+                                            Mi cuenta
+                                        </span>
+
+                                        <ul className='dropdown-menu' aria-labelledby='miCuenta' style={{left: 'calc((100% - 174px) / 2)'}}>
+                                            <li>
+                                                <Link
+                                                    className='dropdown-item'
+                                                    to='/panel-medico'
+                                                >
+                                                    Panel de medico
+                                                </Link>
+                                            </li>
+
+                                            <li>
+                                                <span
+                                                    className='dropdown-item'
+                                                    onClick={() => cerrarSesión()}
+                                                >
+                                                    Cerrar Sesión
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                )
+                                : role === 'recepcionista'
+                                ? (
+                                    <div className='nav-item dropdown'>
+                                        <span
+                                            id='miCuenta'
+                                            className='nav-link dropdown-toggle text-dark'
+                                            role='button'
+                                            data-bs-toggle='dropdown'
+                                            aria-expanded='false'
+                                        >
+                                            Mi cuenta
+                                        </span>
+
+                                        <ul className='dropdown-menu' aria-labelledby='miCuenta' style={{left: 'calc((100% - 235px) / 2)'}}>
+                                            <li>
+                                                <Link
+                                                    className='dropdown-item'
+                                                    to='/panel-recepcionista'
+                                                >
+                                                    Panel de recepcionista
+                                                </Link>
+                                            </li>
+
+                                            <li>
+                                                <span
+                                                    className='dropdown-item'
+                                                    onClick={() => cerrarSesión()}
+                                                >
+                                                    Cerrar Sesión
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 )
                                 : role === 'admin'
                                 ? (
+                                    <div className='nav-item dropdown'>
+                                        <span
+                                            id='miCuenta'
+                                            className='nav-link dropdown-toggle text-dark'
+                                            role='button'
+                                            data-bs-toggle='dropdown'
+                                            aria-expanded='false'
+                                        >
+                                            Mi cuenta
+                                        </span>
+
+                                        <ul className='dropdown-menu' aria-labelledby='miCuenta' style={{left: 'calc((100% - 165px) / 2)'}}>
+                                            <li>
+                                                <Link
+                                                    className='dropdown-item'
+                                                    to='/panel-admin'
+                                                >
+                                                    Panel de admin
+                                                </Link>
+                                            </li>
+
+                                            <li>
+                                                <span
+                                                    className='dropdown-item'
+                                                    onClick={() => cerrarSesión()}
+                                                >
+                                                    Cerrar Sesión
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                )
+                                : role === 'soporte'
+                                ? (
+                                    <div className='nav-item dropdown'>
+                                        <span
+                                            id='miCuenta'
+                                            className='nav-link dropdown-toggle text-dark'
+                                            role='button'
+                                            data-bs-toggle='dropdown'
+                                            aria-expanded='false'
+                                        >
+                                            Mi cuenta
+                                        </span>
+
+                                        <ul className='dropdown-menu' aria-labelledby='miCuenta' style={{left: 'calc((100% - 186px) / 2)'}}>
+                                            <li>
+                                                <Link
+                                                    className='dropdown-item'
+                                                    to='/panel-soporte'
+                                                >
+                                                    Panel de soporte
+                                                </Link>
+                                            </li>
+
+                                            <li>
+                                                <span
+                                                    className='dropdown-item'
+                                                    onClick={() => cerrarSesión()}
+                                                >
+                                                    Cerrar Sesión
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                )
+                                : role === null
+                                ? (
                                     <Link
-                                        to='/panel-paciente'
-                                    >Admin</Link>
-                                ) : null
+                                        to='/login'
+                                        className='nav-link position-relative p-3 mb-0 text-dark'
+                                    >
+                                        Ingresar
+                                    </Link>
+                                )
+                                : null
                             }
                         </div>
                 </div>

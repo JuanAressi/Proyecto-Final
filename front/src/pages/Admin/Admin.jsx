@@ -1,13 +1,27 @@
-import React from 'react';
+import { React, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { faUsers, faUserDoctor, faFileMedical, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faUserDoctor, faFileLines, faFileMedical, faPlus } from '@fortawesome/free-solid-svg-icons';
 import SideNav from '../../components/SideNav/SideNav';
 import Card from '../../components/Card/Card';
 import './style.css';
 
 function Admin() {
-    const [rolUser, setRolUser] = React.useState('medico');
+    const [role, setRole] = useState('');
+    const [nombre, setNombre] = useState('');
+    const [apellido, setApellido] = useState('');
+    
+	useEffect(() => {
+        // Get the user from LocalStorage.
+        const user = JSON.parse(localStorage.getItem('user'));
 
+        // Set the user role.
+        setRole(user.rol);
+        setNombre(user.nombre);
+        setApellido(user.apellido);
+    }, []);
+
+
+    // Render the 'Admin' page.
     return (
         <div id='adminPage' className='d-flex bg-lightgray'>
             <SideNav
@@ -15,15 +29,15 @@ function Admin() {
             />
 
             <div className='container p-5'>
-                <h1 className='text-center mt-5'>Bienvenido Admin</h1>
+                <h1 className='text-center mt-5'>¡Bienvenido {nombre} {apellido}!</h1>
 
-                <div className='row mt-5'>
+                <div className='row d-flex justify-content-center mt-5'>
                     {/* Mi Agenda */}
                     {
-                        rolUser === 'medico'
+                        role === 'medico'
                         && <div className='col-md-6 col-sm-12 d-flex justify-content-center mb-2'>
                             <Link
-                                to='/panel-admin/agenda'
+                                to='/panel-medico/agenda'
                             >
                                 <Card 
                                     title='Mi Agenda'
@@ -37,7 +51,7 @@ function Admin() {
                     {/* Pacientes */}
                     <div className='col-md-6 col-sm-12 d-flex justify-content-center mb-2'>
                         <Link
-                            to='/panel-admin/pacientes'
+                            to={'/panel-' + role + '/pacientes'}
                         >
                             <Card 
                                 title='Gestionar Pacientes'
@@ -48,34 +62,37 @@ function Admin() {
                     </div>
                     
                     {/* Medicos */}
-                    <div className='col-md-6 col-sm-12 d-flex justify-content-center mb-2'>
-                        <Link
-                            to='/panel-admin/medicos'
-                        >
-                            <Card 
-                                title='Gestionar Medicos'
-                                text='Vea información detallada de cada uno de los medicos'
-                                icon={faUserDoctor}
-                            />
-                        </Link>
-                    </div>
+                    {
+                        (role === 'administrativo' || role === 'admin' || role === 'soporte')
+                        && <div className='col-md-6 col-sm-12 d-flex justify-content-center mb-2'>
+                            <Link
+                                to={'/panel-' + role + '/medicos'}
+                            >
+                                <Card 
+                                    title='Gestionar Medicos'
+                                    text='Vea información detallada de cada uno de los medicos'
+                                    icon={faUserDoctor}
+                                />
+                            </Link>
+                        </div>
+                    }
 
                     {/* Turnos */}
                     <div className='col-md-6 col-sm-12 d-flex justify-content-center mb-2'>
                         <Link
-                            to='/panel-admin/turnos'
+                            to={'/panel-' + role + '/turnos'}
                         >
                             <Card 
-                                title='Gestionar Turnos'
+                                title={role === 'medico' ? 'Gestionar mis Turnos' : 'Gestionar Turnos'}
                                 text='Vea el registro de todos los turnos asignados'
-                                icon={faFileMedical}
+                                icon={faFileLines}
                             />
                         </Link>
                     </div>
 
                     {/* Reportes */}
                     {
-                        rolUser !== 'medico'
+                        (role === 'administrativo' || role === 'admin' || role === 'soporte')
                         && <div className='col-md-6 col-sm-12 d-flex justify-content-center mb-2'>
                             <Link
                                 to='/panel-admin/reportes'
@@ -83,7 +100,7 @@ function Admin() {
                                 <Card 
                                     title='Gestionar Reportes'
                                     text='Cree y administre los distintos reportes'
-                                    icon={faPlus}
+                                    icon={faFileMedical}
                                 />
                             </Link>
                         </div>

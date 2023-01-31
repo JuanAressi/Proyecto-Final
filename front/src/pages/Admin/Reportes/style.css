@@ -1,0 +1,15 @@
+#reportes #tipoReporte :nth-child(1) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#reportes #tipoReporte :nth-child(2) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: -1px;
+}
+
+#reportes button:focus {
+    outline: none;
+    box-shadow: none;
+}

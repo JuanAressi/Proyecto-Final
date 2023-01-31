@@ -1,12 +1,22 @@
-import React from 'react';
+import { React, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faUser, faUserDoctor, faFileMedical, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faUser, faUserDoctor, faFileLines, faFileMedical, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../Logo/Logo';
 import './style.css';
 
-function SideNav( { active } ) {
-    const [rolUser, setRolUser] = React.useState('medico');
+function SideNav({ active }) {
+    const [role, setRole] = useState('');
+
+	useEffect(() => {
+        // Get the user from LocalStorage.
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (user) {
+            // Get the user role.
+            setRole(user.rol);
+        }
+    }, []);
 
     // Check which screen is the active one.
     let dashboard = '';
@@ -14,6 +24,7 @@ function SideNav( { active } ) {
     let pacientes = '';
     let medicos   = '';
     let turnos    = '';
+    let reportes  = '';
 
     if (active === 'dashboard') {
         dashboard = 'active';
@@ -25,18 +36,26 @@ function SideNav( { active } ) {
         medicos = 'active';
     } else if (active === 'turnos') {
         turnos = 'active';
+    } else if (active === 'reportes') {
+        reportes = 'active';
     }
 
 
     return (
         <div id='sideNav' className='d-flex flex-column bg-primary'>
-            <Link to='/panel-admin' className='mt-3' >
+            <Link
+                to='/panel-admin'
+                className='mt-3'
+            >
                 <Logo type='primary' />
             </Link>
 
             <div className='nav-container d-flex flex-column justify-content-between mt-5'>
                 <div className='d-flex flex-column justify-content-start align-items-center h-100'>
-                    <Link to='/panel-admin' className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + dashboard}>
+                    <Link
+                        to={'/panel-' + role}
+                        className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + dashboard}
+                    >
                         <FontAwesomeIcon
                             className='text-white me-3'
                             icon={faBars}
@@ -47,9 +66,9 @@ function SideNav( { active } ) {
 
                     {/* Mi Agenda */}
                     {
-                        rolUser === 'medico'
+                        role === 'medico'
                         && <Link
-                            to='/panel-admin/agenda'
+                            to='/panel-medico/agenda'
                             className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + agenda}
                         >
                             <FontAwesomeIcon
@@ -61,7 +80,11 @@ function SideNav( { active } ) {
                         </Link>
                     }
 
-                    <Link to='/panel-admin/pacientes' className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + pacientes}>
+                    {/* Pacientes */}
+                    <Link
+                        to={'/panel-' + role + '/pacientes'}
+                        className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + pacientes}
+                    >
                         <FontAwesomeIcon
                             className='text-white me-3'
                             icon={faUser}
@@ -69,27 +92,56 @@ function SideNav( { active } ) {
 
                         <h5 className='text-uppercase mb-0'>Pacientes</h5>
                     </Link>
-                    
-                    <Link to='/panel-admin/medicos' className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + medicos}>
-                        <FontAwesomeIcon
-                            className='text-white me-3'
-                            icon={faUserDoctor}
-                        />
 
-                        <h5 className='text-uppercase mb-0'>Medicos</h5>
-                    </Link>
+                    {/* Medicos */}
+                    {
+                        (role === 'administrativo' || role === 'admin' || role === 'soporte')
+                        && <Link
+                            to={'/panel-' + role + '/medicos'}
+                            className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + medicos}
+                        >
+                            <FontAwesomeIcon
+                                className='text-white me-3'
+                                icon={faUserDoctor}
+                            />
+    
+                            <h5 className='text-uppercase mb-0'>Medicos</h5>
+                        </Link>
+                    }
                     
-                    <Link to='/panel-admin/turnos' className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + turnos}>
+                    <Link
+                        to={'/panel-' + role + '/turnos'}
+                        className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + turnos}
+                    >
                         <FontAwesomeIcon
                             className='text-white me-3'
-                            icon={faFileMedical}
+                            icon={faFileLines}
                         />
 
                         <h5 className='text-uppercase mb-0'>Turnos</h5>
                     </Link>
+
+                    {/* Reportes */}
+                    {
+                        (role === 'administrativo' || role === 'admin' || role === 'soporte')
+                        && <Link
+                            to='/panel-admin/reportes'
+                            className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + reportes}
+                        >
+                            <FontAwesomeIcon
+                                className='text-white me-3'
+                                icon={faFileMedical}
+                            />
+                                
+                            <h5 className='text-uppercase mb-0'>Reportes</h5>
+                        </Link>
+                    }
                 </div>
                 
-                <Link to='/' className='nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4'>
+                <Link
+                    to='/'
+                    className='nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4'
+                >
                     <FontAwesomeIcon
                         className='text-white me-3'
                         icon={faArrowLeft}
