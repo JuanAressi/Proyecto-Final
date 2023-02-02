@@ -12,7 +12,8 @@ import './style.css'
 function Reportes() {
     // Utilities.
     const [showSpinner, setShowSpinner] = useState(false);
-    const [btnDisabled, setBtnDisabled] = useState(true);
+    const [historiaClinicaBtnDisabled, setHistoriaClinicaBtnDisabled] = useState(true);
+    const [turnosBtnDisabled, setTurnosBtnDisabled] = useState(false);
 
     // Alert. 
     const [showAlert, setShowAlert] = useState(false);
@@ -39,37 +40,13 @@ function Reportes() {
     // Fechas.
     const [fechaDesde, setFechaDesde] = useState('');
     const [fechaHasta, setFechaHasta] = useState('');
+
     
     // Search 'Medicos' and 'Pacientes' when component loads (delay 0s).
     useEffect(() => {
         searchPacientes();
         searchMedicos();
     }, []);
-
-
-    /**
-     * Function searchPacientes - Makes the search of all active 'Pacientes'.
-     *
-     * @return {void}
-     */
-    const searchPacientes = () => {
-        $.ajax({
-            url: process.env.REACT_APP_API_ROOT + 'pacientes',
-            type: 'GET',
-            dataType: 'json',
-            data: {
-                'page': '',
-                'pagination': '',
-                'search': '',
-            },
-            success: function (response) {
-                setPacientes(response.pacientes);
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
-    }
 
 
     /**
@@ -111,6 +88,26 @@ function Reportes() {
                 setSelectedButton('turnosButton');
             }
         }
+    }
+
+
+    /**
+     * Function searchPacientes - Makes the search of all active 'Pacientes'.
+     *
+     * @return {void}
+     */
+    const searchPacientes = () => {
+        $.ajax({
+            url: process.env.REACT_APP_API_ROOT + 'pacientes/historia_clinica',
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                setPacientes(response.pacientes);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
     }
 
 
@@ -247,6 +244,7 @@ function Reportes() {
      */
     const setClickedPaciente = (target) => {
         // Get the 'data-id' and 'data-position' attribute of the target.
+        const id       = target.getAttribute('data-id');
         const position = target.getAttribute('data-position');
 
         // Get the divs.
@@ -255,12 +253,15 @@ function Reportes() {
         // Hide the 'profesionales' div.
         setPacienteShowList('d-none');
 
+        // Set 'paciente' state.
+        setPaciente(id);
+
         // Set the 'profesional' input value and the class.
         input.value = pacientes[position].apellido + ', ' + pacientes[position].nombre;
         input.classList.add('is-valid');
 
         // Enable button.
-        setBtnDisabled(false);
+        setHistoriaClinicaBtnDisabled(false);
     }
 
 
@@ -287,6 +288,7 @@ function Reportes() {
             }
         });
     }
+
 
     /**
      * Function medicoOnFocus - Handle the focus event of the 'Medico' input. If the 'profesionales' div is hidden, show the message.
@@ -345,16 +347,7 @@ function Reportes() {
      */
     const filterMedicos = (input) => {
         // Delete the current 'medico' in case there is one.
-        // setTurnoMedico('');
-        
-        // Disable the 'Calendar' container.
-        // setFechaEnabled('disabled');
-
-        // Disable the 'Horas' container.
-        // setHoraEnabled('disabled');
-        
-        // Reset the values of 'Fecha' and 'Hora'.
-        // resetFechaYHora();
+        setMedico('');
 
         // Remove 'is-valid' class from the 'medico' input.
         const medicoInput = document.getElementById('medico');
@@ -437,23 +430,217 @@ function Reportes() {
         const input = document.getElementById('medico');
 
         // Set the id of the 'Medico' as the selected 'Medico'.
-        // setTurnoMedico(id);
-
-        // Get the dates for the selected 'Medico'.
-        // getFechas(id);
-
-        // Hide the 'profesionales' div.
-        // setMedicoShowList('d-none');
+        setMedico(id);
 
         // Set the 'profesional' input value and the class.
         input.value = medicos[position].apellido + ', ' + medicos[position].nombre;
         input.classList.add('is-valid');
+    }
 
-        // Reset the 'fecha' and 'hora' states.
-        // resetFechaYHora();
 
-        // Enable the 'Calendar' container.
-        // setFechaEnabled('');
+    /**
+     * Function generarReporte - Generates the specified report.
+     *
+     * @param {string} report - The report button selected.
+     *
+     * @return {void}
+     */
+    const generarReporte = (report) => {
+        // Change the 'showSpinner' state.
+        setShowSpinner(true);
+
+        // Change the buttons state.
+        setHistoriaClinicaBtnDisabled(true);
+        // setTurnosBtnDisabled(true);
+    
+        if (report === 'historiaClinicaButton') {
+            // Get the 'paciente' input value.
+            const pacienteInput = document.getElementById('paciente');
+
+            // If the 'paciente' input is empty, show alert, otherwise, generate the report.
+            if (pacienteInput.value === '') {
+                setAlertType('danger');
+                setAlertMessage('Debe seleccionar un paciente');
+                setShowAlert(true);
+            } else {
+                // Generate the report.
+                $.ajax({
+                    url: process.env.REACT_APP_API_ROOT + 'reportes/historia-clinica/' + paciente,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        // Change the 'showSpinner' state.
+                        setShowSpinner(false);
+
+                        if (response.success) {
+                            // Download the report.
+                            downloadReport(response.headers, response.data, 'historia-clinica');
+
+                            // Change the Alert state.
+                            setAlertType('success');
+                        } else {
+                            // Change the Alert state.
+                            setAlertType('danger');
+                        }
+
+                        // Change the Alert state.
+                        setAlertMessage(response.message);
+                        setShowAlert(true);
+
+                        // Close alert message after 4 seconds.
+                        setTimeout(function () {
+                            setShowAlert(false);
+                        }, 4000);
+                    },
+                    error: function (error) {
+                        // Change the 'showSpinner' state.
+                        setShowSpinner(false);
+
+                        // Change the 'historiaClinicaBtnDisabled' state.
+                        setHistoriaClinicaBtnDisabled(false);
+
+                        // Change the 'turnosBtnDisabled' state.
+                        setTurnosBtnDisabled(false);
+
+                        console.log(error);
+                    }
+                });
+            }
+        } else if (report === 'turnosButton') {
+            // Generate the report.
+            $.ajax({
+                url: process.env.REACT_APP_API_ROOT + 'reportes/turnos-programados',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    'fechaDesde': fechaDesde,
+                    'fechaHasta': fechaHasta,
+                    'medico': medico,
+                },
+                success: function (response) {
+                    // Change the 'showSpinner' state.
+                    setShowSpinner(false);
+
+                    if (response.success) {    
+                        // Download the report.
+                        downloadReport(response.headers, response.data, 'turnos-programados');
+    
+                        // Change the Alert state.
+                        setAlertType('success');
+                    } else {
+                        // Change the Alert state.
+                        setAlertType('danger');
+                    }
+
+                    // Change the Alert state.
+                    setAlertMessage(response.message);
+                    setShowAlert(true);
+
+                    // Close alert message after 4 seconds.
+                    setTimeout(function () {
+                        setShowAlert(false);
+                    }, 4000);
+                },
+                error: function (error) {
+                    // Change the 'showSpinner' state.
+                    setShowSpinner(false);
+
+                    // Change the 'historiaClinicaBtnDisabled' state.
+                    setHistoriaClinicaBtnDisabled(false);
+
+                    // Change the 'turnosBtnDisabled' state.
+                    setTurnosBtnDisabled(false);
+
+                    console.log(error);
+                }
+            });
+        }
+    }
+
+
+    /**
+     * Function downloadReport - Downloads the specified report.
+     *
+     * @param {string} headers - The headers of the report.
+     * @param {array} data - The data of the report.
+     * @param {string} name - The name of the file.
+     * 
+     * @return {void}
+     */
+    const downloadReport = (headers, data, name) => {
+        // Transform the data.
+        let csvData = headers;
+
+        console.log('data: ', data);
+
+        // Loop through the data and add each value to the csvData.
+        data.forEach(item => {
+            let row = '';
+
+            Object.values(item).forEach(value => {
+                // Add each value to the row.
+                row += value + ',';
+            });
+
+            // End the row.
+            row += '\n';
+
+            // Concat the row to the csvData.
+            csvData += row;
+        });
+
+        // Create the element to handle the download.
+        const element = document.createElement('a');
+
+        // Set necessary attributes.
+        element.setAttribute('href', 'data:application/octet-stream,' + escape(csvData));
+        element.setAttribute('download', name + '.csv');
+        element.style.display = 'none';
+
+        // Add to the DOM.
+        document.body.appendChild(element);
+
+        // Emulate click.
+        element.click();
+
+        // Remove from the DOM.
+        document.body.removeChild(element);
+
+        // Change the buttons state.
+        setHistoriaClinicaBtnDisabled(false);
+        setTurnosBtnDisabled(false);
+    }
+
+
+    /**
+     * Function formatDNI - Formats the DNI input and sets the value.
+     *
+     * @param  {string} value - The value of the input.
+     *
+     * @return {void}
+     */
+    const formatDNI = (value) => {
+        let dni = value.replace(/\D/g, '');
+
+        if (dni.length === 4) {
+            dni = dni.replace(/(\d{1})/, '$1.');
+        } else if (dni.length === 5) {
+            dni = dni.replace(/(\d{2})/, '$1.');
+        } else if (dni.length === 6) {
+            dni = dni.replace(/(\d{3})/, '$1.');
+        } else if (dni.length === 7) {
+            dni = dni.replace(/(\d{1})(\d{3})/, '$1.$2.');
+        } else if (dni.length === 8) {
+            dni = dni.replace(/(\d{2})(\d{3})/, '$1.$2.');
+        } else if (dni.length === 9) {
+            dni = dni.replace(/(\d{2})(\d{3})(\d{3})/, '$1.$2.$3');
+        }
+
+        if (dni.length > 10) {
+            dni = dni.substring(0, 10);
+        }
+
+        return dni;
     }
 
 
@@ -461,7 +648,7 @@ function Reportes() {
     return (
         <div id='reportes'className='d-flex bg-lightgray'>
             <SideNav
-                active='agenda'
+                active='reportes'
             />
 
             <div className='container p-5'>
@@ -480,7 +667,7 @@ function Reportes() {
                     />
                         
                     : null
-                }                
+                }
 
                 <div className='row d-flex justify-content-center'>
                     <div className='col-sm-12'>
@@ -500,12 +687,13 @@ function Reportes() {
                                 className='btn bg-white border-primary text-primary'
                                 onClick={(event) => selectReporte(event.target)}
                             >
-                                Turnos
+                                Turnos Programados
                             </button>
                         </div>
                     </div>
 
                     {
+                    // Historia Clinica Report.
                     selectedButton === 'historiaClinicaButton'
                     ? <div className='col-sm-12 mt-6'>
                         {/* Paciente */}
@@ -541,7 +729,7 @@ function Reportes() {
                                             key={index}
                                             onClick={(e) => setClickedPaciente(e.target)}
                                         >
-                                            <p className='mb-0 text-black'>{pacienteItem.apellido}, {pacienteItem.nombre}</p>
+                                            <p className='mb-0 text-black' style={{pointerEvents: 'none'}}>{pacienteItem.apellido}, {pacienteItem.nombre} - {formatDNI(pacienteItem.dni)}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -556,14 +744,15 @@ function Reportes() {
                                 <button
                                     id='generarReporteButton'
                                     className='btn bg-primary text-white box-shadow-dark w-66 mb-3'
-                                    // onClick={() => generarReporte
-                                    disabled={btnDisabled}
+                                    onClick={() => generarReporte(selectedButton)}
+                                    disabled={historiaClinicaBtnDisabled}
                                 >
                                     Generar Reporte y Descargar
                                 </button>
                             </div>
                         </div>
                     </div>
+                    // Turnos Report.
                     : selectedButton === 'turnosButton'
                     ? <div className='col-sm-12 mt-6'>
                         {/* Fechas */}
@@ -581,7 +770,8 @@ function Reportes() {
                                     placeholder='Fecha Desde'
                                     aria-label='Fecha Desde'
                                     autoComplete='off'
-                                    // onChange={(event) => setFechaDesde(event.target.value)}
+                                    value={fechaDesde}
+                                    onChange={(event) => setFechaDesde(event.target.value)}
                                 />
                                 
                                 <p className='small mt-1 ms-1'>Dejar vacío para no filtrar por fecha desde</p>
@@ -598,7 +788,8 @@ function Reportes() {
                                     placeholder='Fecha Hasta'
                                     aria-label='Fecha Hasta'
                                     autoComplete='off'
-                                    // onChange={(event) => setFechaHasta(event.target.value)}
+                                    value={fechaHasta}
+                                    onChange={(event) => setFechaHasta(event.target.value)}
                                 />
 
                                 <p className='small mt-1 ms-1'>Dejar vacío para no filtrar por fecha hasta</p>
@@ -653,8 +844,8 @@ function Reportes() {
                                 <button
                                     id='generarReporteButton'
                                     className='btn bg-primary text-white box-shadow-dark w-66 mb-3'
-                                    // onClick={() => generarReporte
-                                    disabled={fechaDesde === '' || fechaHasta === '' || medico === ''}
+                                    onClick={() => generarReporte(selectedButton)}
+                                    disabled={turnosBtnDisabled}
                                 >
                                     Generar Reporte y Descargar
                                 </button>

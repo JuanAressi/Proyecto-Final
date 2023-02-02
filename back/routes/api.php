@@ -29,20 +29,25 @@ Route::delete('usuarios/{id}', 'App\Http\Controllers\UsuariosController@delete')
 
 // Pacientes.
 Route::get('pacientes', 'App\Http\Controllers\PacientesController@getAll');
-Route::get('pacientes/{id}', 'App\Http\Controllers\PacientesController@getById');
+Route::get('pacientes/{id}', 'App\Http\Controllers\PacientesController@getById')->where('id', '[0-9]+');
 Route::post('pacientes', 'App\Http\Controllers\PacientesController@addNew');
-Route::put('pacientes/{id}', 'App\Http\Controllers\PacientesController@update');
-Route::get('pacientes/{id}/historia_clinica', 'App\Http\Controllers\PacientesController@getHistoriaClinica');
+Route::put('pacientes/{id}', 'App\Http\Controllers\PacientesController@update')->where('id', '[0-9]+');
+Route::get('pacientes/{id}/historia_clinica', 'App\Http\Controllers\PacientesController@getHistoriaClinica')->where('id', '[0-9]+');
+Route::get('pacientes/historia_clinica/', 'App\Http\Controllers\PacientesController@getAllWithHistoriaClinica');
 
 // Medicos.
 Route::get('medicos', 'App\Http\Controllers\MedicosController@getAll');
-Route::get('medicos/{id}/fechas', 'App\Http\Controllers\MedicosController@getFechas');
+Route::get('medicos/{id}/fechas', 'App\Http\Controllers\MedicosController@getFechas')->where('id', '[0-9]+');
 Route::get('medicos/{fecha}/horas', 'App\Http\Controllers\MedicosController@getHoras');
 Route::post('medicos/agenda', 'App\Http\Controllers\MedicosController@addAgenda');
 
 // Turnos.
 Route::get('turnos', 'App\Http\Controllers\TurnosController@getAll');
 Route::post('turnos', 'App\Http\Controllers\TurnosController@addNew');
-Route::put('turnos/{id}', 'App\Http\Controllers\TurnosController@update');
-Route::delete('turnos/{id}', 'App\Http\Controllers\TurnosController@delete');
-Route::get('turnos/paciente/{id}', 'App\Http\Controllers\TurnosController@getAllById');
+Route::put('turnos/{id}', 'App\Http\Controllers\TurnosController@update')->where('id', '[0-9]+');
+Route::delete('turnos/{id}', 'App\Http\Controllers\TurnosController@delete')->where('id', '[0-9]+');
+Route::get('turnos/paciente/{id}', 'App\Http\Controllers\TurnosController@getAllById')->where('id', '[0-9]+');
+
+// Reportes.
+Route::get('reportes/historia-clinica/{id}', 'App\Http\Controllers\ReportesController@createHistoriaClinica')->where('id', '[0-9]+');
+Route::get('reportes/turnos-programados', 'App\Http\Controllers\ReportesController@createTurnosProgramados');

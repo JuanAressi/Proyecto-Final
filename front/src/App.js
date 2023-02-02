@@ -65,6 +65,28 @@ function App() {
                 </Route>
 
 
+                {/* Modulo de administrativo */}
+                <Route path='/panel-administrativo' element={<ProtectedRoute rol='administrativo' />}>
+                    <Route path='/panel-administrativo' element={<Admin />} />
+                </Route>
+
+                <Route path='/panel-administrativo/pacientes' element={<ProtectedRoute rol='administrativo' />}>
+                    <Route path='/panel-administrativo/pacientes' element={<AdminPacientes />} />
+                </Route>
+
+                <Route path='/panel-administrativo/medicos' element={<ProtectedRoute rol='administrativo' />}>
+                    <Route path='/panel-administrativo/medicos' element={<AdminMedicos />} />
+                </Route>
+
+                <Route path='/panel-administrativo/turnos' element={<ProtectedRoute rol='administrativo' />}>                    
+                    <Route path='/panel-administrativo/turnos' element={<AdminTurnos />} />
+                </Route>
+
+                <Route path='/panel-administrativo/reportes' element={<ProtectedRoute rol='administrativo' />}>                    
+                    <Route path='/panel-administrativo/reportes' element={<AdminReportes />} />
+                </Route>
+
+
                 {/* Modulo de admin */}
                 <Route path='/panel-admin' element={<ProtectedRoute rol='admin' />}>
                     <Route path='/panel-admin' element={<Admin />} />
@@ -84,6 +106,28 @@ function App() {
 
                 <Route path='/panel-admin/reportes' element={<ProtectedRoute rol='admin' />}>                    
                     <Route path='/panel-admin/reportes' element={<AdminReportes />} />
+                </Route>
+
+
+                {/* Modulo de soporte */}
+                <Route path='/panel-soporte' element={<ProtectedRoute rol='soporte' />}>
+                    <Route path='/panel-soporte' element={<Admin />} />
+                </Route>
+
+                <Route path='/panel-soporte/pacientes' element={<ProtectedRoute rol='soporte' />}>
+                    <Route path='/panel-soporte/pacientes' element={<AdminPacientes />} />
+                </Route>
+
+                <Route path='/panel-soporte/medicos' element={<ProtectedRoute rol='soporte' />}>
+                    <Route path='/panel-soporte/medicos' element={<AdminMedicos />} />
+                </Route>
+
+                <Route path='/panel-soporte/turnos' element={<ProtectedRoute rol='soporte' />}>                    
+                    <Route path='/panel-soporte/turnos' element={<AdminTurnos />} />
+                </Route>
+
+                <Route path='/panel-soporte/reportes' element={<ProtectedRoute rol='soporte' />}>                    
+                    <Route path='/panel-soporte/reportes' element={<AdminReportes />} />
                 </Route>
             </Routes>
         </Router>

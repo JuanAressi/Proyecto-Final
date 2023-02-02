@@ -185,6 +185,14 @@ class UsuariosSeeder extends Seeder
             4 => 'Particular',
         );
 
+        // Estados de Turnos.
+        $estados_turnos = array(
+            0 => 'reservado',
+            1 => 'confirmado',
+            2 => 'cancelado',
+            3 => 'concretado',
+        );
+
         // Alergias.
         $alergias = array(
             0 => null,
@@ -240,10 +248,10 @@ class UsuariosSeeder extends Seeder
         $admin->apellido         = 'Ferracuti';
         $admin->email            = 'silferra85@gmail.com';
         $admin->contraseña       = md5('SilvanaFerracuti1');
-        $admin->dni              = '';
-        $admin->fecha_nacimiento = '01-01-1987';
+        $admin->dni              = '31300914';
+        $admin->fecha_nacimiento = '04-02-1985';
         $admin->genero           = 'Femenino';
-        $admin->telefono         = '';
+        $admin->telefono         = '3413366082';
         $admin->estado           = 'activo';
         $admin->rol              = 'admin';
         $admin->save();
@@ -254,10 +262,10 @@ class UsuariosSeeder extends Seeder
         $admin->apellido         = 'Guaglianono';
         $admin->email            = 'guaglianonojesica@gmail.com';
         $admin->contraseña       = md5('JesicaGuaglianono1');
-        $admin->dni              = '1';
-        $admin->fecha_nacimiento = '01-01-1990';
+        $admin->dni              = '36003567';
+        $admin->fecha_nacimiento = '31-08-1991';
         $admin->genero           = 'Femenino';
-        $admin->telefono         = '';
+        $admin->telefono         = '3412115676';
         $admin->estado           = 'activo';
         $admin->rol              = 'admin';
         $admin->save();
@@ -531,9 +539,10 @@ class UsuariosSeeder extends Seeder
             $usuario->save();
         }
 
+        $counter = 0;
 
         // Create Turnos.
-        for ($i = 0; $i < 500; $i++) {
+        do {
             // Create Turno.
             $turno = new Turnos();
 
@@ -541,10 +550,25 @@ class UsuariosSeeder extends Seeder
             $turno->id_medico   = rand(770, 790);
             $turno->dia         = date('d-m-Y', strtotime('+' . rand(0, 30) . ' days'));
             $turno->hora        = rand(8, 18) . ':00';
-            $turno->estado      = 'pendiente';
+            $turno->estado      = $estados_turnos[rand(0, count($estados_turnos) - 1)];
 
-            $turno->save();
-        }
+            // Verify if the same turno already exists.
+            $turno_exists = Turnos::where('id_medico', $turno->id_medico)
+                ->where('dia', $turno->dia)
+                ->where('hora', $turno->hora)
+                ->first();
+
+            if ($turno_exists) {
+                continue;
+            } else {
+                // Verify if the Turno is not a weekend.
+                if (date('N', strtotime($turno->dia)) < 6) {
+                    $counter++;
+
+                    $turno->save();
+                }
+            }
+        } while ($counter++ < 1000);
 
         for ($j = 758; $j < 778; $j++) {
             // Loop trough 40 days, not counting the weekends.
