@@ -13,10 +13,9 @@ class HistoriaClinica extends Model
         'id_paciente',
         'id_medico',
         'fecha',
-        'antecedentes',
         'motivo_consulta',
-        'alergias',
         'diagnostico',
+        'estado',
     ];
 
     protected $table = 'historia_clinica';

@@ -486,7 +486,7 @@ function Agenda() {
                     <h1 id='pageTitle' className='display-3 text-primary text-shadow-dark me-4'>Mi Agenda</h1>
 
                     <div style={{width: '40px'}}>
-                        {showSpinner && <img src={loadingGif} alt='wait until the page loads' height='20px'/>}
+                        {showSpinner && <img src={loadingGif} alt='Espera a que termine de cargar' height='20px'/>}
                     </div>
 
                     <button

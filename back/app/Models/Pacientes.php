@@ -14,6 +14,7 @@ class Pacientes extends Model
         'obra_social',
         'numero_obra_social',
         'historia_clinica',
-        'turnos',
+        'antecedentes',
+        'alergias',
     ];
 }

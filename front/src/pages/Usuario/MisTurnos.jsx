@@ -13,8 +13,6 @@ import loadingGif from '../../components/assets/img/loadingGif.gif';
 import EditarTurno from './EditarTurno';
 
 function MisTurnos() {
-    const idUser = 753;
-
     // Pagination.
     const [lastShowPerPage, setLastShowPerPage] = useState(10);
     const [lastPage, setLastPage] = useState(1);
@@ -33,6 +31,20 @@ function MisTurnos() {
     const [turnoFecha, setTurnoFecha] = useState('');
     const [turnoHora, setTurnoHora] = useState('');
     const [turnoEstado, setTurnoEstado] = useState('');
+
+    // User.
+    const [idUser, setIdUser] = useState(0);
+
+    
+	useEffect(() => {
+        // Get the user from LocalStorage.
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (user) {
+            // Get the user role.
+            setIdUser(user.id);
+        }
+    }, []);
 
 
     // Search 'Turnos' when 'page' changes (delay 0s).
@@ -82,6 +94,8 @@ function MisTurnos() {
         // Show spinner.
         setShowSpinner(true);
 
+        console.log('idUser: ', idUser);
+
         $.ajax({
             url: process.env.REACT_APP_API_ROOT + 'turnos/paciente/' + idUser,
             type: 'GET',
@@ -90,7 +104,6 @@ function MisTurnos() {
                 'page': page,
                 'pagination': showPerPage,
                 'search': searchInput,
-                'id_usuario': idUser,
             },
             success: function (response) {
                 // Scroll to top.

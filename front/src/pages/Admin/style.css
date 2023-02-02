@@ -10,7 +10,8 @@
 
 #modalAdd .modal-dialog.modal-dialog-centered,
 #modalEdit .modal-dialog.modal-dialog-centered,
-#modalHistoriaClinica .modal-dialog.modal-dialog-centered {
+#modalNewHistoriaClinica .modal-dialog.modal-dialog-centered,
+#modalEditHistoriaClinica .modal-dialog.modal-dialog-centered {
     max-width: 992px!important;
     margin: 1.5rem auto;
 }

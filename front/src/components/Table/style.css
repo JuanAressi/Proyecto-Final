@@ -5,15 +5,19 @@
 }
 
 #table .edit-item,
-#table .delete-item {
+#table .delete-item,
+#historiaClinicaEdit,
+#historiaClinicaDelete {
     color: #6c757d;
     transition: all 0.15s;
 }
 
-#table .edit-item:hover {
+#table .edit-item:hover,
+#historiaClinicaEdit:hover {
     color: #007bff;
 }
 
-#table .delete-item:hover {
+#table .delete-item:hover,
+#historiaClinicaDelete:hover {
     color: #dc3545;
 }

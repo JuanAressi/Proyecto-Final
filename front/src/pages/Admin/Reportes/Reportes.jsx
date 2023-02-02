@@ -1,6 +1,5 @@
 // Utilities.
 import { React, useEffect, useState } from 'react';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import $ from 'jquery';
 
 // Components.
@@ -98,7 +97,7 @@ function Reportes() {
      */
     const searchPacientes = () => {
         $.ajax({
-            url: process.env.REACT_APP_API_ROOT + 'pacientes/historia_clinica',
+            url: process.env.REACT_APP_API_ROOT + 'pacientes/historia-clinica',
             type: 'GET',
             dataType: 'json',
             success: function (response) {
@@ -571,8 +570,6 @@ function Reportes() {
         // Transform the data.
         let csvData = headers;
 
-        console.log('data: ', data);
-
         // Loop through the data and add each value to the csvData.
         data.forEach(item => {
             let row = '';
@@ -656,7 +653,7 @@ function Reportes() {
                     <h1 id='pageTitle' className='display-3 text-primary text-shadow-dark me-4'>Reportes</h1>
 
                     <div style={{width: '40px'}}>
-                        {showSpinner && <img src={loadingGif} alt='wait until the page loads' height='20px'/>}
+                        {showSpinner && <img src={loadingGif} alt='Espera a que termine de cargar' height='20px'/>}
                     </div>
                 </div>
 

@@ -1,9 +1,17 @@
+// Utilities.
 import { React, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX, faPlus, faDownload, faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
-import NuevaHistoriaClinica from './NuevaHistoriaClinica';
+import $ from 'jquery';
 
-function EditarPaciente({pacienteNombre, pacienteApellido, pacienteEmail, pacienteFechaNacimiento, pacienteGenero, pacienteDni, pacienteTelefono, pacienteObraSocial, pacienteNumeroObraSocial, pacienteAntecedentes, pacienteAlergias, historiaClinica, setPacienteNombre, setPacienteApellido, setPacienteEmail, setPacienteFechaNacimiento, setPacienteGenero, setPacienteDni, setPacienteTelefono, setPacienteObraSocial, setPacienteNumeroObraSocial, setPacienteAntecedentes, setPacienteAlergias, setHistoriaClinica, updatePaciente}) {
+// Components.
+import Alert from '../../../components/Alert/Alert';
+import Modal from '../../../components/Modal/Modal';
+import NuevaHistoriaClinica from './NuevaHistoriaClinica';
+import EditarHistoriaClinica from './EditarHistoriaClinica';
+import EliminarHistoriaClinica from './EliminarHistoriaClinica';
+
+function EditarPaciente({ userToEdit, pacienteNombre, pacienteApellido, pacienteEmail, pacienteFechaNacimiento, pacienteGenero, pacienteDni, pacienteTelefono, pacienteObraSocial, pacienteNumeroObraSocial, pacienteAntecedentes, pacienteAlergias, historiaClinica, setPacienteNombre, setPacienteApellido, setPacienteEmail, setPacienteFechaNacimiento, setPacienteGenero, setPacienteDni, setPacienteTelefono, setPacienteObraSocial, setPacienteNumeroObraSocial, setPacienteAntecedentes, setPacienteAlergias, updatePaciente, searchHistoriaClinica }) {
     const obrasSociales = [
         {value: '', text: 'Selecciona una opción'},
         {value: 'OSDE', text: 'OSDE'},
@@ -13,7 +21,38 @@ function EditarPaciente({pacienteNombre, pacienteApellido, pacienteEmail, pacien
         {value: 'Particular', text: 'Particular'}
     ];
 
+    // Current User.
+    const [role, setRole] = useState(null);
+    const [id, setId] = useState(null);
+
     const [parsedFechaNacimiento, setParsedFechaNacimiento] = useState('');
+    
+    // Historia Clinica.
+    const [historiaClínicaToEdit, setHistoriaClínicaToEdit] = useState('');
+    const [historiaClínicaToDelete, setHistoriaClínicaToDelete] = useState('');
+    const [fechaConsulta, setFechaConsulta] = useState('');
+    const [medico, setMedico] = useState('');
+    const [motivoConsulta, setMotivoConsulta] = useState('');
+    const [diagnostico, setDiagnostico] = useState('');
+
+    // Alert. 
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertType, setAlertType] = useState('');
+    const [alertMessage, setAlertMessage] = useState('');
+    
+    // Spinner.
+    const [showSpinner, setShowSpinner] = useState(false);
+
+
+    // Get the role of the user.
+    useEffect(() => {
+        // Get user from localStorage.
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        // Change the states of the current user.
+        setRole(user.rol);
+        setId(user.id);
+    }, []);
 
 
     // Handle the change of 'pacienteFechaNacimiento' state.
@@ -69,13 +108,15 @@ function EditarPaciente({pacienteNombre, pacienteApellido, pacienteEmail, pacien
 
 
     /**
-     * Function openModalNewHistoriaClinica - Open the 'Nueva Historia Clinica' modal.
+     * Function openModalHistoriaClinica - Open the 'Nueva Historia Clinica' modal.
      *
-     * @return void
+     * @param {string} id - The id of the modal.
+     *
+     * @return {void}
      */
-    function openModalNewHistoriaClinica() {
+    function openModalHistoriaClinica(id) {
         // Get the 'Nueva Historia Clinica' modal.
-        const modal = document.getElementById('modalHistoriaClinica');
+        const modal = document.getElementById(id);
 
         // Open the modal.
             modal.style.display = 'block';
@@ -90,6 +131,217 @@ function EditarPaciente({pacienteNombre, pacienteApellido, pacienteEmail, pacien
         setTimeout(() => {
             modal.classList.add('show');
         }, 75);
+    }
+
+
+    /**
+     * Function closeModal - Closes the modal.
+     *
+     * @param {string} id - The id of the modal.
+     *
+     * @returns {void}
+     */
+    const closeModalHistoriaClinica = (id) => {
+        // Get the modal.
+        const modal = document.getElementById(id);
+
+        // Close the modal.
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+        modal.removeAttribute('role');
+
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 75);
+    };
+
+
+    /**
+     * Function addHistoriaClinica - Save the new 'Historia Clínica'.
+     *
+     * @return {void}
+     */
+    const addHistoriaClinica = () => {
+        // New today date in dd-mm-yyyy format.
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const yyyy = today.getFullYear();
+        const todayDate = dd + '-' + mm + '-' + yyyy;
+
+        // Change 'showSpinner' state.
+        setShowSpinner(true);
+
+        $.ajax({
+            url: process.env.REACT_APP_API_ROOT + 'pacientes/historia-clinica',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                'id_paciente': userToEdit,
+                'id_medico': id,
+                'fecha': todayDate,
+                'motivo_consulta': motivoConsulta,
+                'diagnostico': diagnostico,
+                'antecedentes': pacienteAntecedentes,
+                'alergias': pacienteAlergias,
+            },
+            success: function (response) {
+                // Change 'showSpinner' state.
+                setShowSpinner(false);
+
+                if (response.success) {
+                    // Reload 'Pacientes' list.
+                    searchHistoriaClinica();
+
+                    // Change Alert states.
+                    setAlertType('success');
+
+                    // Set values to empty.
+                    setMotivoConsulta('');
+                    setDiagnostico('');
+
+                    // Close modal.
+                    closeModalHistoriaClinica('modalNewHistoriaClinica');
+                } else {
+                    // Change Alert states.
+                    setAlertType('danger');
+                }
+                
+                // Change Alert states.
+                setAlertMessage(response.message);
+                setShowAlert(true);
+
+                // Close alert message after 4 seconds.
+                setTimeout(function () {
+                    setShowAlert(false);
+                }, 4000);
+            },
+            error: function (error) {
+                // Change 'showSpinner' state.
+                setShowSpinner(false);
+
+                console.log(error)
+            }
+        });
+    }
+
+
+    /**
+     * Function updateHistoriaClinica - Update the 'Historia Clínica'.
+     *
+     * @return {void}
+     */
+    const updateHistoriaClinica = () => {
+        // Change 'showSpinner' state.
+        setShowSpinner(true);
+
+        $.ajax({
+            url: process.env.REACT_APP_API_ROOT + 'pacientes/historia-clinica',
+            type: 'PUT',
+            dataType: 'json',
+            data: {  
+                'id': historiaClínicaToEdit,
+                'id_paciente': userToEdit,
+                'motivo_consulta': motivoConsulta,
+                'diagnostico': diagnostico,
+                'antecedentes': pacienteAntecedentes,
+                'alergias': pacienteAlergias,
+            },
+            success: function (response) {
+                // Change 'showSpinner' state.
+                setShowSpinner(false);
+
+                if (response.success) {
+                    // Reload 'Pacientes' list.
+                    searchHistoriaClinica();
+
+                    // Change Alert states.
+                    setAlertType('success');
+
+                    // Set values to empty.
+                    setMotivoConsulta('');
+                    setDiagnostico('');
+
+                    // Close modal.
+                    closeModalHistoriaClinica('modalEditHistoriaClinica');
+                } else {
+                    // Change Alert states.
+                    setAlertType('danger');
+                }
+                
+                // Change Alert states.
+                setAlertMessage(response.message);
+                setShowAlert(true);
+
+                // Close alert message after 4 seconds.
+                setTimeout(function () {
+                    setShowAlert(false);
+                }, 4000);
+            },
+            error: function (error) {
+                // Change 'showSpinner' state.
+                setShowSpinner(false);
+
+                console.log(error)
+            }
+        });
+    }
+
+
+    /**
+     * Function deleteHistoriaClinica - Delete the 'Historia Clínica'.
+     *
+     * @return {void}
+     */
+    const deleteHistoriaClinica = () => {
+        // Change 'showSpinner' state.
+        setShowSpinner(true);
+
+        $.ajax({
+            url: process.env.REACT_APP_API_ROOT + 'pacientes/historia-clinica',
+            type: 'DELETE',
+            dataType: 'json',
+            data: {  
+                'id': historiaClínicaToDelete,
+            },
+            success: function (response) {
+                // Change 'showSpinner' state.
+                setShowSpinner(false);
+
+                if (response.success) {
+                    // Reload 'Pacientes' list.
+                    searchHistoriaClinica();
+
+                    // Change Alert states.
+                    setAlertType('success');
+
+                    // Set values to empty.
+                    setMotivoConsulta('');
+                    setDiagnostico('');
+
+                    // Close modal.
+                    closeModalHistoriaClinica('modalEditHistoriaClinica');
+                } else {
+                    // Change Alert states.
+                    setAlertType('danger');
+                }
+                
+                // Change Alert states.
+                setAlertMessage(response.message);
+                setShowAlert(true);
+
+                // Close alert message after 4 seconds.
+                setTimeout(function () {
+                    setShowAlert(false);
+                }, 4000);
+            },
+            error: function (error) {
+                // Change 'showSpinner' state.
+                setShowSpinner(false);
+
+                console.log(error)
+            }
+        });
     }
 
 
@@ -303,6 +555,15 @@ function EditarPaciente({pacienteNombre, pacienteApellido, pacienteEmail, pacien
 
                                 {/* Historia Clinica */}
                                 <div id='historiaClinica' className='d-flex flex-column bg-white position-relative p-4 w-100 z-index-1'>
+                                    {showAlert ? 
+                                        <Alert
+                                            type={alertType}
+                                            message={alertMessage}
+                                        />
+                                            
+                                        : null
+                                    }
+
                                     <div className='d-flex align-items-center justify-content-between'>
                                         {/* Antecedentes & Alergias */}
                                         <div className='mb-2'>
@@ -320,34 +581,37 @@ function EditarPaciente({pacienteNombre, pacienteApellido, pacienteEmail, pacien
                                         </div>
 
                                         {/* Botones */}
-                                        <div className="d-flex justify-content-center">
+                                        <div className='d-flex justify-content-center'>
                                             {/* Botón de nuevo registro */}
-                                            <div className='mb-2'>
-                                                <button
-                                                    className='btn bg-white text-primary border-primary box-shadow-dark-1 px-3 me-2'
-                                                    onClick={openModalNewHistoriaClinica}
-                                                >
-                                                    
-                                                    <FontAwesomeIcon
-                                                        className='text-primary me-2'
-                                                        icon={faPlus}
-                                                    />
+                                            {role === 'medico' && (
+                                                <div className='mb-2'>
+                                                    <button
+                                                        className='btn bg-white text-primary border-primary box-shadow-dark-1 px-3 me-2'
+                                                        onClick={() => openModalHistoriaClinica('modalNewHistoriaClinica')}
+                                                    >
+                                                        
+                                                        <FontAwesomeIcon
+                                                            className='text-primary me-2'
+                                                            icon={faPlus}
+                                                        />
 
-                                                    Nuevo registro
-                                                </button>
-                                            </div>
+                                                        Nuevo registro
+                                                    </button>
+                                                </div>
+                                            )}
 
                                             {/* Botón de descarga */}
-                                            <div className='mb-2'>
-                                                {/* <button className='btn bg-white text-primary border-primary box-shadow-dark-1 px-3' onClick={downloadHistoriaClinica}>   */}
-                                                <button className='btn bg-white text-primary border-primary box-shadow-dark-1 px-3'>  
-                                                    <FontAwesomeIcon
-                                                        className='text-primary me-2'
-                                                        icon={faDownload}
-                                                    />
-                                                    Descargar
-                                                </button>
-                                            </div>
+                                            {(role === 'medico' || role === 'admin' || role === 'soporte') && (
+                                                <div className='mb-2'>
+                                                    <button className='btn bg-white text-primary border-primary box-shadow-dark-1 px-3'>  
+                                                        <FontAwesomeIcon
+                                                            className='text-primary me-2'
+                                                            icon={faDownload}
+                                                        />
+                                                        Descargar
+                                                    </button>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
@@ -361,7 +625,7 @@ function EditarPaciente({pacienteNombre, pacienteApellido, pacienteEmail, pacien
                                             {
                                                 historiaClinica.map((historia, index) => {
                                                     return (
-                                                        <div className='d-flex justify-content-between align-items-center item' key={index}>
+                                                        <div className='d-flex justify-content-between align-items-center item' key={index} data-id={historia.id}>
                                                             <div className='py-2'>
                                                                 <p className='text-left mb-0'><span className='fw-bold'>Fecha:</span> {historia.fecha}</p>
                                                                 <p className='text-left mb-0'><span className='fw-bold'>Medico:</span> {historia.apellido}, {historia.nombre}</p>
@@ -369,17 +633,36 @@ function EditarPaciente({pacienteNombre, pacienteApellido, pacienteEmail, pacien
                                                                 <p className='text-left mb-0'><span className='fw-bold'>Diagnóstico del profesional:</span> {historia.diagnostico}</p>
                                                             </div>
 
-                                                            <div className='d-flex justify-content-center align-items-center'>
-                                                                <FontAwesomeIcon
-                                                                    className='text-secondary me-4'
-                                                                    icon={faPencil}
-                                                                />
 
-                                                                <FontAwesomeIcon
-                                                                    className='text-secondary me-2'
-                                                                    icon={faTrash}
-                                                                />
-                                                            </div>
+                                                            {role !== null && role === 'medico' && (
+                                                                <div className='d-flex justify-content-center align-items-center'>
+                                                                    <FontAwesomeIcon
+                                                                        id='historiaClinicaEdit'
+                                                                        className='me-4'
+                                                                        icon={faPencil}
+                                                                        onClick={() => {
+                                                                            // Change 'Historia Clinica' states.
+                                                                            setHistoriaClínicaToEdit(historia.id);
+                                                                            setFechaConsulta(historia.fecha);
+                                                                            setMedico(historia.apellido + ', ' + historia.nombre);
+                                                                            setMotivoConsulta(historia.motivo_consulta);
+                                                                            setDiagnostico(historia.diagnostico);
+                                                                            openModalHistoriaClinica('modalEditHistoriaClinica');
+                                                                        }}
+                                                                    />
+
+                                                                    <FontAwesomeIcon
+                                                                        id='historiaClinicaDelete'
+                                                                        className='me-2'
+                                                                        icon={faTrash}
+                                                                        // data-bs-target='#modalDeleteHistoriaClinica'
+                                                                        onClick={() => {
+                                                                            setHistoriaClínicaToDelete(historia.id);
+                                                                            openModalHistoriaClinica('modalDeleteHistoriaClinica');
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     )
                                                 })
@@ -393,7 +676,45 @@ function EditarPaciente({pacienteNombre, pacienteApellido, pacienteEmail, pacien
                 </div>
             </div>
 
-            <NuevaHistoriaClinica />
+            {role !== null && role === 'medico' && (
+                <>
+                    <NuevaHistoriaClinica
+                        pacienteAntecedentes={pacienteAntecedentes}
+                        pacienteAlergias={pacienteAlergias}
+                        motivoConsulta={motivoConsulta}
+                        diagnostico={diagnostico}
+                        setPacienteAntecedentes={setPacienteAntecedentes}
+                        setPacienteAlergias={setPacienteAlergias}
+                        showSpinner={showSpinner}
+                        setMotivoConsulta={setMotivoConsulta}
+                        setDiagnostico={setDiagnostico}
+                        addHistoriaClinica={addHistoriaClinica}
+                        closeModalHistoriaClinica={closeModalHistoriaClinica}
+                    />
+
+                    <EditarHistoriaClinica
+                        historiaClínicaToEdit={historiaClínicaToEdit}
+                        pacienteAntecedentes={pacienteAntecedentes}
+                        pacienteAlergias={pacienteAlergias}
+                        fechaConsulta={fechaConsulta}
+                        medico={medico}
+                        motivoConsulta={motivoConsulta}
+                        diagnostico={diagnostico}
+                        setPacienteAntecedentes={setPacienteAntecedentes}
+                        setPacienteAlergias={setPacienteAlergias}
+                        showSpinner={showSpinner}
+                        setMotivoConsulta={setMotivoConsulta}
+                        setDiagnostico={setDiagnostico}
+                        updateHistoriaClinica={updateHistoriaClinica}
+                        closeModalHistoriaClinica={closeModalHistoriaClinica}
+                    />
+
+                    <EliminarHistoriaClinica
+                        handleDelete={deleteHistoriaClinica}
+                        closeModalHistoriaClinica={closeModalHistoriaClinica}
+                    />
+                </>
+            )}
         </div>
     )
 }

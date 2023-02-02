@@ -188,9 +188,9 @@ class UsuariosSeeder extends Seeder
         // Estados de Turnos.
         $estados_turnos = array(
             0 => 'reservado',
-            1 => 'confirmado',
-            2 => 'cancelado',
-            3 => 'concretado',
+            1 => 'cancelado',
+            2 => 'concretado',
+            3 => 'confirmado',
         );
 
         // Alergias.
@@ -223,6 +223,7 @@ class UsuariosSeeder extends Seeder
             10 => 'Hipertensión',
         );
 
+        // Turnos horas estados.
         $turnos_horas_estados = array(
             0 => 'libre',
             1 => 'ocupado',
@@ -239,7 +240,7 @@ class UsuariosSeeder extends Seeder
         $admin->genero           = 'Masculino';
         $admin->telefono         = '3413535267';
         $admin->estado           = 'activo';
-        $admin->rol              = 'admin';
+        $admin->rol              = 'soporte';
         $admin->save();
 
         // Admin 2.
@@ -458,7 +459,7 @@ class UsuariosSeeder extends Seeder
         $historia_clinica->fecha           = '03-05-2022';
         $historia_clinica->motivo_consulta = 'Hinchazón en las piernas y orina de color oscuro';
         $historia_clinica->diagnostico     = 'Insuficiencia renal aguda';
-        $historia_clinica->estado          = 'oculta';
+        $historia_clinica->estado          = 'eliminada';
         $historia_clinica->save();
 
         // Historia Clinica 4.
@@ -548,7 +549,7 @@ class UsuariosSeeder extends Seeder
 
             $turno->id_paciente = rand(15, 770);
             $turno->id_medico   = rand(770, 790);
-            $turno->dia         = date('d-m-Y', strtotime('+' . rand(0, 30) . ' days'));
+            $turno->dia         = date('d-m-Y', strtotime('+' . rand(-60, 30) . ' days'));
             $turno->hora        = rand(8, 18) . ':00';
             $turno->estado      = $estados_turnos[rand(0, count($estados_turnos) - 1)];
 
@@ -565,10 +566,19 @@ class UsuariosSeeder extends Seeder
                 if (date('N', strtotime($turno->dia)) < 6) {
                     $counter++;
 
+                    // Verify if the date is in the future, it only can be estado = 'reservado' or 'cancelado'.
+                    if (strtotime($turno->dia) > strtotime(date('d-m-Y'))) {
+                        $turno->estado = $estados_turnos[rand(0, 1)];
+                    } elseif (strtotime($turno->dia) < strtotime(date('d-m-Y'))) {
+                        $turno->estado = $estados_turnos[rand(1, 2)];
+                    } else {
+                        $turno->estado = $estados_turnos[rand(0, 3)];
+                    }
+
                     $turno->save();
                 }
             }
-        } while ($counter++ < 1000);
+        } while ($counter++ < 2000);
 
         for ($j = 758; $j < 778; $j++) {
             // Loop trough 40 days, not counting the weekends.

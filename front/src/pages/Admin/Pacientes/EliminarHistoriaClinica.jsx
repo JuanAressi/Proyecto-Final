@@ -7,16 +7,15 @@ import $ from 'jquery';
 // Components.
 import './style.css';
 
-function Modal({ id, text, handleDelete }) {
+function Modal({ handleDelete, closeModalHistoriaClinica }) {
     // Render the 'Modal' component.
     return (
-        <div id={id} className='modal fade' tabIndex='-1' aria-hidden='true'>
+        <div id='modalDeleteHistoriaClinica' className='modal fade' tabIndex='-1' aria-hidden='true'>
             <div className='modal-dialog modal-dialog-centered'>
                 <div className='modal-content position-relative'>
                     <div
                         className='d-flex justify-content-center align-items-center position-absolute bg-white rounded-circle box-shadow-dark'
-                        // onClick={() => closeModal(id)}
-                        data-bs-dismiss='modal'
+                        onClick={() => closeModalHistoriaClinica('modalDeleteHistoriaClinica')}
                     >
                         <FontAwesomeIcon
                             icon={faX}
@@ -30,7 +29,7 @@ function Modal({ id, text, handleDelete }) {
                             <FontAwesomeIcon icon={faTriangleExclamation} className='text-white fa-5x mb-2' />
                         </div>
                         
-                        <h5 className='text-center '>{text}</h5>
+                        <h5 className='text-center '>¿Está seguro que desea eliminar este registro de historia clínica?</h5>
                         <p className='mb-4'>Esta acción no puede deshacerse</p>
 
                         <button
@@ -43,8 +42,7 @@ function Modal({ id, text, handleDelete }) {
                         <button
                             id='closeModalComponent'
                             className='btn btn-secondary box-shadow-dark w-50'
-                            data-bs-dismiss='modal'
-                            // onClick={() => closeModal(id)}
+                            onClick={() => closeModalHistoriaClinica('modalDeleteHistoriaClinica')}
                         >
                             Cerrar
                         </button>

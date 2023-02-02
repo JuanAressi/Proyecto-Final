@@ -275,7 +275,6 @@ class TurnosController extends Controller
         $page       = $request->input('page');
         $pagination = $request->input('pagination');
         $search     = $request->input('search');
-        $id_usuario = $request->input('id_usuario');
 
         // Check if $search is null.
         if ($search === null) {
@@ -292,7 +291,7 @@ class TurnosController extends Controller
         $turnos_sql = Turnos::leftJoin('usuarios as paciente', 'turnos.id_paciente', '=', 'paciente.id')
             ->leftJoin('usuarios as medico', 'turnos.id_medico', '=', 'medico.id')
             ->where('turnos.estado', '<>', 'eliminado')
-            ->where('id_paciente', $id_usuario)
+            ->where('id_paciente', $id)
             ->where(function ($query) use ($search) {
                 $query->where('turnos.dia', 'like', '%' . $search . '%')
                     ->orWhere('turnos.hora', 'like', '%' . $search . '%')

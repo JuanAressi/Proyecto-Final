@@ -1,8 +1,10 @@
 #sideNav {
     position: sticky;
     top: 0;
-    min-height: 100vh;
+    /* min-height: 100vh; */
+    min-height: 103vh;
     box-shadow: 1rem 0 1rem rgba(0, 0, 0, 0.15);
+    z-index: 10;
 }
 
 #sideNav .nav-container {

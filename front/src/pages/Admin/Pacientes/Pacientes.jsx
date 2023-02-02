@@ -1,7 +1,10 @@
+// Utilities.
 import { React, useEffect, useState } from 'react';
 import $ from 'jquery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+
+// Components.
 import Alert from '../../../components/Alert/Alert';
 import Modal from '../../../components/Modal/Modal';
 import SideNav from '../../../components/SideNav/SideNav';
@@ -9,7 +12,6 @@ import loadingGif from '../../../components/assets/img/loadingGif.gif';
 import Table from '../../../components/Table/Table';
 import NuevoPaciente from './NuevoPaciente';
 import EditarPaciente from './EditarPaciente';
-// import NuevaHistoriaClinica from './NuevaHistoriaClinica';
 import './style.css';
 
 function Pacientes() {
@@ -81,27 +83,7 @@ function Pacientes() {
             setShowSpinner(true);
 
             // Make search for 'Historia Clinica' by ID.
-            $.ajax({
-                url: process.env.REACT_APP_API_ROOT + 'pacientes/' + userToEdit + '/historia_clinica',
-                type: 'GET',
-                dataType: 'json',
-                data: {
-                    'id': userToEdit,
-                },
-                success: function (response) {
-                    // Hide spinner.
-                    setShowSpinner(false);
-
-                    if (response.success) {
-                        // Set 'historiaClinica' state.
-                        setHistoriaClinica(response.historia_clinica);
-                    }
-                },
-                error: function (error) {
-                    // Hide spinner.
-                    setShowSpinner(false);
-                }
-            });
+            searchHistoriaClinica();
 
             // Loop trough 'users' state to find the user and obtain his information.
             users.forEach(user => {
@@ -348,9 +330,36 @@ function Pacientes() {
         setPacienteAlergias('');
         setPacienteAntecedentes('');
     }
+    
+
+    /**
+     * Function searchHistoriaClinica - Search the historia clinica of the selected paciente.
+     *
+     * @return {void}
+     */
+    const searchHistoriaClinica = () => {
+        $.ajax({
+            url: process.env.REACT_APP_API_ROOT + 'pacientes/' + userToEdit + '/historia-clinica',
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                // Hide spinner.
+                setShowSpinner(false);
+
+                if (response.success) {
+                    // Set 'historiaClinica' state.
+                    setHistoriaClinica(response.historia_clinica);
+                }
+            },
+            error: function (error) {
+                // Hide spinner.
+                setShowSpinner(false);
+            }
+        });
+    }
 
 
-    // Render the 'Pacientes' component.
+    // Render the 'Pacientes' page.
     return (
         <div id='pageAdminPacientes' className='d-flex bg-lightgray'>
             <SideNav
@@ -362,7 +371,7 @@ function Pacientes() {
                     <h1 id='pageTitle' className='display-3 text-primary text-shadow-dark me-4'>Pacientes</h1>
 
                     <div style={{width: '40px'}}>
-                        {showSpinner && <img src={loadingGif} alt="wait until the page loads" height='20px'/>}
+                        {showSpinner && <img src={loadingGif} alt='Espera a que termine de cargar' height='20px'/>}
                     </div>
 
                     <button
@@ -426,6 +435,7 @@ function Pacientes() {
             />
 
             <EditarPaciente
+                userToEdit={userToEdit}
                 pacienteNombre={pacienteNombre}
                 pacienteApellido={pacienteApellido}
                 pacienteEmail={pacienteEmail}
@@ -451,16 +461,15 @@ function Pacientes() {
                 setPacienteAlergias={setPacienteAlergias}
                 setHistoriaClinica={setHistoriaClinica}
                 updatePaciente={updatePaciente}
+                searchHistoriaClinica={searchHistoriaClinica}
             />
-
-            {/* <NuevaHistoriaClinica /> */}
 
             <Modal
                 id='modalDelete'
                 text='¿Está seguro que desea eliminar este paciente?'
                 handleDelete={() => {
                     // Close modal.
-                    $('#closeModal').click();
+                    $('#modalDelete #closeModalComponent').click();
 
                     // Delete the user.
                     deleteUser();

@@ -6,8 +6,9 @@ import { faX } from '@fortawesome/free-solid-svg-icons';
 // Components.
 import loadingGif from '../../../components/assets/img/loadingGif.gif';
 
-function NuevaHistoriaClinica({ pacienteAntecedentes, pacienteAlergias, motivoConsulta, diagnostico, setPacienteAntecedentes, setPacienteAlergias, showSpinner, setMotivoConsulta, setDiagnostico, addHistoriaClinica, closeModalHistoriaClinica }) {
-    const [buttonDisabled, setButtonDisabled] = useState(true);
+function EditarHistoriaClinica({ pacienteAntecedentes, pacienteAlergias, fechaConsulta, medico, motivoConsulta, diagnostico, setPacienteAntecedentes, setPacienteAlergias, showSpinner, setMotivoConsulta, setDiagnostico, updateHistoriaClinica, closeModalHistoriaClinica }) {
+    const [buttonDisabled, setButtonDisabled] = useState(false);
+
 
     // Disable the button.
     useEffect(() => {
@@ -21,18 +22,18 @@ function NuevaHistoriaClinica({ pacienteAntecedentes, pacienteAlergias, motivoCo
 
     // Render the 'Nueva Historia Clinica' component.
     return (
-        <div id='modalNewHistoriaClinica' className='modal fade' tabIndex='-1' aria-hidden='true'>
+        <div id='modalEditHistoriaClinica' className='modal fade' tabIndex='-1' aria-hidden='true'>
             <div className='modal-dialog modal-dialog-centered'>
                 <div className='modal-content position-relative'>
                     {/* Modal Header */}
                     <div className='bg-primary box-shadow-dark-1 px-4 py-2'>
-                        <h1 className='display-6 text-white text-shadow-dark me-4'>Agregar registro de Historia Clinica</h1>
+                        <h1 className='display-6 text-white text-shadow-dark me-4'>Editar registro de Historia Clinica</h1>
                     </div>
 
                     {/* Close Button */}
                     <div
                         className='d-flex justify-content-center align-items-center position-absolute bg-white rounded-circle box-shadow-dark'
-                        onClick={() => closeModalHistoriaClinica('modalNewHistoriaClinica')}
+                        onClick={() => closeModalHistoriaClinica('modalEditHistoriaClinica')}
                     >
                         <FontAwesomeIcon
                             className='text-primary'
@@ -49,10 +50,10 @@ function NuevaHistoriaClinica({ pacienteAntecedentes, pacienteAlergias, motivoCo
                                     
                                 <input
                                     className='form-control'
-                                    type='date'
+                                    type='text'
                                     name='fecha_hoy'
                                     aria-label='Fecha de hoy'
-                                    value={new Date().toISOString().slice(0, 10)}
+                                    placeholder={fechaConsulta}
                                     disabled={true}
                                 />
                             </div>
@@ -66,7 +67,7 @@ function NuevaHistoriaClinica({ pacienteAntecedentes, pacienteAlergias, motivoCo
                                     type='text'
                                     name='medico'
                                     aria-label='Medico'
-                                    placeholder='Aressi, Juan'
+                                    placeholder={medico}
                                     disabled={true}
                                 />
                             </div>
@@ -135,7 +136,7 @@ function NuevaHistoriaClinica({ pacienteAntecedentes, pacienteAlergias, motivoCo
                         <button
                             className='d-flex justify-content-center align-items-center btn bg-primary text-white box-shadow-dark w-50 mt-3 mb-3'
                             onClick={() => {
-                                addHistoriaClinica();
+                                updateHistoriaClinica();
                                 setButtonDisabled(true);
                             }}
                             disabled={buttonDisabled}
@@ -146,13 +147,13 @@ function NuevaHistoriaClinica({ pacienteAntecedentes, pacienteAlergias, motivoCo
                                 </div>
                             }
 
-                            Guardar
+                            Actualizar
                         </button>
 
                         <button
                             id='closeModalEdit'
                             className='btn btn-secondary box-shadow-dark w-50'
-                            onClick={() => closeModalHistoriaClinica('modalNewHistoriaClinica')}
+                            onClick={() => closeModalHistoriaClinica('modalEditHistoriaClinica')}
                         >
                             Cerrar
                         </button>
@@ -163,4 +164,4 @@ function NuevaHistoriaClinica({ pacienteAntecedentes, pacienteAlergias, motivoCo
     )
 }
 
-export default NuevaHistoriaClinica
+export default EditarHistoriaClinica

@@ -277,17 +277,18 @@ class PacientesController extends Controller
     /**
      * Function getHistoriaClinica - Returns all the records of the 'historia_clinica' table that matches with the user.
      *
-     * @param Request $request - The request object.
+     * @param string $id - The id of the user.
      *
      * @return array - The records of the 'historia_clinica' table.
      */
-    public function getHistoriaClinica(Request $request)
+    public function getHistoriaClinica($id)
     {
         // Get historia_clinica.
         $historia_clinica = HistoriaClinica::leftJoin('usuarios', 'id_medico', '=', 'usuarios.id')
-            ->where('id_paciente', $request->input('id'))
+            ->where('id_paciente', $id)
+            ->where('historia_clinica.estado', '<>', 'eliminada')
             ->orderBy('fecha', 'desc')
-            ->get(['fecha', 'motivo_consulta', 'diagnostico', 'nombre', 'apellido']);
+            ->get(['historia_clinica.id', 'fecha', 'motivo_consulta', 'diagnostico', 'nombre', 'apellido']);
 
         // Check if historia_clinica is found.
         if ($historia_clinica) {
@@ -346,5 +347,147 @@ class PacientesController extends Controller
                 )
             );
         }
+    }
+
+
+    /**
+     * Function addNewHistoriaClinica - Adds a new record to the 'historia_clinica' table and update the 'Pacientes' 'antecedentes' and 'alergias' field.
+     *
+     * @param Request $request - The request object.
+     *
+     * @return array - The response.
+     */
+    public function addNewHistoriaClinica(Request $request)
+    {
+        // Add new historia_clinica.
+        $historia_clinica = HistoriaClinica::create([
+            'id_paciente'     => $request->input('id_paciente'),
+            'id_medico'       => $request->input('id_medico'),
+            'fecha'           => $request->input('fecha'),
+            'motivo_consulta' => $request->input('motivo_consulta'),
+            'diagnostico'     => $request->input('diagnostico'),
+            'estado'          => 'visible',
+        ]);
+
+        // Check for errors.
+        if ($historia_clinica) {
+            // Update paciente.
+            $paciente = Pacientes::where('id_usuario', $request->input('id_paciente'))
+                ->update([
+                    'antecedentes' => $request->input('antecedentes'),
+                    'alergias'     => $request->input('alergias'),
+                ]);
+
+            // Check for errors.
+            if ($paciente) {
+                // Return success.
+                $success = true;
+                $message = 'La historia clinica se ha registrado correctamente.';
+            } else {
+                // Return error.
+                $success = false;
+                $message = 'La historia clinica no se ha podido registrar.';
+            }
+        } else {
+            // Return error.
+            $success = false;
+            $message = 'La historia clinica no se ha podido registrar.';
+        }
+
+        // Return response.
+        return json_encode(
+            array(
+                'success' => $success,
+                'message' => $message,
+            )
+        );
+    }
+
+
+    /**
+     * Function updateHistoriaClinica - Updates a record in the 'historia_clinica' table and update the 'Pacientes' 'antecedentes' and 'alergias' field.
+     *
+     * @param Request $request - The request object.
+     *
+     * @return array - The response.
+     */
+    public function updateHistoriaClinica(Request $request)
+    {
+        // Update historia_clinica.
+        $historia_clinica = HistoriaClinica::where('id', $request->input('id'))
+            ->update([
+                'motivo_consulta' => $request->input('motivo_consulta'),
+                'diagnostico'     => $request->input('diagnostico'),
+                'estado'          => 'modificada',
+            ]);
+
+        // Check for errors.
+        if ($historia_clinica) {
+            // Update paciente.
+            $paciente = Pacientes::where('id_usuario', $request->input('id_paciente'))
+                ->update([
+                    'antecedentes' => $request->input('antecedentes'),
+                    'alergias'     => $request->input('alergias'),
+                ]);
+
+            // Check for errors.
+            if ($paciente) {
+                // Return success.
+                $success = true;
+                $message = 'La historia clinica se ha actualizado correctamente.';
+            } else {
+                // Return error.
+                $success = false;
+                $message = 'La historia clinica no se ha podido actualizar.';
+            }
+        } else {
+            // Return error.
+            $success = false;
+            $message = 'La historia clinica no se ha podido actualizar.';
+        }
+
+        // Return response.
+        return json_encode(
+            array(
+                'success' => $success,
+                'message' => $message,
+            )
+        );
+    }
+
+
+    /**
+     * Function deleteHistoriaClinica - Only updates the 'estado' field of the 'historia_clinica' table.
+     *
+     * @param Request $request - The request object.
+     *
+     * @return array - The response.
+     */
+    public function deleteHistoriaClinica(Request $request)
+    {
+        // Update historia_clinica.
+        $historia_clinica = HistoriaClinica::where('id', $request->input('id'))
+            ->update([
+                'estado' => 'eliminada',
+            ]);
+
+        // Check for errors.
+        if ($historia_clinica) {
+            // Return success.
+            $success = true;
+            $message = 'La historia clinica se ha eliminado correctamente.';
+        } else {
+            // Return error.
+            $success = false;
+            $message = 'La historia clinica no se ha podido eliminar.';
+        }
+
+        // Return response.
+        return json_encode(
+            array(
+                'success' => $success,
+                'message' => $message,
+            )
+        );
     }
 }

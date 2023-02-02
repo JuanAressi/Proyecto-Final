@@ -14,6 +14,7 @@ class HistoriaClinica extends Migration
     public function up()
     {
         Schema::create('historia_clinica', function (Blueprint $table) {
+            $table->bigIncrements('id')->unique();
             $table->unsignedBigInteger('id_paciente');
             $table->foreign('id_paciente')->references('id_usuario')->on('pacientes');
             $table->unsignedBigInteger('id_medico');

@@ -19,3 +19,8 @@
 #modalEdit #historiaClinicaContainer .item:first-child {
     border-top: 1px solid #e5e5e5;
 }
+
+#modalDeleteHistoriaClinica .modal-dialog .modal-content {
+    max-width: 500px;
+    margin: 1.75rem auto;
+}

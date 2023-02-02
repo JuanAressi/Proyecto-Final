@@ -94,7 +94,7 @@ function Login() {
                                 window.location.href = '/';
                                 break;
                         }
-                    }, 3000);
+                    }, 1500);
                 } else {
                     // Disable submit button.
                     setBtnSubmitDisabled(true);
@@ -202,12 +202,11 @@ function Login() {
                                     onClick={logIn}
                                     disabled={btnSubmitDisabled}
                                 >
-
-                                {showSpinner && 
-                                    <div style={{width: '40px', marginTop: '-5px'}}>
-                                        <img src={loadingGif} alt='wait until the page loads' height='20px'/>
-                                    </div>
-                                }
+                                    {showSpinner && 
+                                        <div style={{width: '40px', marginTop: '-5px'}}>
+                                            <img src={loadingGif} alt='wait until the page loads' height='20px'/>
+                                        </div>
+                                    }
 
                                     Ingresar
                                 </button>

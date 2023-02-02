@@ -53,7 +53,6 @@ function Disponibilidad( {horas} ) {
                                             key={indexArray}
                                         >
                                             {horaArray.map((horaItem, indexItem) => {
-                                                console.log(horaItem)
                                                 // Status of the 'hora' button.
                                                 let isDisabled = false;
                                                 
