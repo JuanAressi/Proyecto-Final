@@ -23,7 +23,7 @@ class ReportesController extends Controller
             ->leftJoin('usuarios as medicos', 'medicos.id', 'historia_clinica.id_medico')
             ->where('usuarios.id', $id)
             ->where('historia_clinica.id_paciente', '!=', '')
-            // ->where('historia_clinica.estado', 'visible')
+            ->where('historia_clinica.estado', '<>', 'eliminada')
             ->orderBy('historia_clinica.id_paciente', 'asc')
             ->get(['usuarios.nombre as paciente_nombre', 'usuarios.apellido as paciente_apellido', 'usuarios.fecha_nacimiento', 'usuarios.genero', 'usuarios.dni', 'usuarios.telefono', 'pacientes.obra_social', 'pacientes.numero_obra_social', 'pacientes.antecedentes', 'pacientes.alergias', 'medicos.nombre as medico_nombre', 'medicos.apellido as medico_apellido', 'historia_clinica.fecha', 'historia_clinica.motivo_consulta', 'historia_clinica.diagnostico']);
 

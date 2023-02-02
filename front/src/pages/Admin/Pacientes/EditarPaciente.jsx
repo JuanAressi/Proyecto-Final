@@ -345,6 +345,102 @@ function EditarPaciente({ userToEdit, pacienteNombre, pacienteApellido, paciente
     }
 
 
+    /**
+     * Function generarReporteHistoriaClinica - Generates the specified report.
+     *
+     * @return {void}
+     */
+    const generarReporteHistoriaClinica = () => {
+        // Change the 'showSpinner' state.
+        setShowSpinner(true);
+
+        // Generate the report.
+        $.ajax({
+            url: process.env.REACT_APP_API_ROOT + 'reportes/historia-clinica/' + userToEdit,
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                // Change the 'showSpinner' state.
+                setShowSpinner(false);
+
+                if (response.success) {
+                    // Download the report.
+                    downloadReport(response.headers, response.data, 'historia-clinica');
+
+                    // Change the Alert state.
+                    setAlertType('success');
+                } else {
+                    // Change the Alert state.
+                    setAlertType('danger');
+                }
+
+                // Change the Alert state.
+                setAlertMessage(response.message);
+                setShowAlert(true);
+
+                // Close alert message after 4 seconds.
+                setTimeout(function () {
+                    setShowAlert(false);
+                }, 4000);
+            },
+            error: function (error) {
+                // Change the 'showSpinner' state.
+                setShowSpinner(false);
+
+                console.log(error);
+            }
+        });
+    }
+
+
+    /**
+     * Function downloadReport - Downloads the specified report.
+     *
+     * @param {string} headers - The headers of the report.
+     * @param {array} data - The data of the report.
+     * @param {string} name - The name of the file.
+     * 
+     * @return {void}
+     */
+    const downloadReport = (headers, data, name) => {
+        // Transform the data.
+        let csvData = headers;
+
+        // Loop through the data and add each value to the csvData.
+        data.forEach(item => {
+            let row = '';
+
+            Object.values(item).forEach(value => {
+                // Add each value to the row.
+                row += value + ',';
+            });
+
+            // End the row.
+            row += '\n';
+
+            // Concat the row to the csvData.
+            csvData += row;
+        });
+
+        // Create the element to handle the download.
+        const element = document.createElement('a');
+
+        // Set necessary attributes.
+        element.setAttribute('href', 'data:application/octet-stream,' + escape(csvData));
+        element.setAttribute('download', name + '.csv');
+        element.style.display = 'none';
+
+        // Add to the DOM.
+        document.body.appendChild(element);
+
+        // Emulate click.
+        element.click();
+
+        // Remove from the DOM.
+        document.body.removeChild(element);
+    }
+
+
     // Render the 'EditarPaciente' component.
     return (
         <div id='modalEdit' className='modal fade' tabIndex='-1' aria-hidden='true'>
@@ -603,7 +699,10 @@ function EditarPaciente({ userToEdit, pacienteNombre, pacienteApellido, paciente
                                             {/* Botón de descarga */}
                                             {(role === 'medico' || role === 'admin' || role === 'soporte') && (
                                                 <div className='mb-2'>
-                                                    <button className='btn bg-white text-primary border-primary box-shadow-dark-1 px-3'>  
+                                                    <button
+                                                        className='btn bg-white text-primary border-primary box-shadow-dark-1 px-3'
+                                                        onClick={generarReporteHistoriaClinica}
+                                                    >  
                                                         <FontAwesomeIcon
                                                             className='text-primary me-2'
                                                             icon={faDownload}
