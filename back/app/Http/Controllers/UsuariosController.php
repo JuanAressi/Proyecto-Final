@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Usuarios;
+use App\Models\Pacientes;
 
 class UsuariosController extends Controller
 {
@@ -193,14 +194,22 @@ class UsuariosController extends Controller
 
                 if ($paciente !== null) {
                     $success = true;
-                    $message = 'Usuario creado con éxito';
+                    $message = 'Se pudo registrar correctamente';
+                    $user    = array(
+                        'id'       => $user->id,
+                        'nombre'   => $user->nombre,
+                        'apellido' => $user->apellido,
+                        'rol'      => $user->rol,
+                    );
                 } else {
                     $success = false;
                     $message = 'Error al crear el usuario, por favor intente nuevamente';
+                    $user    = null;
                 }
             } else {
                 $success = false;
                 $message = 'Error al crear el usuario, por favor intente nuevamente';
+                $user    = null;
             }
         }
 
@@ -208,6 +217,7 @@ class UsuariosController extends Controller
             array(
                 'success' => $success,
                 'message' => $message,
+                'user'    => $user,
                 'field'   => $field,
             )
         );
@@ -243,7 +253,7 @@ class UsuariosController extends Controller
     {
         // Update user status.
         $user = Usuarios::where('id', $id)
-            ->update(['estado' => 'eliminado']);
+            ->update(['estado' => 'inactivo']);
 
         // Check if user was updated.
         if ($user) {

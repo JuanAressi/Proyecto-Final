@@ -1,12 +1,16 @@
+// Utilities.
 import { React, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserDoctor, faCalendarCheck, faClock } from '@fortawesome/free-solid-svg-icons';
 import Calendar from 'react-calendar';
 import $ from 'jquery';
+
+// Components
 import TurnosModal from './TurnosModal';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserDoctor, faCalendarCheck, faClock } from '@fortawesome/free-solid-svg-icons';
+import loadingGif from '../../components/assets/img/loadingGif.gif';
 import './style.css';
 import './calendar.css';
 
@@ -32,18 +36,34 @@ function Turnos() {
     const [hora, setHora] = useState('');
     const [horaDisableButton, setHoraDisableButton] = useState(true);
 
-    // Step.
-    const [step, setStep] = useState(2);
-
     // Turno.
     const [turnoDisableButton, setTurnoDisableButton] = useState(true);
 
-    // Success.
+    // Utilities.
+    const [step, setStep] = useState(1);
+    const [role, setRole] = useState(null);
+    const [showLogin, setShowLogin] = useState('d-flex');
     const [success, setSuccess] = useState(false);
+    const [showSpinnerStep2, setShowSpinnerStep2] = useState(false);
+    const [showSpinnerStep3, setShowSpinnerStep3] = useState(false);
+    const [showSpinnerStep5, setShowSpinnerStep5] = useState(false);
+
 
     // On page load, do the search of all active 'Medicos'.
     useEffect(() => {
         searchMedicos();
+
+        // Get the user from LocalStorage.
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (user) {
+            // Get the user role.
+            setRole(user.rol);
+            setStep(2);
+            setShowLogin('d-none');
+        } else {
+            setRole('');
+        }
     }, []);
 
 
@@ -51,10 +71,12 @@ function Turnos() {
     useEffect(() => {
         if (medico === '') {
             const input = document.getElementById('profesional');
-
-            // Check if has the class 'is-valid'.
-            if (input.classList.contains('is-valid')) {
-                input.classList.remove('is-valid');
+        
+            if (input !== null) {
+                // Check if has the class 'is-valid'.
+                if (input.classList.contains('is-valid')) {
+                    input.classList.remove('is-valid');
+                }
             }
 
             // Disable the button.
@@ -65,34 +87,38 @@ function Turnos() {
 
     // On 'step' change, set/remove the 'bg-success-light' to the 'progressBar' div children.
     useEffect(() => {
-        const progressBarItems = document.getElementById('progressBar').children;
+        const progressBar = document.getElementById('progressBar');
 
-        for (let i = 1; i < progressBarItems.length; i++) {
-            if (i < step) {
-                if (!progressBarItems[i].classList.contains('bg-success-light')) {
-                    progressBarItems[i].classList.add('bg-success-light');
+        if (progressBar !== null) {
+            const progressBarItems = progressBar.children;
+
+            for (let i = 1; i < progressBarItems.length; i++) {
+                if (i < step) {
+                    if (!progressBarItems[i].classList.contains('bg-success-light')) {
+                        progressBarItems[i].classList.add('bg-success-light');
+                    }
+                } else {
+                    if (progressBarItems[i].classList.contains('bg-success-light')) {
+                        progressBarItems[i].classList.remove('bg-success-light');
+                    }
                 }
+            }
+
+            // Move the 'triangle' element to the current step.
+            const triangle = document.querySelector('.triangle');
+
+            if (step !== 5) {
+                if (triangle.classList.contains('d-none')) {
+                    triangle.classList.remove('d-none');
+                }
+
+                const elementWidth = progressBarItems[0].offsetWidth;
+                
+                triangle.style.left = `${(step) * elementWidth - 2}px`;
             } else {
-                if (progressBarItems[i].classList.contains('bg-success-light')) {
-                    progressBarItems[i].classList.remove('bg-success-light');
+                if (!triangle.classList.contains('d-none')) {
+                    triangle.classList.add('d-none');
                 }
-            }
-        }
-
-        // Move the 'triangle' element to the current step.
-        const triangle = document.querySelector('.triangle');
-
-        if (step !== 5) {
-            if (triangle.classList.contains('d-none')) {
-                triangle.classList.remove('d-none');
-            }
-
-            const elementWidth = progressBarItems[0].offsetWidth;
-            
-            triangle.style.left = `${(step) * elementWidth - 2}px`;
-        } else {
-            if (!triangle.classList.contains('d-none')) {
-                triangle.classList.add('d-none');
             }
         }
     }, [step]);
@@ -104,6 +130,9 @@ function Turnos() {
      * @return {void}
      */
     const searchMedicos = () => {
+        // Set Spinner state.
+        setShowSpinnerStep2(true);
+
         $.ajax({
             url: process.env.REACT_APP_API_ROOT + 'medicos',
             type: 'GET',
@@ -116,9 +145,15 @@ function Turnos() {
                 'order2': 'nombre',
             },
             success: function (response) {
+                // Set Spinner state.
+                setShowSpinnerStep2(false);
+
                 setMedicos(response.medicos);
             },
             error: function (error) {
+                // Set Spinner state.
+                setShowSpinnerStep2(false);
+
                 console.log(error);
             }
         });
@@ -144,7 +179,7 @@ function Turnos() {
     const medicoOnBlur = () => {
         setTimeout(() => {
             setMedicoShowList('d-none')
-        }, 136);
+        }, 200);
     }
 
     
@@ -267,11 +302,17 @@ function Turnos() {
      * @return {void}
      */
     const getFechas = (id) => {
+        // Set Spinner state.
+        setShowSpinnerStep3(true);
+
         $.ajax({
             url: process.env.REACT_APP_API_ROOT + `medicos/${id}/fechas`,
             type: 'GET',
             dataType: 'json',
             success: function (response) {
+                // Set Spinner state.
+                setShowSpinnerStep3(false);
+
                 // Set the 'fechas' state.
                 setFechas(response.fechas);
 
@@ -282,6 +323,9 @@ function Turnos() {
                 setFechaMax(lastDateObject);
             },
             error: function (error) {
+                // Set Spinner state.
+                setShowSpinnerStep3(false);
+
                 console.log(error);
             }
         });
@@ -322,9 +366,6 @@ function Turnos() {
 
         // Get the hours for the given date.
         getHoras(idFechasDias);
-
-        // Enable the continue button.
-        setFechaDisableButton(false);
     }
 
 
@@ -336,14 +377,26 @@ function Turnos() {
      * @return {void}
      */
     const getHoras = (date) => {
+        // Set Spinner state.
+        setShowSpinnerStep3(true);
+
         $.ajax({
             url: process.env.REACT_APP_API_ROOT + `medicos/${date}/horas`,
             type: 'GET',
             dataType: 'json',
             success: function (response) {
+                // Set Spinner state.
+                setShowSpinnerStep3(false);
+
+                // Enable the continue button.
+                setFechaDisableButton(false);
+
                 setHoras(response.horas);
             },
             error: function (error) {
+                // Set Spinner state.
+                setShowSpinnerStep3(false);
+
                 console.log(error);
             }
         });
@@ -391,6 +444,9 @@ function Turnos() {
         // Disable the 'Confirmar' button.
         setTurnoDisableButton(true);
 
+        // Set Spinner state.
+        setShowSpinnerStep5(true);
+
         $.ajax({
             url: process.env.REACT_APP_API_ROOT + 'turnos',
             type: 'POST',
@@ -403,6 +459,9 @@ function Turnos() {
                 'id_fecha_dia': idFechasDias,
             },
             success: function (response) {
+                // Set Spinner state.
+                setShowSpinnerStep5(false);
+
                 setSuccess(response.success);
 
                 if (response.success) {
@@ -415,6 +474,9 @@ function Turnos() {
                 modalTurnos.click();
             },
             error: function (error) {
+                // Set Spinner state.
+                setShowSpinnerStep5(false);
+
                 console.log(error);
             }
         });
@@ -455,6 +517,9 @@ function Turnos() {
      * @param {int} to - The step to move to.
      */
     const moveStep = (to) => {
+        // Set Step state.
+        setStep(to)
+
         // Get the 'steps' divs.
         const stepContainer = document.querySelector('.step-container');
 
@@ -464,340 +529,366 @@ function Turnos() {
         if (to - step > 0) {
             // Do the animation.
             stepContainer.style.transform = `translateX(-${translate}%)`;
-
-            // Set current step.
-            setStep(to)
         } else {
             // Do the animation.
             stepContainer.style.transform = `translateX(-${translate}%)`;
-
-            // Set current step.
-            setStep(to)
         }
     }
     
 
-    // Render the Turnos component.
-    return (
-        <div id='turnos' className=''>
-            <Navbar />
-
-            <div className='container p-6 min-height'>
-                <div className='d-flex flex-column align-items-center'>
-                    {/* Progress bar */}
-                    <div id='progressBarContainer' className='d-flex position-relative w-100 mb-4'>
-                        <div className='position-absolute'>
-                            <div className='triangle'></div>
+    if (role === null) {
+        return (
+            <>
+            </>
+        )
+    } else {
+        // Render the Turnos component.
+        return (
+            <div id='turnos' className=''>
+                <Navbar />
+    
+                <div className='container p-6 min-height'>
+                    <div className='d-flex flex-column align-items-center'>
+                        {/* Progress bar */}
+                        <div id='progressBarContainer' className='d-flex position-relative w-100 mb-4'>
+                            <div className='position-absolute'>
+                                <div className='triangle'></div>
+                            </div>
+    
+                            <div id='progressBar' className='d-flex bg-white text-center w-100 box-shadow-dark border-05 overflow-hidden'>
+                                <div className='item bg-success-light position-relative w-20 py-2 px-2'>
+                                    <h5 className='mb-0 font-weight-100'>1 - Iniciar sesión</h5>
+                                </div>
+    
+                                <div className='item position-relative w-20 py-2 px-2'>
+                                    <h5 className='mb-0 font-weight-100'>2 - Profesional</h5>
+                                </div>
+    
+                                <div className='item position-relative w-20 py-2 px-2'>
+                                    <h5 className='mb-0 font-weight-100'>3 - Fecha</h5>
+                                </div>
+    
+                                <div className='item position-relative w-20 py-2 px-2'>
+                                    <h5 className='mb-0 font-weight-100'>4 - Hora</h5>
+                                </div>
+    
+                                <div className='item position-relative w-20 py-2 px-2'>
+                                    <h5 className='mb-0 font-weight-100'>5 - Revision</h5>
+                                </div>
+                            </div>
                         </div>
+    
+                        {/* Steps */}
+                        <div id='steps' className='d-flex w-100 p-4 overflow-hidden'>
+                            <div className='d-flex w-100 step-container'>
+                                {/* Paso 1 */}
+                                <div className={'steps d-flex flex-column align-items-center text-white w-100 overflow-hidden ' + showLogin}>
+                                    <div className='d-flex align-items-center'>
+                                        <h2 className='me-2 mb-0'>Paso</h2>
 
-                        <div id='progressBar' className='d-flex bg-white text-center w-100 box-shadow-dark border-05 overflow-hidden'>
-                            <div className='item bg-success-light position-relative w-20 py-2 px-2'>
-                                <h5 className='mb-0 font-weight-100'>1 - Iniciar sesión</h5>
-                            </div>
-
-                            <div className='item position-relative w-20 py-2 px-2'>
-                                <h5 className='mb-0 font-weight-100'>2 - Profesional</h5>
-                            </div>
-
-                            <div className='item position-relative w-20 py-2 px-2'>
-                                <h5 className='mb-0 font-weight-100'>3 - Fecha</h5>
-                            </div>
-
-                            <div className='item position-relative w-20 py-2 px-2'>
-                                <h5 className='mb-0 font-weight-100'>4 - Hora</h5>
-                            </div>
-
-                            <div className='item position-relative w-20 py-2 px-2'>
-                                <h5 className='mb-0 font-weight-100'>5 - Revision</h5>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    {/* Steps */}
-                    <div id='steps' className='d-flex w-100 p-4 overflow-hidden'>
-                        <div className='d-flex w-100 step-container'>
-                            {/* Paso 1 */}
-                            <div className='steps d-flex flex-column align-items-center text-white w-100 overflow-hidden d-none'>
-                                <div className='d-flex align-items-center'>
-                                    <h2 className='me-2 mb-0'>Paso</h2>
-
-                                    <div className='d-flex justify-content-center align-items-center border-50 border-white-2 circle'>
-                                        <h3 className='mb-0'>1</h3>
-                                    </div>
-                                </div>
-
-                                <h4 className='mt-1'>Iniciar Sesión</h4>
-
-                                <p className='mt-5 mb-0'>Para poder reservar un turno, debes ingresar a tu cuenta</p>
-                                <p className='mt-2 mb-0'>En caso de que no tengas</p>
-                                <p className='mt-0 mb-0'>puedes crearla haciendo click en el botón de abajo</p>
-                                
-                                <Link
-                                    to='/login'
-                                    className='btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
-                                >
-                                    Iniciar Sesión
-                                </Link>
-                                
-                                <Link
-                                    to='/register'
-                                    className='btn border border-light text-light text-uppercase px-3 mt-5 w-25'
-                                >
-                                    Registrarme
-                                </Link>
-                            </div>
-
-                            {/* Paso 2 */}
-                            <div className='steps d-flex flex-column align-items-center text-white w-100 overflow-hidden'>
-                                <div className='d-flex align-items-center'>
-                                    <h2 className='me-2 mb-0'>Paso</h2>
-
-                                    <div className='d-flex justify-content-center align-items-center border-50 border-white-2 circle'>
-                                        <h3 className='mb-0'>2</h3>
-                                    </div>
-                                </div>
-
-                                <h4 className='mt-1 mb-5'>Selecciona uno de nuestros profesionales</h4>
-
-                                <div className='d-flex flex-column align-items-center w-100'>                   
-                                    <div className='d-flex justify-content-center align-items-center w-25 position-relative'>
-                                        <input
-                                            id='profesional'
-                                            type='text'
-                                            className='form-control w-100'
-                                            placeholder='Buscar profesional...'
-                                            autoComplete='off'
-                                            onChange={(event) => filterMedicos(event.target.value)}
-                                            onFocus={() => medicoOnFocus()}
-                                            onBlur={(event) => medicoOnBlur(event)}
-                                        />
+                                        <div className='d-flex justify-content-center align-items-center border-50 border-white-2 circle'>
+                                            <h3 className='mb-0'>1</h3>
+                                        </div>
                                     </div>
 
-                                    <div id='profesionales' className={medicoShowList + ' flex-column bg-white w-25'}>
-                                        {medicoMessageShow &&
-                                            <div className='d-flex align-items-center border-bottom py-2 px-3 medicosMessage'>
-                                                <p className='mb-0 text-black'>{medicoMessage}</p>
-                                            </div>
-                                        }
+                                    <h4 className='mt-1'>Iniciar Sesión</h4>
 
-                                        {medicos && medicos.map((medicoItem, index) => (
-                                            <div
-                                                className='d-none align-items-center border-bottom py-2 px-3 cursor-pointer item'
-                                                data-id={medicoItem.id}
-                                                data-position={index}
-                                                key={index}
-                                                onClick={(e) => setClickedMedico(e.target)}
-                                            >
-                                                <p className='mb-0 text-black'>{medicoItem.apellido}, {medicoItem.nombre}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <button
-                                    className='btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
-                                    disabled={medicoDisableButton}
-                                    onClick={() => moveStep(3)}
-                                >
-                                    Continuar
-                                </button>
-                            </div>
-                            
-                            {/* Paso 3 */}
-                            <div className='steps d-flex flex-column align-items-center text-white w-100 overflow-hidden'>
-                                <div className='d-flex align-items-center'>
-                                    <h2 className='me-2 mb-0'>Paso</h2>
-
-                                    <div className='d-flex justify-content-center align-items-center border-50 border-white-2 circle'>
-                                        <h3 className='mb-0'>3</h3>
-                                    </div>
-                                </div>
-
-                                <h4 className='mt-1 mb-5'>Selecciona el día que te quieres atender</h4>
-
-                                <Calendar
-                                    className='box-shadow-dark'
-                                    calendarType={'US'}
-                                    minDetail={'year'}
-                                    minDate={new Date()}
-                                    maxDate={new Date(fechaMax)}
-                                    onChange={(value) => fechaOnChange(value)}
-                                />
-
-                                {/* Buttons container */}
-                                <div className='d-flex justify-content-around w-100'>
-                                    <button
-                                        className='btn border border-light text-light text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
-                                        onClick={() => moveStep(2)}
-                                    >
-                                        Paso anterior
-                                    </button>
-
-                                    <button
+                                    <p className='mt-5 mb-0'>Para poder reservar un turno, debes ingresar a tu cuenta</p>
+                                    <p className='mt-2 mb-0'>En caso de que no tengas</p>
+                                    <p className='mt-0 mb-0'>puedes crearla haciendo click en el botón de abajo</p>
+                                    
+                                    <Link
+                                        to='/login'
                                         className='btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
-                                        disabled={fechaDisableButton}
-                                        onClick={() => moveStep(4)}
                                     >
-                                        Continuar
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            {/* Paso 4 */}
-                            <div className='steps d-flex flex-column align-items-center text-white w-100 overflow-hidden'>
-                                <div className='d-flex align-items-center'>
-                                    <h2 className='me-2 mb-0'>Paso</h2>
-
-                                    <div className='d-flex justify-content-center align-items-center border-50 border-white-2 circle'>
-                                        <h3 className='mb-0'>4</h3>
-                                    </div>
+                                        Iniciar Sesión
+                                    </Link>
+                                    
+                                    <Link
+                                        to='/register'
+                                        className='btn border border-light text-light text-uppercase px-3 mt-5 w-25'
+                                    >
+                                        Registrarme
+                                    </Link>
                                 </div>
 
-                                <h4 className='mt-1 mb-5'>Selecciona el horario del turno</h4>
-
-                                <div id='horas' className='d-flex justify-content-center align-items-center'>
-                                    {horas && horas.map((horaArray, indexArray) => (
-                                        <div
-                                            className='d-flex flex-column align-items-center'
-                                            key={indexArray}
-                                        >
-                                            {horaArray.map((horaItem, indexItem) => {
-                                                let isDisabled = false;
-                                                
-                                                if (horaItem.estado !== 'libre') {
-                                                    isDisabled = true;
+                                {
+                                role === 'paciente'
+                                ? (
+                                    <>
+                                        {/* Paso 2 */}
+                                        <div className='steps d-flex flex-column align-items-center text-white w-100 overflow-hidden'>
+                                            <div className='d-flex align-items-center'>
+                                                <h2 className='me-2 mb-0'>Paso</h2>
+    
+                                                <div className='d-flex justify-content-center align-items-center border-50 border-white-2 circle'>
+                                                    <h3 className='mb-0'>2</h3>
+                                                </div>
+                                            </div>
+    
+                                            <h4 className='mt-1 mb-5'>Selecciona uno de nuestros profesionales</h4>
+    
+                                            <div className='d-flex flex-column align-items-center w-100'>                   
+                                                <div className='d-flex justify-content-center align-items-center w-25 position-relative'>
+                                                    <input
+                                                        id='profesional'
+                                                        type='text'
+                                                        className='form-control w-100'
+                                                        placeholder='Buscar profesional...'
+                                                        autoComplete='off'
+                                                        onChange={(event) => filterMedicos(event.target.value)}
+                                                        onFocus={() => medicoOnFocus()}
+                                                        onBlur={(event) => medicoOnBlur(event)}
+                                                    />
+                                                </div>
+    
+                                                <div id='profesionales' className={medicoShowList + ' flex-column bg-white w-25'}>
+                                                    {medicoMessageShow &&
+                                                        <div className='d-flex align-items-center border-bottom py-2 px-3 medicosMessage'>
+                                                            <p className='mb-0 text-black'>{medicoMessage}</p>
+                                                        </div>
+                                                    }
+    
+                                                    {medicos && medicos.map((medicoItem, index) => (
+                                                        <div
+                                                            className='d-none align-items-center border-bottom py-2 px-3 cursor-pointer item'
+                                                            data-id={medicoItem.id}
+                                                            data-position={index}
+                                                            key={index}
+                                                            onClick={(e) => setClickedMedico(e.target)}
+                                                        >
+                                                            <p className='mb-0 text-black'>{medicoItem.apellido}, {medicoItem.nombre}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+    
+                                            <button
+                                                className='d-flex justify-content-center align-items-center btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
+                                                disabled={medicoDisableButton}
+                                                onClick={() => moveStep(3)}
+                                            >
+                                                {showSpinnerStep2 && 
+                                                    <div style={{width: '40px', marginTop: '-5px'}}>
+                                                        <img src={loadingGif} alt='wait until the page loads' height='20px'/>
+                                                    </div>
                                                 }
 
-                                                return (
-                                                    <button
-                                                        className='btn text-uppercase box-shadow-dark px-3 mb-2 mx-2 cursor-pointer'
-                                                        key={indexItem}
-                                                        disabled={isDisabled}
-                                                        onClick={(e) => setClickedHora(e.target)}
-                                                    >
-                                                        {horaItem.hora}
-                                                    </button>
-                                                )
-                                            })}
+                                                Continuar
+                                            </button>
                                         </div>
-                                    ))}
-                                </div>
+                                        
+                                        {/* Paso 3 */}
+                                        <div className='steps d-flex flex-column align-items-center text-white w-100 overflow-hidden'>
+                                            <div className='d-flex align-items-center'>
+                                                <h2 className='me-2 mb-0'>Paso</h2>
+    
+                                                <div className='d-flex justify-content-center align-items-center border-50 border-white-2 circle'>
+                                                    <h3 className='mb-0'>3</h3>
+                                                </div>
+                                            </div>
+    
+                                            <h4 className='mt-1 mb-5'>Selecciona el día que te quieres atender</h4>
+    
+                                            <Calendar
+                                                className='box-shadow-dark'
+                                                calendarType={'US'}
+                                                minDetail={'year'}
+                                                minDate={new Date()}
+                                                maxDate={new Date(fechaMax)}
+                                                onChange={(value) => fechaOnChange(value)}
+                                            />
+    
+                                            {/* Buttons container */}
+                                            <div className='d-flex justify-content-around w-100'>
+                                                <button
+                                                    className='btn border border-light text-light text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
+                                                    onClick={() => moveStep(2)}
+                                                >
+                                                    Paso anterior
+                                                </button>
+    
+                                                <button
+                                                    className='d-flex justify-content-center align-items-center btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
+                                                    disabled={fechaDisableButton}
+                                                    onClick={() => moveStep(4)}
+                                                >
+                                                    {showSpinnerStep3 && 
+                                                        <div style={{width: '40px', marginTop: '-5px'}}>
+                                                            <img src={loadingGif} alt='wait until the page loads' height='20px'/>
+                                                        </div>
+                                                    }
 
-                                {/* Buttons container */}
-                                <div className='d-flex justify-content-around w-100'>
-                                    <button
-                                        className='btn border border-light text-light text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
-                                        onClick={() => {
-                                            // Move back to step 3.
-                                            moveStep(3);
+                                                    Continuar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        {/* Paso 4 */}
+                                        <div className='steps d-flex flex-column align-items-center text-white w-100 overflow-hidden'>
+                                            <div className='d-flex align-items-center'>
+                                                <h2 className='me-2 mb-0'>Paso</h2>
+    
+                                                <div className='d-flex justify-content-center align-items-center border-50 border-white-2 circle'>
+                                                    <h3 className='mb-0'>4</h3>
+                                                </div>
+                                            </div>
+    
+                                            <h4 className='mt-1 mb-5'>Selecciona el horario del turno</h4>
+    
+                                            <div id='horas' className='d-flex justify-content-center align-items-center'>
+                                                {horas && horas.map((horaArray, indexArray) => (
+                                                    <div
+                                                        className='d-flex flex-column align-items-center'
+                                                        key={indexArray}
+                                                    >
+                                                        {horaArray.map((horaItem, indexItem) => {
+                                                            let isDisabled = false;
+                                                            
+                                                            if (horaItem.estado !== 'libre') {
+                                                                isDisabled = true;
+                                                            }
+    
+                                                            return (
+                                                                <button
+                                                                    className='btn text-uppercase box-shadow-dark px-3 mb-2 mx-2 cursor-pointer'
+                                                                    key={indexItem}
+                                                                    disabled={isDisabled}
+                                                                    onClick={(e) => setClickedHora(e.target)}
+                                                                >
+                                                                    {horaItem.hora}
+                                                                </button>
+                                                            )
+                                                        })}
+                                                    </div>
+                                                ))}
+                                            </div>
+    
+                                            {/* Buttons container */}
+                                            <div className='d-flex justify-content-around w-100'>
+                                                <button
+                                                    className='btn border border-light text-light text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
+                                                    onClick={() => {
+                                                        // Move back to step 3.
+                                                        moveStep(3);
+    
+                                                        // Delete the selected class.
+                                                        const selected = document.querySelector('#horas .selected');
+    
+                                                        if (selected) {
+                                                            selected.classList.remove('selected');
+                                                        }
+                                                    }}
+                                                >
+                                                    Paso anterior
+                                                </button>
+    
+                                                <button
+                                                    className='btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
+                                                    disabled={horaDisableButton}
+                                                    onClick={() => moveStep(5)}
+                                                >
+                                                    Continuar
+                                                </button>
+                                            </div>
+                                        </div>
+    
+                                        {/* Paso 5 */}
+                                        <div className='steps d-flex flex-column align-items-center text-white w-100 overflow-hidden'>
+                                            <div className='d-flex align-items-center'>
+                                                <h2 className='me-2 mb-0'>Paso</h2>
+    
+                                                <div className='d-flex justify-content-center align-items-center border-50 border-white-2 circle'>
+                                                    <h3 className='mb-0'>5</h3>
+                                                </div>
+                                            </div>
+    
+                                            <h4 className='mt-1 mb-5'>Confirmar el turno</h4>
+    
+                                            {/* Resumen */}
+                                            <div id='resumen' className='d-flex flex-column bg-white text-dark border-05 box-shadow-dark w-33 p-4'>
+                                                <h3 className='text-primary pb-05 mb-2'>Turno</h3>
+    
+                                                <div className='d-flex align-items-center ms-2'>
+                                                    <FontAwesomeIcon 
+                                                        icon={faUserDoctor}
+                                                        className='text-primary me-1'
+                                                    />
+    
+                                                    <p className='mb-0'>Profesional: {medicoName}</p>
+                                                </div>
+    
+                                                <div className='d-flex align-items-center ms-2'>
+                                                    <FontAwesomeIcon 
+                                                        icon={faCalendarCheck}
+                                                        className='text-primary me-1'
+                                                    />
+    
+                                                    <p className='mb-0'>Fecha: {fecha}</p>
+                                                </div>
+    
+                                                <div className='d-flex align-items-center ms-2'>
+                                                    <FontAwesomeIcon 
+                                                        icon={faClock}
+                                                        className='text-primary me-1'
+                                                    />
+    
+                                                    <p className='mb-0'>Hora: {hora}</p>
+                                                </div>
+    
+                                            </div>
+    
+                                            {/* Buttons container */}
+                                            <div className='d-flex justify-content-around w-100'>
+                                                <button
+                                                    className='btn border border-light text-light text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
+                                                    onClick={() => moveStep(4)}
+                                                >
+                                                    Paso anterior
+                                                </button>
+    
+                                                <button
+                                                    className='d-flex justify-content-center align-items-center btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
+                                                    disabled={turnoDisableButton}
+                                                    onClick={() => confirmarTurno()}
+                                                >
+                                                    {showSpinnerStep5 && 
+                                                        <div style={{width: '40px', marginTop: '-5px'}}>
+                                                            <img src={loadingGif} alt='wait until the page loads' height='20px'/>
+                                                        </div>
+                                                    }
 
-                                            // Delete the selected class.
-                                            const selected = document.querySelector('#horas .selected');
-
-                                            if (selected) {
-                                                selected.classList.remove('selected');
-                                            }
-                                        }}
-                                    >
-                                        Paso anterior
-                                    </button>
-
-                                    <button
-                                        className='btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
-                                        disabled={horaDisableButton}
-                                        onClick={() => moveStep(5)}
-                                    >
-                                        Continuar
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Paso 5 */}
-                            <div className='steps d-flex flex-column align-items-center text-white w-100 overflow-hidden'>
-                                <div className='d-flex align-items-center'>
-                                    <h2 className='me-2 mb-0'>Paso</h2>
-
-                                    <div className='d-flex justify-content-center align-items-center border-50 border-white-2 circle'>
-                                        <h3 className='mb-0'>5</h3>
-                                    </div>
-                                </div>
-
-                                <h4 className='mt-1 mb-5'>Confirmar el turno</h4>
-
-                                {/* Resumen */}
-                                <div id='resumen' className='d-flex flex-column bg-white text-dark border-05 box-shadow-dark w-33 p-4'>
-                                    <h3 className='text-primary pb-05 mb-2'>Turno</h3>
-
-                                    <div className='d-flex align-items-center ms-2'>
-                                        <FontAwesomeIcon 
-                                            icon={faUserDoctor}
-                                            className='text-primary me-1'
-                                        />
-
-                                        <p className='mb-0'>Profesional: {medicoName}</p>
-                                    </div>
-
-                                    <div className='d-flex align-items-center ms-2'>
-                                        <FontAwesomeIcon 
-                                            icon={faCalendarCheck}
-                                            className='text-primary me-1'
-                                        />
-
-                                        <p className='mb-0'>Fecha: {fecha}</p>
-                                    </div>
-
-                                    <div className='d-flex align-items-center ms-2'>
-                                        <FontAwesomeIcon 
-                                            icon={faClock}
-                                            className='text-primary me-1'
-                                        />
-
-                                        <p className='mb-0'>Hora: {hora}</p>
-                                    </div>
-
-                                </div>
-
-                                {/* Buttons container */}
-                                <div className='d-flex justify-content-around w-100'>
-                                    <button
-                                        className='btn border border-light text-light text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
-                                        onClick={() => moveStep(4)}
-                                    >
-                                        Paso anterior
-                                    </button>
-
-                                    <button
-                                        className='btn bg-white text-dark text-uppercase box-shadow-dark px-3 mt-5 w-25 cursor-pointer'
-                                        disabled={turnoDisableButton}
-                                        onClick={() => confirmarTurno()}
-                                    >
-                                        Confirmar turno
-                                    </button>
-
-                                    <button
-                                        className='d-none'
-                                        id='buttonModalTurnos'
-                                        data-bs-toggle='modal'
-                                        data-bs-target={'#modalTurnos'}
-                                    />
-                                </div>
+                                                    Confirmar turno
+                                                </button>
+    
+                                                <button
+                                                    className='d-none'
+                                                    id='buttonModalTurnos'
+                                                    data-bs-toggle='modal'
+                                                    data-bs-target={'#modalTurnos'}
+                                                />
+                                            </div>
+                                        </div>
+                                    </>
+                                )
+                                : null
+                                }
                             </div>
                         </div>
-                    </div>
-                </div>            
+                    </div>            
+                </div>
+    
+                <TurnosModal
+                    success={success}
+                    medicoName={medicoName}
+                    fecha={fecha}
+                    hora={hora}
+                />
+    
+                <Footer />
             </div>
-
-            <TurnosModal
-                success={success}
-                medicoName={medicoName}
-                fecha={fecha}
-                hora={hora}
-            />
-
-            <Footer />
-        </div>
-    )
+        )
+    }
 }
 
 export default Turnos

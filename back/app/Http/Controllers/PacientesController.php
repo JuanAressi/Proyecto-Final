@@ -156,28 +156,82 @@ class PacientesController extends Controller
      */
     public function addNew(Request $request)
     {
+        // Verify that the email is not already in use.
+        $email = Usuarios::where('email', $request->input('email'))
+            ->first();
+
+        // Check if email is already in use.
+        if ($email) {
+            // Return error.
+            return json_encode(
+                array(
+                    'success' => false,
+                    'error'   => 'El email ya se encuentra en uso.'
+                )
+            );
+        }
+
+        // Verify that the dni is not already in use.
+        $dni = Usuarios::where('dni', $request->input('dni'))
+            ->first();
+
+        // Check if dni is already in use.
+        if ($dni) {
+            // Return error.
+            return json_encode(
+                array(
+                    'success' => false,
+                    'error'   => 'El DNI ya se encuentra en uso.'
+                )
+            );
+        }
+
+        // Create usuario.
         $usuario = Usuarios::create([
             'nombre'           => $request->input('nombre'),
             'apellido'         => $request->input('apellido'),
             'email'            => $request->input('email'),
             'contraseña'       => md5($request->input('dni')),
             'fecha_nacimiento' => $request->input('fecha_nacimiento'),
+            'genero'           => $request->input('genero'),
             'dni'              => $request->input('dni'),
             'telefono'         => $request->input('telefono'),
-            'genero'           => $request->input('genero'),
             'rol'              => 'paciente',
             'estado'           => 'activo',
         ]);
 
-        $paciente = Pacientes::create([
-            'id_usuario'         => $usuario->id,
-            'numero_obra_social' => $request->input('obra_social'),
-        ]);
+        // Check if usuario is created.
+        if ($usuario) {
+            // Create paciente.
+            $paciente = Pacientes::create([
+                'id_usuario'           => $usuario->id,
+                'obra_social'          => $request->input('obra_social'),
+                'numero_obra_social'   => $request->input('numero_obra_social'),
+                'antecedentes'         => $request->input('antecedentes'),
+                'alergias'             => $request->input('alergias'),
+            ]);
 
+            // Check if paciente is created.
+            if ($paciente) {
+                // Return success.
+                $success = true;
+                $message = 'Paciente creado con éxito.';
+            } else {
+                // Return error.
+                $success = false;
+                $message = 'Error al crear el paciente.';
+            }
+        } else {
+            // Return error.
+            $success = false;
+            $message = 'Error al crear el usuario.';
+        }
+
+        // Return success or error.
         return json_encode(
             array(
-                'success' => true,
-                'message' => 'El Paciente se ha creado correctamente.',
+                'success' => $success,
+                'message' => $message,
             )
         );
     }

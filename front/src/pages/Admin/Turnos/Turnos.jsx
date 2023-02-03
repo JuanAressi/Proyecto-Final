@@ -42,6 +42,10 @@ function Turnos() {
     const [turnoFechaDia, setTurnoFechaDia] = useState('');
     const [turnoEstado, setTurnoEstado] = useState('');
 
+    // User.
+    const [id, setId] = useState(null);
+    const [role, setRole] = useState(null);
+
     // Medicos.
     const [medicos, setMedicos] = useState([]);
 
@@ -63,6 +67,15 @@ function Turnos() {
 
     // Search 'Medicos' and 'Pacientes' when component loads (delay 0s).
     useEffect(() => {
+        // Get the user from LocalStorage.
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (user) {
+            // Set User states.
+            setId(user.id);
+            setRole(user.rol);
+        }
+
         searchMedicos();
         searchPacientes();
     }, []);
@@ -70,28 +83,34 @@ function Turnos() {
 
     // Search 'Turnos' when 'page' changes (delay 0s).
     useEffect(() => {
-        searchTurnos();
-    }, [page]);
+        if (id !== null) {
+            searchTurnos();
+        }
+    }, [page, id]);
 
 
     // Search 'Turnos' when 'showPerPage' changes (delay 0s).
     useEffect(() => {
-        setPage(1);
-        
-        searchTurnos();
-    }, [showPerPage]);
+        if (id !== null) {
+            setPage(1);
+            
+            searchTurnos();
+        }
+    }, [showPerPage, id]);
 
 
     // Search 'Turnos' when 'searchInput' changes (delay 0.75s).
     useEffect(() => {
-        setPage(1);
+        if (id !== null) {
+            setPage(1);
 
-        const delayDebounce = setTimeout(() => {
-            searchTurnos();
-        }, 750);
+            const delayDebounce = setTimeout(() => {
+                searchTurnos();
+            }, 750);
 
-        return () => clearTimeout(delayDebounce)
-    } , [searchInput]);
+            return () => clearTimeout(delayDebounce)
+        }
+    }, [searchInput, id]);
 
 
     // Get 'Turno' by ID and complete 'turnoToEdit' state.
@@ -128,8 +147,16 @@ function Turnos() {
         // Show spinner.
         setShowSpinner(true);
 
+        let url = '';
+
+        if (role === 'medico') {
+            url = process.env.REACT_APP_API_ROOT + 'turnos/' + id;
+        } else {
+            url = process.env.REACT_APP_API_ROOT + 'turnos';
+        }
+
         $.ajax({
-            url: process.env.REACT_APP_API_ROOT + 'turnos',
+            url: url,
             type: 'GET',
             dataType: 'json',
             data: {
@@ -405,6 +432,7 @@ function Turnos() {
     }
 
 
+    // Render the 'Turnos' page.
     return (
         <div id='pageAdminTurnos' className='d-flex bg-lightgray'>
             <SideNav
@@ -413,25 +441,33 @@ function Turnos() {
 
             <div className='container p-5'>
                 <div className='d-flex align-items-center mb-4'>
-                    <h1 id='pageTitle' className='display-3 text-primary text-shadow-dark me-4'>Turnos</h1>
+                    <h1 id='pageTitle' className='display-3 text-primary text-shadow-dark me-4'>
+                        Turnos
+                    </h1>
 
                     <div style={{width: '40px'}}>
                         {showSpinner && <img src={loadingGif} alt='Espera a que termine de cargar' height='20px'/>}
                     </div>
 
-                    <button
-                        className="btn bg-white text-primary border-primary"
-                        data-bs-toggle='modal'
-                        data-bs-target={'#modalAdd'}
-                        onClick={() => setEmptyValues()}
-                    >
-                        <FontAwesomeIcon
-                            className='text-primary me-1'
-                            icon={faPlus}
-                        />
-
-                        Agregar Turno
-                    </button>
+                    {
+                        role !== null && (role === 'administrativo' || role === 'admin' || role === 'soporte')
+                        ? (
+                            <button
+                                className="btn bg-white text-primary border-primary"
+                                data-bs-toggle='modal'
+                                data-bs-target={'#modalAdd'}
+                                onClick={() => setEmptyValues()}
+                            >
+                                <FontAwesomeIcon
+                                    className='text-primary me-1'
+                                    icon={faPlus}
+                                />
+        
+                                Agregar Turno
+                            </button>
+                        )
+                        : null
+                    }
                 </div>
 
                 {showAlert ? 
@@ -453,8 +489,8 @@ function Turnos() {
                     setItemToEdit={setTurnoToEdit}
                     setItemToDelete={setTurnoToDelete}
                     showPerPage={showPerPage}  
-                    tableHeads={['#', 'Fecha y Hora', 'Estado', 'Paciente', 'Medico', 'Acciones']}
-                    tableKeys={['dia+hora', 'estado', 'paciente_apellido+paciente_nombre', 'medico_apellido+medico_nombre']}
+                    tableHeads={role === 'medico' ? ['#', 'Fecha y Hora', 'Estado', 'Paciente', 'Acciones'] : ['#', 'Fecha y Hora', 'Estado', 'Paciente', 'Medico', 'Acciones']}
+                    tableKeys={role === 'medico' ? ['dia+hora', 'estado', 'paciente_apellido+paciente_nombre'] : ['dia+hora', 'estado', 'paciente_apellido+paciente_nombre', 'medico_apellido+medico_nombre']}
                     totalItems={totalTurnos}
                     items={turnos}
                 />

@@ -48,6 +48,20 @@ function Pacientes() {
     const [pacienteAlergias, setPacienteAlergias] = useState('');
     const [historiaClinica, setHistoriaClinica] = useState([]);
 
+    // User.
+    const [role, setRole] = useState(null);
+
+    // Search 'Medicos' and 'Pacientes' when component loads (delay 0s).
+    useEffect(() => {
+        // Get the user from LocalStorage.
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (user) {
+            // Set User states.
+            setRole(user.rol);
+        }
+    }, []);
+
 
     // Search 'Pacientes' when 'page' changes (delay 0s).
     useEffect(() => {
@@ -163,6 +177,9 @@ function Pacientes() {
             telefono: pacienteTelefono,
             genero: pacienteGenero,
             obra_social: pacienteObraSocial,
+            numero_obra_social: pacienteNumeroObraSocial,
+            antecedentes: pacienteAntecedentes,
+            alergias: pacienteAlergias,
         }
 
         // Show spinner.
@@ -181,10 +198,8 @@ function Pacientes() {
                     // Reload 'Pacientes' list.
                     searchPacientes();
 
-                    // Show success message.
+                    // Change Alert states.
                     setAlertType('success');
-                    setAlertMessage(response.message);
-                    setShowAlert(true);
 
                     // Set values to empty.
                     setEmptyValues();
@@ -192,11 +207,13 @@ function Pacientes() {
                     // Close modal.
                     $('#closeModal').click();
                 } else {
-                    // Show error message.
+                    // Change Alert states.
                     setAlertType('danger');
-                    setAlertMessage('Error al crear el Paciente.');
-                    setShowAlert(true);
                 }
+
+                // Change Alert states.
+                setShowAlert(true);
+                setAlertMessage(response.message);
                 
 
                 // Close alert message after 4 seconds.
@@ -374,18 +391,25 @@ function Pacientes() {
                         {showSpinner && <img src={loadingGif} alt='Espera a que termine de cargar' height='20px'/>}
                     </div>
 
-                    <button
-                        className='btn bg-white text-primary border-primary'
-                        data-bs-toggle='modal'
-                        data-bs-target='#modalAdd'
-                    >
-                        <FontAwesomeIcon
-                            className='text-primary me-1'
-                            icon={faPlus}
-                        />
+                    {
+                        role !== null && (role === 'administrativo' || role === 'admin' || role === 'soporte')
+                        ? (
 
-                        Agregar Paciente
-                    </button>
+                            <button
+                                className='btn bg-white text-primary border-primary'
+                                data-bs-toggle='modal'
+                                data-bs-target='#modalAdd'
+                            >
+                                <FontAwesomeIcon
+                                    className='text-primary me-1'
+                                    icon={faPlus}
+                                />
+        
+                                Agregar Paciente
+                            </button>
+                        )
+                        : null
+                    }
                 </div>
 
                 {showAlert ? 
@@ -417,20 +441,26 @@ function Pacientes() {
             <NuevoPaciente
                 pacienteNombre={pacienteNombre}
                 pacienteApellido={pacienteApellido}
-                pacienteFechaNacimiento={pacienteFechaNacimiento}
                 pacienteEmail={pacienteEmail}
+                pacienteFechaNacimiento={pacienteFechaNacimiento}
+                pacienteGenero={pacienteGenero}
                 pacienteDni={pacienteDni}
                 pacienteTelefono={pacienteTelefono}
-                pacienteGenero={pacienteGenero}
                 pacienteObraSocial={pacienteObraSocial}
+                pacienteNumeroObraSocial={pacienteNumeroObraSocial}
+                pacienteAntecedentes={pacienteAntecedentes}
+                pacienteAlergias={pacienteAlergias}
                 setPacienteNombre={setPacienteNombre}
                 setPacienteApellido={setPacienteApellido}
-                setPacienteFechaNacimiento={setPacienteFechaNacimiento}
                 setPacienteEmail={setPacienteEmail}
+                setPacienteFechaNacimiento={setPacienteFechaNacimiento}
+                setPacienteGenero={setPacienteGenero}
                 setPacienteDni={setPacienteDni}
                 setPacienteTelefono={setPacienteTelefono}
-                setPacienteGenero={setPacienteGenero}
                 setPacienteObraSocial={setPacienteObraSocial}
+                setPacienteNumeroObraSocial={setPacienteNumeroObraSocial}
+                setPacienteAntecedentes={setPacienteAntecedentes}
+                setPacienteAlergias={setPacienteAlergias}
                 addPaciente={addPaciente}
             />
 
@@ -469,7 +499,7 @@ function Pacientes() {
                 text='¿Está seguro que desea eliminar este paciente?'
                 handleDelete={() => {
                     // Close modal.
-                    $('#modalDelete #closeModalComponent').click();
+                    $('#modalDelete#closeModalComponent').click();
 
                     // Delete the user.
                     deleteUser();

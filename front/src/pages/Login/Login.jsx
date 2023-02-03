@@ -73,27 +73,9 @@ function Login() {
                     // Save the new user information in LocalStorage.
                     localStorage.setItem('user', JSON.stringify(response.user));
 
-                    // Wait 3 seconds to redirect.
+                    // Wait 1.5 seconds to redirect.
                     setTimeout(() => {
-                        // Switch user role.
-                        switch (response.role) {
-                            case 'admin':
-                                window.location.href = '/panel-admin';
-                                break;
-
-                            case 'administrador':
-                                window.location.href = '/panel-administrador';
-                                break;
-
-                            case 'medico':
-                                window.location.href = '/panel-medico';
-                                break;
-                            
-                            case 'paciente':
-                            default:
-                                window.location.href = '/';
-                                break;
-                        }
+                        window.location.href = '/';
                     }, 1500);
                 } else {
                     // Disable submit button.

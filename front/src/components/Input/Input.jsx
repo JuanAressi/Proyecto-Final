@@ -2,7 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './style.css';
 
-function Input( { id, classes, type, name, placeholder, value, onChange, onFocus, icon, options } ) {
+function Input( { id, classes, type, name, placeholder, value, onChange, onFocus, onBlur, icon, options } ) {
     return (
         <div className='icon-component form-floating w-100 mx-auto position-relative overflow-hidden box-shadow-dark-1 border-1'>
             {
@@ -16,6 +16,7 @@ function Input( { id, classes, type, name, placeholder, value, onChange, onFocus
                         value={value}
                         onChange={onChange}
                         onFocus={onFocus}
+                        onBlur={onBlur}
                         autoComplete='off'
                     />
                 :
@@ -25,6 +26,7 @@ function Input( { id, classes, type, name, placeholder, value, onChange, onFocus
                         name={name}
                         value={value}
                         onChange={onChange}
+                        onBlur={onBlur}
                     >
                         {options.map((option, index) => (
                             <option

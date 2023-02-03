@@ -11,7 +11,9 @@ class TurnosController extends Controller
     /**
      * Function getAll - Returns all 'Turnos' from database that matches with the request.
      *
-     * @return array - An array of all users.
+     * @param Request $request - The request object.
+     *
+     * @return array - Contains: 'success', 'message' and 'turno'.
      */
     public function getAll(Request $request)
     {
@@ -19,7 +21,6 @@ class TurnosController extends Controller
         $page       = $request->input('page');
         $pagination = $request->input('pagination');
         $search     = $request->input('search');
-        $id_usuario = $request->input('id_usuario');
 
         // Check if $search is null.
         if ($search === null) {
@@ -45,7 +46,8 @@ class TurnosController extends Controller
                     ->orWhere('medico.nombre', 'like', '%' . $search . '%')
                     ->orWhere('medico.apellido', 'like', '%' . $search . '%');
             })
-            ->orderby('turnos.id', 'asc')
+            ->orderByRaw("STR_TO_DATE(concat(turnos.dia, ' ', turnos.hora), '%d-%m-%Y %H:%i') ASC")
+            // ->orderby('turnos.id', 'asc')
             ->get(
                 array(
                     'turnos.id',
@@ -114,19 +116,106 @@ class TurnosController extends Controller
 
 
     /**
-     * Function getById - Returns a 'Turno' by id.
+     * Function getAllById - Returns a 'Turno' by ID of the 'Medico'.
      *
-     * @param int $id - The ID of the 'Turno'.
+     * @param Request $request - The request object.
+     * @param int $id - The ID of the 'Medico'.
      *
-     * @return array $turno - The 'Turno' found.
+     * @return array - Contains: 'success', 'message' and 'turnos'.
      */
-    public function getById($id)
+    public function getAllById(Request $request, $id)
     {
-        $turno = Turnos::where('id', $id)
-            ->select('*')
-            ->get();
+        // Get params from request.
+        $page       = $request->input('page');
+        $pagination = $request->input('pagination');
+        $search     = $request->input('search');
 
-        return json_encode($turno);
+        // Check if $search is null.
+        if ($search === null) {
+            $search = '';
+        }
+
+        // Calculate offset.
+        $offset = ($page - 1) * $pagination;
+
+        // Calculate limit.
+        $limit = $offset + $pagination;
+
+        $turnos_sql = Turnos::leftJoin('usuarios as paciente', 'turnos.id_paciente', '=', 'paciente.id')
+            ->leftJoin('usuarios as medico', 'turnos.id_medico', '=', 'medico.id')
+            ->where('turnos.id_medico', $id)
+            ->where('turnos.estado', '<>', 'cancelado')
+            ->where('turnos.dia', '<=', date('d-m-Y'))
+            ->where(function ($query) use ($search) {
+                $query->where('turnos.dia', 'like', '%' . $search . '%')
+                    ->orWhere('turnos.hora', 'like', '%' . $search . '%')
+                    ->orWhere('turnos.estado', 'like', '%' . $search . '%')
+                    ->orWhere('paciente.nombre', 'like', '%' . $search . '%')
+                    ->orWhere('paciente.apellido', 'like', '%' . $search . '%')
+                    ->orWhere('medico.nombre', 'like', '%' . $search . '%')
+                    ->orWhere('medico.apellido', 'like', '%' . $search . '%');
+            })
+            ->orderByRaw("STR_TO_DATE(concat(turnos.dia, ' ', turnos.hora), '%d-%m-%Y %H:%i') ASC")
+            ->get([
+                'turnos.id',
+                'turnos.dia',
+                'turnos.hora',
+                'turnos.estado',
+                'paciente.nombre as paciente_nombre',
+                'paciente.apellido as paciente_apellido',
+            ]);
+
+        // Get total of turnos.
+        $turnos_count = sizeof($turnos_sql);
+
+        // Get turnos by pagination.
+        $turnos = [];
+
+        // Check if offset is valid.
+        if ($offset < $turnos_count) {
+            // Fill turnos according to pagination.
+            for ($i = $offset; $i < $limit && $i < $turnos_count; $i++) {
+                $turnos[] = $turnos_sql[$i];
+            }
+        } else {
+            // Fill turnos with $turnos_sql.
+            $turnos = $turnos_sql;
+        }
+
+        // Check if turnos are found.
+        if (count($turnos) > 0) {
+            // Create array of turnos.
+            $turnos_filtrados = array();
+
+            // Return dia, horario, estado, paciente_nombre, paciente_apellido, medico_nombre, medico_apellido.
+            foreach ($turnos as $turno) {
+                $turnos_filtrados[] = array(
+                    'id'                => $turno->id,
+                    'dia'               => $turno->dia,
+                    'hora'              => $turno->horario,
+                    'estado'            => $turno->estado,
+                    'paciente_nombre'   => $turno->paciente_nombre,
+                    'paciente_apellido' => $turno->paciente_apellido,
+                    'medico_nombre'     => $turno->medico_nombre,
+                    'medico_apellido'   => $turno->medico_apellido,
+                );
+            }
+
+            // Return turnos.
+            return json_encode(
+                array(
+                    'turnos_count' => $turnos_count,
+                    'turnos'       => $turnos,
+                )
+            );
+        } else {
+            // Return error.
+            return json_encode(
+                array(
+                    'error' => 'No turnos found.'
+                )
+            );
+        }
     }
 
 
@@ -262,14 +351,14 @@ class TurnosController extends Controller
 
 
     /**
-     * Function getAllById - Returns all 'Turnos' from database that matches with the request.
+     * Function getAllByIdPaciente - Returns all 'Turnos' from database that matches with the request.
      *
      * @param Request $request - The request object.
      * @param int     $id      - The ID of the 'Turno'.
      *
      * @return array - An array of all users.
      */
-    public function getAllById(Request $request, $id)
+    public function getAllByIdPaciente(Request $request, $id)
     {
         // Get params from request.
         $page       = $request->input('page');

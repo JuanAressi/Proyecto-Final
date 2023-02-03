@@ -46,10 +46,11 @@ Route::post('medicos/agenda', 'App\Http\Controllers\MedicosController@addAgenda'
 
 // Turnos.
 Route::get('turnos', 'App\Http\Controllers\TurnosController@getAll');
+Route::get('turnos/{id}', 'App\Http\Controllers\TurnosController@getAllById')->where('id', '[0-9]+');
 Route::post('turnos', 'App\Http\Controllers\TurnosController@addNew');
 Route::put('turnos/{id}', 'App\Http\Controllers\TurnosController@update')->where('id', '[0-9]+');
 Route::delete('turnos/{id}', 'App\Http\Controllers\TurnosController@delete')->where('id', '[0-9]+');
-Route::get('turnos/paciente/{id}', 'App\Http\Controllers\TurnosController@getAllById')->where('id', '[0-9]+');
+Route::get('turnos/paciente/{id}', 'App\Http\Controllers\TurnosController@getAllByIdPaciente')->where('id', '[0-9]+');
 
 // Reportes.
 Route::get('reportes/historia-clinica/{id}', 'App\Http\Controllers\ReportesController@createHistoriaClinica')->where('id', '[0-9]+');

@@ -473,9 +473,11 @@ class UsuariosSeeder extends Seeder
         $historia_clinica->save();
 
 
+        $cant_default_users = 12;
+        $cant_pacientes     = 400;
 
         // Create users - Pacientes.
-        for ($i = 0; $i < 758; $i++) {
+        for ($i = 0; $i < $cant_pacientes; $i++) {
             // Create Usuario.
             $usuario = new Usuarios();
 
@@ -515,6 +517,9 @@ class UsuariosSeeder extends Seeder
             $paciente->save();
         }
 
+        $cant_medicos       = 20;
+        $cant_end_pacientes = $cant_default_users + $cant_pacientes;
+        $cant_end_medicos   = $cant_end_pacientes + $cant_medicos;
 
         // Create users - Médicos.
         for ($i = 0; $i < 20; $i++) {
@@ -531,7 +536,7 @@ class UsuariosSeeder extends Seeder
             $usuario->email            = $names[$first_name] . $i . $emails[$email_prefix];
             $usuario->contraseña       = md5('123456');
             $usuario->dni              = random_int(10000000, 59999999);
-            $usuario->fecha_nacimiento = date('d-m-Y', strtotime('-' . rand(18, 60) . ' years'));
+            $usuario->fecha_nacimiento = date('d-m-Y', strtotime('-' . rand(18, 75) . ' years'));
             $usuario->genero           = $genders[$gender];
             $usuario->telefono         = random_int(152000000, 156999999);
             $usuario->estado           = 'activo';
@@ -547,8 +552,8 @@ class UsuariosSeeder extends Seeder
             // Create Turno.
             $turno = new Turnos();
 
-            $turno->id_paciente = rand(15, 770);
-            $turno->id_medico   = rand(770, 790);
+            $turno->id_paciente = rand($cant_default_users + 1, $cant_end_pacientes);
+            $turno->id_medico   = rand($cant_end_pacientes + 1, $cant_end_medicos);
             $turno->dia         = date('d-m-Y', strtotime('+' . rand(-60, 30) . ' days'));
             $turno->hora        = rand(8, 18) . ':00';
             $turno->estado      = $estados_turnos[rand(0, count($estados_turnos) - 1)];
@@ -580,7 +585,7 @@ class UsuariosSeeder extends Seeder
             }
         } while ($counter++ < 2000);
 
-        for ($j = 758; $j < 778; $j++) {
+        for ($j = $cant_end_pacientes + 1; $j < $cant_end_medicos; $j++) {
             // Loop trough 40 days, not counting the weekends.
             for ($k = 0; $k < 40; $k++) {
                 // Get the next day.

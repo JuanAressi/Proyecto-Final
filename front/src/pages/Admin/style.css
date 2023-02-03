@@ -26,7 +26,7 @@
 #modalAdd .custom-arrow,
 #modalEdit .custom-arrow {
     top: calc((100% - 0.25rem) / 2);
-    right: 1rem;
+    right: 0.5rem;
     z-index: 1;
     border: none!important;
     pointer-events: none;
