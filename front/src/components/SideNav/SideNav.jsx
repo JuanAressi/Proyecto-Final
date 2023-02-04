@@ -41,6 +41,7 @@ function SideNav({ active }) {
     }
 
 
+    // Render the 'SideNav' component.
     return (
         <div id='sideNav' className='d-flex flex-column bg-primary'>
             <Link

@@ -59,12 +59,12 @@ function EditarPaciente({ userToEdit, pacienteNombre, pacienteApellido, paciente
     useEffect(() => {
         // Check that is not empty.
         if (pacienteFechaNacimiento !== '') {
-            // If it is in the format 'dd-mm-yyyy', then parse it.
+            // If it is in the format 'yyyy-mm-dd', then parse it.
             if (pacienteFechaNacimiento.indexOf('-') === 2) {
+                setParsedFechaNacimiento(pacienteFechaNacimiento);
+            } else if (pacienteFechaNacimiento.indexOf('-') === 4) {
                 const fechaNacimiento = pacienteFechaNacimiento.split('-');
                 setParsedFechaNacimiento(`${fechaNacimiento[2]}-${fechaNacimiento[1]}-${fechaNacimiento[0]}`);
-            } else if (pacienteFechaNacimiento.indexOf('-') === 4) {
-                setParsedFechaNacimiento(pacienteFechaNacimiento);
             }
         }
     }, [pacienteFechaNacimiento]);
@@ -540,7 +540,9 @@ function EditarPaciente({ userToEdit, pacienteNombre, pacienteApellido, paciente
                                                 name='fecha_nacimiento'
                                                 placeholder='Fecha de Nacimiento'
                                                 aria-label='Fecha de Nacimiento'
-                                                value={parsedFechaNacimiento}
+                                                value={pacienteFechaNacimiento}
+                                                min={new Date(new Date().setFullYear(new Date().getFullYear() - 100)).toISOString().split('T')[0]}
+                                                max={new Date().toISOString().split('T')[0]}
                                                 onChange={(e) => setPacienteFechaNacimiento(e.target.value)}
                                             />
                                         </div>

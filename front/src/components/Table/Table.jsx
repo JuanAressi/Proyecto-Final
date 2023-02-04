@@ -50,26 +50,30 @@ function Table({ lastShowPerPage, lastPage, page, setPage, setSearchInput, setSh
                                         )
                                     })}
                                     
-                                    <td>
-                                        <FontAwesomeIcon
-                                            className='edit-item me-3'
-                                            icon={faPencil}
-                                            data-bs-toggle='modal'
-                                            data-bs-target={'#modalEdit'}
-                                            onClick={() => setItemToEdit(item.id)}
-                                        />
-
-                                        {
-                                            setItemToDelete &&
+                                    {
+                                        tableHeads[tableHeads.length - 1] === 'Acciones'
+                                        ? <td>
                                             <FontAwesomeIcon
-                                                className='delete-item'
-                                                icon={faTrashAlt}
+                                                className='edit-item me-3'
+                                                icon={faPencil}
                                                 data-bs-toggle='modal'
-                                                data-bs-target={'#modalDelete'}
-                                                onClick={() => setItemToDelete(item.id)}
+                                                data-bs-target={'#modalEdit'}
+                                                onClick={() => setItemToEdit(item.id)}
                                             />
-                                        }
-                                    </td>
+    
+                                            {
+                                                setItemToDelete &&
+                                                <FontAwesomeIcon
+                                                    className='delete-item'
+                                                    icon={faTrashAlt}
+                                                    data-bs-toggle='modal'
+                                                    data-bs-target={'#modalDelete'}
+                                                    onClick={() => setItemToDelete(item.id)}
+                                                />
+                                            }
+                                        </td>
+                                        : <></>
+                                    }
                                 </tr>
                             )
                         }

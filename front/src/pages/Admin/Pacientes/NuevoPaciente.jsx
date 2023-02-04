@@ -25,13 +25,15 @@ function NuevoPaciente({ pacienteNombre, pacienteApellido, pacienteEmail, pacien
 
 
     /**
-     * Function validateNombre - Validate the 'Nombre' input.
+     * Function validateNombre - Validate the 'Nombre' input, where the value must be a string and can not be empty.
      *
      * @return {void}
      */
     const validateNombre = () => {
         if (pacienteNombre === '') {
             setNombreInvalidMessage('El nombre es obligatorio.');
+        } else if (!pacienteNombre.match(/^[a-zA-Z\s]*$/)) {
+            setNombreInvalidMessage('El nombre no puede contener caracteres especiales o números.');
         } else {
             setNombreInvalidMessage('');
         }
@@ -46,6 +48,8 @@ function NuevoPaciente({ pacienteNombre, pacienteApellido, pacienteEmail, pacien
     const validateApellido = () => {
         if (pacienteApellido === '') {
             setApellidoInvalidMessage('El apellido es obligatorio.');
+        } else if (!pacienteApellido.match(/^[a-zA-Z\s]*$/)) {
+            setApellidoInvalidMessage('El apellido no puede contener caracteres especiales o números.');
         } else {
             setApellidoInvalidMessage('');
         }

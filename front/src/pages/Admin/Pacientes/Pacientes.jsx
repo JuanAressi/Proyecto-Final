@@ -494,12 +494,13 @@ function Pacientes() {
                 searchHistoriaClinica={searchHistoriaClinica}
             />
 
+
             <Modal
                 id='modalDelete'
                 text='¿Está seguro que desea eliminar este paciente?'
                 handleDelete={() => {
                     // Close modal.
-                    $('#modalDelete#closeModalComponent').click();
+                    $('#modalDelete #closeModalComponent').click();
 
                     // Delete the user.
                     deleteUser();

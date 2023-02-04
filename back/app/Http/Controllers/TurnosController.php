@@ -351,12 +351,12 @@ class TurnosController extends Controller
 
 
     /**
-     * Function getAllByIdPaciente - Returns all 'Turnos' from database that matches with the request.
+     * Function getAllByIdPaciente - Get 2 arrays of turnos, one for dates that have passed and one for dates that have not passed.
      *
      * @param Request $request - The request object.
      * @param int     $id      - The ID of the 'Turno'.
      *
-     * @return array - An array of all users.
+     * @return array.
      */
     public function getAllByIdPaciente(Request $request, $id)
     {
@@ -402,34 +402,67 @@ class TurnosController extends Controller
                 )
             );
 
-        // Get total of turnos.
-        $turnos_count = sizeof($turnos_sql);
+        // Loop through all the turnos and divide them into 2 arrays, one for dates that have passed and one for dates that have not passed.
+        $turnos_pasados = [];
+        $turnos_futuros = [];
 
-        // Get turnos by pagination.
-        $turnos = [];
+        // Get current date.
+        $current_date = date_create_from_format('d-m-Y', date('d-m-Y'));
 
-        // Check if offset is valid.
-        if ($offset < $turnos_count) {
-            // Fill turnos according to pagination.
-            for ($i = $offset; $i < $limit && $i < $turnos_count; $i++) {
-                $turnos[] = $turnos_sql[$i];
+        foreach ($turnos_sql as $turno) {
+            // Parse $turno->dia to date object.
+            $turno_date = date_create_from_format('d-m-Y', $turno->dia);
+
+            // Check if turno date is before current date.
+            if ($current_date > $turno_date) {
+                // Add turno to turnos_pasados.
+                $turnos_pasados[] = $turno;
+            } else {
+                // Add turno to turnos_futuros.
+                $turnos_futuros[] = $turno;
             }
-        } else {
-            // Fill turnos with $turnos_sql.
-            $turnos = $turnos_sql;
         }
 
+        // Get total of turnos.
+        $turnos_count = sizeof($turnos_futuros);
+
+        // Get turnos by pagination.
+        // $turnos = [];
+
+        // // Check if offset is valid.
+        // if ($offset < $turnos_count) {
+        //     // Fill turnos according to pagination.
+        //     for ($i = $offset; $i < $limit && $i <= $turnos_count; $i++) {
+        //         $turnos[] = $turnos_pasados[$i];
+        //     }
+        // } else {
+        //     // Fill turnos with $turnos_pasados.
+        //     $turnos = $turnos_pasados;
+        // }
+
         // Check if turnos are found.
-        if (count($turnos) > 0) {
+        if (count($turnos_pasados) > 0 || count($turnos_futuros) > 0) {
             // Create array of turnos.
-            $turnos_filtrados = array();
+            $turnos_pasados_filtrados = array();
+            $turnos_futuros_filtrados = array();
 
             // Return dia, horario, estado, paciente_nombre, paciente_apellido, medico_nombre, medico_apellido.
-            foreach ($turnos as $turno) {
-                $turnos_filtrados[] = array(
+            foreach ($turnos_pasados as $turno) {
+                $turnos_pasados_filtrados[] = array(
                     'id'                => $turno->id,
                     'dia'               => $turno->dia,
-                    'hora'              => $turno->horario,
+                    'hora'              => $turno->hora,
+                    'estado'            => $turno->estado,
+                    'medico_nombre'     => $turno->medico_nombre,
+                    'medico_apellido'   => $turno->medico_apellido,
+                );
+            }
+
+            foreach ($turnos_futuros as $turno) {
+                $turnos_futuros_filtrados[] = array(
+                    'id'                => $turno->id,
+                    'dia'               => $turno->dia,
+                    'hora'              => $turno->hora,
                     'estado'            => $turno->estado,
                     'medico_nombre'     => $turno->medico_nombre,
                     'medico_apellido'   => $turno->medico_apellido,
@@ -439,8 +472,9 @@ class TurnosController extends Controller
             // Return turnos.
             return json_encode(
                 array(
-                    'turnos_count' => $turnos_count,
-                    'turnos'       => $turnos,
+                    'turnos_count'   => $turnos_count,
+                    'turnos_pasados' => $turnos_pasados_filtrados,
+                    'turnos_futuros' => $turnos_futuros_filtrados,
                 )
             );
         } else {

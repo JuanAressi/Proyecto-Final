@@ -2,13 +2,14 @@
 import { React, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faPencil,  } from '@fortawesome/free-solid-svg-icons';
 import $ from 'jquery';
 
 // Components.
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import Table from '../../components/Table/Table';
+import Alert from '../../components/Alert/Alert';
 import loadingGif from '../../components/assets/img/loadingGif.gif';
 import EditarTurno from './EditarTurno';
 
@@ -20,7 +21,8 @@ function MisTurnos() {
     const [searchInput, setSearchInput] = useState('');
     const [showPerPage, setShowPerPage] = useState(10);
     const [totalTurnos, setTotalTurnos] = useState(0);
-    const [turnos, setTurnos] = useState([]);
+    const [turnosPasados, setTurnosPasados] = useState([]);
+    const [turnosFuturos, setTurnosFuturos] = useState([]);
     const [showSpinner, setShowSpinner] = useState(true);
 
     // Turnos.
@@ -33,7 +35,12 @@ function MisTurnos() {
     const [turnoEstado, setTurnoEstado] = useState('');
 
     // User.
-    const [idUser, setIdUser] = useState(0);
+    const [idUser, setIdUser] = useState(null);
+
+    // Alert. 
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertType, setAlertType] = useState('');
+    const [alertMessage, setAlertMessage] = useState('');
 
     
 	useEffect(() => {
@@ -49,16 +56,20 @@ function MisTurnos() {
 
     // Search 'Turnos' when 'page' changes (delay 0s).
     useEffect(() => {
-        searchTurnos();
-    }, [page]);
+        if (idUser !== null) {
+            searchTurnos();
+        }
+    }, [page, idUser]);
 
 
     // Search 'Turnos' when 'showPerPage' changes (delay 0s).
     useEffect(() => {
         setPage(1);
         
-        searchTurnos();
-    }, [showPerPage]);
+        if (idUser !== null) {
+            searchTurnos();
+        }
+    }, [showPerPage, idUser]);
 
 
     // Get 'Turno' by ID and complete 'turnoToEdit' state.
@@ -69,7 +80,7 @@ function MisTurnos() {
             setShowSpinner(true);
 
             // Loop trough 'turnos' state to find the 'turnoToEdit' ID.
-            turnos.forEach(turno => {
+            turnosFuturos.forEach(turno => {
                 if (turno.id === turnoToEdit) {
                     // Hide spinner.
                     setShowSpinner(false);
@@ -94,8 +105,6 @@ function MisTurnos() {
         // Show spinner.
         setShowSpinner(true);
 
-        console.log('idUser: ', idUser);
-
         $.ajax({
             url: process.env.REACT_APP_API_ROOT + 'turnos/paciente/' + idUser,
             type: 'GET',
@@ -115,7 +124,50 @@ function MisTurnos() {
                 setLastShowPerPage(showPerPage);
                 setLastPage(page);
                 setTotalTurnos(response.turnos_count);
-                setTurnos(response.turnos);
+                setTurnosPasados(response.turnos_pasados);
+                setTurnosFuturos(response.turnos_futuros);
+            },
+            error: function (error) {
+                // Hide spinner.
+                setShowSpinner(false);
+            }
+        });
+    }
+
+
+    /**
+     * Function updateTurno - Makes the update of a 'Turno'.
+     *
+     * @return {void}
+     */
+    const updateTurno = () => {
+        // Show spinner.
+        setShowSpinner(true);
+
+        $.ajax({
+            url: process.env.REACT_APP_API_ROOT + 'turnos/' + turnoToEdit,
+            type: 'PUT',
+            dataType: 'json',
+            data: {
+                'estado': turnoEstado,
+            },
+            success: function (response) {
+                // Hide spinner.
+                setShowSpinner(false);
+
+                if (response.success) {
+                    // Set Alert state.
+                    setAlertType('success');
+                } else {
+                    // Set Alert state.
+                    setAlertType('danger');
+                }
+                
+                setAlertMessage(response.message);
+                setShowAlert(true);
+
+                // Close modal.
+                $('#modalEdit #closeModalEdit').click();
             },
             error: function (error) {
                 // Hide spinner.
@@ -146,11 +198,58 @@ function MisTurnos() {
 
                         <h1 className='text-center mt-2 mb-8'>Mis Turnos reservados</h1>
 
-                        
                         <div className='position-absolute' style={{width: '40px', bottom: '-2rem', left: 'calc((100% - 40px) / 2)'}}>
                             {showSpinner && <img src={loadingGif} alt='Espera a que termine de cargar' height='20px'/>}
                         </div>
                     </div>
+
+                    {showAlert ? 
+                        <Alert
+                            type={alertType}
+                            message={alertMessage}
+                        />
+                            
+                        : null
+                    }
+
+                    <h3 className='text-center mt-6'>Turnos Futuros</h3>
+
+                    <div id='table'>
+                        <table className='table table-striped bg-white border box-shadow-dark mt-3 mb-0'>
+                            <thead>
+                                <tr>
+                                    <th scope='col'>#</th>
+                                    <th scope='col'>Fecha y Hora</th>
+                                    <th scope='col'>Estado</th>
+                                    <th scope='col'>Medico</th>
+                                    <th scope='col'>Acciones</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {turnosFuturos.map((turno, index) => (
+                                    <tr key={index}>
+                                        <th scope='row'>{index + 1}</th>
+                                        <td>{turno.dia} {turno.hora}</td>
+                                        <td>{turno.estado}</td>
+                                        <td>{turno.medico_apellido}, {turno.medico_nombre}</td>
+                                        <td>
+                                            <FontAwesomeIcon
+                                                className='edit-item me-3'
+                                                icon={faPencil}
+                                                data-bs-toggle='modal'
+                                                data-bs-target={'#modalEdit'}
+                                                onClick={() => setTurnoToEdit(turno.id)}
+                                            />
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <h3 className='text-center mt-6'>Turnos Antiguos</h3>
 
                     <Table
                         lastShowPerPage={lastShowPerPage}
@@ -161,10 +260,10 @@ function MisTurnos() {
                         setShowPerPage={setShowPerPage}
                         setItemToEdit={setTurnoToEdit}
                         showPerPage={showPerPage}  
-                        tableHeads={['#', 'Fecha y Hora', 'Estado', 'Medico', 'Acciones']}
+                        tableHeads={['#', 'Fecha y Hora', 'Estado', 'Medico']}
                         tableKeys={['dia+hora', 'estado', 'medico_apellido+medico_nombre']}
                         totalItems={totalTurnos}
-                        items={turnos}
+                        items={turnosPasados}
                     />
                 </div>
             </div>
@@ -177,7 +276,7 @@ function MisTurnos() {
                 turnoEstado={turnoEstado}
                 turnoMedico={turnoMedico}
                 setTurnoEstado={setTurnoEstado}
-                // updateTurno={updateTurno}
+                updateTurno={updateTurno}
             />
         </div>
     )

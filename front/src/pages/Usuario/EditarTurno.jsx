@@ -1,16 +1,15 @@
-import { React, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 
-function EditarTurno({ turnoFecha, turnoHora, turnoEstado, turnoMedico, turnoPaciente, setTurnoEstado, updateTurno }) {
-    const estados = [
+function EditarTurno({ turnoFecha, turnoHora, turnoEstado, turnoMedico, setTurnoEstado, updateTurno }) {
+    let estados = [
         {value: 'reservado', text: 'Reservado'},
-        {value: 'confirmado', text: 'Confirmado'},
         {value: 'cancelado', text: 'Cancelado'},
-        {value: 'concretado', text: 'Concretado'},
     ];
 
     const [changeEstado, setChangeEstado] = useState(false);
+
 
     // Render the 'EditarTurno' component.
     return (
@@ -86,6 +85,7 @@ function EditarTurno({ turnoFecha, turnoHora, turnoEstado, turnoMedico, turnoPac
                                 <label htmlFor='estado'>Estado</label>
 
                                 <select
+                                    id='estado'
                                     className='form-control'
                                     name='estado'
                                     value={turnoEstado}
@@ -103,7 +103,7 @@ function EditarTurno({ turnoFecha, turnoHora, turnoEstado, turnoMedico, turnoPac
                                     })}
                                 </select>
 
-                                <span className='custom-arrow position-absolute h-100'></span>
+                                <span className='custom-arrow position-absolute h-100' style={{right: '1rem'}}></span>
                             </div>
                         </div>
 

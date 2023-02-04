@@ -1,5 +1,5 @@
 // Utilities.
-import { React } from 'react';
+import { React, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { faFileMedical, faUser } from '@fortawesome/free-solid-svg-icons';
 
@@ -9,6 +9,16 @@ import Footer from '../../components/Footer/Footer';
 import Card from '../../components/Card/Card';
 
 function Usuario() {
+    const [user, setUser] = useState({});
+
+    useEffect(() => {
+        // Get the user data from the local storage.
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        // Set the user data.
+        setUser(user);
+    }, []);
+
     // Render the 'Usuario' page.
     return (
         <div id='panelUsuarios'>
@@ -16,7 +26,7 @@ function Usuario() {
 
             <div className='d-flex bg-lightgray min-height'>
                 <div className='container p-4'>
-                    <h1 className='text-center mt-2'>¡Bienvenido, Juan Manuel Aressi!</h1>
+                    <h1 className='text-center mt-2'>¡Bienvenido, {user.nombre} {user.apellido}!</h1>
 
                     <div className='row mt-4'>
                         {/* Mis turnos */}

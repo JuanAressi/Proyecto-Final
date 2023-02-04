@@ -89,7 +89,7 @@ function Register() {
     const validateApellido = () => {
         if (apellido === '') {
             setApellidoInvalidMessage('El apellido es obligatorio.');
-        } else if (!nombre.match(/^[a-zA-Z\s]*$/)) {
+        } else if (!apellido.match(/^[a-zA-Z\s]*$/)) {
             setApellidoInvalidMessage('El apellido no puede contener caracteres especiales o números.');
         } else {
             setApellidoInvalidMessage('');
