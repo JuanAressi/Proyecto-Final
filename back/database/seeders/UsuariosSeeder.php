@@ -474,7 +474,7 @@ class UsuariosSeeder extends Seeder
 
 
         $cant_default_users = 12;
-        $cant_pacientes     = 400;
+        $cant_pacientes     = 770;
 
         // Create users - Pacientes.
         for ($i = 0; $i < $cant_pacientes; $i++) {
@@ -546,6 +546,16 @@ class UsuariosSeeder extends Seeder
         }
 
         $counter = 0;
+
+        // Create Turno.
+        $turno = new Turnos();
+
+        $turno->id_paciente = 519;
+        $turno->id_medico   = 789;
+        $turno->dia         = '14-02-2023';
+        $turno->hora        = '10:00';
+        $turno->estado      = 'reservado';
+        $turno->save();
 
         // Create Turnos.
         do {

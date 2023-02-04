@@ -42,6 +42,7 @@ function Turnos() {
     // Utilities.
     const [step, setStep] = useState(1);
     const [role, setRole] = useState(null);
+    const [id, setId] = useState(null);
     const [showLogin, setShowLogin] = useState('d-flex');
     const [success, setSuccess] = useState(false);
     const [showSpinnerStep2, setShowSpinnerStep2] = useState(false);
@@ -59,6 +60,7 @@ function Turnos() {
         if (user) {
             // Get the user role.
             setRole(user.rol);
+            setId(user.id);
             setStep(2);
             setShowLogin('d-none');
         } else {
@@ -452,7 +454,7 @@ function Turnos() {
             type: 'POST',
             dataType: 'json',
             data: {
-                'id_paciente': 5,
+                'id_paciente': id,
                 'id_medico': medico,
                 'dia': fecha,
                 'hora': hora,
