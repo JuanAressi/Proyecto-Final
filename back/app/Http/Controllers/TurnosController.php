@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Usuarios;
 use App\Models\Turnos;
 use App\Models\TurnosHoras;
+use Illuminate\Support\Facades\Mail;
 
 class TurnosController extends Controller
 {
@@ -250,24 +252,41 @@ class TurnosController extends Controller
                 TurnosHoras::where('id_turnos_fechas', $request->input('id_fecha_dia'))
                     ->where('hora', $request->input('hora'))
                     ->update(['estado' => 'ocupado']);
+
+                // Get the 'Paciente' data.
+                $paciente = Usuarios::where('id', $request->input('id_paciente'))
+                    ->first();
+
+                // Send email to the 'Paciente'.
+                $data = array(
+                    'email' => $paciente->email,
+                    'name'  => $paciente->nombre . ' ' . $paciente->apellido,
+                    'subject' => 'Turno reservado',
+                    'bodyMessage' => 'Estimado ' . $paciente->nombre . ' ' . $paciente->apellido . ',<br><br>Su turno ha sido reservado con éxito.<br><br>Fecha: ' . $request->input('dia') . '<br>Hora: ' . $request->input('hora') . '<br><br>Saludos,<br>Equipo de MisTurnos.<br><br>',
+                );
+
+                Mail::send([], $data, function ($message) use ($data) {
+                    $message->to($data['email'], $data['name']);
+                    $message->subject($data['subject']);
+                    $message->setBody($data['bodyMessage'], 'text/html');
+                });
             }
 
-            return json_encode(
-                array(
-                    'success' => true,
-                    'turno'   => $turno,
-                    'message' => 'Turno creado con éxito.'
-                )
-            );
+            // Return success.
+            $success = true;
+            $message = 'Turno creado con éxito.';
         } else {
             // Return error.
-            return json_encode(
-                array(
-                    'success' => false,
-                    'message' => 'Ya existe un turno para el medico en la fecha y hora seleccionada',
-                )
-            );
+            $success = false;
+            $message = 'Ya existe un turno para el medico en la fecha y hora seleccionada';
         }
+
+        return json_encode(
+            array(
+                'success' => false,
+                'message' => 'Ya existe un turno para el medico en la fecha y hora seleccionada',
+            )
+        );
     }
 
 
