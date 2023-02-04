@@ -22,6 +22,8 @@ import Usuario         from './pages/Usuario/Usuario';
 import MisTurnos       from './pages/Usuario/MisTurnos';
 import DatosPersonales from './pages/Usuario/DatosPersonales';
 
+import AccesoNoAutorizado from './pages/AccesoNoAutorizado/AccesoNoAutorizado';
+
 
 // Render the App.
 function App() {
@@ -32,6 +34,7 @@ function App() {
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
                 <Route path='/turnos' element={<Turnos />} />
+                <Route path='/acceso-no-autorizado' element={<AccesoNoAutorizado />} />
 
                 {/* Modulo de paciente */}
                 <Route path='/panel-usuario' element={<ProtectedRoute rol='paciente' />}>
