@@ -2,6 +2,8 @@
 import { React } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
+import ReactPDF from '@react-pdf/renderer';
+
 // Components.
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 
@@ -24,6 +26,8 @@ import DatosPersonales from './pages/Usuario/DatosPersonales';
 
 import AccesoNoAutorizado from './pages/AccesoNoAutorizado/AccesoNoAutorizado';
 
+import ReporteHistoriaClinica from './components/Reportes/ReporteHistoriaClinica';
+
 
 // Render the App.
 function App() {
@@ -35,6 +39,7 @@ function App() {
                 <Route path='/register' element={<Register />} />
                 <Route path='/turnos' element={<Turnos />} />
                 <Route path='/acceso-no-autorizado' element={<AccesoNoAutorizado />} />
+                <Route path='/reporte' element={<ReporteHistoriaClinica />} />
 
                 {/* Modulo de paciente */}
                 <Route path='/panel-usuario' element={<ProtectedRoute rol='paciente' />}>

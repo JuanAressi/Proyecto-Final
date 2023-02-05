@@ -2,11 +2,13 @@
 import { React, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { faFileMedical, faUser } from '@fortawesome/free-solid-svg-icons';
+import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
 
 // Components.
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import Card from '../../components/Card/Card';
+import ReporteHistoriaClinica from '../../components/Reportes/ReporteHistoriaClinica';
 
 function Usuario() {
     const [user, setUser] = useState({});
@@ -27,6 +29,14 @@ function Usuario() {
             <div className='d-flex bg-lightgray min-height'>
                 <div className='container p-4'>
                     <h1 className='text-center mt-2'>¡Bienvenido, {user.nombre} {user.apellido}!</h1>
+                    
+                    <PDFViewer style={{ width: '100%', height: '90vh'}}>
+                        <ReporteHistoriaClinica />
+                    </PDFViewer>
+
+                    <PDFDownloadLink document={<ReporteHistoriaClinica />} filename='historia-clinica.pdf'>
+                        <button className='btn btn-primary mt-4'>Descargar PDF</button>
+                    </PDFDownloadLink>
 
                     <div className='row mt-4'>
                         {/* Mis turnos */}
