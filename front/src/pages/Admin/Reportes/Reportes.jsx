@@ -1,11 +1,14 @@
 // Utilities.
 import { React, useEffect, useState } from 'react';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import $ from 'jquery';
 
 // Components.
 import SideNav from '../../../components/SideNav/SideNav';
 import Alert from '../../../components/Alert/Alert';
 import loadingGif from '../../../components/assets/img/loadingGif.gif';
+import ReporteHistoriaClinica from '../../../components/Reportes/ReporteHistoriaClinica';
+import ReporteTurnosProgramados from '../../../components/Reportes/ReporteTurnosProgramados';
 import './style.css'
 
 function Reportes() {
@@ -13,6 +16,7 @@ function Reportes() {
     const [showSpinner, setShowSpinner] = useState(false);
     const [historiaClinicaBtnDisabled, setHistoriaClinicaBtnDisabled] = useState(true);
     const [turnosBtnDisabled, setTurnosBtnDisabled] = useState(false);
+    const [data, setData] = useState(null);
 
     // Alert. 
     const [showAlert, setShowAlert] = useState(false);
@@ -450,7 +454,7 @@ function Reportes() {
 
         // Change the buttons state.
         setHistoriaClinicaBtnDisabled(true);
-        // setTurnosBtnDisabled(true);
+        setTurnosBtnDisabled(true);
     
         if (report === 'historiaClinicaButton') {
             // Get the 'paciente' input value.
@@ -472,8 +476,13 @@ function Reportes() {
                         setShowSpinner(false);
 
                         if (response.success) {
-                            // Download the report.
-                            downloadReport(response.headers, response.data, 'historia-clinica');
+                            // Change 'data' state.
+                            setData(response.data);
+
+                            setTimeout(function () {
+                                // Emulate click on the 'historiaClinicaReporte' span parent.
+                                document.getElementById('historiaClinicaReporte').parentElement.click();
+                            }, 1000);
 
                             // Change the Alert state.
                             setAlertType('success');
@@ -520,9 +529,17 @@ function Reportes() {
                     // Change the 'showSpinner' state.
                     setShowSpinner(false);
 
-                    if (response.success) {    
-                        // Download the report.
-                        downloadReport(response.headers, response.data, 'turnos-programados');
+                    // Change 'turnosBtnDisabled' state. 
+                    setTurnosBtnDisabled(false);
+
+                    if (response.success) {
+                        // Change 'data' state.
+                        setData(response.data);
+
+                        setTimeout(function () {
+                            // Emulate click on the 'turnosProgramadosReporte' span parent.
+                            document.getElementById('turnosProgramadosReporte').parentElement.click();
+                        }, 1000);
     
                         // Change the Alert state.
                         setAlertType('success');
@@ -554,58 +571,9 @@ function Reportes() {
                 }
             });
         }
-    }
-
-
-    /**
-     * Function downloadReport - Downloads the specified report.
-     *
-     * @param {string} headers - The headers of the report.
-     * @param {array} data - The data of the report.
-     * @param {string} name - The name of the file.
-     * 
-     * @return {void}
-     */
-    const downloadReport = (headers, data, name) => {
-        // Transform the data.
-        let csvData = headers;
-
-        // Loop through the data and add each value to the csvData.
-        data.forEach(item => {
-            let row = '';
-
-            Object.values(item).forEach(value => {
-                // Add each value to the row.
-                row += value + ',';
-            });
-
-            // End the row.
-            row += '\n';
-
-            // Concat the row to the csvData.
-            csvData += row;
-        });
-
-        // Create the element to handle the download.
-        const element = document.createElement('a');
-
-        // Set necessary attributes.
-        element.setAttribute('href', 'data:application/octet-stream,' + escape(csvData));
-        element.setAttribute('download', name + '.csv');
-        element.style.display = 'none';
-
-        // Add to the DOM.
-        document.body.appendChild(element);
-
-        // Emulate click.
-        element.click();
-
-        // Remove from the DOM.
-        document.body.removeChild(element);
-
-        // Change the buttons state.
-        setHistoriaClinicaBtnDisabled(false);
-        setTurnosBtnDisabled(false);
+        
+        // Change 'data' state.
+        setData(null);
     }
 
 
@@ -670,6 +638,7 @@ function Reportes() {
                     <div className='col-sm-12'>
                         <h4 className='text-shadow-dark mb-2'>Selecciona el tipo de reporte</h4>
 
+                        {/* Tipo de reporte */}
                         <div id='tipoReporte' className='d-flex'>
                             <button
                                 id='historiaClinicaButton'
@@ -690,167 +659,185 @@ function Reportes() {
                     </div>
 
                     {
-                    // Historia Clinica Report.
-                    selectedButton === 'historiaClinicaButton'
-                    ? <div className='col-sm-12 mt-6'>
-                        {/* Paciente */}
-                        <h4 className='text-shadow-dark mb-2'>Selecciona el paciente</h4>
+                        // Historia Clinica Report.
+                        selectedButton === 'historiaClinicaButton'
+                        ? <div className='col-sm-12 mt-6'>
+                            {/* Paciente */}
+                            <h4 className='text-shadow-dark mb-2'>Selecciona el paciente</h4>
 
-                        <div className='row'>
-                            <div className='col-lg-6 col-md-9 col-sm-12 position-relative'>
-                                <input
-                                    id='paciente'
-                                    className='form-control box-shadow-dark-1'
-                                    type='text'
-                                    name='paciente'
-                                    placeholder='Paciente'
-                                    aria-label='Paciente'
-                                    autoComplete='off'
-                                    onChange={(event) => filterPacientes(event.target.value)}
-                                    onFocus={() => pacienteOnFocus()}
-                                    onBlur={(event) => pacienteOnBlur(event)}
-                                />
+                            <div className='row'>
+                                <div className='col-lg-6 col-md-9 col-sm-12 position-relative'>
+                                    <input
+                                        id='paciente'
+                                        className='form-control box-shadow-dark-1'
+                                        type='text'
+                                        name='paciente'
+                                        placeholder='Paciente'
+                                        aria-label='Paciente'
+                                        autoComplete='off'
+                                        onChange={(event) => filterPacientes(event.target.value)}
+                                        onFocus={() => pacienteOnFocus()}
+                                        onBlur={(event) => pacienteOnBlur(event)}
+                                    />
 
-                                <div id='pacientes' className={pacienteShowList + ' flex-column bg-white box-shadow-dark position-absolute'}>
-                                    {pacienteMessageShow &&
-                                        <div className='d-flex align-items-center border-bottom py-2 px-3 pacientesMessage'>
-                                            <p className='mb-0 text-black'>{pacienteMessage}</p>
-                                        </div>
-                                    }
+                                    <div id='pacientes' className={pacienteShowList + ' flex-column bg-white box-shadow-dark position-absolute'}>
+                                        {pacienteMessageShow &&
+                                            <div className='d-flex align-items-center border-bottom py-2 px-3 pacientesMessage'>
+                                                <p className='mb-0 text-black'>{pacienteMessage}</p>
+                                            </div>
+                                        }
 
-                                    {pacientes && pacientes.map((pacienteItem, index) => (
-                                        <div
-                                            className='d-flex align-items-center border-bottom py-2 px-3 cursor-pointer item'
-                                            data-id={pacienteItem.id}
-                                            data-position={index}
-                                            key={index}
-                                            onClick={(e) => setClickedPaciente(e.target)}
-                                        >
-                                            <p className='mb-0 text-black' style={{pointerEvents: 'none'}}>{pacienteItem.apellido}, {pacienteItem.nombre} - {formatDNI(pacienteItem.dni)}</p>
-                                        </div>
-                                    ))}
+                                        {pacientes && pacientes.map((pacienteItem, index) => (
+                                            <div
+                                                className='d-flex align-items-center border-bottom py-2 px-3 cursor-pointer item'
+                                                data-id={pacienteItem.id}
+                                                data-position={index}
+                                                key={index}
+                                                onClick={(e) => setClickedPaciente(e.target)}
+                                            >
+                                                <p className='mb-0 text-black' style={{pointerEvents: 'none'}}>{pacienteItem.apellido}, {pacienteItem.nombre} - {formatDNI(pacienteItem.dni)}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <p className='small mt-1 ms-1'>Solo se mostrarán pacientes los cuales tengan cargada al menos un registro de historia clínica</p>
+                                </div>
+                            </div>
+
+                            {/* Button */}
+                            <div className='row mt-5'>
+                                <div className='col-lg-6 col-md-9 col-sm-12 text-center'>
+                                    <button
+                                        id='generarReporteButton'
+                                        className='btn bg-primary text-white box-shadow-dark w-66 mb-3'
+                                        onClick={() => generarReporte(selectedButton)}
+                                        disabled={historiaClinicaBtnDisabled}
+                                    >
+                                        Generar Reporte y Descargar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        // Turnos Report.
+                        : selectedButton === 'turnosButton'
+                        ? <div className='col-sm-12 mt-6'>
+                            {/* Fechas */}
+                            <h4 className='text-shadow-dark mb-2'>Selecciona el rango de fechas</h4>
+
+                            <div className='row'>
+                                <div className='col-lg-4 col-md-6 col-sm-12'>
+                                    <label htmlFor='fechaDesde'>Fecha Desde</label>
+                                    
+                                    <input
+                                        id='fechaDesde'
+                                        className='form-control box-shadow-dark-1'
+                                        type='date'
+                                        name='fechaDesde'
+                                        placeholder='Fecha Desde'
+                                        aria-label='Fecha Desde'
+                                        autoComplete='off'
+                                        value={fechaDesde}
+                                        onChange={(event) => setFechaDesde(event.target.value)}
+                                    />
+                                    
+                                    <p className='small mt-1 ms-1'>Dejar vacío para no filtrar por fecha desde</p>
                                 </div>
 
-                                <p className='small mt-1 ms-1'>Solo se mostrarán pacientes los cuales tengan cargada al menos un registro de historia clínica</p>
-                            </div>
-                        </div>
+                                <div className='col-lg-4 col-md-6 col-sm-12'>
+                                    <label htmlFor='fechaHasta'>Fecha Hasta</label>
 
-                        {/* Button */}
-                        <div className='row mt-5'>
-                            <div className='col-lg-6 col-md-9 col-sm-12 text-center'>
-                                <button
-                                    id='generarReporteButton'
-                                    className='btn bg-primary text-white box-shadow-dark w-66 mb-3'
-                                    onClick={() => generarReporte(selectedButton)}
-                                    disabled={historiaClinicaBtnDisabled}
-                                >
-                                    Generar Reporte y Descargar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    // Turnos Report.
-                    : selectedButton === 'turnosButton'
-                    ? <div className='col-sm-12 mt-6'>
-                        {/* Fechas */}
-                        <h4 className='text-shadow-dark mb-2'>Selecciona el rango de fechas</h4>
+                                    <input
+                                        id='fechaHasta'
+                                        className='form-control box-shadow-dark-1'
+                                        type='date'
+                                        name='fechaHasta'
+                                        placeholder='Fecha Hasta'
+                                        aria-label='Fecha Hasta'
+                                        autoComplete='off'
+                                        value={fechaHasta}
+                                        onChange={(event) => setFechaHasta(event.target.value)}
+                                    />
 
-                        <div className='row'>
-                            <div className='col-lg-4 col-md-6 col-sm-12'>
-                                <label htmlFor='fechaDesde'>Fecha Desde</label>
-                                
-                                <input
-                                    id='fechaDesde'
-                                    className='form-control box-shadow-dark-1'
-                                    type='date'
-                                    name='fechaDesde'
-                                    placeholder='Fecha Desde'
-                                    aria-label='Fecha Desde'
-                                    autoComplete='off'
-                                    value={fechaDesde}
-                                    onChange={(event) => setFechaDesde(event.target.value)}
-                                />
-                                
-                                <p className='small mt-1 ms-1'>Dejar vacío para no filtrar por fecha desde</p>
-                            </div>
-
-                            <div className='col-lg-4 col-md-6 col-sm-12'>
-                                <label htmlFor='fechaHasta'>Fecha Hasta</label>
-
-                                <input
-                                    id='fechaHasta'
-                                    className='form-control box-shadow-dark-1'
-                                    type='date'
-                                    name='fechaHasta'
-                                    placeholder='Fecha Hasta'
-                                    aria-label='Fecha Hasta'
-                                    autoComplete='off'
-                                    value={fechaHasta}
-                                    onChange={(event) => setFechaHasta(event.target.value)}
-                                />
-
-                                <p className='small mt-1 ms-1'>Dejar vacío para no filtrar por fecha hasta</p>
-                            </div>
-                        </div>
-                    
-                        {/* Medico */}
-                        <h4 className='text-shadow-dark mt-2 mb-2'>Selecciona el Profesional</h4>
-
-                        <div className='row'>
-                            <div className='col-lg-4 col-md-6 col-sm-12 mb-2 position-relative'>
-                                <input
-                                    id='medico'
-                                    className='form-control box-shadow-dark-1'
-                                    type='text'
-                                    name='medico'
-                                    placeholder='Medico'
-                                    aria-label='Medico'
-                                    autoComplete='off'
-                                    onChange={(event) => filterMedicos(event.target.value)}
-                                    onFocus={() => medicoOnFocus()}
-                                    onBlur={(event) => medicoOnBlur(event)}
-                                />
-
-                                <div id='profesionales' className={medicoShowList + ' flex-column bg-white box-shadow-dark position-absolute'}>
-                                    {medicoMessageShow &&
-                                        <div className='d-flex align-items-center border-bottom py-2 px-3 medicosMessage'>
-                                            <p className='mb-0 text-black'>{medicoMessage}</p>
-                                        </div>
-                                    }
-
-                                    {medicos && medicos.map((medicoItem, index) => (
-                                        <div
-                                            className='d-flex align-items-center border-bottom py-2 px-3 cursor-pointer item'
-                                            data-id={medicoItem.id}
-                                            data-position={index}
-                                            key={index}
-                                            onClick={(e) => setClickedMedico(e.target)}
-                                        >
-                                            <p className='mb-0 text-black'>{medicoItem.apellido}, {medicoItem.nombre}</p>
-                                        </div>
-                                    ))}
+                                    <p className='small mt-1 ms-1'>Dejar vacío para no filtrar por fecha hasta</p>
                                 </div>
+                            </div>
+                        
+                            {/* Medico */}
+                            <h4 className='text-shadow-dark mt-2 mb-2'>Selecciona el Profesional</h4>
 
-                                <p className='small mt-1 ms-1'>Dejar vacío para no filtrar por médico</p>
+                            <div className='row'>
+                                <div className='col-lg-4 col-md-6 col-sm-12 mb-2 position-relative'>
+                                    <input
+                                        id='medico'
+                                        className='form-control box-shadow-dark-1'
+                                        type='text'
+                                        name='medico'
+                                        placeholder='Medico'
+                                        aria-label='Medico'
+                                        autoComplete='off'
+                                        onChange={(event) => filterMedicos(event.target.value)}
+                                        onFocus={() => medicoOnFocus()}
+                                        onBlur={(event) => medicoOnBlur(event)}
+                                    />
+
+                                    <div id='profesionales' className={medicoShowList + ' flex-column bg-white box-shadow-dark position-absolute'}>
+                                        {medicoMessageShow &&
+                                            <div className='d-flex align-items-center border-bottom py-2 px-3 medicosMessage'>
+                                                <p className='mb-0 text-black'>{medicoMessage}</p>
+                                            </div>
+                                        }
+
+                                        {medicos && medicos.map((medicoItem, index) => (
+                                            <div
+                                                className='d-flex align-items-center border-bottom py-2 px-3 cursor-pointer item'
+                                                data-id={medicoItem.id}
+                                                data-position={index}
+                                                key={index}
+                                                onClick={(e) => setClickedMedico(e.target)}
+                                            >
+                                                <p className='mb-0 text-black'>{medicoItem.apellido}, {medicoItem.nombre}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <p className='small mt-1 ms-1'>Dejar vacío para no filtrar por médico</p>
+                                </div>
+                            </div>
+
+                            {/* Button */}
+                            <div className='row'>
+                                <div className='col-lg-8 col-sm-12 text-center'>
+                                    <button
+                                        id='generarReporteButton'
+                                        className='btn bg-primary text-white box-shadow-dark w-66 mb-3'
+                                        onClick={() => generarReporte(selectedButton)}
+                                        disabled={turnosBtnDisabled}
+                                    >
+                                        Generar Reporte y Descargar
+                                    </button>
+                                </div>
                             </div>
                         </div>
-
-                        {/* Button */}
-                        <div className='row'>
-                            <div className='col-lg-8 col-sm-12 text-center'>
-                                <button
-                                    id='generarReporteButton'
-                                    className='btn bg-primary text-white box-shadow-dark w-66 mb-3'
-                                    onClick={() => generarReporte(selectedButton)}
-                                    disabled={turnosBtnDisabled}
-                                >
-                                    Generar Reporte y Descargar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    : null
+                        : null
                     }
+
+                    {
+                        selectedButton === 'historiaClinicaButton'
+                        ? (
+                            <PDFDownloadLink document={<ReporteHistoriaClinica data={data} />} filename='historia-clinica.pdf'>
+                                <span id='historiaClinicaReporte'></span>
+                            </PDFDownloadLink>
+                        )
+                        : selectedButton === 'turnosButton'
+                        ? (
+                            <PDFDownloadLink document={<ReporteTurnosProgramados data={data} />} filename='turnos-programados.pdf'>
+                                <span id='turnosProgramadosReporte'></span>
+                            </PDFDownloadLink>
+                        )
+                        : null
+                    }
+
+                    
                 </div>
             </div>
         </div>

@@ -381,7 +381,7 @@ class PacientesController extends Controller
                 ->where('usuarios.estado', '=', 'activo')
                 ->where('historia_clinica.id_paciente', '!=', '')
                 ->where('historia_clinica.estado', '=', 'visible')
-                ->get(['id', 'nombre', 'apellido', 'dni']);
+                ->get(['usuarios.id', 'nombre', 'apellido', 'dni']);
 
         // Check if pacientes is found.
         if ($pacientes) {

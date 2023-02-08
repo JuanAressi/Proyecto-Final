@@ -95,7 +95,7 @@ function Admin() {
                         (role === 'administrativo' || role === 'admin' || role === 'soporte')
                         && <div className='col-md-6 col-sm-12 d-flex justify-content-center mb-2'>
                             <Link
-                                to='/panel-admin/reportes'
+                                to={'/panel-' + role + '/reportes'}
                             >
                                 <Card 
                                     title='Gestionar Reportes'

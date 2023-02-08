@@ -2,29 +2,31 @@
 import { React } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import ReactPDF from '@react-pdf/renderer';
-
 // Components.
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 
 // Pages.
-import Index          from './pages/Index/Index';
-import Login          from './pages/Login/Login';
-import Register       from './pages/Register/Register';
+import Index        from './pages/Index/Index';
+import Login        from './pages/Login/Login';
+import Register     from './pages/Register/Register';
+import Turnos       from './pages/Turnos/Turnos';
+import NoAutorizado from './pages/NoAutorizado/NoAutorizado';
+
+// Módulo de admin.
 import Admin          from './pages/Admin/Admin';
-import MedicoAgenda   from './pages/Admin/Agenda/Agenda';
 import AdminPacientes from './pages/Admin/Pacientes/Pacientes';
 import AdminMedicos   from './pages/Admin/Medicos/Medicos';
 import AdminTurnos    from './pages/Admin/Turnos/Turnos';
 import AdminReportes  from './pages/Admin/Reportes/Reportes';
-import Turnos         from './pages/Turnos/Turnos';
 
-// Modulo de paciente.
+// Módulo de paciente.
 import Usuario         from './pages/Usuario/Usuario';
 import MisTurnos       from './pages/Usuario/MisTurnos';
 import DatosPersonales from './pages/Usuario/DatosPersonales';
 
-import AccesoNoAutorizado from './pages/AccesoNoAutorizado/AccesoNoAutorizado';
+// Módulo médico.
+import MedicoAgenda   from './pages/Admin/Agenda/Agenda';
+
 
 import ReporteHistoriaClinica from './components/Reportes/ReporteHistoriaClinica';
 
@@ -38,10 +40,10 @@ function App() {
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
                 <Route path='/turnos' element={<Turnos />} />
-                <Route path='/acceso-no-autorizado' element={<AccesoNoAutorizado />} />
+                <Route path='/acceso-no-autorizado' element={<NoAutorizado />} />
                 <Route path='/reporte' element={<ReporteHistoriaClinica />} />
 
-                {/* Modulo de paciente */}
+                {/* Módulo de paciente */}
                 <Route path='/panel-usuario' element={<ProtectedRoute rol='paciente' />}>
                     <Route path='/panel-usuario' element={<Usuario />} />
                 </Route>
@@ -55,7 +57,7 @@ function App() {
                 </Route>
 
 
-                {/* Modulo de medico */}
+                {/* Módulo de medico */}
                 <Route path='/panel-medico' element={<ProtectedRoute rol='medico' />}>
                     <Route path='/panel-medico' element={<Admin />} />
                 </Route>
@@ -73,7 +75,7 @@ function App() {
                 </Route>
 
 
-                {/* Modulo de administrativo */}
+                {/* Módulo de administrativo */}
                 <Route path='/panel-administrativo' element={<ProtectedRoute rol='administrativo' />}>
                     <Route path='/panel-administrativo' element={<Admin />} />
                 </Route>
@@ -95,7 +97,7 @@ function App() {
                 </Route>
 
 
-                {/* Modulo de admin */}
+                {/* Módulo de admin */}
                 <Route path='/panel-admin' element={<ProtectedRoute rol='admin' />}>
                     <Route path='/panel-admin' element={<Admin />} />
                 </Route>
@@ -117,7 +119,7 @@ function App() {
                 </Route>
 
 
-                {/* Modulo de soporte */}
+                {/* Módulo de soporte */}
                 <Route path='/panel-soporte' element={<ProtectedRoute rol='soporte' />}>
                     <Route path='/panel-soporte' element={<Admin />} />
                 </Route>
