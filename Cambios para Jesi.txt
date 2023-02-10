@@ -1,18 +1,109 @@
 Cambios para Jesica:
-    • CU 03: 
-        2.- Tilde en Género.
-        4.- Selecciona el rol del usuario: Administrativo o Médico. Y tilde en Médico.
+    • CU 03:
+        4.- Selecciona el rol del usuario: Administrativo o Médico.
 
     • CU 04:
         2.- Muestra: Apellido y Nombre, Email, DNI y Rol.
         3.- Puede filtrar por Nombre, Apellido, Email, DNI y Rol.
-        7.- No puede editar la contraseña ni la repetición de la contraseña. Tilde en Género.
+        7.- No puede editar la contraseña ni la repetición de la contraseña.
 
-    • CU 05:
+    • CU 05: Buscar personal sanitario
         2- Muestra: Apellido y Nombre, Email, DNI y Rol. (Eliminar las acciones).
         3.- Puede filtrar por Nombre, Apellido, Email, DNI y Rol.
         6.- Muestra: Nombre, Apellido, Email, Fecha de nacimiento, Genero, DNI, Teléfono y rol.
         
-    • CU 06:
+    • CU 06: Eliminar personal sanitario
         2.- Muestra: Apellido y Nombre, Email, DNI y Rol.
         3.- Puede filtrar por Nombre, Apellido, Email, DNI y Rol.
+
+    • CU 07: Registrar pacientes
+        2, 4 y 8 están en negrita.. es por algo?
+    
+    • CU 08: Editar pacientes
+        7.- Muestra: Nombre, Apellido, Email, Fecha de nacimiento, Genero, DNI, Teléfono, Obra Social, Numero de Obra Social, Antecedentes y Alergias. (Se agrega: Obra Social, Numero de Obra Social, Antecedentes y Alergias). (Se elimina: Conrtaseña).
+
+    • CU 09: Eliminar pacientes
+        Todo ok.
+
+    • CU 10: Buscar pacientes
+        2- Muestra: Apellido y Nombre, Email, DNI y Rol. (Eliminar las acciones).
+        7.- Muestra: Nombre, Apellido, Email, Fecha de nacimiento, Genero, DNI, Teléfono, Obra Social, Numero de Obra Social, Antecedentes y Alergias. (Se agrega: Obra Social, Numero de Obra Social, Antecedentes y Alergias). (Se elimina: Conrtaseña).
+
+    • CU 11: Asignar Turno
+        Todo ok.
+
+    • CU 12: Cancelar Turno Reservado
+        2.- Es necesario mostrar las acciones? Me refiero en el Caso de uso, no en la pantalla.
+
+    • CU 13: Buscar Turno
+        2.- Es necesario mostrar las acciones? Me refiero en el Caso de uso, no en la pantalla.
+        4.- ACLARACIÓN: El actor empieza a escribir en el campo de busqueda y luego de 0.75s se ejecuta la búsqueda. Nunca dá click en buscar..
+
+    • CU 14: Confirmar asistencia al turno
+        Todo ok.
+
+    • CU 15: Cancelar asistencia al Turno
+        2.- Es necesario mostrar las acciones? Me refiero en el Caso de uso, no en la pantalla.
+        9.- Negrita en el indice.
+
+    • CU 16: Concretar Turno
+        2.- Es necesario mostrar las acciones? Me refiero en el Caso de uso, no en la pantalla.
+
+    • CU 17: Registrarme
+        3, 6 y 8 en negrita.
+
+    • CU 18: Actualizar datos personales
+        4.- No está para editar las contraseñas. Debería agregarlas? Falta agregar los Antecedentes y Alergias (que no son editables)
+
+    • CU 19: Reservar Turno
+        6.- Acá la funcionalidad está un poco distinta. Primero selecciona la fecha, avanza, selecciona el horario, avanza a una revisión y guarda el turno. No se si vale la pena que camiemos.. solo lo dejo a modo de anotación.
+        12.- Lo del email? Lo dejamos?
+
+    • CU 20: Cancelar Turno
+        4.- Es necesario mostrar las acciones? Me refiero en el Caso de uso, no en la pantalla.
+        10.- Negrita en el indice.
+
+    • CU 21: Ver Mis turnos
+        4.- Es necesario mostrar las acciones? Me refiero en el Caso de uso, no en la pantalla.
+        4, 5 y 7 en negrita.
+
+    • CU 22: Ver Mis turnos / Históricos.
+        4 y 6 en negrita.
+
+    • CU 23: Crear Registro de Historia Clínica
+        7.- El Profesional habría que eliminarlo. El profesional y la fecha se cargan automaticamente. No son editables.
+        11 y 12 En negrita.
+
+    • CU 24: Consultar Historia Clínica
+        6.- No muestra un formulario a completar, sino que muestra un listado de cada registro de historia clínica. Los antecedentes y alergias lo muestra por única vez, los otros para cada registro.
+        8.- Negrita en el indice.
+
+    • CU 25: Editar Registro Historia Clínica
+        4.- Mismo caso que el anterior (CU 24 - pto 6)
+
+    • CU 26: Eliminar Historia Clínica  
+        6.- Falta el diagnóstico.
+
+    • CU 27: Consultar Agenda de turnos
+        4.- Corregir el indice, debería ser 3 en vez de 4. También está en negrita.
+
+    • CU 28: Crear Horarios de atención
+        2.- Completa con los días, meses, y selecciona los horarios individualmente, no horario desde/hasta.
+        7.- El botón dice guardar. Puedo cambiar el texto al del CU o algo descriptivo.
+        8 y 9 en negrita.
+
+    • CU 29: Editar Horarios de atención
+        El numero del caso de uso figura como 28.
+        Similar al caso de uso anterior.
+        6 y 7 en negrita.
+
+    • CU 30: Reporte de Turnos Programados
+        4.- El paso 4 debería existir en el CU 30.
+        6.- El sistema genera un reporte, en el que lista por cada médico sus turnos reservados, confirmados, concretados, cancelados y total de turnos.
+
+    • CU 31: Reporte de Historia Clínica
+        El numero del caso de uso figura como 30.
+        3.- Solo puede buscar por Nombre, Apelido o DNI. Agrego el email? Yo lo eliminaría.
+
+    Corregir los tildes de acción, médico, número, género, diagnóstico.
+    Hay algunas palabras que están: 'asd ,asd' o 'asd , asd'.. Deberían ser: 'asd, asd'
