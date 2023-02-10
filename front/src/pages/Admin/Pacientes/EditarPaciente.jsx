@@ -352,8 +352,10 @@ function EditarPaciente({ userToEdit, pacienteNombre, pacienteApellido, paciente
                     // Change 'data' state.
                     setData(response.data);
 
-                    // Emulate click on the 'historiaClinicaReporte' span parent.
-                    document.getElementById('historiaClinicaReporte').parentElement.click();
+                    setTimeout(function () {
+                        // Emulate click on the 'historiaClinicaReporte' span parent.
+                        document.getElementById('historiaClinicaReporte').parentElement.click();
+                    }, 1000);
 
                     // Change the Alert state.
                     setAlertType('success');

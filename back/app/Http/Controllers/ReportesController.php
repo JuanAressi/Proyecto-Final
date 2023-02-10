@@ -81,27 +81,6 @@ class ReportesController extends Controller
         //     ->orderByRaw('STR_TO_DATE(dia, "%d-%m-%Y") DESC')
         //     ->get();
 
-        // $turnos_por_medico = Turnos::leftJoin('usuarios', 'usuarios.id', '=', 'turnos.id_medico')
-        //     ->where(function ($query) use ($date_start, $date_finish, $id_medico) {
-        //         if ($date_start) {
-        //             $query->where('dia', '>=', "STR_TO_DATE($date_start, '%d-%m-%Y')");
-        //         }
-
-        //         if ($date_finish) {
-        //             $query->where('dia', '<=', "STR_TO_DATE($date_finish, '%d-%m-%Y')");
-        //         }
-
-        //         if ($id_medico) {
-        //             $query->where('id_medico', $id_medico);
-        //         }
-        //     })
-        //     ->groupBy('id_medico')
-        //     ->selectRaw('usuarios.apellido, usuarios.nombre,
-        //         SUM(CASE WHEN turnos.estado = "reservado" THEN 1 ELSE 0 END) AS reservados,
-        //         SUM(CASE WHEN turnos.estado = "cancelado" THEN 1 ELSE 0 END) AS cancelados,
-        //         SUM(CASE WHEN turnos.estado = "confirmado" THEN 1 ELSE 0 END) AS confirmados,
-        //         SUM(CASE WHEN turnos.estado = "concretado" THEN 1 ELSE 0 END) AS concretados')
-        //     ->get();
         $query = "
             SELECT usuarios.id, usuarios.apellido, usuarios.nombre, turnos.estado
             FROM turnos

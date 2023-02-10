@@ -2,7 +2,7 @@
 import { React, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faPencil, faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import $ from 'jquery';
 
 // Components.
@@ -227,7 +227,7 @@ function MisTurnos() {
                             </thead>
 
                             <tbody>
-                                {turnosFuturos.map((turno, index) => (
+                                {turnosFuturos && turnosFuturos.map((turno, index) => (
                                     <tr key={index}>
                                         <th scope='row'>{index + 1}</th>
                                         <td>{turno.dia} {turno.hora}</td>
@@ -246,6 +246,17 @@ function MisTurnos() {
                                 ))}
                             </tbody>
                         </table>
+
+                        {turnosFuturos === undefined && 
+                            <div className='d-flex flex-column bg-white border box-shadow-dark text-center p-2'>
+                                <FontAwesomeIcon
+                                    className='text-warning mb-2 fa-2x'
+                                    icon={faCircleExclamation}
+                                />
+
+                                <h6 className='mb-0'>No hay usuarios que coincidan con la búsqueda</h6>
+                            </div>
+                        }
                     </div>
 
 

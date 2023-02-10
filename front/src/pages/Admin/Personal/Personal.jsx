@@ -7,10 +7,10 @@ import Modal from '../../../components/Modal/Modal';
 import SideNav from '../../../components/SideNav/SideNav';
 import loadingGif from '../../../components/assets/img/loadingGif.gif';
 import Table from '../../../components/Table/Table';
-import NuevoMedico from './NuevoMedico';
-import EditarMedico from './EditarMedico';
+import NuevoPersonal from './NuevoPersonal';
+import EditarPersonal from './EditarPersonal';
 
-function Medicos() {
+function Personal() {
     // Pagination.
     const [lastShowPerPage, setLastShowPerPage] = useState(10);
     const [lastPage, setLastPage] = useState(1);
@@ -30,48 +30,54 @@ function Medicos() {
     const [alertType, setAlertType] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
 
-    // Medico information.
-    const [medicoNombre, setMedicoNombre] = useState('');
-    const [medicoApellido, setMedicoApellido] = useState('');
-    const [medicoDni, setMedicoDni] = useState('');
-    const [medicoEmail, setMedicoEmail] = useState('');
-    const [medicoTelefono, setMedicoTelefono] = useState('');
-    const [medicoFechaNacimiento, setMedicoFechaNacimiento] = useState('');
-    const [medicoGenero, setMedicoGenero] = useState('');
-    const [medicoObraSocial, setMedicoObraSocial] = useState('');
+    // Personal information.
+    const [personalNombre, setPersonalNombre] = useState('');
+    const [personalApellido, setPersonalApellido] = useState('');
+    const [personalEmail, setPersonalEmail] = useState('');
+    const [personalFechaNacimiento, setPersonalFechaNacimiento] = useState('');
+    const [personalFechaNacimientoFormatted, setPersonalFechaNacimientoFormatted] = useState('');
+    const [personalGenero, setPersonalGenero] = useState('');
+    const [personalDni, setPersonalDni] = useState('');
+    const [personalTelefono, setPersonalTelefono] = useState('');
+    const [personalRol, setPersonalRol] = useState('');
 
 
-    // Search 'Medicos' when 'page' changes (delay 0s).
+    // Search 'Personal' when 'page' changes (delay 0s).
     useEffect(() => {
-        doSearch();
+        // Search 'Personal'.
+        searchPersonal();
     }, [page]);
 
 
-    // Search 'Medicos' when 'showPerPage' changes (delay 0s).
+    // Search 'Personal' when 'showPerPage' changes (delay 0s).
     useEffect(() => {
+        // Change 'page' state.
         setPage(1);
         
-        doSearch();
+        // Search 'Personal'.
+        searchPersonal();
     }, [showPerPage]);
 
 
-    // Search 'Medicos' when 'searchInput' changes (delay 0.75s).
+    // Search 'Personal' when 'searchInput' changes (delay 0.75s).
     useEffect(() => {
+        // Change 'page' state.
         setPage(1);
 
         const delayDebounce = setTimeout(() => {
-            doSearch();
+            // Search 'Personal'.
+            searchPersonal();
         }, 750);
 
         return () => clearTimeout(delayDebounce)
     } , [searchInput]);
 
 
-    // Get 'Medico' by ID and complete 'userToEdit' state.
+    // Get 'Personal' by ID and complete 'userToEdit' state.
     useEffect(() => {
         // If 'userToEdit' is null, do nothing.
         if (userToEdit !== null) {
-            // Show spinner.
+            // Change Spinner state.
             setShowSpinner(true);
 
             // Loop trough 'users' state to find the 'userToEdit' ID.
@@ -81,27 +87,46 @@ function Medicos() {
                     setShowSpinner(false);
 
                     // Complete 'userToEdit' state.
-                    setMedicoNombre(user.nombre);
-                    setMedicoApellido(user.apellido);
-                    setMedicoDni(user.dni);
-                    setMedicoEmail(user.email);
-                    setMedicoTelefono(user.telefono);
-                    setMedicoFechaNacimiento(user.fecha_nacimiento);
-                    setMedicoGenero(user.genero);
-                    setMedicoObraSocial(user.numero_obra_social);
+                    setPersonalNombre(user.nombre);
+                    setPersonalApellido(user.apellido);
+                    setPersonalEmail(user.email);
+                    setPersonalFechaNacimiento(user.fecha_nacimiento);
+                    setPersonalGenero(user.genero);
+                    setPersonalDni(user.dni);
+                    setPersonalTelefono(user.telefono);
+                    setPersonalRol(user.rol);
                 }
             });
         }
     }, [userToEdit]);
 
 
-    // Function search.
-    const doSearch = () => {
+    // Transform 'personalFechaNacimiento' state to 'personalFechaNacimientoFormatted' state.
+    useEffect(() => {
+        // The 'personalFechaNacimiento' state comes in the format 'dd-mm-yyyy', so we need to convert it to 'yyyy-mm-dd' to be able to use it in the 'input' element.
+        const date  = new Date(personalFechaNacimiento);
+        const year  = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day   = date.getDate();
+
+        const personalFechaNacimientoFormatted = `${year}-${month < 10 ? `0${month}` : `${month}`}-${day < 10 ? `0${day}` : `${day}`}`;
+
+        // Change 'personalFechaNacimiento' state.
+        setPersonalFechaNacimientoFormatted(personalFechaNacimientoFormatted);
+    }, [personalFechaNacimiento]);
+
+
+    /**
+     * Function searchPersonal - Search all the users that are 'Administrativos' or 'Medicos'.
+     *
+     * @return {void}
+     */
+    const searchPersonal = () => {
         // Show spinner.
         setShowSpinner(true);
 
         $.ajax({
-            url: 'http://local.misturnos/api/medicos',
+            url: process.env.REACT_APP_API_ROOT + 'personal',
             type: 'GET',
             dataType: 'json',
             data: {
@@ -118,8 +143,8 @@ function Medicos() {
 
                 setLastShowPerPage(showPerPage);
                 setLastPage(page);
-                setTotalUsers(response.medicos_count);
-                setUsers(response.medicos);
+                setTotalUsers(response.user_count);
+                setUsers(response.personal);
             },
             error: function (error) {
                 // Hide spinner.
@@ -129,34 +154,34 @@ function Medicos() {
     }
 
 
-    // Add new 'Medico'.
-    const addMedico = () => {
-        const medico = {
-            nombre: medicoNombre,
-            apellido: medicoApellido,
-            fecha_nacimiento: medicoFechaNacimiento,
-            email: medicoEmail,
-            dni: medicoDni,
-            telefono: medicoTelefono,
-            genero: medicoGenero,
-            obra_social: medicoObraSocial,
+    ////////////// Add new 'Personal'.
+    const addPersonal = () => {
+        const personal = {
+            nombre: personalNombre,
+            apellido: personalApellido,
+            fecha_nacimiento: personalFechaNacimiento,
+            email: personalEmail,
+            dni: personalDni,
+            telefono: personalTelefono,
+            genero: personalGenero,
+            // obra_social: personalObraSocial,
         }
 
         // Show spinner.
         setShowSpinner(true);
 
         $.ajax({
-            url: 'http://local.misturnos/api/medicos',
+            url: process.env.REACT_APP_API_ROOT + 'personal',
             type: 'POST',
             dataType: 'json',
-            data: medico,
+            data: personal,
             success: function (response) {
                 // Hide spinner.
                 setShowSpinner(false);
 
                 if (response.success) {
-                    // Reload 'Medicos' list.
-                    doSearch();
+                    // Reload 'Personal' list.
+                    searchPersonal();
 
                     // Show success message.
                     setAlertType('success');
@@ -171,7 +196,7 @@ function Medicos() {
                 } else {
                     // Show error message.
                     setAlertType('danger');
-                    setAlertMessage('Error al crear el Medico.');
+                    setAlertMessage('Error al crear el Personal.');
                     setShowAlert(true);
                 }
                 
@@ -188,18 +213,17 @@ function Medicos() {
     }
 
 
-    // Update 'Medico'.
-    const updateMedico = () => {
-        const medico = {
+    ////////////// Update 'Personal'.
+    const updatePersonal = () => {
+        const personal = {
             id: userToEdit,
-            nombre: medicoNombre,
-            apellido: medicoApellido,
-            fecha_nacimiento: medicoFechaNacimiento,
-            email: medicoEmail,
-            dni: medicoDni,
-            telefono: medicoTelefono,
-            genero: medicoGenero,
-            obra_social: medicoObraSocial,
+            nombre: personalNombre,
+            apellido: personalApellido,
+            fecha_nacimiento: personalFechaNacimiento,
+            email: personalEmail,
+            dni: personalDni,
+            telefono: personalTelefono,
+            genero: personalGenero,
         }
 
         // Show spinner.
@@ -209,17 +233,17 @@ function Medicos() {
         setUserToEdit(null);
 
         $.ajax({
-            url: 'http://local.misturnos/api/medicos/' + userToEdit,
+            url: process.env.REACT_APP_API_ROOT + '/medicos/' + userToEdit,
             type: 'PUT',
             dataType: 'json',
-            data: medico,
+            data: personal,
             success: function (response) {
                 // Hide spinner.
                 setShowSpinner(false);
 
                 if (response.success) {
-                    // Reload 'Medicos' list.
-                    doSearch();
+                    // Reload 'Personal' list.
+                    searchPersonal();
 
                     // Show success message.
                     setAlertType('success');
@@ -250,13 +274,17 @@ function Medicos() {
     }
 
 
-    // Delete a user.
+    /**
+     * Function deleteUser - Delete the selected user from the database.
+     *
+     * @return {void}
+     */
     const deleteUser = () => {
         // Show spinner.
         setShowSpinner(true);
 
         $.ajax({
-            url: 'http://local.misturnos/api/usuarios/' + userToDelete,
+            url: process.env.REACT_APP_API_ROOT + '/usuarios/' + userToDelete,
             type: 'DELETE',
             dataType: 'json',
             success: function (response) {
@@ -269,8 +297,8 @@ function Medicos() {
                     setAlertMessage('El Medico ha sido eliminado correctamente.');
                     setShowAlert(true);
 
-                    // Reload the 'Medicos' table.
-                    doSearch();
+                    // Reload the 'Personal' table.
+                    searchPersonal();
 
                     // Close alert message after 4 seconds.
                     setTimeout(function () {
@@ -282,28 +310,34 @@ function Medicos() {
     }
 
 
-    // Set empty values to 'Medico' fields.
+    /**
+     * Function setEmptyValues - Changes the states of all the values of the forms.
+     *
+     * @return {void}
+     */
     const setEmptyValues = () => {
-        setMedicoNombre('');
-        setMedicoApellido('');
-        setMedicoFechaNacimiento('');
-        setMedicoEmail('');
-        setMedicoDni('');
-        setMedicoTelefono('');
-        setMedicoGenero('');
-        setMedicoObraSocial('');
+        // Change the personal states.
+        setPersonalNombre('');
+        setPersonalApellido('');
+        setPersonalEmail('');
+        setPersonalFechaNacimiento('');
+        setPersonalGenero('');
+        setPersonalDni('');
+        setPersonalTelefono('');
+        setPersonalRol('');
     }
 
 
+    // Render the 'Personal' page.
     return (
         <div id='pageAdminMedicos' className='d-flex bg-lightgray'>
             <SideNav
-                active='medicos'
+                active='personal'
             />
 
             <div className='container p-5'>
                 <div className='d-flex align-items-center mb-4'>
-                    <h1 id='pageTitle' className='display-3 text-primary text-shadow-dark me-4'>Medicos</h1>
+                    <h1 id='pageTitle' className='display-3 text-primary text-shadow-dark me-4'>Personal</h1>
 
                     <div style={{width: '40px'}}>
                         {showSpinner && <img src={loadingGif} alt='Espera a que termine de cargar' height='20px'/>}
@@ -319,7 +353,7 @@ function Medicos() {
                             icon={faPlus}
                         />
 
-                        Agregar Medico
+                        Agregar Personal
                     </button>
                 </div>
 
@@ -342,56 +376,58 @@ function Medicos() {
                     setItemToEdit={setUserToEdit}
                     setItemToDelete={setUserToDelete}
                     showPerPage={showPerPage}  
-                    tableHeads={['#', 'Apellido y Nombre', 'Email', 'DNI', 'Acciones']}
-                    tableKeys={['apellido+nombre', 'email', 'dni']}
+                    tableHeads={['#', 'Apellido y Nombre', 'Email', 'DNI', 'Rol', 'Acciones']}
+                    tableKeys={['apellido+nombre', 'email', 'dni', 'rol']}
                     totalItems={totalUsers}
                     items={users}
                 />
             </div>
 
-            <NuevoMedico
-                medicoNombre={medicoNombre}
-                medicoApellido={medicoApellido}
-                medicoFechaNacimiento={medicoFechaNacimiento}
-                medicoEmail={medicoEmail}
-                medicoDni={medicoDni}
-                medicoTelefono={medicoTelefono}
-                medicoGenero={medicoGenero}
-                medicoObraSocial={medicoObraSocial}
-                setMedicoNombre={setMedicoNombre}
-                setMedicoApellido={setMedicoApellido}
-                setMedicoFechaNacimiento={setMedicoFechaNacimiento}
-                setMedicoEmail={setMedicoEmail}
-                setMedicoDni={setMedicoDni}
-                setMedicoTelefono={setMedicoTelefono}
-                setMedicoGenero={setMedicoGenero}
-                setMedicoObraSocial={setMedicoObraSocial}
-                addMedico={addMedico}
+            <NuevoPersonal
+                personalNombre={personalNombre}
+                personalApellido={personalApellido}
+                personalEmail={personalEmail}
+                personalFechaNacimiento={personalFechaNacimiento}
+                personalGenero={personalGenero}
+                personalDni={personalDni}
+                personalTelefono={personalTelefono}
+                personalRol={personalRol}
+                setPersonalNombre={setPersonalNombre}
+                setPersonalApellido={setPersonalApellido}
+                setPersonalEmail={setPersonalEmail}
+                setPersonalFechaNacimiento={setPersonalFechaNacimiento}
+                setPersonalGenero={setPersonalGenero}
+                setPersonalDni={setPersonalDni}
+                setPersonalTelefono={setPersonalTelefono}
+                setPersonalRol={setPersonalRol}
+                addPersonal={addPersonal}
             />
 
-            <EditarMedico
-                medicoNombre={medicoNombre}
-                medicoApellido={medicoApellido}
-                medicoFechaNacimiento={medicoFechaNacimiento}
-                medicoEmail={medicoEmail}
-                medicoDni={medicoDni}
-                medicoTelefono={medicoTelefono}
-                medicoGenero={medicoGenero}
-                medicoObraSocial={medicoObraSocial}
-                setMedicoNombre={setMedicoNombre}
-                setMedicoApellido={setMedicoApellido}
-                setMedicoFechaNacimiento={setMedicoFechaNacimiento}
-                setMedicoEmail={setMedicoEmail}
-                setMedicoDni={setMedicoDni}
-                setMedicoTelefono={setMedicoTelefono}
-                setMedicoGenero={setMedicoGenero}
-                setMedicoObraSocial={setMedicoObraSocial}
-                updateMedico={updateMedico}
+            <EditarPersonal
+                personalNombre={personalNombre}
+                personalApellido={personalApellido}
+                personalEmail={personalEmail}
+                personalFechaNacimiento={personalFechaNacimiento}
+                personalFechaNacimientoFormatted={personalFechaNacimientoFormatted}
+                personalGenero={personalGenero}
+                personalDni={personalDni}
+                personalTelefono={personalTelefono}
+                personalRol={personalRol}
+                setPersonalNombre={setPersonalNombre}
+                setPersonalApellido={setPersonalApellido}
+                setPersonalEmail={setPersonalEmail}
+                setPersonalFechaNacimiento={setPersonalFechaNacimiento}
+                setPersonalFechaNacimientoFormatted={setPersonalFechaNacimientoFormatted}
+                setPersonalGenero={setPersonalGenero}
+                setPersonalDni={setPersonalDni}
+                setPersonalTelefono={setPersonalTelefono}
+                setPersonalRol={setPersonalRol}
+                updatePersonal={updatePersonal}
             />
 
             <Modal
                 id='modalDelete'
-                text='¿Está seguro que desea eliminar este medico?'
+                text='¿Está seguro que desea eliminar este usuario?'
                 handleDelete={() => {
                     // Close modal.
                     $('#closeModal').click();
@@ -404,4 +440,4 @@ function Medicos() {
     )
 }
 
-export default Medicos
+export default Personal

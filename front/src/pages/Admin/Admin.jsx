@@ -61,16 +61,16 @@ function Admin() {
                         </Link>
                     </div>
                     
-                    {/* Medicos */}
+                    {/* Personal */}
                     {
                         (role === 'administrativo' || role === 'admin' || role === 'soporte')
                         && <div className='col-md-6 col-sm-12 d-flex justify-content-center mb-2'>
                             <Link
-                                to={'/panel-' + role + '/medicos'}
+                                to={'/panel-' + role + '/personal'}
                             >
                                 <Card 
-                                    title='Gestionar Medicos'
-                                    text='Vea información detallada de cada uno de los medicos'
+                                    title='Gestionar Personal'
+                                    text='Vea información detallada de cada uno de los medicos y los administradores'
                                     icon={faUserDoctor}
                                 />
                             </Link>

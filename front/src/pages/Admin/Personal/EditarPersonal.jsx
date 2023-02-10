@@ -1,14 +1,29 @@
-import React from 'react';
+// Utilities.
+import { React, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faX } from '@fortawesome/free-solid-svg-icons';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 
-function EditarMedico( { medicoNombre, medicoApellido, medicoFechaNacimiento, medicoEmail, medicoDni, medicoTelefono, medicoGenero, medicoObraSocial, setMedicoNombre, setMedicoApellido, setMedicoFechaNacimiento, setMedicoEmail, setMedicoDni, setMedicoTelefono, setMedicoGenero, setMedicoObraSocial, updateMedico } ) {
+function EditarPersonal({ personalNombre, personalApellido, personalEmail, personalFechaNacimiento, personalFechaNacimientoFormatted, personalGenero, personalDni, personalTelefono, personalRol, setPersonalNombre, setPersonalApellido, setPersonalEmail, setPersonalFechaNacimiento, setPersonalFechaNacimientoFormatted, setPersonalGenero, setPersonalDni, setPersonalTelefono, setPersonalRol, updatePersonal }) {
+    const [buttonDisabled, setButtonDisabled] = useState(true);
+
+
+    useEffect(() => {
+        // Enable the 'Agregar' button if all the fields are filled.
+        if (personalNombre !== '' && personalApellido !== '' && personalEmail !== '' && personalFechaNacimiento !== '' && personalGenero !== '' && personalDni !== '' && personalTelefono !== '' && personalRol !== '') {
+            setButtonDisabled(false);
+        } else {
+            setButtonDisabled(true);
+        }
+    }, [personalNombre, personalApellido, personalEmail, personalFechaNacimiento, personalGenero, personalDni, personalTelefono, personalRol]);
+
+
+    // Render the 'EditarPersonal' component.
     return (
         <div id='modalEdit' className='modal fade' tabIndex='-1' aria-hidden='true'>
             <div className='modal-dialog modal-dialog-centered'>
                 <div className='modal-content position-relative'>
                     <div className='bg-primary box-shadow-dark-1 px-4 py-2'>
-                        <h1 className='display-6 text-white text-shadow-dark me-4'>Editar Medico</h1>
+                        <h1 className='display-6 text-white text-shadow-dark me-4'>Editar Personal</h1>
                     </div>
 
                     <div
@@ -24,6 +39,7 @@ function EditarMedico( { medicoNombre, medicoApellido, medicoFechaNacimiento, me
 
                     <div className='d-flex flex-column align-items-center'>
                         <form id='formAdd' className="d-flex justify-content-center align-items-center row mb-3">
+                            {/* Nombre */}
                             <div className='col-lg-4 col-md-6 mb-2'>
                                 <label htmlFor='nombre'>Nombre</label>
 
@@ -33,11 +49,12 @@ function EditarMedico( { medicoNombre, medicoApellido, medicoFechaNacimiento, me
                                     name='nombre'
                                     placeholder='Nombre'
                                     aria-label='Nombre'
-                                    value={medicoNombre}
-                                    onChange={e => setMedicoNombre(e.target.value)}
+                                    value={personalNombre}
+                                    onChange={(event) => setPersonalNombre(event.target.value)}
                                 />
                             </div>
 
+                            {/* Apellido */}
                             <div className='col-lg-4 col-md-6 mb-2'>
                                 <label htmlFor='apellido'>Apellido</label>
                                     
@@ -47,25 +64,12 @@ function EditarMedico( { medicoNombre, medicoApellido, medicoFechaNacimiento, me
                                     name='apellido'
                                     placeholder='Apellido'
                                     aria-label='Apellido'
-                                    value={medicoApellido}
-                                    onChange={e => setMedicoApellido(e.target.value)}
+                                    value={personalApellido}
+                                    onChange={(event) => setPersonalApellido(event.target.value)}
                                 />
                             </div>
 
-                            <div className='col-lg-4 col-md-6 mb-2'>
-                                <label htmlFor='fecha_nacimiento'>Fecha de Nacimiento</label>
-                                    
-                                <input
-                                    className='form-control'
-                                    type='date'
-                                    name='fecha_nacimiento'
-                                    placeholder='Fecha de Nacimiento'
-                                    aria-label='Fecha de Nacimiento'
-                                    value={medicoFechaNacimiento}
-                                    onChange={e => setMedicoFechaNacimiento(e.target.value)}
-                                />
-                            </div>
-
+                            {/* Email */}
                             <div className='col-lg-4 col-md-6 mb-2'>
                                 <label htmlFor='email'>Email</label>
                                     
@@ -75,11 +79,47 @@ function EditarMedico( { medicoNombre, medicoApellido, medicoFechaNacimiento, me
                                     name='email'
                                     placeholder='Email'
                                     aria-label='Email'
-                                    value={medicoEmail}
-                                    onChange={e => setMedicoEmail(e.target.value)}
+                                    value={personalEmail}
+                                    onChange={(event) => setPersonalEmail(event.target.value)}
                                 />
                             </div>
 
+                            {/* Fecha de Nacimiento */}
+                            <div className='col-lg-4 col-md-6 mb-2'>
+                                <label htmlFor='fecha_nacimiento'>Fecha de Nacimiento</label>
+                                    
+                                <input
+                                    className='form-control'
+                                    type='date'
+                                    name='fecha_nacimiento'
+                                    placeholder='Fecha de Nacimiento'
+                                    aria-label='Fecha de Nacimiento'
+                                    value={personalFechaNacimientoFormatted}
+                                    onChange={(event) => setPersonalFechaNacimientoFormatted(event.target.value)}
+                                />
+                            </div>
+
+                            {/* Genero */}
+                            <div className='col-lg-4 col-md-6 mb-2 position-relative'>
+                                <label htmlFor='genero'>Genero</label>
+
+                                <select
+                                    className='form-control'
+                                    name='genero'
+                                    value={personalGenero}
+                                    onChange={(event) => setPersonalGenero(event.target.value)}
+                                >
+                                    <option value='' disabled>Seleccione una opción</option>
+                                    <option value='Femenino'>Femenino</option>
+                                    <option value='Masculino'>Masculino</option>
+                                    <option value='No Binario'>No Binario</option>
+                                    <option value='No especifica'>No especifica</option>
+                                </select>
+
+                                <span className='custom-arrow position-absolute h-100 right-2'></span>
+                            </div>
+
+                            {/* DNI */}
                             <div className='col-lg-4 col-md-6 mb-2'>
                                 <label htmlFor='dni'>DNI</label>
                                     
@@ -89,11 +129,12 @@ function EditarMedico( { medicoNombre, medicoApellido, medicoFechaNacimiento, me
                                     name='dni'
                                     placeholder='DNI'
                                     aria-label='DNI'
-                                    value={medicoDni}
-                                    onChange={e => setMedicoDni(e.target.value)}
+                                    value={personalDni}
+                                    onChange={(event) => setPersonalDni(event.target.value)}
                                 />
                             </div>
 
+                            {/* Telefono */}
                             <div className='col-lg-4 col-md-6 mb-2'>
                                 <label htmlFor='telefono'>Telefono</label>
                                     
@@ -103,48 +144,34 @@ function EditarMedico( { medicoNombre, medicoApellido, medicoFechaNacimiento, me
                                     name='telefono'
                                     placeholder='Telefono'
                                     aria-label='Telefono'
-                                    value={medicoTelefono}
-                                    onChange={e => setMedicoTelefono(e.target.value)}
+                                    value={personalTelefono}
+                                    onChange={(event) => setPersonalTelefono(event.target.value)}
                                 />
-                            </div>                            
+                            </div>
 
+                            {/* Rol */}
                             <div className='col-lg-4 col-md-6 mb-2 position-relative'>
-                                <label htmlFor='genero'>Genero</label>
+                                <label htmlFor='rol'>Rol</label>
 
                                 <select
                                     className='form-control'
-                                    name='genero'
-                                    value={medicoGenero}
-                                    onChange={e => setMedicoGenero(e.target.value)}
+                                    name='rol'
+                                    value={personalRol}
+                                    disabled
                                 >
                                     <option value='' disabled>Seleccione una opción</option>
-                                    <option value='Femenino'>Femenino</option>
-                                    <option value='Masculino'>Masculino</option>
-                                    <option value='No Binario'>No Binario</option>
-                                    <option value='No especifica'>No especifica</option>
+                                    <option value='Administrativo'>Administrativo</option>
+                                    <option value='Médico'>Médico</option>
                                 </select>
 
-                                <span className='custom-arrow position-absolute h-100'></span>
-                            </div>
-                            
-                            <div className='col-lg-4 col-md-6 mb-2'>
-                                <label htmlFor='numero_obra_social'>Numero de Obra Social</label>
-                                    
-                                <input
-                                    className='form-control'
-                                    type='numero_obra_social'
-                                    name='numero_obra_social'
-                                    placeholder='Numero de Obra Social'
-                                    aria-label='Numero de Obra Social'
-                                    value={medicoObraSocial}
-                                    onChange={e => setMedicoObraSocial(e.target.value)}
-                                />
+                                <span className='custom-arrow position-absolute h-100 right-2'></span>
                             </div>
                         </form>
 
                         <button
                             className='btn bg-primary text-white box-shadow-dark w-50 mb-3'
-                            onClick={updateMedico}
+                            onClick={updatePersonal}
+                            disabled={buttonDisabled}
                         >
                             Guardar cambios
                         </button>
@@ -163,4 +190,4 @@ function EditarMedico( { medicoNombre, medicoApellido, medicoFechaNacimiento, me
     )
 }
 
-export default EditarMedico
+export default EditarPersonal

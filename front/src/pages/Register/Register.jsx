@@ -408,7 +408,7 @@ function Register() {
 
             // Send request.
             $.ajax({
-                url: 'http://local.misturnos/api/usuarios',
+                url: process.env.REACT_APP_API_ROOT + '/usuarios',
                 type: 'POST',
                 dataType: 'json',
                 data: {

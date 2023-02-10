@@ -120,11 +120,11 @@ class MedicosController extends Controller
 
 
     /**
-     * Function getById - Returns a Paciente from database that matches with the request.
+     * Function getById - Returns a 'Médico' from database that matches with the request.
      *
      * REVISAR ----------------------------.
      *
-     * @return array - The Paciente.
+     * @return array - The 'Médico'.
      */
     public function getById(Request $request, $id)
     {

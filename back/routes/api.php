@@ -38,6 +38,9 @@ Route::post('pacientes/historia-clinica', 'App\Http\Controllers\PacientesControl
 Route::put('pacientes/historia-clinica', 'App\Http\Controllers\PacientesController@updateHistoriaClinica');
 Route::delete('pacientes/historia-clinica', 'App\Http\Controllers\PacientesController@deleteHistoriaClinica');
 
+// Personal.
+Route::get('personal', 'App\Http\Controllers\UsuariosController@getAllPersonal');
+
 // Medicos.
 Route::get('medicos', 'App\Http\Controllers\MedicosController@getAll');
 Route::get('medicos/{id}/fechas', 'App\Http\Controllers\MedicosController@getFechas')->where('id', '[0-9]+');

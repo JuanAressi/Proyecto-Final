@@ -76,6 +76,8 @@ function Table({ lastShowPerPage, lastPage, page, setPage, setSearchInput, setSh
                                     }
                                 </tr>
                             )
+                        } else {
+                            return null;
                         }
                     })}
                 </tbody>

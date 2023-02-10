@@ -338,4 +338,100 @@ class UsuariosController extends Controller
             }
         }
     }
+
+
+    /**
+     * Function getAllPersonal - Gets all the user with the role 'administrativo' or 'medico'.
+     *
+     * @param Request $request - The request object.
+     *
+     * @return array
+     */
+    public function getAllPersonal(Request $request)
+    {
+        // Get params from request.
+        $page       = $request->input('page');
+        $pagination = $request->input('pagination');
+        $search     = $request->input('search');
+
+        // Calculate offset and limit.
+        $offset = ($page - 1) * $pagination;
+        $limit  = $offset + $pagination;
+
+        // Get the users.
+        $administrativos_sql = Usuarios::where('usuarios.rol', 'administrativo')
+            ->where('usuarios.estado', 'activo')
+            ->where(function ($query) use ($search) {
+                $query->where('usuarios.nombre', 'like', '%' . $search . '%')
+                    ->orWhere('usuarios.apellido', 'like', '%' . $search . '%')
+                    ->orWhere('usuarios.email', 'like', '%' . $search . '%')
+                    ->orWhere('usuarios.dni', 'like', '%' . $search . '%')
+                    ->orWhere('usuarios.rol', 'like', '%' . $search . '%');
+            })
+            ->get();
+
+        $medicos_sql = Usuarios::where('usuarios.rol', 'medico')
+            ->where('usuarios.estado', 'activo')
+            ->where(function ($query) use ($search) {
+                $query->where('usuarios.nombre', 'like', '%' . $search . '%')
+                    ->orWhere('usuarios.apellido', 'like', '%' . $search . '%')
+                    ->orWhere('usuarios.email', 'like', '%' . $search . '%')
+                    ->orWhere('usuarios.dni', 'like', '%' . $search . '%')
+                    ->orWhere('usuarios.rol', 'like', '%' . $search . '%');
+            })
+            ->get();
+
+        // Merge both arrays.
+        $personal_sql = array_merge($administrativos_sql->toArray(), $medicos_sql->toArray());
+
+        // Get total of users.
+        $user_count = sizeof($personal_sql);
+
+        // Get users by pagination.
+        $personal = [];
+
+        // Check if offset is valid.
+        if ($offset < $user_count) {
+            // Fill usuarios according to pagination.
+            for ($i = $offset; $i < $limit && $i < $user_count; $i++) {
+                $personal[] = $personal_sql[$i];
+            }
+        } else {
+            // Fill usuarios with $personal_sql.
+            $personal = $personal_sql;
+        }
+
+        // Check if users are found.
+        if (count($personal) > 0) {
+            // Create array of users.
+            $personal_filtrados = array();
+
+            // Return nombre, apellido, email.
+            foreach ($personal as $usuario) {
+                $personal_filtrados[] = array(
+                    'id'       => $usuario['id'],
+                    'nombre'   => $usuario['nombre'],
+                    'apellido' => $usuario['apellido'],
+                    'email'    => $usuario['email'],
+                    'dni'      => $usuario['dni'],
+                    'rol'      => $usuario['rol'],
+                );
+            }
+
+            // Return 'Personal'.
+            return json_encode(
+                array(
+                    'user_count' => $user_count,
+                    'personal'   => $personal,
+                )
+            );
+        } else {
+            // Return error.
+            return json_encode(
+                array(
+                    'error' => 'No users found.'
+                )
+            );
+        }
+    }
 }

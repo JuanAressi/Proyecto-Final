@@ -1,0 +1,18 @@
+Cambios para Jesica:
+    • CU 03: 
+        2.- Tilde en Género.
+        4.- Selecciona el rol del usuario: Administrativo o Médico. Y tilde en Médico.
+
+    • CU 04:
+        2.- Muestra: Apellido y Nombre, Email, DNI y Rol.
+        3.- Puede filtrar por Nombre, Apellido, Email, DNI y Rol.
+        7.- No puede editar la contraseña ni la repetición de la contraseña. Tilde en Género.
+
+    • CU 05:
+        2- Muestra: Apellido y Nombre, Email, DNI y Rol. (Eliminar las acciones).
+        3.- Puede filtrar por Nombre, Apellido, Email, DNI y Rol.
+        6.- Muestra: Nombre, Apellido, Email, Fecha de nacimiento, Genero, DNI, Teléfono y rol.
+        
+    • CU 06:
+        2.- Muestra: Apellido y Nombre, Email, DNI y Rol.
+        3.- Puede filtrar por Nombre, Apellido, Email, DNI y Rol.

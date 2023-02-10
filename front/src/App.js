@@ -15,7 +15,7 @@ import NoAutorizado from './pages/NoAutorizado/NoAutorizado';
 // Módulo de admin.
 import Admin          from './pages/Admin/Admin';
 import AdminPacientes from './pages/Admin/Pacientes/Pacientes';
-import AdminMedicos   from './pages/Admin/Medicos/Medicos';
+import AdminPersonal  from './pages/Admin/Personal/Personal';
 import AdminTurnos    from './pages/Admin/Turnos/Turnos';
 import AdminReportes  from './pages/Admin/Reportes/Reportes';
 
@@ -84,8 +84,8 @@ function App() {
                     <Route path='/panel-administrativo/pacientes' element={<AdminPacientes />} />
                 </Route>
 
-                <Route path='/panel-administrativo/medicos' element={<ProtectedRoute rol='administrativo' />}>
-                    <Route path='/panel-administrativo/medicos' element={<AdminMedicos />} />
+                <Route path='/panel-administrativo/personal' element={<ProtectedRoute rol='administrativo' />}>
+                    <Route path='/panel-administrativo/personal' element={<AdminPersonal />} />
                 </Route>
 
                 <Route path='/panel-administrativo/turnos' element={<ProtectedRoute rol='administrativo' />}>                    
@@ -106,8 +106,8 @@ function App() {
                     <Route path='/panel-admin/pacientes' element={<AdminPacientes />} />
                 </Route>
 
-                <Route path='/panel-admin/medicos' element={<ProtectedRoute rol='admin' />}>
-                    <Route path='/panel-admin/medicos' element={<AdminMedicos />} />
+                <Route path='/panel-admin/personal' element={<ProtectedRoute rol='admin' />}>
+                    <Route path='/panel-admin/personal' element={<AdminPersonal />} />
                 </Route>
 
                 <Route path='/panel-admin/turnos' element={<ProtectedRoute rol='admin' />}>                    
@@ -128,8 +128,8 @@ function App() {
                     <Route path='/panel-soporte/pacientes' element={<AdminPacientes />} />
                 </Route>
 
-                <Route path='/panel-soporte/medicos' element={<ProtectedRoute rol='soporte' />}>
-                    <Route path='/panel-soporte/medicos' element={<AdminMedicos />} />
+                <Route path='/panel-soporte/personal' element={<ProtectedRoute rol='soporte' />}>
+                    <Route path='/panel-soporte/personal' element={<AdminPersonal />} />
                 </Route>
 
                 <Route path='/panel-soporte/turnos' element={<ProtectedRoute rol='soporte' />}>                    

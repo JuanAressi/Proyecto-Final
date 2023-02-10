@@ -22,7 +22,7 @@ function SideNav({ active }) {
     let dashboard = '';
     let agenda    = '';
     let pacientes = '';
-    let medicos   = '';
+    let personal   = '';
     let turnos    = '';
     let reportes  = '';
 
@@ -32,8 +32,8 @@ function SideNav({ active }) {
         agenda = 'active';
     } else if (active === 'pacientes') {
         pacientes = 'active';
-    } else if (active === 'medicos') {
-        medicos = 'active';
+    } else if (active === 'personal') {
+        personal = 'active';
     } else if (active === 'turnos') {
         turnos = 'active';
     } else if (active === 'reportes') {
@@ -94,19 +94,19 @@ function SideNav({ active }) {
                         <h5 className='text-uppercase mb-0'>Pacientes</h5>
                     </Link>
 
-                    {/* Medicos */}
+                    {/* Personal */}
                     {
                         (role === 'administrativo' || role === 'admin' || role === 'soporte')
                         && <Link
-                            to={'/panel-' + role + '/medicos'}
-                            className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + medicos}
+                            to={'/panel-' + role + '/personal'}
+                            className={'nav-item d-flex justify-content-start align-items-center text-white w-100 p-2 px-4 mt-4 ' + personal}
                         >
                             <FontAwesomeIcon
                                 className='text-white me-3'
                                 icon={faUserDoctor}
                             />
     
-                            <h5 className='text-uppercase mb-0'>Medicos</h5>
+                            <h5 className='text-uppercase mb-0'>Personal</h5>
                         </Link>
                     }
                     
