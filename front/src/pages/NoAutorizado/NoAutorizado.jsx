@@ -11,7 +11,7 @@ function AccesoNoAutorizado() {
             <Navbar />
 
             <div className='d-flex bg-lightgray min-height'>
-                <div className='container p-4'>
+                <div className='container p-5 m-auto'>
                     <div className='d-flex flex-column justify-content-center align-items-center'>
                         <h1 className='text-primary mt-6 mb-2'>¡Uuuups!</h1>
 

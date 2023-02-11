@@ -25,7 +25,7 @@ function Usuario() {
             <Navbar />
 
             <div className='d-flex bg-lightgray min-height'>
-                <div className='container p-4'>
+                <div className='container p-5 m-auto'>
                     <h1 className='text-center mt-2'>¡Bienvenido, {user.nombre} {user.apellido}!</h1>
 
                     <div className='row mt-4'>

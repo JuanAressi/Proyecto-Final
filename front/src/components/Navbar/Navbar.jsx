@@ -1,4 +1,4 @@
-import { React, useContext, useEffect, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { NavHashLink } from 'react-router-hash-link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -182,7 +182,7 @@ function Navbar() {
                                         </ul>
                                     </div>
                                 )
-                                : role === 'recepcionista'
+                                : role === 'administrativo'
                                 ? (
                                     <div className='nav-item dropdown'>
                                         <span
@@ -199,9 +199,9 @@ function Navbar() {
                                             <li>
                                                 <Link
                                                     className='dropdown-item'
-                                                    to='/panel-recepcionista'
+                                                    to='/panel-administrativo'
                                                 >
-                                                    Panel de recepcionista
+                                                    Panel de administrativo
                                                 </Link>
                                             </li>
 

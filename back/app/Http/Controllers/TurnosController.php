@@ -49,7 +49,6 @@ class TurnosController extends Controller
                     ->orWhere('medico.apellido', 'like', '%' . $search . '%');
             })
             ->orderByRaw("STR_TO_DATE(concat(turnos.dia, ' ', turnos.hora), '%d-%m-%Y %H:%i') ASC")
-            // ->orderby('turnos.id', 'asc')
             ->get(
                 array(
                     'turnos.id',
@@ -409,7 +408,7 @@ class TurnosController extends Controller
                     ->orWhere('medico.nombre', 'like', '%' . $search . '%')
                     ->orWhere('medico.apellido', 'like', '%' . $search . '%');
             })
-            ->orderby('turnos.id', 'asc')
+            ->orderByRaw("STR_TO_DATE(concat(turnos.dia, ' ', turnos.hora), '%d-%m-%Y %H:%i') ASC")
             ->get(
                 array(
                     'turnos.id',

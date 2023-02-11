@@ -383,7 +383,7 @@ function Pacientes() {
                 active='pacientes'
             />
 
-            <div className='container p-5'>
+            <div className='container p-5 m-auto'>
                 <div className='d-flex align-items-center mb-4'>
                     <h1 id='pageTitle' className='display-3 text-primary text-shadow-dark me-4'>Pacientes</h1>
 

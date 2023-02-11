@@ -28,7 +28,7 @@ function Admin() {
                 active='dashboard'
             />
 
-            <div className='container p-5'>
+            <div className='container p-5 m-auto'>
                 <h1 className='text-center mt-5'>¡Bienvenido {nombre} {apellido}!</h1>
 
                 <div className='row d-flex justify-content-center mt-5'>

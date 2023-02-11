@@ -183,7 +183,7 @@ function MisTurnos() {
             <Navbar />
 
             <div className='d-flex bg-lightgray min-height'>
-                <div className='container p-4'>
+                <div className='container p-5 m-auto'>
                     <div className='position-relative'>
                         <Link
                             className='btn border border-primary text-primary text-uppercase box-shadow-dark-1 px-3 mt-1 cursor-pointer position-absolute top-0 left-0'
@@ -260,7 +260,7 @@ function MisTurnos() {
                     </div>
 
 
-                    <h3 className='text-center mt-6'>Turnos Antiguos</h3>
+                    <h3 className='text-center mt-10'>Turnos Antiguos</h3>
 
                     <Table
                         lastShowPerPage={lastShowPerPage}

@@ -1,7 +1,5 @@
 import { React, useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import $ from 'jquery';
-import Calendar from 'react-calendar';
 import SideNav from '../../../components/SideNav/SideNav';
 import Alert from '../../../components/Alert/Alert';
 import Disponibilidad from './Disponibilidad';
@@ -9,6 +7,9 @@ import loadingGif from '../../../components/assets/img/loadingGif.gif';
 import './style.css';
 
 function Agenda() {
+    // Button selected.
+    const [selectedButton, setSelectedButton] = useState('nuevaDisponibilidad');
+
     // Fecha.
     const [datesToSave, setDatesToSave] = useState([]);
 
@@ -33,6 +34,12 @@ function Agenda() {
     const [siguiente, setSiguiente] = useState(false);
     const [proximo, setProximo] = useState(false);
 
+    // Disponibilidad.
+    const [díasLista, setDíasLista] = useState([]);
+    const [horariosLista, setHorariosLista] = useState([]);
+    const [día, setDía] = useState(false);
+    const [hora, setHora] = useState(false);
+
     // Utilities.
     const [showSpinner, setShowSpinner] = useState(false);
     const [btnDisabled, setBtnDisabled] = useState(true);
@@ -45,6 +52,10 @@ function Agenda() {
 
     // Adds an extra label and 'data-mes' to the checkboxes.
     useEffect(() => {
+        // Get the user from LocalStorage.
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        getDías(user.id);
         // Get the current Month.
         const currentMonth = new Date().getMonth();
 
@@ -129,21 +140,28 @@ function Agenda() {
                 break;
         }
         
-        // Set the varibles to the checkboxes.
+        // Set the variables to the checkboxes.
         const actual = document.querySelector('#actual');
-        const month = actual.nextElementSibling.querySelector('.month');
-        month.innerHTML = '(' + mesActual + ')';
-        actual.setAttribute('data-mes', currentMonth + 1);
-
         const siguiente = document.querySelector('#siguiente');
-        const monthSiguiente = siguiente.nextElementSibling.querySelector('.month');
-        monthSiguiente.innerHTML = '(' + siguienteActual + ')';
-        siguiente.setAttribute('data-mes', currentMonth + 2);
-    
         const proximo = document.querySelector('#proximo');
-        const monthProximo = proximo.nextElementSibling.querySelector('.month');
-        monthProximo.innerHTML = '(' + proximoActual + ')';
-        proximo.setAttribute('data-mes', currentMonth + 3);
+
+        if (actual) {
+            const month = actual.nextElementSibling.querySelector('.month');
+            month.innerHTML = '(' + mesActual + ')';
+            actual.setAttribute('data-mes', currentMonth + 1);
+        }
+
+        if (siguiente) {
+            const monthSiguiente = siguiente.nextElementSibling.querySelector('.month');
+            monthSiguiente.innerHTML = '(' + siguienteActual + ')';
+            siguiente.setAttribute('data-mes', currentMonth + 2);
+        }
+        
+        if (proximo) {
+            const monthProximo = proximo.nextElementSibling.querySelector('.month');
+            monthProximo.innerHTML = '(' + proximoActual + ')';
+            proximo.setAttribute('data-mes', currentMonth + 3);
+        }
     }, []);
 
 
@@ -157,130 +175,75 @@ function Agenda() {
     }, [lunes, martes, miércoles, jueves, viernes, actual, siguiente, proximo, horaSelected]);
 
 
-
-    // useEffect(() => {
-    //     // Get checkboxes in 'días' element.
-    //     const díasChecked = document.querySelectorAll('#agenda #días input[type="checkbox"]');
-
-    //     // Get checkboxes in 'meses' element.
-
-    //     // Get current day.
-    //     const todayDate = new Date().getDate();
-
-    //     // Get the maximum number of days in the current month.
-    //     const maxDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
-
-    //     // Get all the days buttons.
-    //     const días = document.querySelectorAll('#agenda .react-calendar__tile');
-
-    //     // Loop through the days díasChecked and set the selected attribute to the days buttons if the day is between the current day and the maximum number of days in the current month and the day is equal to the day selected in the checkboxes and the day is equal to the day selected in the checkboxes plus 7, 14, 21 or 28.
-    //     díasChecked.forEach((díaChecked) => {
-    //         días.forEach((día) => {
-    //             // Get 'data-id' attribute.
-    //             const id = parseInt(díaChecked.getAttribute('data-id'));
-
-    //             // Get the index of the current day.
-    //             const index = Array.prototype.indexOf.call(días, día) + 1;
-
-    //             if (index >= todayDate && index <= maxDays && (index === id || index === id + 7 || index === id + 14 || index === id + 21 || index === id + 28)) {
-    //                 if (díaChecked.checked) {
-    //                     día.setAttribute('selected', '');
-    //                 } else {
-    //                     día.removeAttribute('selected');
-    //                 }
-    //             }
-    //         });
-    //     });
-    // }, [lunes, martes, miércoles, jueves, viernes]);
-
-
     /**
-     * Function fechaOnChange - Set the clicked date as the selected date.
+     * Function selectTabOption - Switch the button selected.
      *
-     * @param {date} date - The selected date.
+     * @param {object} target - The target of the event.
      *
      * @return {void}
      */
-    const fechaOnChange = (date) => {
-        // Get the date selected in the format 'dd-mm-yyyy'.
-        const mes  = (date.getMonth() + 1).toString().padStart(2, '0');
-        const año  = date.getFullYear();
+    const selectTabOption = (target) => {
+        // Cheek if the button is already selected.
+        if (!target.classList.contains('selected')) {
+            // Get the id of the button.
+            const id = target.id;
 
-        // Format the date selected to select the button in the 'react-calendar' component and add the selected attribute.
-        let mesText = '';
+            // Get the elements.
+            const historiaClinica = document.getElementById('nuevaDisponibilidad');
+            const turnos = document.getElementById('verDisponibilidad');
 
-        switch (mes) {
-            case '01':
-                mesText = 'enero';
-                break;
+            if (id === 'nuevaDisponibilidad') {
+                // Add and remove classes to the buttons
+                turnos.classList.remove('bg-primary', 'text-white', 'selected');
+                turnos.classList.add('bg-white', 'text-primary', 'border-primary');
 
-            case '02':
-                mesText = 'febrero';
-                break;
+                historiaClinica.classList.remove('bg-white', 'text-primary', 'border-primary');
+                historiaClinica.classList.add('bg-primary', 'text-white', 'selected');
 
-            case '03':
-                mesText = 'marzo';
-                break;
+                // Set the selected button.
+                setSelectedButton('nuevaDisponibilidad');
+            } else if (id === 'verDisponibilidad') {
+                // Add and remove classes to the buttons
+                historiaClinica.classList.remove('bg-primary', 'text-white', 'selected');
+                historiaClinica.classList.add('bg-white', 'text-primary', 'border-primary');
 
-            case '04':
-                mesText = 'abril';
-                break;
+                turnos.classList.remove('bg-white', 'text-primary', 'border-primary');
+                turnos.classList.add('bg-primary', 'text-white', 'selected');
 
-            case '05':
-                mesText = 'mayo';
-                break;
-
-            case '06':
-                mesText = 'junio';
-                break;
-
-            case '07':
-                mesText = 'julio';
-                break;
-
-            case '08':
-                mesText = 'agosto';
-                break;
-
-            case '09':
-                mesText = 'septiembre';
-                break;
-
-            case '10':
-                mesText = 'octubre';
-                break;
-
-            case '11':
-                mesText = 'noviembre';
-                break;
-
-            case '12':
-                mesText = 'diciembre';
-                break;
-            
-            default:
-                break;
+                // Set the selected button.
+                setSelectedButton('verDisponibilidad');
+            }
         }
+    }
 
-        const textSelected = date.getDate() + ' de ' + mesText + ' de ' + año;
 
-        // Get all the abbr elements.
-        const abbr = document.querySelectorAll('#agenda .react-calendar__tile abbr');
+    /**
+     * Function getDías - Make an ajax request to get all the days available for the selected 'Medico'.
+     * 
+     * @param {number} id - The id of the 'Medico'.
+     *
+     * @return {void}
+     */
+    const getDías = (id) => {
+        // Change Spinner state.
+        setShowSpinner(true);
 
-        // Loop through the abbr elements.
-        abbr.forEach((element) => {
-            // Get the 'aria-label' attribute.
-            const ariaLabel = element.getAttribute('aria-label');
+        $.ajax({
+            url: process.env.REACT_APP_API_ROOT + 'medicos/' + id + '/fechas',
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                // Change Spinner state.
+                setShowSpinner(false);
 
-            if (ariaLabel === textSelected) {
-                if (element.parentElement.hasAttribute('selected')) {
-                    element.parentElement.removeAttribute('selected');
-                } else {
-                    element.parentElement.setAttribute('selected', '');
-                }
+                // Set the 'fechas' state.
+                setDíasLista(response.fechas);
+            },
+            error: function (error) {
+                console.log(error);
             }
         });
-    }
+    };
 
 
     /**
@@ -453,8 +416,9 @@ function Agenda() {
         });
 
         // Make API call.
+        ///////////////////////////////////// REVISAR /////////////////////////////////////
         $.ajax({
-            url: `${process.env.REACT_APP_API_URL}/horarios`,
+            url: process.env.REACT_APP_API_ROOT + '/horarios',
             method: 'POST',
             data: {
                 'id_medico': '1',
@@ -474,6 +438,70 @@ function Agenda() {
     }
 
 
+    /**
+     * Function setClickedDía - Select the item clicked, get the id and make an ajax call to get all the 'Horarios' and their status.
+     *
+     * @param {object} target - The clicked element.
+     *
+     * @return {void}
+     */
+    const setClickedDía = (target) => {
+        // Get the id of the element.
+        const id = target.getAttribute('data-id');
+
+        // Set the 'clickedDía' state.
+        setDía(id);
+
+        // Change the 'selected' class.
+        const díaSelected = document.querySelector('#díasLista .item.selected');
+
+        if (díaSelected) {
+            díaSelected.classList.remove('selected');
+        }
+
+        target.classList.add('selected');
+
+        // Get the 'Horas' for the selected 'Día'.
+        getHoras(id);
+    }
+
+
+    /**
+     * Function getHoras - Make an ajax request to get all the hours available for the selected 'Medico'.
+     *
+     * @param {string} id - The ID of the date selected.
+     *
+     * @return {void}
+     */
+    const getHoras = (id) => {
+        // Set Spinner state.
+        setShowSpinner(true);
+
+        $.ajax({
+            url: process.env.REACT_APP_API_ROOT + 'medicos/' + id + '/horas',
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                // Change Spinner state.
+                setShowSpinner(false);
+
+                if (response.horas) {
+                    const horas = response.horas[0].concat(response.horas[1], response.horas[2], response.horas[3]);
+
+                    // Set the 'horarios' state.
+                    setHorariosLista(horas);
+                }
+            },
+            error: function (error) {
+                // Change Spinner state.
+                setShowSpinner(false);
+
+                console.log(error);
+            }
+        });
+    };
+
+
     // Render the 'Agenda' component.
     return (
         <div id='agenda' className='d-flex bg-lightgray'>
@@ -488,18 +516,6 @@ function Agenda() {
                     <div style={{width: '40px'}}>
                         {showSpinner && <img src={loadingGif} alt='Espera a que termine de cargar' height='20px'/>}
                     </div>
-
-                    <button
-                        className='btn bg-white text-primary border-primary'
-                        data-bs-toggle='modal'
-                        data-bs-target={'#modalAdd'}
-                    >
-                        <FontAwesomeIcon
-                            className='text-primary me-1'
-                        />
-
-                        Revisar disponibilidad de cargada
-                    </button>
                 </div>
 
                 {showAlert ? 
@@ -513,195 +529,291 @@ function Agenda() {
 
                 <div className='row d-flex justify-content-center'>
                     <div className='col-sm-12'>
-                        <h4 className='text-center text-shadow-dark mb-2'>Selecciona las opciones para cargar su disponibilidad</h4>
-                    </div>
-                    
-                    <div id='checkboxs' className='col-sm-12 d-flex justify-content-around mb-3'>
-                        <div className='d-flex flex-column'>
-                            <div id='días' className='d-flex flex-column'>
-                                <h6 htmlFor=''>Aplicar para todos los:</h6>
+                        <h4 className='text-shadow-dark mb-2'>Selecciona el tipo de acción a realizar</h4>
 
-                                <div className='d-flex'>
-                                    <input
-                                        id='lunes'
-                                        className='form-check-input ms-2'
-                                        type='checkbox'
-                                        value={lunes}
-                                        data-id='2'
-                                        onChange={(e) => toggleDays( e.target.checked)}
-                                    />
-
-                                    <label htmlFor='lunes' className='form-check-label ms-2'>Lunes</label>
-                                </div>
-
-                                <div className='d-flex'>
-                                    <input
-                                        id='martes'
-                                        type='checkbox'
-                                        className='form-check-input ms-2'
-                                        value={martes}
-                                        data-id='3'
-                                        onChange={(e) => setMartes(e.target.checked)}
-                                    />
-
-                                    <label htmlFor='martes' className='form-check-label ms-2'>Martes</label>
-
-                                </div>
-
-                                <div className='d-flex'>
-                                    <input
-                                        id='miércoles'
-                                        type='checkbox'
-                                        className='form-check-input ms-2'
-                                        value={miércoles}
-                                        data-id='4'
-                                        onChange={(e) => setMiércoles(e.target.checked)}
-                                    />
-
-                                    <label htmlFor='miércoles' className='form-check-label ms-2'>Miércoles</label>
-                                </div>
-
-                                <div className='d-flex'>
-                                    <input
-                                        id='jueves'
-                                        type='checkbox'
-                                        className='form-check-input ms-2'
-                                        value={jueves}
-                                        data-id='5'
-                                        onChange={(e) => setJueves(e.target.checked)}
-                                    />
-
-                                    <label htmlFor='jueves' className='form-check-label ms-2'>Jueves</label>
-                                </div>
-
-                                <div className='d-flex'>
-                                    <input
-                                        id='viernes'
-                                        type='checkbox'
-                                        className='form-check-input ms-2'
-                                        value={viernes}
-                                        data-id='6'
-                                        onChange={(e) => setViernes(e.target.checked)}
-                                    />
-                                    <label htmlFor='viernes' className='form-check-label ms-2'>Viernes</label>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div id='meses' className='d-flex flex-column justify-content-between ms-5'>
-                            <h6>Del mes:</h6>
-
-                            <div className='d-flex'>
-                                <input
-                                    id='actual'
-                                    type='checkbox'
-                                    className='form-check-input ms-2'
-                                    value={actual}
-                                    onChange={(e) => setActual(e.target.checked)}
-                                />
-
-                                <label htmlFor='actual' className='form-check-label ms-2'>Actual <span className='month'></span></label>
-                            </div>
-
-                            <div className='d-flex'>
-                                <input
-                                    id='siguiente'
-                                    type='checkbox'
-                                    className='form-check-input ms-2'
-                                    value={siguiente}
-                                    onChange={(e) => setSiguiente(e.target.checked)}
-                                />
-
-                                <label htmlFor='siguiente' className='form-check-label ms-2'>Siguiente <span className='month'></span></label>
-                            </div>
-
-                            <div className='d-flex'>
-                                <input
-                                    id='proximo'
-                                    type='checkbox'
-                                    className='form-check-input ms-2'
-                                    value={proximo}
-                                    onChange={(e) => setProximo(e.target.checked)}
-                                />
-                                <label htmlFor='proximo' className='form-check-label ms-2'>Proximo <span className='month'></span></label>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Calendario */}
-                    {/* <div className='col-sm-12 d-flex justify-content-center'>
-                        <Calendar
-                            className='box-shadow-dark w-75 pointer-events-none'
-                            calendarType={'US'}
-                            minDetail={'year'}
-                            minDate={new Date()}
-                            onChange={(value) => fechaOnChange(value)}
-                        />
-                    </div> */}
-
-                    {/* Horas */}
-                    <div className='col-sm-12 mt-6'>
-                        <h4 className='text-center text-shadow-dark mb-3'>Selecciona los horarios disponibles para el día seleccionado</h4>
-
-                        <div className='d-flex justify-content-center mb-3'>
+                        {/* Tipo de reporte */}
+                        <div id='tipoTab' className='d-flex'>
                             <button
-                                className='btn bg-white text-primary border-primary'
-                                onClick={() => selectAllHoras()}
+                                id='nuevaDisponibilidad'
+                                className='btn bg-primary text-white selected'
+                                onClick={(event) => selectTabOption(event.target)}
                             >
-                                Seleccionar todos
+                                Cargar disponibilidad
+                            </button>
+
+                            <button
+                                id='verDisponibilidad'
+                                className='btn bg-white border-primary text-primary'
+                                onClick={(event) => selectTabOption(event.target)}
+                            >
+                                Ver disponibilidad cargada
                             </button>
                         </div>
+                    </div>
 
-                        <div id='horas' className='d-flex justify-content-center align-items-center mt-1'>
-                            {horas && horas.map((horaArray, indexArray) => (
-                                <div
-                                    className='d-flex flex-column align-items-center p-0'
-                                    key={indexArray}
-                                >
-                                    {horaArray.map((horaItem, indexItem) => {
-                                        // Status of the 'hora' button.
-                                        let isDisabled = false;
-                                        
-                                        if (horaItem.estado !== 'libre') {
-                                            isDisabled = true;
-                                        }
+                    {
+                        selectedButton === 'nuevaDisponibilidad'
+                        ? <>
+                            <div className='col-sm-12 mt-6'>
+                                <h4 className='text-center text-shadow-dark mb-2'>Selecciona las opciones para cargar su disponibilidad</h4>
+                            </div>
+                            
+                            <div id='checkboxs' className='col-sm-12 d-flex justify-content-around mb-3'>
+                                {/* Días */}
+                                <div className='d-flex flex-column'>
+                                    <div id='días' className='d-flex flex-column'>
+                                        <h6 htmlFor=''>Aplicar para todos los:</h6>
 
-                                        // Check if it's the last one.
-                                        let marginBottomLastOne = 'mb-2';
+                                        <div className='d-flex'>
+                                            <input
+                                                id='lunes'
+                                                className='form-check-input ms-2'
+                                                type='checkbox'
+                                                value={lunes}
+                                                data-id='2'
+                                                onChange={(e) => toggleDays( e.target.checked)}
+                                            />
 
-                                        if (indexItem === horaArray.length - 1) {
-                                            marginBottomLastOne = 'mb-0';
-                                        }
+                                            <label htmlFor='lunes' className='form-check-label ms-2'>Lunes</label>
+                                        </div>
 
-                                        return (
-                                            <button
-                                                className={'btn text-uppercase box-shadow-dark-1 px-2 mx-1 cursor-pointer ' + marginBottomLastOne}
-                                                key={indexItem}
-                                                disabled={isDisabled}
-                                                type='button'
-                                                onClick={(event) => toggleClickedHora(event.target)}
-                                            >
-                                                {horaItem.hora}
-                                            </button>
-                                        )
-                                    })}
+                                        <div className='d-flex'>
+                                            <input
+                                                id='martes'
+                                                type='checkbox'
+                                                className='form-check-input ms-2'
+                                                value={martes}
+                                                data-id='3'
+                                                onChange={(e) => setMartes(e.target.checked)}
+                                            />
+
+                                            <label htmlFor='martes' className='form-check-label ms-2'>Martes</label>
+
+                                        </div>
+
+                                        <div className='d-flex'>
+                                            <input
+                                                id='miércoles'
+                                                type='checkbox'
+                                                className='form-check-input ms-2'
+                                                value={miércoles}
+                                                data-id='4'
+                                                onChange={(e) => setMiércoles(e.target.checked)}
+                                            />
+
+                                            <label htmlFor='miércoles' className='form-check-label ms-2'>Miércoles</label>
+                                        </div>
+
+                                        <div className='d-flex'>
+                                            <input
+                                                id='jueves'
+                                                type='checkbox'
+                                                className='form-check-input ms-2'
+                                                value={jueves}
+                                                data-id='5'
+                                                onChange={(e) => setJueves(e.target.checked)}
+                                            />
+
+                                            <label htmlFor='jueves' className='form-check-label ms-2'>Jueves</label>
+                                        </div>
+
+                                        <div className='d-flex'>
+                                            <input
+                                                id='viernes'
+                                                type='checkbox'
+                                                className='form-check-input ms-2'
+                                                value={viernes}
+                                                data-id='6'
+                                                onChange={(e) => setViernes(e.target.checked)}
+                                            />
+                                            <label htmlFor='viernes' className='form-check-label ms-2'>Viernes</label>
+                                        </div>
+                                    </div>
                                 </div>
-                            ))}
-                        </div>
-                    </div>
 
-                    {/* Guardar */}
-                    <div className='col-sm-12 d-flex justify-content-center mt-2'>
-                        <button
-                            className='btn bg-primary text-white border-primary mt-3 w-25'
-                            type='button'
-                            disabled={btnDisabled}
-                            onClick={() => saveNewHorarios()}
-                        >
-                            Guardar
-                        </button>
-                    </div>
+                                {/* Meses */}
+                                <div id='meses' className='d-flex flex-column justify-content-between ms-5'>
+                                    <h6>Del mes:</h6>
+
+                                    <div className='d-flex'>
+                                        <input
+                                            id='actual'
+                                            type='checkbox'
+                                            className='form-check-input ms-2'
+                                            value={actual}
+                                            onChange={(e) => setActual(e.target.checked)}
+                                        />
+
+                                        <label htmlFor='actual' className='form-check-label ms-2'>Actual <span className='month'></span></label>
+                                    </div>
+
+                                    <div className='d-flex'>
+                                        <input
+                                            id='siguiente'
+                                            type='checkbox'
+                                            className='form-check-input ms-2'
+                                            value={siguiente}
+                                            onChange={(e) => setSiguiente(e.target.checked)}
+                                        />
+
+                                        <label htmlFor='siguiente' className='form-check-label ms-2'>Siguiente <span className='month'></span></label>
+                                    </div>
+
+                                    <div className='d-flex'>
+                                        <input
+                                            id='proximo'
+                                            type='checkbox'
+                                            className='form-check-input ms-2'
+                                            value={proximo}
+                                            onChange={(e) => setProximo(e.target.checked)}
+                                        />
+                                        <label htmlFor='proximo' className='form-check-label ms-2'>Proximo <span className='month'></span></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Horas */}
+                            <div className='col-sm-12 mt-6'>
+                                <h4 className='text-center text-shadow-dark mb-3'>Selecciona los horarios disponibles para el día seleccionado</h4>
+
+                                <div className='d-flex justify-content-center mb-3'>
+                                    <button
+                                        className='btn bg-white text-primary border-primary'
+                                        onClick={() => selectAllHoras()}
+                                    >
+                                        Seleccionar todos
+                                    </button>
+                                </div>
+
+                                <div id='horas' className='d-flex justify-content-center align-items-center mt-1'>
+                                    {horas && horas.map((horaArray, indexArray) => (
+                                        <div
+                                            className='d-flex flex-column align-items-center p-0'
+                                            key={indexArray}
+                                        >
+                                            {horaArray.map((horaItem, indexItem) => {
+                                                // Status of the 'hora' button.
+                                                let isDisabled = false;
+                                                
+                                                if (horaItem.estado !== 'libre') {
+                                                    isDisabled = true;
+                                                }
+
+                                                // Check if it's the last one.
+                                                let marginBottomLastOne = 'mb-2';
+
+                                                if (indexItem === horaArray.length - 1) {
+                                                    marginBottomLastOne = 'mb-0';
+                                                }
+
+                                                return (
+                                                    <button
+                                                        className={'btn text-uppercase box-shadow-dark-1 px-2 mx-1 cursor-pointer ' + marginBottomLastOne}
+                                                        key={indexItem}
+                                                        disabled={isDisabled}
+                                                        type='button'
+                                                        onClick={(event) => toggleClickedHora(event.target)}
+                                                    >
+                                                        {horaItem.hora}
+                                                    </button>
+                                                )
+                                            })}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Guardar */}
+                            <div className='col-sm-12 d-flex justify-content-center mt-2'>
+                                <button
+                                    className='btn bg-primary text-white border-primary mt-3 w-25'
+                                    type='button'
+                                    disabled={btnDisabled}
+                                    onClick={() => saveNewHorarios()}
+                                >
+                                    Guardar
+                                </button>
+                            </div>
+                        </>
+                        : <div className='row d-flex justify-content-center mt-6'>
+                            {/* Días con disponibilidad cargados */}
+                            <div className='col-md-6'>
+                                <h4 className='text-center text-shadow-dark mb-3'>Días con disponibilidad cargados</h4>
+
+                                <div className='bg-white m-2'>
+                                    <div id='díasLista' className='border-05 box-shadow-dark'>
+                                        {díasLista && díasLista.map((dia, index) => (
+                                            <div
+                                                className='item d-flex align-items-center border-bottom pt-1 pb-1 px-2'
+                                                data-id={dia.id}
+                                                key={index}
+                                                onClick={(event) => setClickedDía(event.target)}
+                                            >
+                                                <p className='m-0'>{dia.dia}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Horarios con disponibilidad */}
+                            <div className='col-md-6'>
+                                <h4 className='text-center text-shadow-dark mb-3'>Horarios con disponibilidad cargados</h4>
+
+                                <div className='bg-white m-2'>
+                                    <div id='horariosLista' className='border-05 box-shadow-dark'>
+                                        {horariosLista && horariosLista.map((horario, index) => (
+                                            <div
+                                                className='item d-flex justify-content-between align-items-center border-bottom pt-1 pb-1 px-2'
+                                                data-id={horario.id}
+                                                key={index}
+                                            >
+                                                <p className='m-0 w-'>{horario.hora} - {horario.estado}</p>
+
+                                                <div>
+                                                    {
+                                                        horario.estado === 'libre'
+                                                        ? <>
+                                                            <input
+                                                                className='me-2'
+                                                                type='radio'
+                                                                name={'estado ' + index}
+                                                                title='activo'
+                                                                selected
+                                                            />
+
+                                                            <input
+                                                                type='radio'
+                                                                name={'estado ' + index}
+                                                                title='inactivo'
+                                                            />
+                                                        </>
+                                                        : <>
+                                                            <input
+                                                                className='me-2'
+                                                                type='radio'
+                                                                name={'estado ' + index}
+                                                                title='activo'
+                                                            />
+
+                                                            <input
+                                                                type='radio'
+                                                                name={'estado ' + index}
+                                                                title='inactivo'
+                                                                selected
+                                                            />
+                                                        </>
+                                                    }
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>                         
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
                 </div>
             </div>
 

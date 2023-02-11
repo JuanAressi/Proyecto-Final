@@ -44,7 +44,7 @@ Route::get('personal', 'App\Http\Controllers\UsuariosController@getAllPersonal')
 // Medicos.
 Route::get('medicos', 'App\Http\Controllers\MedicosController@getAll');
 Route::get('medicos/{id}/fechas', 'App\Http\Controllers\MedicosController@getFechas')->where('id', '[0-9]+');
-Route::get('medicos/{fecha}/horas', 'App\Http\Controllers\MedicosController@getHoras');
+Route::get('medicos/{id}/horas', 'App\Http\Controllers\MedicosController@getHoras')->where('id', '[0-9]+');
 Route::post('medicos/agenda', 'App\Http\Controllers\MedicosController@addAgenda');
 
 // Turnos.

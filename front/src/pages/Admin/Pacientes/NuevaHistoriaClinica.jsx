@@ -7,7 +7,17 @@ import { faX } from '@fortawesome/free-solid-svg-icons';
 import loadingGif from '../../../components/assets/img/loadingGif.gif';
 
 function NuevaHistoriaClinica({ pacienteAntecedentes, pacienteAlergias, motivoConsulta, diagnostico, setPacienteAntecedentes, setPacienteAlergias, showSpinner, setMotivoConsulta, setDiagnostico, addHistoriaClinica, closeModalHistoriaClinica }) {
+    const [médico, setMédico] = useState('');
     const [buttonDisabled, setButtonDisabled] = useState(true);
+
+
+    // Get data from LocalStorage.
+    useEffect(() => {
+        if (localStorage.getItem('user') !== null) {
+            const user = JSON.parse(localStorage.getItem('user'));
+            setMédico(user.apellido + ', ' + user.nombre);
+        }
+    }, []);
 
     // Disable the button.
     useEffect(() => {
@@ -53,7 +63,7 @@ function NuevaHistoriaClinica({ pacienteAntecedentes, pacienteAlergias, motivoCo
                                     name='fecha_hoy'
                                     aria-label='Fecha de hoy'
                                     value={new Date().toISOString().slice(0, 10)}
-                                    disabled={true}
+                                    disabled
                                 />
                             </div>
                             
@@ -66,8 +76,8 @@ function NuevaHistoriaClinica({ pacienteAntecedentes, pacienteAlergias, motivoCo
                                     type='text'
                                     name='medico'
                                     aria-label='Medico'
-                                    placeholder='Aressi, Juan'
-                                    disabled={true}
+                                    placeholder={médico}
+                                    disabled
                                 />
                             </div>
 
