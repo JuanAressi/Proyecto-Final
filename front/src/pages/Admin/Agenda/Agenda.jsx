@@ -531,7 +531,8 @@ function Agenda() {
         // Make API call to save the information.
         $.ajax({
             url: process.env.REACT_APP_API_ROOT + 'medicos/horarios',
-            method: 'POST',
+            type: 'POST',
+            dataType: 'json',
             data: {
                 'id_medico': userId,
                 'fechas': datesToSave,
@@ -654,12 +655,15 @@ function Agenda() {
         // Make API call to update the information.
         $.ajax({
             url: process.env.REACT_APP_API_ROOT + 'medicos/horarios',
-            method: 'DELETE',
+            type: 'DELETE',
+            dataType: 'json',
             data: {
                 'id_turno_fecha': día,
                 'horas': horasSelected,
             },
             success: (response) => {
+                console.log('response', response)
+
                 // Change Spinner state.
                 setShowSpinner(false);
         
@@ -708,12 +712,11 @@ function Agenda() {
                     </div>
                 </div>
 
-                {showAlert ? 
-                    <Alert
+                {
+                    showAlert ? <Alert
                         type={alertType}
                         message={alertMessage}
                     />
-                        
                     : null
                 }
 

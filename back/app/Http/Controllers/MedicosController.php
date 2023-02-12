@@ -282,31 +282,31 @@ class MedicosController extends Controller
         $horas = TurnosHoras::where('id_turnos_fechas', $id)
             ->get(['hora', 'estado']);
 
+        $turnos = array(
+            array('hora' => '8:00', 'estado' => ''),
+            array('hora' => '8:30', 'estado' => ''),
+            array('hora' => '9:00', 'estado' => ''),
+            array('hora' => '9:30', 'estado' => ''),
+            array('hora' => '10:00', 'estado' => ''),
+            array('hora' => '10:30', 'estado' => ''),
+            array('hora' => '11:00', 'estado' => ''),
+            array('hora' => '11:30', 'estado' => ''),
+            array('hora' => '12:00', 'estado' => ''),
+            array('hora' => '12:30', 'estado' => ''),
+            array('hora' => '13:00', 'estado' => ''),
+            array('hora' => '13:30', 'estado' => ''),
+            array('hora' => '14:00', 'estado' => ''),
+            array('hora' => '14:30', 'estado' => ''),
+            array('hora' => '15:00', 'estado' => ''),
+            array('hora' => '15:30', 'estado' => ''),
+            array('hora' => '16:00', 'estado' => ''),
+            array('hora' => '16:30', 'estado' => ''),
+            array('hora' => '17:00', 'estado' => ''),
+            array('hora' => '17:30', 'estado' => ''),
+        );
+
         // Check if horas are found.
         if (count($horas) > 0) {
-            $turnos = array(
-                array('hora' => '8:00', 'estado' => ''),
-                array('hora' => '8:30', 'estado' => ''),
-                array('hora' => '9:00', 'estado' => ''),
-                array('hora' => '9:30', 'estado' => ''),
-                array('hora' => '10:00', 'estado' => ''),
-                array('hora' => '10:30', 'estado' => ''),
-                array('hora' => '11:00', 'estado' => ''),
-                array('hora' => '11:30', 'estado' => ''),
-                array('hora' => '12:00', 'estado' => ''),
-                array('hora' => '12:30', 'estado' => ''),
-                array('hora' => '13:00', 'estado' => ''),
-                array('hora' => '13:30', 'estado' => ''),
-                array('hora' => '14:00', 'estado' => ''),
-                array('hora' => '14:30', 'estado' => ''),
-                array('hora' => '15:00', 'estado' => ''),
-                array('hora' => '15:30', 'estado' => ''),
-                array('hora' => '16:00', 'estado' => ''),
-                array('hora' => '16:30', 'estado' => ''),
-                array('hora' => '17:00', 'estado' => ''),
-                array('hora' => '17:30', 'estado' => ''),
-            );
-
             // Loop through $turnos.
             foreach ($turnos as $key => $value) {
                 // Loop through $horas.
@@ -318,29 +318,22 @@ class MedicosController extends Controller
                     }
                 }
             }
-
-            if ($type === null) {
-                // Divide $turno into 4 arrays of 5 elements.
-                $horas = array_chunk($turnos, 5);
-            } else {
-                // Reassign the variable.
-                $horas = $turnos;
-            }
-
-            // Return horas.
-            return json_encode(
-                array(
-                    'horas' => $horas,
-                )
-            );
-        } else {
-            // Return error.
-            return json_encode(
-                array(
-                    'error' => 'No se encontraron horas disponibles.',
-                )
-            );
         }
+
+        if ($type === null) {
+            // Divide $turno into 4 arrays of 5 elements.
+            $horas = array_chunk($turnos, 5);
+        } else {
+            // Reassign the variable.
+            $horas = $turnos;
+        }
+
+        // Return horas.
+        return json_encode(
+            array(
+                'horas' => $horas,
+            )
+        );
     }
 
 
