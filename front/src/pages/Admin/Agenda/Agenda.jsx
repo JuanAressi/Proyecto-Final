@@ -33,18 +33,23 @@ function Agenda() {
     const [actual, setActual] = useState(false);
     const [siguiente, setSiguiente] = useState(false);
     const [proximo, setProximo] = useState(false);
+    const [actualLabel, setActualLabel] = useState('');
+    const [siguienteLabel, setSiguienteLabel] = useState('');
+    const [proximoLabel, setProximoLabel] = useState('');
 
     // Disponibilidad.
     const [díasLista, setDíasLista] = useState([]);
     const [horariosLista, setHorariosLista] = useState([]);
     const [día, setDía] = useState(false);
-    const [hora, setHora] = useState(false);
 
     // Utilities.
+    const [userId, setUserId] = useState(null);
     const [showSpinner, setShowSpinner] = useState(false);
     const [btnDisabled, setBtnDisabled] = useState(true);
+    const [btnVerDisponibilidadDisabled, setBtnVerDisponibilidadDisabled] = useState(true);
+    const [saveData, setSaveData] = useState(false);
 
-    // Alert. 
+    // Alert.
     const [showAlert, setShowAlert] = useState(false);
     const [alertType, setAlertType] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
@@ -55,114 +60,182 @@ function Agenda() {
         // Get the user from LocalStorage.
         const user = JSON.parse(localStorage.getItem('user'));
 
-        getDías(user.id);
+        // Change 'userId' state.
+        setUserId(user.id);
+
         // Get the current Month.
         const currentMonth = new Date().getMonth();
 
-        let mesActual       = '';
-        let siguienteActual = '';
-        let proximoActual   = '';
-
         switch (currentMonth) {
             case 0:
-                mesActual = 'Enero';
-                siguienteActual = 'Febrero';
-                proximoActual = 'Marzo';
+                // Change the labels state.
+                setActualLabel('(Enero)');
+                setSiguienteLabel('(Febrero)');
+                setProximoLabel('(Marzo)');
+
+                // Add the 'data-mes' attribute to the checkboxes.
+                $('#actual').attr('data-mes', currentMonth + 1);
+                $('#siguiente').attr('data-mes', currentMonth + 2);
+                $('#proximo').attr('data-mes', currentMonth + 3);
+
                 break;
 
             case 1:
-                mesActual = 'Febrero';
-                siguienteActual = 'Marzo';
-                proximoActual = 'Abril';
+                // Change the labels state.
+                setActualLabel('(Febrero)');
+                setSiguienteLabel('(Marzo)');
+                setProximoLabel('(Abril)');
+
+                // Add the 'data-mes' attribute to the checkboxes.
+                $('#actual').attr('data-mes', currentMonth + 1);
+                $('#siguiente').attr('data-mes', currentMonth + 2);
+                $('#proximo').attr('data-mes', currentMonth + 3);
+
                 break;
 
             case 2:
-                mesActual = 'Marzo';
-                siguienteActual = 'Abril';
-                proximoActual = 'Mayo';
+                // Change the labels state.
+                setActualLabel('(Marzo)');
+                setSiguienteLabel('(Abril)');
+                setProximoLabel('(Mayo)');
+
+                // Add the 'data-mes' attribute to the checkboxes.
+                $('#actual').attr('data-mes', currentMonth + 1);
+                $('#siguiente').attr('data-mes', currentMonth + 2);
+                $('#proximo').attr('data-mes', currentMonth + 3);
+
                 break;
 
             case 3:
-                mesActual = 'Abril';
-                siguienteActual = 'Mayo';
-                proximoActual = 'Junio';
+                // Change the labels state.
+                setActualLabel('(Abril)');
+                setSiguienteLabel('(Mayo)');
+                setProximoLabel('(Junio)');
+
+                // Add the 'data-mes' attribute to the checkboxes.
+                $('#actual').attr('data-mes', currentMonth + 1);
+                $('#siguiente').attr('data-mes', currentMonth + 2);
+                $('#proximo').attr('data-mes', currentMonth + 3);
+
                 break;
 
             case 4:
-                mesActual = 'Mayo';
-                siguienteActual = 'Junio';
-                proximoActual = 'Julio';
+                // Change the labels state.
+                setActualLabel('(Mayo)');
+                setSiguienteLabel('(Junio)');
+                setProximoLabel('(Julio)');
+
+                // Add the 'data-mes' attribute to the checkboxes.
+                $('#actual').attr('data-mes', currentMonth + 1);
+                $('#siguiente').attr('data-mes', currentMonth + 2);
+                $('#proximo').attr('data-mes', currentMonth + 3);
+
                 break;
 
             case 5:
-                mesActual = 'Junio';
-                siguienteActual = 'Julio';
-                proximoActual = 'Agosto';
+                // Change the labels state.
+                setActualLabel('(Junio)');
+                setSiguienteLabel('(Julio)');
+                setProximoLabel('(Agosto)');
+
+                // Add the 'data-mes' attribute to the checkboxes.
+                $('#actual').attr('data-mes', currentMonth + 1);
+                $('#siguiente').attr('data-mes', currentMonth + 2);
+                $('#proximo').attr('data-mes', currentMonth + 3);
+
                 break;
 
             case 6:
-                mesActual = 'Julio';
-                siguienteActual = 'Agosto';
-                proximoActual = 'Septiembre';
+                // Change the labels state.
+                setActualLabel('(Julio)');
+                setSiguienteLabel('(Agosto)');
+                setProximoLabel('(Septiembre)');
+
+                // Add the 'data-mes' attribute to the checkboxes.
+                $('#actual').attr('data-mes', currentMonth + 1);
+                $('#siguiente').attr('data-mes', currentMonth + 2);
+                $('#proximo').attr('data-mes', currentMonth + 3);
+
                 break;
 
             case 7:
-                mesActual = 'Agosto';
-                siguienteActual = 'Septiembre';
-                proximoActual = 'Octubre';
+                // Change the labels state.
+                setActualLabel('(Agosto)');
+                setSiguienteLabel('(Septiembre)');
+                setProximoLabel('(Octubre)');
+
+                // Add the 'data-mes' attribute to the checkboxes.
+                $('#actual').attr('data-mes', currentMonth + 1);
+                $('#siguiente').attr('data-mes', currentMonth + 2);
+                $('#proximo').attr('data-mes', currentMonth + 3);
+
                 break;
 
             case 8:
-                mesActual = 'Septiembre';
-                siguienteActual = 'Octubre';
-                proximoActual = 'Noviembre';
+                // Change the labels state.
+                setActualLabel('(Septiembre)');
+                setSiguienteLabel('(Octubre)');
+                setProximoLabel('(Noviembre)');
+
+                // Add the 'data-mes' attribute to the checkboxes.
+                $('#actual').attr('data-mes', currentMonth + 1);
+                $('#siguiente').attr('data-mes', currentMonth + 2);
+                $('#proximo').attr('data-mes', currentMonth + 3);
+
                 break;
 
             case 9:
-                mesActual = 'Octubre';
-                siguienteActual = 'Noviembre';
-                proximoActual = 'Diciembre';
+                // Change the labels state.
+                setActualLabel('(Octubre)');
+                setSiguienteLabel('(Noviembre)');
+                setProximoLabel('(Diciembre)');
+
+                // Add the 'data-mes' attribute to the checkboxes.
+                $('#actual').attr('data-mes', currentMonth + 1);
+                $('#siguiente').attr('data-mes', currentMonth + 2);
+                $('#proximo').attr('data-mes', currentMonth + 3);
+
                 break;
 
             case 10:
-                mesActual = 'Noviembre';
-                siguienteActual = 'Diciembre';
-                proximoActual = 'Enero';
+                // Change the labels state.
+                setActualLabel('(Noviembre)');
+                setSiguienteLabel('(Diciembre)');
+                setProximoLabel('(Enero)');
+
+                // Add the 'data-mes' attribute to the checkboxes.
+                $('#actual').attr('data-mes', currentMonth + 1);
+                $('#siguiente').attr('data-mes', currentMonth + 2);
+                $('#proximo').attr('data-mes', currentMonth + 3);
+
                 break;
 
             case 11:
-                mesActual = 'Diciembre';
-                siguienteActual = 'Enero';
-                proximoActual = 'Febrero';
+                // Change the labels state.
+                setActualLabel('(Diciembre)');
+                setSiguienteLabel('(Enero)');
+                setProximoLabel('(Febrero)');
+
+                // Add the 'data-mes' attribute to the checkboxes.
+                $('#actual').attr('data-mes', currentMonth + 1);
+                $('#siguiente').attr('data-mes', currentMonth + 2);
+                $('#proximo').attr('data-mes', currentMonth + 3);
+
                 break;
                 
             default:
                 break;
         }
-        
-        // Set the variables to the checkboxes.
-        const actual = document.querySelector('#actual');
-        const siguiente = document.querySelector('#siguiente');
-        const proximo = document.querySelector('#proximo');
-
-        if (actual) {
-            const month = actual.nextElementSibling.querySelector('.month');
-            month.innerHTML = '(' + mesActual + ')';
-            actual.setAttribute('data-mes', currentMonth + 1);
-        }
-
-        if (siguiente) {
-            const monthSiguiente = siguiente.nextElementSibling.querySelector('.month');
-            monthSiguiente.innerHTML = '(' + siguienteActual + ')';
-            siguiente.setAttribute('data-mes', currentMonth + 2);
-        }
-        
-        if (proximo) {
-            const monthProximo = proximo.nextElementSibling.querySelector('.month');
-            monthProximo.innerHTML = '(' + proximoActual + ')';
-            proximo.setAttribute('data-mes', currentMonth + 3);
-        }
     }, []);
+
+
+    // Handle changes in the action.
+    useEffect(() => {
+        if (selectedButton === 'verDisponibilidad') {
+            // Get all the días for this user.
+            getDías(userId);
+        }
+    }, [selectedButton]);
 
 
     // Handle the btnDisabled state.
@@ -173,6 +246,14 @@ function Agenda() {
             setBtnDisabled(true);
         }
     }, [lunes, martes, miércoles, jueves, viernes, actual, siguiente, proximo, horaSelected]);
+
+
+    // Handle the submit event.
+    useEffect(() => {
+        if (saveData) {
+            saveNewHorarios();
+        }
+    }, [saveData]);
 
 
     /**
@@ -338,13 +419,16 @@ function Agenda() {
 
 
     /**
-     * Function saveNewHorarios - Save the new horarios.
+     * Function getInformationAndSave - Save the new horarios.
      *
      * @return {void}
      */
-    const saveNewHorarios = () => {
-        // Set the 'showSpinner' state.
+    const getInformationAndSave = () => {
+        // Change Spinner state.
         setShowSpinner(true);
+
+        // Change 'btnDisabled' state.
+        setBtnDisabled(true);
 
         // Get the checked 'días' checkboxes.
         const días = document.querySelectorAll('#días input:checked');
@@ -364,7 +448,7 @@ function Agenda() {
         // Loop through the 'meses' checkboxes.
         meses.forEach((mes) => {
             // Get the 'data-mes' attribute.
-            const dataMes = mes.getAttribute('data-mes');
+            let dataMes = mes.getAttribute('data-mes');
 
             // Get the id of the element mes.
             const mesId = mes.getAttribute('id');
@@ -381,26 +465,38 @@ function Agenda() {
                     const dateDay = new Date(año, dataMes - 1, i).getDay();
 
                     if (mesId === 'actual') {
-                        // If it is the current month, only save the dates that are greater than or equal to today.
+                        // Save only the dates that are greater than or equal to today.
                         if (i >= today && (díaId - 1 === dateDay)) {
+                            // Add a 0 to the day, so it has 2 digits.
                             if (i < 10) {
-                                i = `0${i}`;
+                                i = '0' + i;
+                            }
+
+                            // Add a 0 to the month, so it has 2 digits.
+                            if (dataMes.length === 1) {
+                                dataMes = '0' + dataMes;
                             }
 
                             setDatesToSave((datesToSave) => [...datesToSave, `${i}-${dataMes}-${año}`]);
                         }
                     } else {
-                        // If it is not the current month, save all the dates.
+                        // Save all the dates.
                         // Check if the current 'dataMes' is lower than the current month, that means that the year is the next year.
                         const mesActual = document.getElementById('actual').getAttribute('data-mes');
 
-                        if (mesActual < dataMes) {
+                        if (parseInt(dataMes) < parseInt(mesActual) && (año === new Date().getFullYear() || año === new Date().getFullYear() + 1)) {
                             año++;
                         }
 
                         if (díaId - 1 === dateDay) {
+                            // Add a 0 to the day, so it has 2 digits.
                             if (i < 10) {
-                                i = `0${i}`;
+                                i = '0' + i;
+                            }
+
+                            // Add a 0 to the month, so it has 2 digits.
+                            if (dataMes.length === 1) {
+                                dataMes = '0' + dataMes;
                             }
 
                             setDatesToSave((datesToSave) => [...datesToSave, `${i}-${dataMes}-${año}`]);
@@ -412,27 +508,60 @@ function Agenda() {
 
         // Loop trough the 'horas' buttons.
         horas.forEach((hora) => {
-            setHorasSelected((horasSelected) => [...horasSelected, hora.innerText]);
+            // Validate if is not in the array already.
+            if (!horasSelected.includes(hora.innerText)) {
+                setHorasSelected((horasSelected) => [...horasSelected, hora.innerText]);
+            }
         });
 
-        // Make API call.
-        ///////////////////////////////////// REVISAR /////////////////////////////////////
+        // Change 'saveData' state.
+        setSaveData(true);
+    }
+
+
+    /**
+     * Function saveNewHorarios - Save the new horarios into the database.
+     *
+     * @return {void}
+     */
+    const saveNewHorarios = () => {
+        // Change 'saveData' state.
+        setSaveData(false);
+
+        // Make API call to save the information.
         $.ajax({
-            url: process.env.REACT_APP_API_ROOT + '/horarios',
+            url: process.env.REACT_APP_API_ROOT + 'medicos/horarios',
             method: 'POST',
             data: {
-                'id_medico': '1',
+                'id_medico': userId,
                 'fechas': datesToSave,
                 'horas': horasSelected,
             },
             success: (response) => {
-                // Show spinner.
+                // Change Spinner state.
                 setShowSpinner(false);
+        
+                // Change 'btnDisabled' state.
+                setBtnDisabled(false);
 
                 // Show Alert.
                 setAlertType('success')
                 setAlertMessage(response.message);
                 setShowAlert(true);
+
+                // Close alert message after 4 seconds.
+                setTimeout(function () {
+                    setShowAlert(false);
+                }, 4000);
+            },
+            error: (error) => {
+                // Change Spinner state.
+                setShowSpinner(false);
+        
+                // Change 'btnDisabled' state.
+                setBtnDisabled(false);
+
+                console.log(error);
             }
         });
     }
@@ -463,6 +592,9 @@ function Agenda() {
 
         // Get the 'Horas' for the selected 'Día'.
         getHoras(id);
+
+        // Change the 'setBtnVerDisponibilidadDisabled' state.
+        setBtnVerDisponibilidadDisabled(false);
     }
 
 
@@ -481,15 +613,16 @@ function Agenda() {
             url: process.env.REACT_APP_API_ROOT + 'medicos/' + id + '/horas',
             type: 'GET',
             dataType: 'json',
+            data: {
+                'type': 'agenda'
+            },
             success: function (response) {
                 // Change Spinner state.
                 setShowSpinner(false);
 
                 if (response.horas) {
-                    const horas = response.horas[0].concat(response.horas[1], response.horas[2], response.horas[3]);
-
                     // Set the 'horarios' state.
-                    setHorariosLista(horas);
+                    setHorariosLista(response.horas);
                 }
             },
             error: function (error) {
@@ -500,6 +633,63 @@ function Agenda() {
             }
         });
     };
+
+
+    /**
+     * Function updateHorarios - Make an ajax request to update the 'Horarios' status.
+     *
+     * @return {void}
+     */
+    const updateHorarios = () => {
+        // Obtain all the 'Horas' that are checked.
+        const horas = document.querySelectorAll('#horariosLista .item input[type="checkbox"]:checked');
+        
+        // Loop trough the 'horas' and save the 'hora' into an array.
+        let horasSelected = [];
+
+        horas.forEach((hora) => {
+            horasSelected.push(hora.parentElement.parentElement.parentElement.firstElementChild.firstElementChild.innerText);
+        });
+
+        // Make API call to update the information.
+        $.ajax({
+            url: process.env.REACT_APP_API_ROOT + 'medicos/horarios',
+            method: 'DELETE',
+            data: {
+                'id_turno_fecha': día,
+                'horas': horasSelected,
+            },
+            success: (response) => {
+                // Change Spinner state.
+                setShowSpinner(false);
+        
+                // Change 'btnDisabled' state.
+                setBtnDisabled(false);
+
+                // Show Alert.
+                setAlertType('success')
+                setAlertMessage(response.message);
+                setShowAlert(true);
+
+                // Get the 'Horas' for the selected 'Día'.
+                getHoras(día);
+
+                // Close alert message after 4 seconds.
+                setTimeout(function () {
+                    setShowAlert(false);
+                }, 4000);
+            },
+            error: (error) => {
+                // Change Spinner state.
+                setShowSpinner(false);
+        
+                // Change 'btnDisabled' state.
+                setBtnDisabled(false);
+
+                console.log(error);
+            }
+        });
+    }
 
 
     // Render the 'Agenda' component.
@@ -571,7 +761,7 @@ function Agenda() {
                                                 type='checkbox'
                                                 value={lunes}
                                                 data-id='2'
-                                                onChange={(e) => toggleDays( e.target.checked)}
+                                                onChange={(event) => toggleDays(event.target.checked)}
                                             />
 
                                             <label htmlFor='lunes' className='form-check-label ms-2'>Lunes</label>
@@ -584,7 +774,7 @@ function Agenda() {
                                                 className='form-check-input ms-2'
                                                 value={martes}
                                                 data-id='3'
-                                                onChange={(e) => setMartes(e.target.checked)}
+                                                onChange={(event) => setMartes(event.target.checked)}
                                             />
 
                                             <label htmlFor='martes' className='form-check-label ms-2'>Martes</label>
@@ -598,7 +788,7 @@ function Agenda() {
                                                 className='form-check-input ms-2'
                                                 value={miércoles}
                                                 data-id='4'
-                                                onChange={(e) => setMiércoles(e.target.checked)}
+                                                onChange={(event) => setMiércoles(event.target.checked)}
                                             />
 
                                             <label htmlFor='miércoles' className='form-check-label ms-2'>Miércoles</label>
@@ -611,7 +801,7 @@ function Agenda() {
                                                 className='form-check-input ms-2'
                                                 value={jueves}
                                                 data-id='5'
-                                                onChange={(e) => setJueves(e.target.checked)}
+                                                onChange={(event) => setJueves(event.target.checked)}
                                             />
 
                                             <label htmlFor='jueves' className='form-check-label ms-2'>Jueves</label>
@@ -624,7 +814,7 @@ function Agenda() {
                                                 className='form-check-input ms-2'
                                                 value={viernes}
                                                 data-id='6'
-                                                onChange={(e) => setViernes(e.target.checked)}
+                                                onChange={(event) => setViernes(event.target.checked)}
                                             />
                                             <label htmlFor='viernes' className='form-check-label ms-2'>Viernes</label>
                                         </div>
@@ -641,10 +831,10 @@ function Agenda() {
                                             type='checkbox'
                                             className='form-check-input ms-2'
                                             value={actual}
-                                            onChange={(e) => setActual(e.target.checked)}
+                                            onChange={(event) => setActual(event.target.checked)}
                                         />
 
-                                        <label htmlFor='actual' className='form-check-label ms-2'>Actual <span className='month'></span></label>
+                                        <label htmlFor='actual' className='form-check-label ms-2'>Actual {actualLabel}</label>
                                     </div>
 
                                     <div className='d-flex'>
@@ -653,10 +843,10 @@ function Agenda() {
                                             type='checkbox'
                                             className='form-check-input ms-2'
                                             value={siguiente}
-                                            onChange={(e) => setSiguiente(e.target.checked)}
+                                            onChange={(event) => setSiguiente(event.target.checked)}
                                         />
 
-                                        <label htmlFor='siguiente' className='form-check-label ms-2'>Siguiente <span className='month'></span></label>
+                                        <label htmlFor='siguiente' className='form-check-label ms-2'>Siguiente {siguienteLabel}</label>
                                     </div>
 
                                     <div className='d-flex'>
@@ -665,9 +855,9 @@ function Agenda() {
                                             type='checkbox'
                                             className='form-check-input ms-2'
                                             value={proximo}
-                                            onChange={(e) => setProximo(e.target.checked)}
+                                            onChange={(event) => setProximo(event.target.checked)}
                                         />
-                                        <label htmlFor='proximo' className='form-check-label ms-2'>Proximo <span className='month'></span></label>
+                                        <label htmlFor='proximo' className='form-check-label ms-2'>Proximo {proximoLabel}</label>
                                     </div>
                                 </div>
                             </div>
@@ -729,7 +919,7 @@ function Agenda() {
                                     className='btn bg-primary text-white border-primary mt-3 w-25'
                                     type='button'
                                     disabled={btnDisabled}
-                                    onClick={() => saveNewHorarios()}
+                                    onClick={getInformationAndSave}
                                 >
                                     Guardar
                                 </button>
@@ -749,7 +939,7 @@ function Agenda() {
                                                 key={index}
                                                 onClick={(event) => setClickedDía(event.target)}
                                             >
-                                                <p className='m-0'>{dia.dia}</p>
+                                                <p className='m-0' style={{ pointerEvents: 'none' }}>{dia.dia}</p>
                                             </div>
                                         ))}
                                     </div>
@@ -765,50 +955,45 @@ function Agenda() {
                                         {horariosLista && horariosLista.map((horario, index) => (
                                             <div
                                                 className='item d-flex justify-content-between align-items-center border-bottom pt-1 pb-1 px-2'
-                                                data-id={horario.id}
                                                 key={index}
                                             >
-                                                <p className='m-0 w-'>{horario.hora} - {horario.estado}</p>
+                                                <div className='d-flex'>
+                                                    <p className='mb-0'>{horario.hora}</p>
+                                                    <p className='mb-0'> - {horario.estado !== '' ? horario.estado : 'Horario no cargado como disponible'}</p>
+                                                </div>
 
-                                                <div>
+                                                <div id='switchContainer'>
                                                     {
                                                         horario.estado === 'libre'
-                                                        ? <>
+                                                        ? <div className='button r'>
                                                             <input
-                                                                className='me-2'
-                                                                type='radio'
-                                                                name={'estado ' + index}
-                                                                title='activo'
-                                                                selected
+                                                                className='checkbox'
+                                                                type='checkbox'
+                                                                name={'estado' + index}
                                                             />
 
-                                                            <input
-                                                                type='radio'
-                                                                name={'estado ' + index}
-                                                                title='inactivo'
-                                                            />
-                                                        </>
-                                                        : <>
-                                                            <input
-                                                                className='me-2'
-                                                                type='radio'
-                                                                name={'estado ' + index}
-                                                                title='activo'
-                                                            />
-
-                                                            <input
-                                                                type='radio'
-                                                                name={'estado ' + index}
-                                                                title='inactivo'
-                                                                selected
-                                                            />
-                                                        </>
+                                                            <div className='knobs'></div>
+                                                            <div className='layer'></div>
+                                                        </div>
+                                                        : null
                                                     }
                                                 </div>
                                             </div>
                                         ))}
                                     </div>                         
                                 </div>
+                            </div>
+
+                            {/* Guardar */}
+                            <div className='col-sm-12 d-flex justify-content-center mt-2'>
+                                <button
+                                    className='btn bg-primary text-white border-primary mt-3 w-25'
+                                    type='button'
+                                    onClick={updateHorarios}
+                                    disabled={btnVerDisponibilidadDisabled}
+                                >
+                                    Guardar
+                                </button>
                             </div>
                         </div>
                     }

@@ -269,19 +269,63 @@ class MedicosController extends Controller
     /**
      * Function getHoras - Get all hours that the 'Medico' has available for a given date.
      *
+     * @param Request $request - The request object.
      * @param string $id - The id of the date in 'TurnosFechas'.
      *
      * @return array - The hours available.
      */
-    public function getHoras($id)
+    public function getHoras(Request $request, $id)
     {
+        // Get parameters from request.
+        $type = $request->input('type');
+
         $horas = TurnosHoras::where('id_turnos_fechas', $id)
             ->get(['hora', 'estado']);
 
         // Check if horas are found.
         if (count($horas) > 0) {
-            // Divide the hours in 4 arrays.
-            $horas = array_chunk($horas->toArray(), 5);
+            $turnos = array(
+                array('hora' => '8:00', 'estado' => ''),
+                array('hora' => '8:30', 'estado' => ''),
+                array('hora' => '9:00', 'estado' => ''),
+                array('hora' => '9:30', 'estado' => ''),
+                array('hora' => '10:00', 'estado' => ''),
+                array('hora' => '10:30', 'estado' => ''),
+                array('hora' => '11:00', 'estado' => ''),
+                array('hora' => '11:30', 'estado' => ''),
+                array('hora' => '12:00', 'estado' => ''),
+                array('hora' => '12:30', 'estado' => ''),
+                array('hora' => '13:00', 'estado' => ''),
+                array('hora' => '13:30', 'estado' => ''),
+                array('hora' => '14:00', 'estado' => ''),
+                array('hora' => '14:30', 'estado' => ''),
+                array('hora' => '15:00', 'estado' => ''),
+                array('hora' => '15:30', 'estado' => ''),
+                array('hora' => '16:00', 'estado' => ''),
+                array('hora' => '16:30', 'estado' => ''),
+                array('hora' => '17:00', 'estado' => ''),
+                array('hora' => '17:30', 'estado' => ''),
+            );
+
+            // Loop through $turnos.
+            foreach ($turnos as $key => $value) {
+                // Loop through $horas.
+                foreach ($horas as $hora) {
+                    // Check if the hour is the same.
+                    if ($value['hora'] === $hora->hora) {
+                        // Change the state of the hour.
+                        $turnos[$key]['estado'] = $hora->estado;
+                    }
+                }
+            }
+
+            if ($type === null) {
+                // Divide $turno into 4 arrays of 5 elements.
+                $horas = array_chunk($turnos, 5);
+            } else {
+                // Reassign the variable.
+                $horas = $turnos;
+            }
 
             // Return horas.
             return json_encode(
@@ -292,20 +336,22 @@ class MedicosController extends Controller
         } else {
             // Return error.
             return json_encode(
-                array()
+                array(
+                    'error' => 'No se encontraron horas disponibles.',
+                )
             );
         }
     }
 
 
     /**
-     * Function addAgenda - Add new availabilities to the 'Medico'.
+     * Function addNewHorarios - Add new availabilities to the 'Medico'.
      *
      * @param Request $request - The request object.
      *
      * @return array - The status and the message of the update.
      */
-    public function addAgenda(Request $request)
+    public function addNewHorarios(Request $request)
     {
         $id_medico = $request->input('id_medico');
         $fechas    = $request->input('fechas');
@@ -320,19 +366,37 @@ class MedicosController extends Controller
 
             // If the date doesn't exist, create it.
             if (!$fecha_exists) {
-                $fecha = TurnosFechas::create([
+                $fecha_exists = TurnosFechas::create([
                     'id_medico' => $id_medico,
                     'dia'       => $fecha,
                 ]);
+            }
 
-                // Loop through $horas.
-                foreach ($horas as $hora) {
+            // Loop through $horas.
+            foreach ($horas as $hora) {
+                // Check if the hour already exists.
+                $hora_exists = TurnosHoras::where('id_turnos_fechas', $fecha_exists->id)
+                    ->where('hora', $hora)
+                    ->first();
+
+                // If the hour doesn't exist, create it.
+                if (!$hora_exists) {
                     // Create the hour.
-                    TurnosHoras::create([
-                        'id_turnos_fechas' => $fecha->id,
+                    $response = TurnosHoras::create([
+                        'id_turnos_fechas' => $fecha_exists->id,
                         'hora'             => $hora,
                         'estado'           => 'libre',
                     ]);
+
+                    // Check if the hour was created.
+                    if (!$response) {
+                        return json_encode(
+                            array(
+                                'success' => false,
+                                'message' => 'Ha ocurrido un error al crear las horas.',
+                            )
+                        );
+                    }
                 }
             }
         }
@@ -341,6 +405,44 @@ class MedicosController extends Controller
             array(
                 'success' => true,
                 'message' => 'La agenda se ha actualizado correctamente.',
+            )
+        );
+    }
+
+
+    /**
+     * Function deleteHorarios - Delete the availabilities of the 'Medico'.
+     *
+     * @param Request $request - The request object.
+     *
+     * @return array - The status and the message of the update.
+     */
+    public function deleteHorarios(Request $request)
+    {
+        $id_turno_fecha = $request->input('id_turno_fecha');
+        $horas          = $request->input('horas');
+
+        // Loop through $horas.
+        foreach ($horas as $hora) {
+            // Delete the hour.
+            $response = TurnosHoras::where('id_turnos_fechas', $id_turno_fecha)
+                ->where('hora', $hora)
+                ->delete();
+
+            // Check if the hour was deleted.
+            if ($response) {
+                $success = true;
+                $message = 'La agenda se ha actualizado correctamente.';
+            } else {
+                $success = false;
+                $message = 'Ha ocurrido un error al eliminar las horas.';
+            }
+        }
+
+        return json_encode(
+            array(
+                'success' => $success,
+                'message' => $message,
             )
         );
     }

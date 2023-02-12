@@ -374,16 +374,16 @@ function Turnos() {
     /**
      * Function getHoras - Make an ajax request to get all the hours available for the selected 'Medico'.
      *
-     * @param {string} date - The date selected.
+     * @param {string} id - The ID of the date selected.
      *
      * @return {void}
      */
-    const getHoras = (date) => {
+    const getHoras = (id) => {
         // Set Spinner state.
         setShowSpinnerStep3(true);
 
         $.ajax({
-            url: process.env.REACT_APP_API_ROOT + `medicos/${date}/horas`,
+            url: process.env.REACT_APP_API_ROOT + 'medicos/' + id + '/horas',
             type: 'GET',
             dataType: 'json',
             success: function (response) {
