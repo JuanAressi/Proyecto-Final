@@ -103,7 +103,7 @@ function Login() {
             <div className='blue-overlay min-height'>
                 <div className='container p-8'>
                     <div className='d-flex justify-content-center align-items-center'>
-                        <div id='loginForm' className='rounded box-shadow-dark p-5'>
+                        <form id='loginForm' className='rounded box-shadow-dark p-5'>
                             <h1 className='text-center mb-3 text-primary text-shadow-dark'>¡Bienvenido!</h1>
 
                             {loginIn &&
@@ -193,16 +193,16 @@ function Login() {
                                     Ingresar
                                 </button>
 
-                                <Link to='/register'
+                                <Link
                                     id='registrarse'
                                     className='btn bg-white text-primary border border-primary box-shadow-dark text-uppercase mb-2'
+                                    to='/register'
                                     type='button'
                                 >
                                     Registrarme
                                 </Link>
                             </div>
-                        </div>
-
+                        </form>
                     </div>
                 </div>
             </div>

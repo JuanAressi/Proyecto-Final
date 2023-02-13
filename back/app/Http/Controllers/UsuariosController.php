@@ -434,4 +434,149 @@ class UsuariosController extends Controller
             );
         }
     }
+
+
+    /**
+     * Function addNewPersonal - Adds a new user with the role 'administrativo' or 'medico'.
+     *
+     * @param Request $request - The request object.
+     *
+     * @return array
+     */
+    public function addNewPersonal(Request $request)
+    {
+        // Validate that the 'email' is unique.
+        $email = Usuarios::where('email', $request->input('email'))
+            ->select('email')
+            ->get();
+
+        if (count($email) > 0) {
+            $success = false;
+            $message = 'El email ya se encuentra en uso';
+            $field   = 'email';
+        }
+
+        if ($success) {
+            // Validate that the 'dni' is unique.
+            $dni = Usuarios::where('dni', $request->input('dni'))
+                ->select('dni')
+                ->get();
+
+            if (count($dni) > 0) {
+                $success = false;
+                $message = 'El DNI ya se encuentra en uso';
+                $field   = 'dni';
+            }
+        }
+
+        if ($success) {
+            $user = Usuarios::create([
+                'nombre'           => $request->input('nombre'),
+                'apellido'         => $request->input('apellido'),
+                'email'            => $request->input('email'),
+                'contraseña'       => md5($request->input('dni')),
+                'fecha_nacimiento' => $request->input('fecha_nacimiento'),
+                'genero'           => $request->input('genero'),
+                'dni'              => $request->input('dni'),
+                'telefono'         => $request->input('telefono'),
+                'rol'              => $request->input('rol'),
+                'estado'           => 'activo',
+            ]);
+
+            if ($user !== null) {
+                $success = true;
+                $message = 'El personal se ha creado correctamente';
+                $field   = '';
+            } else {
+                $success = false;
+                $message = 'Ha ocurrido un error al crear el personal';
+                $field   = '';
+            }
+        }
+
+        return json_encode(
+            array(
+                'success' => $success,
+                'message' => $message,
+                'field'   => $field,
+            )
+        );
+    }
+
+
+    /**
+     * Function updatePersonal - Updates a user with the role 'administrativo' or 'medico'.
+     *
+     * @param Request $request - The request object.
+     * @param int     $id      - The id of the user.
+     *
+     * @return array
+     */
+    public function updatePersonal(Request $request, $id)
+    {
+        // Get the user.
+        $user = Usuarios::find($id);
+
+        // Check if user exists.
+        if ($user !== null) {
+            // Validate that the 'email' is unique.
+            $email = Usuarios::where('email', $request->input('email'))
+                ->where('id', '!=', $id)
+                ->select('email')
+                ->get();
+
+            if (count($email) > 0) {
+                $success = false;
+                $message = 'El email ya se encuentra en uso';
+                $field   = 'email';
+            }
+
+            if ($success) {
+                // Validate that the 'dni' is unique.
+                $dni = Usuarios::where('dni', $request->input('dni'))
+                    ->where('id', '!=', $id)
+                    ->select('dni')
+                    ->get();
+
+                if (count($dni) > 0) {
+                    $success = false;
+                    $message = 'El DNI ya se encuentra en uso';
+                    $field   = 'dni';
+                }
+            }
+
+            if ($success) {
+                $user->nombre           = $request->input('nombre');
+                $user->apellido         = $request->input('apellido');
+                $user->email            = $request->input('email');
+                $user->fecha_nacimiento = $request->input('fecha_nacimiento');
+                $user->genero           = $request->input('genero');
+                $user->dni              = $request->input('dni');
+                $user->telefono         = $request->input('telefono');
+                $user->estado           = $request->input('estado');
+
+                if ($user->save()) {
+                    $success = true;
+                    $message = 'El personal se ha actualizado correctamente';
+                    $field   = '';
+                } else {
+                    $success = false;
+                    $message = 'Ha ocurrido un error al actualizar el personal';
+                    $field   = '';
+                }
+            }
+        } else {
+            $success = false;
+            $message = 'El personal no existe';
+            $field   = '';
+        }
+
+        return json_encode(
+            array(
+                'success' => $success,
+                'message' => $message,
+                'field'   => $field,
+            )
+        );
+    }
 }

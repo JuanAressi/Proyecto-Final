@@ -159,12 +159,12 @@ function Personal() {
         const personal = {
             nombre: personalNombre,
             apellido: personalApellido,
-            fecha_nacimiento: personalFechaNacimiento,
             email: personalEmail,
+            fecha_nacimiento: personalFechaNacimiento,
+            genero: personalGenero,
             dni: personalDni,
             telefono: personalTelefono,
-            genero: personalGenero,
-            // obra_social: personalObraSocial,
+            rol: personalRol,
         }
 
         // Show spinner.
@@ -233,7 +233,8 @@ function Personal() {
         setUserToEdit(null);
 
         $.ajax({
-            url: process.env.REACT_APP_API_ROOT + '/medicos/' + userToEdit,
+            // url: process.env.REACT_APP_API_ROOT + '/personal/' + userToEdit,
+            url: 'http://local.misturnos/api/personal/' + userToEdit,
             type: 'PUT',
             dataType: 'json',
             data: personal,

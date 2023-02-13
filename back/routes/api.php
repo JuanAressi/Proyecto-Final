@@ -40,6 +40,8 @@ Route::delete('pacientes/historia-clinica', 'App\Http\Controllers\PacientesContr
 
 // Personal.
 Route::get('personal', 'App\Http\Controllers\UsuariosController@getAllPersonal');
+Route::post('personal', 'App\Http\Controllers\UsuariosController@addNewPersonal');
+Route::put('personal/{id}', 'App\Http\Controllers\UsuariosController@updatePersonal')->where('id', '[0-9]+');
 
 // Medicos.
 Route::get('medicos', 'App\Http\Controllers\MedicosController@getAll');
