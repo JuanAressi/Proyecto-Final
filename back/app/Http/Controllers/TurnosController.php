@@ -264,11 +264,11 @@ class TurnosController extends Controller
                     'bodyMessage' => 'Estimado ' . $paciente->nombre . ' ' . $paciente->apellido . ',<br><br>Su turno ha sido reservado con éxito.<br><br>Fecha: ' . $request->input('dia') . '<br>Hora: ' . $request->input('hora') . '<br><br>Saludos,<br>Equipo de MisTurnos.<br><br>',
                 );
 
-                Mail::send([], $data, function ($message) use ($data) {
-                    $message->to($data['email'], $data['name']);
-                    $message->subject($data['subject']);
-                    $message->setBody($data['bodyMessage'], 'text/html');
-                });
+                // Mail::send([], $data, function ($message) use ($data) {
+                //     $message->to($data['email'], $data['name']);
+                //     $message->subject($data['subject']);
+                //     $message->setBody($data['bodyMessage'], 'text/html');
+                // });
             }
 
             // Return success.
@@ -282,8 +282,8 @@ class TurnosController extends Controller
 
         return json_encode(
             array(
-                'success' => false,
-                'message' => 'Ya existe un turno para el medico en la fecha y hora seleccionada',
+                'success' => $success,
+                'message' => $message,
             )
         );
     }

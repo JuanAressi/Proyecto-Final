@@ -61,16 +61,16 @@ function Table({ lastShowPerPage, lastPage, page, setPage, setSearchInput, setSh
                                                 onClick={() => setItemToEdit(item.id)}
                                             />
     
-                                            {
-                                                setItemToDelete &&
-                                                <FontAwesomeIcon
-                                                    className='delete-item'
-                                                    icon={faTrashAlt}
-                                                    data-bs-toggle='modal'
-                                                    data-bs-target={'#modalDelete'}
-                                                    onClick={() => setItemToDelete(item.id)}
-                                                />
-                                            }
+                                        {
+                                            setItemToDelete &&
+                                            <FontAwesomeIcon
+                                                className='delete-item'
+                                                icon={faTrashAlt}
+                                                data-bs-toggle='modal'
+                                                data-bs-target={'#modalDelete'}
+                                                onClick={() => setItemToDelete(item.id)}
+                                            />
+                                        }
                                         </td>
                                         : <></>
                                     }

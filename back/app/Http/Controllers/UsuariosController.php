@@ -454,6 +454,8 @@ class UsuariosController extends Controller
             $success = false;
             $message = 'El email ya se encuentra en uso';
             $field   = 'email';
+        } else {
+            $success = true;
         }
 
         if ($success) {
@@ -529,6 +531,8 @@ class UsuariosController extends Controller
                 $success = false;
                 $message = 'El email ya se encuentra en uso';
                 $field   = 'email';
+            } else {
+                $success = true;
             }
 
             if ($success) {
@@ -553,7 +557,6 @@ class UsuariosController extends Controller
                 $user->genero           = $request->input('genero');
                 $user->dni              = $request->input('dni');
                 $user->telefono         = $request->input('telefono');
-                $user->estado           = $request->input('estado');
 
                 if ($user->save()) {
                     $success = true;

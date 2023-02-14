@@ -12,7 +12,7 @@ import EditarHistoriaClinica from './EditarHistoriaClinica';
 import EliminarHistoriaClinica from './EliminarHistoriaClinica';
 import ReporteHistoriaClinica from '../../../components/Reportes/ReporteHistoriaClinica';
 
-function EditarPaciente({ userToEdit, pacienteNombre, pacienteApellido, pacienteEmail, pacienteFechaNacimiento, pacienteGenero, pacienteDni, pacienteTelefono, pacienteObraSocial, pacienteNumeroObraSocial, pacienteAntecedentes, pacienteAlergias, historiaClinica, setPacienteNombre, setPacienteApellido, setPacienteEmail, setPacienteFechaNacimiento, setPacienteGenero, setPacienteDni, setPacienteTelefono, setPacienteObraSocial, setPacienteNumeroObraSocial, setPacienteAntecedentes, setPacienteAlergias, updatePaciente, searchHistoriaClinica }) {
+function EditarPaciente({ userToEdit, pacienteNombre, pacienteApellido, pacienteEmail, pacienteFechaNacimiento, pacienteFechaNacimientoFormatted, pacienteGenero, pacienteDni, pacienteTelefono, pacienteObraSocial, pacienteNumeroObraSocial, pacienteAntecedentes, pacienteAlergias, historiaClinica, setPacienteNombre, setPacienteApellido, setPacienteEmail, setPacienteFechaNacimiento, setPacienteFechaNacimientoFormatted, setPacienteGenero, setPacienteDni, setPacienteTelefono, setPacienteObraSocial, setPacienteNumeroObraSocial, setPacienteAntecedentes, setPacienteAlergias, setHistoriaClinica, updatePaciente, searchHistoriaClinica }) {
     const obrasSociales = [
         {value: '', text: 'Selecciona una opción'},
         {value: 'OSDE', text: 'OSDE'},
@@ -305,7 +305,7 @@ function EditarPaciente({ userToEdit, pacienteNombre, pacienteApellido, paciente
                     setDiagnostico('');
 
                     // Close modal.
-                    closeModalHistoriaClinica('modalEditHistoriaClinica');
+                    closeModalHistoriaClinica('modalDeleteHistoriaClinica');
                 } else {
                     // Change Alert states.
                     setAlertType('danger');
@@ -482,10 +482,10 @@ function EditarPaciente({ userToEdit, pacienteNombre, pacienteApellido, paciente
                                                 name='fecha_nacimiento'
                                                 placeholder='Fecha de Nacimiento'
                                                 aria-label='Fecha de Nacimiento'
-                                                value={pacienteFechaNacimiento}
+                                                value={pacienteFechaNacimientoFormatted}
                                                 min={new Date(new Date().setFullYear(new Date().getFullYear() - 100)).toISOString().split('T')[0]}
                                                 max={new Date().toISOString().split('T')[0]}
-                                                onChange={(e) => setPacienteFechaNacimiento(e.target.value)}
+                                                onChange={(e) => setPacienteFechaNacimientoFormatted(e.target.value)}
                                             />
                                         </div>
 

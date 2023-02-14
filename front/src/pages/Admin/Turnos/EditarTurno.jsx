@@ -117,7 +117,7 @@ function EditarTurno({turnoFecha, turnoHora, turnoEstado, turnoMedico, turnoPaci
                                     })}
                                 </select>
 
-                                <span className='custom-arrow position-absolute h-100'></span>
+                                <span className='custom-arrow position-absolute h-100 right-2'></span>
                             </div>
                         </div>
 

@@ -13,7 +13,8 @@ import loadingGif from '../../components/assets/img/loadingGif.gif';
 
 
 function DatosPersonales() {
-    const idUser = 753;
+    // User.
+    const [idUser, setIdUser] = useState(null);
 
     // Utilities
     const [showSpinner, setShowSpinner] = useState(false);
@@ -43,8 +44,16 @@ function DatosPersonales() {
 
 
     useEffect(() => {
-        // Get the 'Paciente' information.
-        getPaciente();
+        // Get the user from LocalStorage.
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (user !== null) {
+            // Change idUser state.
+            setIdUser(user.id);
+
+            // Get the 'Paciente' information.
+            getPaciente(user.id);
+        }
     }, []);
 
 
@@ -97,15 +106,17 @@ function DatosPersonales() {
 
     /**
      * Function getCurrentPaciente - Makes the search of all active 'Pacientes'.
+     * 
+     * @param int id - The id of the user.
      *
      * @return {void}
      */
-    const getPaciente = () => {
+    const getPaciente = (id) => {
         // Show spinner.
         setShowSpinner(true);
 
         $.ajax({
-            url: process.env.REACT_APP_API_ROOT + 'pacientes/' + idUser,
+            url: process.env.REACT_APP_API_ROOT + 'pacientes/' + id,
             type: 'GET',
             dataType: 'json',
             success: function (response) {
@@ -134,11 +145,11 @@ function DatosPersonales() {
 
 
     /**
-     * Function addPaciente - Add a new 'Paciente' to the database.
+     * Function updatePaciente - Makes the update of the 'Paciente' information.
      *
      * @return {void}
      */
-    const addPaciente = () => {
+    const updatePaciente = () => {
         const paciente = {
             id: idUser,
             nombre: pacienteNombre,
@@ -446,7 +457,7 @@ function DatosPersonales() {
 
                             <button
                                 className='btn bg-primary text-white box-shadow-dark w-25 mb-3'
-                                onClick={addPaciente}
+                                onClick={updatePaciente}
                                 disabled={(pacienteNombre === '' || pacienteApellido === '' || pacienteFechaNacimiento === '' || pacienteEmail === '' || pacienteDni === '' || pacienteTelefono === '' || pacienteGenero === '' || pacienteObraSocial === '') || showSpinner}
                             >
                                 Actualizar información

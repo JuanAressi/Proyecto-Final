@@ -42,7 +42,7 @@ function MisTurnos() {
     const [alertType, setAlertType] = useState('');
     const [alertMessage, setAlertMessage] = useState('');
 
-    
+
 	useEffect(() => {
         // Get the user from LocalStorage.
         const user = JSON.parse(localStorage.getItem('user'));

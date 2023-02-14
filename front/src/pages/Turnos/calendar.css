@@ -104,7 +104,9 @@
 
 /* Active */
 #turnos .react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__tile--active::after,
-#turnos .react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__tile--active:hover::after {
+#turnos .react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__tile--active:hover::after,
+#pageAdminTurnos .react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__tile--active::after,
+#pageAdminTurnos .react-calendar .react-calendar__viewContainer .react-calendar__month-view__days .react-calendar__tile--active:hover::after {
     border: 2px solid #28a745;
     width: 30px;
     height: 30px;

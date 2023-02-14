@@ -93,6 +93,7 @@ function EditarTurno({ turnoFecha, turnoHora, turnoEstado, turnoMedico, setTurno
                                         setChangeEstado(true);
                                         setTurnoEstado(e.target.value)
                                     }}
+                                    disabled
                                 >
                                     {estados && estados.map((estado, index) => {
                                         if (estado.text === turnoEstado) {

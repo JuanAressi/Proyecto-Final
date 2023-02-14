@@ -154,7 +154,11 @@ function Personal() {
     }
 
 
-    ////////////// Add new 'Personal'.
+    /**
+     * Function addPersonal - Add a new 'Personal' to the database.
+     *
+     * @return {void}
+     */
     const addPersonal = () => {
         const personal = {
             nombre: personalNombre,
@@ -213,13 +217,27 @@ function Personal() {
     }
 
 
-    ////////////// Update 'Personal'.
+    /**
+     * Function updatePersonal - Update 'Personal' data.
+     *
+     * @return {void}
+     */
     const updatePersonal = () => {
+        let newFechaNacimiento = '';
+
+        // Check if 'personalFechaNacimientoFormatted' has the format 'yyyy-mm-dd'.
+        if (personalFechaNacimientoFormatted.at(4) === '-') {
+            // Re-format 'personalFechaNacimientoFormatted' from 'yyyy-mm-dd' to 'dd-mm-yyyy'.
+            newFechaNacimiento = personalFechaNacimientoFormatted.split('-').reverse().join('-');
+        } else {
+            newFechaNacimiento = personalFechaNacimientoFormatted;
+        }
+
         const personal = {
             id: userToEdit,
             nombre: personalNombre,
             apellido: personalApellido,
-            fecha_nacimiento: personalFechaNacimiento,
+            fecha_nacimiento: newFechaNacimiento,
             email: personalEmail,
             dni: personalDni,
             telefono: personalTelefono,
@@ -285,7 +303,7 @@ function Personal() {
         setShowSpinner(true);
 
         $.ajax({
-            url: process.env.REACT_APP_API_ROOT + '/usuarios/' + userToDelete,
+            url: process.env.REACT_APP_API_ROOT + 'usuarios/' + userToDelete,
             type: 'DELETE',
             dataType: 'json',
             success: function (response) {
@@ -295,7 +313,7 @@ function Personal() {
 
                     // Show success message.
                     setAlertType('success');
-                    setAlertMessage('El Medico ha sido eliminado correctamente.');
+                    setAlertMessage('El Personal ha sido eliminado correctamente.');
                     setShowAlert(true);
 
                     // Reload the 'Personal' table.
@@ -431,7 +449,7 @@ function Personal() {
                 text='¿Está seguro que desea eliminar este usuario?'
                 handleDelete={() => {
                     // Close modal.
-                    $('#closeModal').click();
+                    $('#modalDelete #closeModalComponent').click();
 
                     // Delete the user.
                     deleteUser();

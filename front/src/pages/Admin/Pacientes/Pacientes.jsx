@@ -39,6 +39,7 @@ function Pacientes() {
     const [pacienteApellido, setPacienteApellido] = useState('');
     const [pacienteEmail, setPacienteEmail] = useState('');
     const [pacienteFechaNacimiento, setPacienteFechaNacimiento] = useState('');
+    const [pacienteFechaNacimientoFormatted, setPacienteFechaNacimientoFormatted] = useState('');
     const [pacienteGenero, setPacienteGenero] = useState('');
     const [pacienteDni, setPacienteDni] = useState('');
     const [pacienteTelefono, setPacienteTelefono] = useState('');
@@ -122,6 +123,22 @@ function Pacientes() {
             });
         }
     }, [userToEdit]);
+
+    
+    // Transform 'pacienteFechaNacimiento' state to 'pacienteFechaNacimientoFormatted' state.
+    useEffect(() => {
+        // The 'pacienteFechaNacimiento' state comes in the format 'dd-mm-yyyy', so we need to convert it to 'yyyy-mm-dd' to be able to use it in the 'input' element.
+        const date  = new Date(pacienteFechaNacimiento);
+        const year  = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day   = date.getDate();
+
+        const pacienteFechaNacimientoFormatted = `${year}-${month < 10 ? `0${month}` : `${month}`}-${day < 10 ? `0${day}` : `${day}`}`;
+
+        // Change 'pacienteFechaNacimiento' state.
+        setPacienteFechaNacimientoFormatted(pacienteFechaNacimientoFormatted);
+    }, [pacienteFechaNacimiento]);
+
 
 
     /**
@@ -234,11 +251,21 @@ function Pacientes() {
      * @return {void}
      */
     const updatePaciente = () => {
+        let newFechaNacimiento = '';
+
+        // Check if 'pacienteFechaNacimientoFormatted' has the format 'yyyy-mm-dd'.
+        if (pacienteFechaNacimientoFormatted.at(4) === '-') {
+            // Re-format 'pacienteFechaNacimientoFormatted' from 'yyyy-mm-dd' to 'dd-mm-yyyy'.
+            newFechaNacimiento = pacienteFechaNacimientoFormatted.split('-').reverse().join('-');
+        } else {
+            newFechaNacimiento = pacienteFechaNacimientoFormatted;
+        }
+
         const paciente = {
             id: userToEdit,
             nombre: pacienteNombre,
             apellido: pacienteApellido,
-            fecha_nacimiento: pacienteFechaNacimiento,
+            fecha_nacimiento: newFechaNacimiento,
             email: pacienteEmail,
             dni: pacienteDni,
             telefono: pacienteTelefono,
@@ -470,6 +497,7 @@ function Pacientes() {
                 pacienteApellido={pacienteApellido}
                 pacienteEmail={pacienteEmail}
                 pacienteFechaNacimiento={pacienteFechaNacimiento}
+                pacienteFechaNacimientoFormatted={pacienteFechaNacimientoFormatted}
                 pacienteGenero={pacienteGenero}
                 pacienteDni={pacienteDni}
                 pacienteTelefono={pacienteTelefono}
@@ -482,6 +510,7 @@ function Pacientes() {
                 setPacienteApellido={setPacienteApellido}
                 setPacienteEmail={setPacienteEmail}
                 setPacienteFechaNacimiento={setPacienteFechaNacimiento}
+                setPacienteFechaNacimientoFormatted={setPacienteFechaNacimientoFormatted}
                 setPacienteGenero={setPacienteGenero}
                 setPacienteDni={setPacienteDni}
                 setPacienteTelefono={setPacienteTelefono}

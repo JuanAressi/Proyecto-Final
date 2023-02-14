@@ -161,7 +161,7 @@ function NuevoPersonal({ personalNombre, personalApellido, personalEmail, person
                                     <option value='Médico'>Médico</option>
                                 </select>
 
-                                <span className='custom-arrow position-absolute h-100'></span>
+                                <span className='custom-arrow position-absolute h-100 right-2'></span>
                             </div>
                         </form>
 
