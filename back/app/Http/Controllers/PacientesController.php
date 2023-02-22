@@ -368,20 +368,19 @@ class PacientesController extends Controller
     /**
      * Function getAllWithHistoriaClinica - Returns all Pacientes from database that has a Historia Clinica.
      *
-     * @param Request $request - The request object.
-     *
      * @return array - An array of all users.
      */
-    public function getAllWithHistoriaClinica(Request $request)
+    public function getAllWithHistoriaClinica()
     {
         // Get all 'Pacientes' that has a record in 'historia_clinica'.
         $pacientes = Usuarios::leftJoin('pacientes', 'pacientes.id_usuario', '=', 'usuarios.id')
             ->leftJoin('historia_clinica', 'historia_clinica.id_paciente', '=', 'usuarios.id')
-                ->where('usuarios.rol', '=', 'paciente')
-                ->where('usuarios.estado', '=', 'activo')
-                ->where('historia_clinica.id_paciente', '!=', '')
-                ->where('historia_clinica.estado', '=', 'visible')
-                ->get(['usuarios.id', 'nombre', 'apellido', 'dni']);
+            ->where('usuarios.rol', '=', 'paciente')
+            ->where('usuarios.estado', '=', 'activo')
+            ->where('historia_clinica.id_paciente', '!=', '')
+            ->where('historia_clinica.estado', '=', 'visible')
+            ->groupBy('usuarios.id')
+            ->get(['usuarios.id', 'nombre', 'apellido', 'dni']);
 
         // Check if pacientes is found.
         if ($pacientes) {
